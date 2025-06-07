@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEVE - Twilight's Forever</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: #fff;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        #gameContainer {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Main Menu */
+        #mainMenu {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background: linear-gradient(45deg, #2a1a3a, #1a2a3a);
+        }
+
+        .gameTitle {
+            font-size: 72px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+            margin-bottom: 60px;
+            letter-spacing: 8px;
+        }
+
+        .menuButtons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .menuButton {
+            padding: 20px 40px;
+            font-size: 24px;
+            background: linear-gradient(45deg, #4a3a5a, #3a4a5a);
+            border: 2px solid #6a5a7a;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .menuButton:hover {
+            background: linear-gradient(45deg, #5a4a6a, #4a5a6a);
+            border-color: #8a7a9a;
+            transform: translateY(-2px);
+        }
+
+        /* Battle Scene */
+        #battleScene {
+            display: none;
+            height: 100%;
+            background: #2a2a2a;
+            position: relative;
+        }
+
+        .battleField {
+            position: absolute;
+            width: 100%;
+            height: 70%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"><rect fill="%23331111" width="1920" height="1080"/></svg>');
+            background-size: cover;
+        }
+
+        .unitSlot {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .unit {
+            width: 80px;
+            height: 80px;
+            background: #4a4a4a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .healthBar {
+            width: 100px;
+            height: 20px;
+            background: #333;
+            border: 1px solid #666;
+            position: relative;
+        }
+
+        .healthFill {
+            position: absolute;
+            height: 100%;
+            background: #4a4;
+            transition: width 0.3s;
+        }
+
+        .healthText {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            line-height: 20px;
+        }
+
+        /* Party positions */
+        .party1 { left: 200px; top: 300px; }
+        .party2 { left: 100px; top: 400px; }
+        .party3 { left: 300px; top: 400px; }
+        .party4 { left: 100px; top: 500px; }
+        .party5 { left: 300px; top: 500px; }
+
+        /* Enemy positions */
+        .enemy1 { right: 200px; top: 300px; }
+        .enemy2 { right: 100px; top: 400px; }
+        .enemy3 { right: 300px; top: 400px; }
+        .enemy4 { right: 100px; top: 500px; }
+        .enemy5 { right: 300px; top: 500px; }
+
+        /* Battle UI */
+        .battleUI {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 30%;
+            background: #1a1a1a;
+            border-top: 2px solid #4a4a4a;
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .battleLog {
+            width: 30%;
+            background: #2a2a2a;
+            border: 1px solid #4a4a4a;
+            padding: 10px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+
+        .abilityPanel {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .ability {
+            width: 80px;
+            height: 80px;
+            background: #3a3a3a;
+            border: 2px solid #5a5a5a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .ability:hover {
+            border-color: #7a7a7a;
+        }
+
+        .ability.onCooldown {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .cooldownText {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 12px;
+            color: #ff6;
+        }
+
+        /* Heroes Screen */
+        #heroesScreen {
+            display: none;
+            height: 100%;
+            background: #2a2a2a;
+            padding: 20px;
+        }
+
+        .heroPanel {
+            display: flex;
+            height: 70%;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .heroPortrait {
+            width: 50%;
+            height: 100%;
+            background: #3a3a3a;
+            border: 2px solid #5a5a5a;
+            display: inline-flex;
+            align-items: stretch;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .heroPortrait img {
+            max-width: 100%;
+            max-height: 100%;
+            image-rendering: pixelated;
+            object-fit: contain;
+			display: inline-flex;
+			align-items: stretch;
+        }
+
+        .heroStats {
+            flex: 1;
+            background: #3a3a3a;
+            border: 1px solid #5a5a5a;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .heroTabs {
+            display: flex;
+            background: #2a2a2a;
+            border-bottom: 1px solid #5a5a5a;
+        }
+
+        .tabButton {
+            padding: 15px 30px;
+            background: #3a3a3a;
+            border: none;
+            border-right: 1px solid #5a5a5a;
+            cursor: pointer;
+            color: #aaa;
+            transition: all 0.3s;
+        }
+
+        .tabButton:hover {
+            background: #4a4a4a;
+            color: #fff;
+        }
+
+        .tabButton.active {
+            background: #4a4a4a;
+            color: #fff;
+        }
+
+        .tabContent {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .statLine {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        .statName {
+            color: #aaa;
+        }
+
+        .statValue {
+            color: #fff;
+        }
+
+        .statBonus {
+            color: #4f4;
+        }
+
+        .heroName {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .classInfo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .classStars {
+            color: #fa0;
+        }
+
+        .expBar {
+            background: #2a2a2a;
+            height: 30px;
+            border: 1px solid #5a5a5a;
+            margin: 10px 0;
+            position: relative;
+        }
+
+        .expFill {
+            background: linear-gradient(90deg, #4a4, #6c6);
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        .expText {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            line-height: 30px;
+            color: #fff;
+        }
+
+        .heroList {
+            height: 20%;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px;
+            background: #3a3a3a;
+            border: 1px solid #5a5a5a;
+        }
+
+        .heroThumb {
+            width: 100px;
+            height: 100px;
+            background: #4a4a4a;
+            border: 2px solid #6a6a6a;
+            cursor: pointer;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+            transition: all 0.2s;
+        }
+
+        .heroThumb:hover {
+            border-color: #8a8a8a;
+            background: #5a5a5a;
+        }
+
+        .heroThumb.selected {
+            border-color: #fa0;
+            background: #5a5a5a;
+        }
+
+        .heroThumb img {
+            width: 60px;
+            height: 60px;
+            image-rendering: pixelated;
+        }
+
+        .thumbName {
+            font-size: 12px;
+            margin-top: 5px;
+            color: #fff;
+        }
+
+        .thumbLevel {
+            font-size: 10px;
+            color: #aaa;
+        }
+
+        /* Skills Tab */
+        .skillsContainer {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .skillBox {
+            width: 100px;
+            height: 100px;
+            background: #4a4a4a;
+            border: 2px solid #6a6a6a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            padding: 5px;
+        }
+
+        .skillBox:hover {
+            border-color: #8a8a8a;
+        }
+
+        .skillBox img {
+            width: 60px;
+            height: 60px;
+            image-rendering: pixelated;
+        }
+
+        .skillName {
+            font-size: 11px;
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .skillLevel {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: #2a2a2a;
+            padding: 2px 6px;
+            font-size: 12px;
+            color: #fa0;
+        }
+
+        .skillDescription {
+            margin-top: 20px;
+            padding: 20px;
+            background: #2a2a2a;
+            border: 1px solid #5a5a5a;
+            min-height: 100px;
+        }
+
+        /* Promote Tab */
+        .promoteContent {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .promoteArrow {
+            font-size: 48px;
+            margin: 20px 0;
+            color: #6a6a6a;
+        }
+
+        .classCard {
+            background: #4a4a4a;
+            border: 2px solid #6a6a6a;
+            padding: 20px;
+            margin: 20px auto;
+            width: 300px;
+            position: relative;
+        }
+
+        .classCard img {
+            width: 80px;
+            height: 80px;
+            image-rendering: pixelated;
+            margin-bottom: 10px;
+        }
+
+        .promoteOptions {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+        .promoteButton {
+            padding: 15px 40px;
+            background: #5a5;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .promoteButton:hover {
+            background: #6b6;
+        }
+
+        .promoteButton:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+
+        /* Gear Tab */
+        .gearSlot {
+            background: #2a2a2a;
+            border: 1px solid #5a5a5a;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .gearLabel {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .gearItem {
+            font-size: 14px;
+            color: #fff;
+            min-height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Back button */
+        .backButton {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: #4a4a4a;
+            border: 1px solid #6a6a6a;
+            cursor: pointer;
+            color: #fff;
+        }
+
+        .backButton:hover {
+            background: #5a5a5a;
+            border-color: #8a8a8a;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <!-- Main Menu -->
+        <div id="mainMenu">
+            <div class="gameTitle">TEVE</div>
+            <div class="menuButtons">
+                <button class="menuButton" onclick="game.showHeroes()">Heroes</button>
+                <button class="menuButton" onclick="game.showDungeons()">Dungeons</button>
+                <button class="menuButton" onclick="game.showStash()">Stash</button>
+            </div>
+        </div>
+
+        <!-- Battle Scene -->
+        <div id="battleScene">
+            <div class="battleField">
+                <!-- Party Units -->
+                <div class="unitSlot party1" id="party1">
+                    <div class="unit">P1</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">100/100</div>
+                    </div>
+                </div>
+                <!-- Add more party slots... -->
+
+                <!-- Enemy Units -->
+                <div class="unitSlot enemy1" id="enemy1">
+                    <div class="unit">E1</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">67/67</div>
+                    </div>
+                </div>
+                <!-- Add more enemy slots... -->
+            </div>
+
+            <div class="battleUI">
+                <div class="battleLog" id="battleLog">
+                    Battle started!<br>
+                </div>
+                <div class="abilityPanel" id="abilityPanel">
+                    <div class="ability" onclick="game.useAbility(0)">
+                        <span>Punch</span>
+                    </div>
+                    <div class="ability" onclick="game.useAbility(1)">
+                        <span>Fury</span>
+                        <span class="cooldownText">5</span>
+                    </div>
+                </div>
+            </div>
+            <button class="backButton" onclick="game.showMainMenu()">Back</button>
+        </div>
+
+        <!-- Heroes Screen -->
+        <div id="heroesScreen">
+            <div class="heroPanel">
+                <div class="heroPortrait" id="heroPortrait">
+                    <img src="" alt="Hero" style="display: none;">
+                </div>
+                <div class="heroStats">
+                    <div class="heroTabs">
+                        <button class="tabButton active" onclick="game.showHeroTab('info')">Info</button>
+                        <button class="tabButton" onclick="game.showHeroTab('skills')">Skills</button>
+                        <button class="tabButton" onclick="game.showHeroTab('promote')">Promote</button>
+                        <button class="tabButton" onclick="game.showHeroTab('gear')">Gear</button>
+                        <button class="tabButton" onclick="game.showHeroTab('log')">Log</button>
+                    </div>
+                    <div class="tabContent" id="heroContent">
+                        <!-- Content will be dynamically generated -->
+                    </div>
+                </div>
+            </div>
+            <div class="heroList" id="heroList">
+                <!-- Hero thumbnails will be dynamically generated -->
+            </div>
+            <button class="backButton" onclick="game.showMainMenu()">Back</button>
+        </div>
+    </div>
+
+    <script>
+        // Class definitions
+        const CLASSES = {
+            'Villager': {
+                tier: 0,
+                modifiers: { str: 1.0, agi: 1.0, int: 1.0 },
+                sprite: 'hero0',
+                abilities: ['Punch', 'Fury']
+            },
+            'Druid': {
+                tier: 1,
+                modifiers: { str: 1.2, agi: 1.4, int: 1.8 },
+                sprite: 'hero1',
+                abilities: ['Nature\'s Touch']
+            },
+            'Arch Druid': {
+                tier: 2,
+                modifiers: { str: 1.2, agi: 1.4, int: 1.8 },
+                sprite: 'hero2',
+                abilities: ['Nature\'s Touch', 'Wild Growth']
+            },
+            'Shapeshifter': {
+                tier: 3,
+                modifiers: { str: 1.8, agi: 2.0, int: 1.2 },
+                sprite: 'hero3a',
+                abilities: ['Nature\'s Touch', 'Wild Growth', 'Beast Form']
+            },
+            'Runemaster': {
+                tier: 4,
+                modifiers: { str: 1.5, agi: 1.5, int: 2.2 },
+                sprite: 'hero4a',
+                abilities: ['Nature\'s Touch', 'Wild Growth', 'Beast Form', 'Runic Aura']
+            },
+            'Shaman': {
+                tier: 3,
+                modifiers: { str: 1.4, agi: 1.3, int: 2.0 },
+                sprite: 'hero3b',
+                abilities: ['Nature\'s Touch', 'Wild Growth', 'Elemental Shield']
+            },
+            'Summoner': {
+                tier: 4,
+                modifiers: { str: 1.2, agi: 1.2, int: 2.5 },
+                sprite: 'hero4b',
+                abilities: ['Nature\'s Touch', 'Wild Growth', 'Elemental Shield', 'Nature\'s Army']
+            }
+        };
+
+        // Hero Class
+        class Hero {
+            constructor(className = 'Villager') {
+                this.name = this.generateName();
+                this.className = className;
+                this.level = 1;
+                this.exp = 0;
+                this.expToNext = this.calculateExpToNext();
+                this.gear = {
+                    head: null,
+                    chest: null,
+                    legs: null,
+                    weapon: null,
+                    offhand: null,
+                    trinket: null
+                };
+                this.gearStats = { str: 0, agi: 0, int: 0 };
+                this.abilities = this.getClassAbilities();
+            }
+
+            generateName() {
+                const names = ['Aelar', 'Brin', 'Cara', 'Dain', 'Eira', 'Finn', 'Gwen', 'Hal'];
+                return names[Math.floor(Math.random() * names.length)];
+            }
+
+            get classData() {
+                return CLASSES[this.className];
+            }
+
+            get classTier() {
+                return this.classData.tier;
+            }
+
+            get baseStats() {
+                const mods = this.classData.modifiers;
+                return {
+                    str: Math.floor(this.classTier * this.level * mods.str),
+                    agi: Math.floor(this.classTier * this.level * mods.agi),
+                    int: Math.floor(this.classTier * this.level * mods.int)
+                };
+            }
+
+            get totalStats() {
+                const base = this.baseStats;
+                return {
+                    str: base.str + this.gearStats.str,
+                    agi: base.agi + this.gearStats.agi,
+                    int: base.int + this.gearStats.int
+                };
+            }
+
+            get hp() {
+                return this.totalStats.str * 25;
+            }
+
+            get hpRegen() {
+                return this.totalStats.str * 0.05;
+            }
+
+            get actionBarSpeed() {
+                const agi = this.totalStats.agi;
+                return 100 + 100 * (agi / (agi + 1000));
+            }
+
+            get cooldownReduction() {
+                const int = this.totalStats.int;
+                return 1 / (1 + (int / 10000));
+            }
+
+            getClassAbilities() {
+                if (this.classTier === 0) {
+                    return [
+                        { name: 'Punch', cooldown: 0, currentCooldown: 0, level: 1 },
+                        { name: 'Fury', cooldown: 5, currentCooldown: 0, level: 1 }
+                    ];
+                }
+                
+                const abilities = [];
+                const classAbilities = this.classData.abilities;
+                
+                // Add abilities based on tier
+                for (let i = 0; i < Math.min(classAbilities.length, this.classTier); i++) {
+                    const ability = {
+                        name: classAbilities[i],
+                        cooldown: i === 0 ? 0 : (i === 1 ? 5 : 10),
+                        currentCooldown: 0,
+                        level: this.classTier
+                    };
+                    
+                    // Mark tier 3 ability as passive
+                    if (i === 2 && this.classTier >= 3) {
+                        ability.passive = true;
+                        ability.cooldown = 0;
+                    }
+                    
+                    abilities.push(ability);
+                }
+                
+                // Add aura for tier 4 (but only if we have 4 abilities defined)
+                if (this.classTier === 4 && classAbilities.length > 3) {
+                    abilities.push({
+                        name: classAbilities[3],
+                        cooldown: 0,
+                        currentCooldown: 0,
+                        level: this.classTier,
+                        aura: true
+                    });
+                }
+                
+                return abilities;
+            }
+
+            calculateExpToNext() {
+                // Scaling should be a mix of linear and parabolic
+                // Getting to level 450 is the same exp as getting to level 500
+                if (this.level >= 500) return 0;
+                
+                const baseExp = 1000;
+                const linearComponent = this.level * 100;
+                const parabolicComponent = Math.pow(this.level, 1.8) * 10;
+                
+                return Math.floor(baseExp + linearComponent + parabolicComponent);
+            }
+
+            canPromote() {
+                const promoteLevels = { 0: 50, 1: 100, 2: 200, 3: 300 };
+                return this.level >= (promoteLevels[this.classTier] || 999);
+            }
+
+            getPromotionOptions() {
+                const promotions = {
+                    'Villager': ['Druid'],
+                    'Druid': ['Arch Druid'],
+                    'Arch Druid': ['Shapeshifter', 'Shaman'],
+                    'Shapeshifter': ['Runemaster'],
+                    'Shaman': ['Summoner']
+                };
+                return promotions[this.className] || [];
+            }
+
+            promote(newClass) {
+                if (!this.canPromote() || !this.getPromotionOptions().includes(newClass)) {
+                    return false;
+                }
+                
+                this.className = newClass;
+                this.level = 1;
+                this.exp = 0;
+                this.expToNext = this.calculateExpToNext();
+                this.abilities = this.getClassAbilities();
+                return true;
+            }
+        }
+
+        // Game Core
+        class Game {
+            constructor() {
+                this.currentScreen = 'mainMenu';
+                this.heroes = [];
+                this.currentBattle = null;
+                this.selectedHero = 0;
+                this.currentTab = 'info';
+                
+                this.init();
+            }
+
+            init() {
+                // Create 6 starting villagers
+                for (let i = 0; i < 6; i++) {
+                    this.heroes.push(new Hero());
+                }
+                
+                // Test promotions - need to do it properly
+                // First hero becomes a Druid
+                this.heroes[0].level = 300;
+                this.heroes[0].promote('Druid');
+                this.heroes[0].level = 300;
+                
+                // Second hero becomes an Arch Druid
+                this.heroes[1].level = 300;
+                this.heroes[1].promote('Druid');
+                this.heroes[1].level = 300;
+                this.heroes[1].promote('Arch Druid');
+                this.heroes[1].level = 300;
+				
+				// Third hero becomes a Shaman
+                this.heroes[2].level = 300;
+                this.heroes[2].promote('Druid');
+                this.heroes[2].level = 300;
+                this.heroes[2].promote('Arch Druid');
+                this.heroes[2].level = 300;
+				this.heroes[2].promote('Shaman');
+				this.heroes[2].level = 300;
+				
+				// Fourth hero becomes a Shapeshifter
+                this.heroes[3].level = 300;
+                this.heroes[3].promote('Druid');
+                this.heroes[3].level = 300;
+                this.heroes[3].promote('Arch Druid');
+                this.heroes[3].level = 300;
+				this.heroes[3].promote('Shapeshifter');
+				this.heroes[3].level = 300;
+				
+				this.heroes[4].level = 50;
+				this.heroes[5].level = 50;
+            }
+
+            showMainMenu() {
+                this.hideAllScreens();
+                document.getElementById('mainMenu').style.display = 'flex';
+            }
+
+            showHeroes() {
+                this.hideAllScreens();
+                document.getElementById('heroesScreen').style.display = 'block';
+                this.updateHeroList();
+                this.selectHero(this.selectedHero);
+            }
+
+            showDungeons() {
+                // TODO: Implement dungeons screen
+                console.log('Dungeons screen not yet implemented');
+            }
+
+            showStash() {
+                // TODO: Implement stash screen
+                console.log('Stash screen not yet implemented');
+            }
+
+            showBattle() {
+                this.hideAllScreens();
+                document.getElementById('battleScene').style.display = 'block';
+            }
+
+            hideAllScreens() {
+                document.getElementById('mainMenu').style.display = 'none';
+                document.getElementById('battleScene').style.display = 'none';
+                document.getElementById('heroesScreen').style.display = 'none';
+            }
+
+            updateHeroList() {
+                const heroList = document.getElementById('heroList');
+                heroList.innerHTML = '';
+                
+                // Sort heroes by tier then level
+                const sortedHeroes = [...this.heroes].sort((a, b) => {
+                    if (a.classTier !== b.classTier) return b.classTier - a.classTier;
+                    return b.level - a.level;
+                });
+                
+                sortedHeroes.forEach((hero, index) => {
+                    const thumb = document.createElement('div');
+                    thumb.className = 'heroThumb';
+                    if (this.heroes.indexOf(hero) === this.selectedHero) {
+                        thumb.classList.add('selected');
+                    }
+                    
+                    // Use local image files
+                    const spriteName = hero.classData.sprite;
+                    thumb.innerHTML = `
+                        <img src="img/${spriteName}front.gif" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${spriteName}</text></svg>'">
+                        <div class="thumbName">${hero.name}</div>
+                        <div class="thumbLevel">Lv ${hero.level}</div>
+                    `;
+                    
+                    thumb.onclick = () => this.selectHero(this.heroes.indexOf(hero));
+                    heroList.appendChild(thumb);
+                });
+            }
+
+            selectHero(index) {
+                this.selectedHero = index;
+                const hero = this.heroes[index];
+                
+                // Update portrait
+                const portrait = document.getElementById('heroPortrait');
+                const spriteName = hero.classData.sprite;
+                portrait.innerHTML = `<img src="img/${spriteName}front.gif" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${spriteName}</text></svg>'">`;
+                
+                // Update hero list selection
+                this.updateHeroList();
+                
+                // Refresh current tab
+                this.showHeroTab(this.currentTab);
+            }
+
+            showHeroTab(tab) {
+                this.currentTab = tab;
+                const hero = this.heroes[this.selectedHero];
+                const content = document.getElementById('heroContent');
+                
+                // Update tab buttons
+                document.querySelectorAll('.tabButton').forEach(btn => {
+                    btn.classList.toggle('active', btn.textContent.toLowerCase() === tab);
+                });
+                
+                switch(tab) {
+                    case 'info':
+                        this.showInfoTab(hero, content);
+                        break;
+                    case 'skills':
+                        this.showSkillsTab(hero, content);
+                        break;
+                    case 'promote':
+                        this.showPromoteTab(hero, content);
+                        break;
+                    case 'gear':
+                        this.showGearTab(hero, content);
+                        break;
+                    case 'log':
+                        this.showLogTab(hero, content);
+                        break;
+                }
+            }
+
+            showInfoTab(hero, content) {
+                const stats = hero.totalStats;
+                const baseStats = hero.baseStats;
+                let stars = '';
+                
+                // Generate stars based on class tier
+                if (hero.classTier > 0) {
+                    for (let i = 0; i < hero.classTier; i++) {
+                        stars += '⭐';
+                    }
+                    
+                    // Purple stars for level 500 class 4
+                    if (hero.classTier === 4 && hero.level === 500) {
+                        stars = '<span style="color: #a855f7;">' + stars + '</span>';
+                    }
+                }
+                
+                content.innerHTML = `
+                    <div class="heroName">${hero.name}</div>
+                    <div class="classInfo">
+                        <span>${hero.className}</span>
+                        <span class="classStars">${stars}</span>
+                    </div>
+                    <div class="expBar">
+                        <div class="expFill" style="width: ${(hero.exp / hero.expToNext) * 100}%"></div>
+                        <div class="expText">${hero.exp} / ${hero.expToNext}</div>
+                    </div>
+                    <div class="statLine">
+                        <span class="statName">Level</span>
+                        <span class="statValue">${hero.level}</span>
+                    </div>
+                    <div class="statLine">
+                        <span class="statName">HP</span>
+                        <span class="statValue">${hero.hp} ${hero.gearStats.str > 0 ? `<span class="statBonus">+${hero.gearStats.str * 25}</span>` : ''}</span>
+                    </div>
+                    <div class="statLine">
+                        <span class="statName">STR</span>
+                        <span class="statValue">${baseStats.str} ${hero.gearStats.str > 0 ? `<span class="statBonus">+${hero.gearStats.str}</span>` : ''}</span>
+                    </div>
+                    <div class="statLine">
+                        <span class="statName">AGI</span>
+                        <span class="statValue">${baseStats.agi} ${hero.gearStats.agi > 0 ? `<span class="statBonus">+${hero.gearStats.agi}</span>` : ''}</span>
+                    </div>
+                    <div class="statLine">
+                        <span class="statName">INT</span>
+                        <span class="statValue">${baseStats.int} ${hero.gearStats.int > 0 ? `<span class="statBonus">+${hero.gearStats.int}</span>` : ''}</span>
+                    </div>
+                `;
+            }
+
+            showSkillsTab(hero, content) {
+                // Define skill icon mapping
+                const skillIcons = {
+                    'Punch': 'skill1.png',
+                    'Fury': 'skill2.png',
+                    'Nature\'s Touch': 'skill3.png',
+                    'Wild Growth': 'skill4.png',
+                    'Beast Form': 'skill5.png',
+                    'Elemental Shield': 'skill6.png',
+                    'Runic Aura': 'skill7.png',
+                    'Nature\'s Army': 'skill8.png'
+                };
+                
+                content.innerHTML = `
+                    <div class="skillsContainer">
+                        ${hero.abilities.map((ability, index) => `
+                            <div class="skillBox" onclick="game.selectSkill(${index})">
+                                <img src="img/${skillIcons[ability.name] || 'skill1.png'}" alt="${ability.name}" onerror="this.style.display='none'">
+                                <div class="skillName">${ability.name}</div>
+                                <span class="skillLevel">Lv${ability.level}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="skillDescription" id="skillDescription">
+                        Click on a skill to see its description
+                    </div>
+                `;
+            }
+
+            showPromoteTab(hero, content) {
+                const canPromote = hero.canPromote();
+                const promotions = hero.getPromotionOptions();
+                
+                if (!canPromote && promotions.length === 0) {
+                    content.innerHTML = `
+                        <div class="promoteContent">
+                            <h2>No promotions available</h2>
+                            <p>Max class tier reached!</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Generate stars for current class
+                let currentStars = '';
+                for (let i = 0; i < hero.classTier; i++) {
+                    currentStars += '⭐';
+                }
+                
+                content.innerHTML = `
+                    <div class="promoteContent">
+                        <div class="classCard">
+                            <img src="img/${hero.classData.sprite}front.gif" alt="${hero.className}" onerror="this.style.display='none'">
+                            <h3>Current Class</h3>
+                            <h2>${hero.className}</h2>
+                            <div class="classStars">${currentStars}</div>
+                            <p>Level ${hero.level}</p>
+                        </div>
+                        ${canPromote ? `
+                            <div class="promoteArrow">↓</div>
+                            <div class="promoteOptions">
+                                ${promotions.map(promo => {
+                                    const promoClass = CLASSES[promo];
+                                    let promoStars = '';
+                                    for (let i = 0; i < promoClass.tier; i++) {
+                                        promoStars += '⭐';
+                                    }
+                                    return `
+                                        <div class="classCard">
+                                            <img src="img/${promoClass.sprite}front.gif" alt="${promo}" onerror="this.style.display='none'">
+                                            <h3>Promote to</h3>
+                                            <h2>${promo}</h2>
+                                            <div class="classStars">${promoStars}</div>
+                                            <p>Required: Level ${[50, 100, 200, 300][hero.classTier]}</p>
+                                            <button class="promoteButton" onclick="game.promoteHero('${promo}')">
+                                                Promote (Cost: ${1000 * Math.pow(10, hero.classTier)} Gold)
+                                            </button>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        ` : `
+                            <p>Reach level ${[50, 100, 200, 300][hero.classTier]} to promote</p>
+                        `}
+                    </div>
+                `;
+            }
+
+            showGearTab(hero, content) {
+                content.innerHTML = `
+                    <div style="display: flex; gap: 40px;">
+                        <div style="flex: 1;">
+                            <h3>Equipped Gear</h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;">
+                                <div class="gearSlot">
+                                    <div class="gearLabel">Trinket</div>
+                                    <div class="gearItem">${hero.gear.trinket ? hero.gear.trinket.name : 'Empty'}</div>
+                                </div>
+                                <div class="gearSlot">
+                                    <div class="gearLabel">Head</div>
+                                    <div class="gearItem">${hero.gear.head ? hero.gear.head.name : 'Empty'}</div>
+                                </div>
+                                <div class="gearSlot">
+                                    <div class="gearLabel">Weapon</div>
+                                    <div class="gearItem">${hero.gear.weapon ? hero.gear.weapon.name : 'Empty'}</div>
+                                </div>
+                                <div class="gearSlot">
+                                    <div class="gearLabel">Chest</div>
+                                    <div class="gearItem">${hero.gear.chest ? hero.gear.chest.name : 'Empty'}</div>
+                                </div>
+                                <div class="gearSlot">
+                                    <div class="gearLabel">Offhand</div>
+                                    <div class="gearItem">${hero.gear.offhand ? hero.gear.offhand.name : 'Empty'}</div>
+                                </div>
+                                <div class="gearSlot">
+                                    <div class="gearLabel">Legs</div>
+                                    <div class="gearItem">${hero.gear.legs ? hero.gear.legs.name : 'Empty'}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="flex: 1;">
+                            <h3>Class Stash</h3>
+                            <p style="color: #888;">Shared stash for ${this.getClassFamily(hero.className)} classes</p>
+                            <div style="margin-top: 20px; background: #2a2a2a; padding: 10px; min-height: 200px;">
+                                <p style="text-align: center; color: #666;">No items in stash</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            showLogTab(hero, content) {
+                content.innerHTML = `
+                    <h3>Activity Log</h3>
+                    <div style="margin-top: 20px; background: #2a2a2a; padding: 20px; min-height: 300px; max-height: 400px; overflow-y: auto;">
+                        <p style="color: #888;">No recent activity</p>
+                    </div>
+                `;
+            }
+
+            getClassFamily(className) {
+                const families = {
+                    'Druid': 'Druid',
+                    'Arch Druid': 'Druid',
+                    'Shapeshifter': 'Druid',
+                    'Runemaster': 'Druid',
+                    'Shaman': 'Druid',
+                    'Summoner': 'Druid'
+                };
+                return families[className] || className;
+            }
+
+            selectSkill(index) {
+                const hero = this.heroes[this.selectedHero];
+                const skill = hero.abilities[index];
+                const desc = document.getElementById('skillDescription');
+                
+                const descriptions = {
+                    'Punch': 'Basic attack dealing 5 + STR + AGI + INT damage',
+                    'Fury': 'Doubles action bar gain for 5 turns',
+                    'Nature\'s Touch': 'Heals an ally for 20% max HP + INT',
+                    'Wild Growth': 'Heals all allies for 10% max HP + (INT * 0.5)',
+                    'Beast Form': 'Transform into beast form, gaining 50% STR and AGI',
+                    'Elemental Shield': 'Shield an ally, absorbing damage equal to INT * 2',
+                    'Runic Aura': 'All allies gain 20% cooldown reduction',
+                    'Nature\'s Army': 'Summon nature spirits to fight alongside you'
+                };
+                
+                desc.innerHTML = `
+                    <h3>${skill.name} (Level ${skill.level})</h3>
+                    <p>${descriptions[skill.name] || 'No description available'}</p>
+                    ${skill.cooldown > 0 ? `<p>Cooldown: ${skill.cooldown} turns</p>` : ''}
+                    ${skill.passive ? '<p><em>Passive ability</em></p>' : ''}
+                    ${skill.aura ? '<p><em>Aura: Affects all allies</em></p>' : ''}
+                `;
+            }
+
+            promoteHero(newClass) {
+                const hero = this.heroes[this.selectedHero];
+                const cost = 1000 * Math.pow(10, hero.classTier);
+                
+                // TODO: Check gold and deduct cost
+                if (hero.promote(newClass)) {
+                    // Update portrait immediately after promotion
+                    const portrait = document.getElementById('heroPortrait');
+                    const spriteName = hero.classData.sprite;
+                    portrait.innerHTML = `<img src="img/${spriteName}front.gif" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${spriteName}</text></svg>'">`;
+                    
+                    this.showHeroTab('info');
+                    this.updateHeroList();
+                }
+            }
+
+            useAbility(index) {
+                console.log('Using ability', index);
+                // TODO: Implement ability usage
+            }
+        }
+
+        // Initialize game
+        const game = new Game();
+    </script>
+</body>
+</html>
+                
