@@ -1,0 +1,218 @@
+TEVE - Twilight's Forever
+
+-Description
+Turn based strategy game. This plays more like an idler but you can play it yourself if you'd like to. It's strongly based on the pve aspects in summoners war but will not be like mobile games with cash grabs and that kind of thing. It's going to be strictly gameplayer and hunting items and gear and building a party. The game is strongly party based. I want 5 characters on your team, going against up to 5 on the enemy side per wave. The game is progression based per character. You start as a villager and once you reach level 40 you can promote classes. The progression will be detailed below. Abilities will be straight forward and easy to follow. I want the ui to be clean and show only what you need but you can always hover for additional info. The game should be playable on mobile landscape and is meant for a 1920x1080 resolution display and screen ratio. Portrait is not allowed.
+
+-Battling
+This is the important part. I really need the battling to look and feel good. I want the ui to show the battle cleanly. I have a battlescene.png attached that will show what it should look like. The party selected will onset against waves of enemies depending on the dungeon they are going against. It could be anywhere from 10 to 50 waves. The battle starts with all players being full hp and 0 action (action bar dictates who attacks next). You will see your full party on screen in the lower left hand corner. When the action bar is filled up, if it is an enemy they will use their strongest ability that is not on cooldown. Once it is the turn for one of your party members, the game stops and waits for you. This is turn based. You will have the abilities for your current active party member shown in the bottom right of the screen. First ability is never on cooldown. It is always available. Other moves could be passives that are always in affect. They could have cooldowns which means you have to use other ablities x number of times until it is off cooldown again. When you select an ability, it shows a green arrow above units it is usable on. Some abilities like a heal will only be usable on allies. When you make your move the action bars proceed again until it is someones turn. The ui will have a small toggle in the lower left hand corner that allows you to have the ai autoplay for you. The ai will use your party in the same logic as it does the enemies. It will select the most powerful move you have available at all times. You can also toggle to manual mode to play yourself. There should be a log in the top left that shows all actions by both parties. Who used an ability on who and for what amount. Did someone die? They are out of the game and get no actions and cannot be targeted again until the dungeon is completed.
+
+-Main Menu
+Main menu should have several options. Heroes, Dungeons, Stash.
+
+--Heroes
+Heroes tab should show all your heroes portrait at the bottom of the screen in a horizontal row sorted by highest tier class and then level to the left. Seleting a portrait will show they at the top majority of the page. The character UI panel. Attached is an image called HeroOverviewScreen.png that shows what I'm talking about.
+
+Portrait of the hero on the left, Stats panel on the right with a vertical tab selection to view different details on this hero. Vertical tab selection should have options for Info (default), Skill, Promote, Gear, and Log. The attached HeroOverviewScreen.png shows an example of the Info tab.
+
+Info tab:
+Name of hero - Name of class (Class icon) (Class tier in stars)
+Exp bar ### / ####
+Lvl ### +###
+HP  ### +###
+STR ### +###
+AGI ### +###
+INT ### +###
+
+Skill tab:
+Displays skills in a horizontal display. Clicking a skill will show details about that skill. Skills are earned by promoting to new class tiers. Tier 0 is a villager. They have two abilities. First is an ability called punch. It does 5 + Str + Agi + Int damage. Next is an ability called fury. It increases their attack speed by double for the next 5 turns. Increased attack speed means action bar recovery is doubled. All abilities will have a flat amount of value and then scale off of stats. So a archer might have a basic arrow shot that does (agi * 1.2) damage. A swordsman might have a stab attack that does 100 + (.5 str) damage. A priest could heal for 10% max hp + (int) health. Tier 0 is a villager with two abilities. After that you can promote. Tier 1 classes have one level 1 ability. Tier 2 classes get a second ability and level up the previous ability, so they have the same class 1 ability leveled up, and now a level 2 second ability. The third tier class unlocks a passive and all abilities level 3. The fourth tier unlocks an aura, and all abilities level 4. At level 500 the fourth tier can now do a special promote called an awaken. This unlocks an ultimate ability level 5 and all abilities hit level 5. When I click a skill in the skill tab I should be able to view a description of that skill. I will include a lot of this in there.
+
+Promote tab:
+This will show your current class tier and your next tier available. So for instance for a swordsman they will see at level 200 they can promote into a knight. If they hit 200 this tab should glow and when they click promote they will have to confirm it with the purchase of x amount of gold.
+
+Gear tab:
+The final tab is the gear tab. This tab shows the currently equipped items for this hero. Six equipped items detailed below. Hovering an item should give its name, its level, and what stats it gives.
+
+Trinket / Head
+Weapon / Chest
+Offhand / Legs
+
+To the left of this should be the shared stash of that class rather than the portrait. So if we pull up a Dark Arch Templar's Character UI Panel, underneath it should show the shared stash of the Templar class. Which includes Templar, Arch Templar, Dark Templar, Dark Arch Templar, High Templar, Grand Templar.
+
+Log:
+This is simply an activity log. Certain events will be recorded per hero like receiving loot, leveling up, promoting, dying, etc.
+
+--Dungeons
+Clicking dungeons on the main menu should bring you to a world map view. The panels and the full menu disappears. The dungeon tiers are represented by regions on the map. I'll represent them as o's right now. The o's should be numbered. 0 for easy, 1 for hard, etc. Clicking one will bring up a list of dungeons you can fight in. It will show a compact list but shows more info when you click.
+
+o    o                 o
+
+  o           o      o
+        o
+    o             o
+           o
+     o              o
+
+
+Clicking orb '0' would show:
+
+-Easy - Items no requirements
+Satyrs - Satyr Instigator (Easy 1) (Lv 0)
+Icy Highland - Frostfang (Easy 2) (Lv 25)
+Forgotten Crypt - Stitch (Easy 3) (Lv 50)
+
+Additional info on clicking Forgotten Crypt, panel expands to show:
+
+3 - Forgotten Crypt
+Level: 50
+Boss: Stitch
+Items: no requirements
+Enter dungeon (button)
+
+When you click the enter dungeon button, you get a compact list of your heroes. You may select 5 to enter. When your party beats a dungeon they roll for loot, and go again. Anybody who died will be revived to full hp before the next dungeon starts. This will repeat until the player exits or until the party wipes. If your full team dies you get one more try. After two wipes in a row meaning every member of your party has died it will automatically begin the dungeon one tier down so from forgotten crypt to icy highland instead.
+
+-Items-
+Items are obtained from dungeons and are incredibly rare, and they can give up to 3 types of rolls on them. The first stat is guaranteed and rolls for 75-100% of the offered stat. The second stat is a 50% chance and rolls for 50-100% of the offered stat. The final is stats at a 50% chance as well for 1-100% at the offered stat. Offered stats are half the level of the item. So 1-100 for a 100 stat increase. If it rolls 80, it will give +80 stats to two of them, and +160 to one random stat of the three.
+Head: Armor, str/agi/int, stats
+Chest: Armor, str/agi/int, stats
+Legs: Armor, str/agi/int, stats
+Weapon: Main stat, offensive passive, stats
+Offhand: HP, cdr, stats
+Trinket: stats, stats, stats (one piece found from each dungeon of that tier, automatically combines and rolls stats then.
+For example: You get a helm, it is level 50 gear. Max rolls are half the level of the item so it would be +25 armor, +25 either str, agi, or int, + 50 to a random stat, +25 to the other two. When the item rolls for you, it automatically has the first stat which is armor, so it rolls between 18.75 armor and 25. You get 21. It has a 50% chance, if it fails you have a +21 armor helmet and that is it. If it succeeds you roll for 12.5-25 for the second roll. You roll a 14, and this helmt is a str helmet. Now you have a +21 armor, +14 str helmet. Next for another 50% roll check if you pass the additional stats roll for 25 all stats (+25 agi/int, +50 str) . You roll a 8. So now your finished lucky item is a helmet with +21 armor, +14 str, and +8 agi/int, + 16 str. Later on there is one more roll you can do which is cooldown reduction from smithing at the stash. Smithing will add one roll to an item for a gold cost. The gold cost scales with the item level and how many tiers it already has. So a level 50 item with one roll can be extended to two rolls for 5000 gold. A level 500 item with 3 rolls on it can be extended to 4 rolls with 1m gold. The fourth roll is not possible without smithing. A 3 roll item being smithed makes it roll 1-10% cdr. Items should show the rolls when hovered. If holding alt or long pressing on mobile, it will show the high and low rolls in parentheses next to them. Items with first roll are green, second roll blue, third roll purple, forth roll gold. For our helmet example look below.
+Item on hover:
+Helmet of Valor
+Item level 50
++21 Armor
++14 Str
++16 Str, + 8 Agi, Int
++2% Cdr
+Item on hover while holding alt:
+Helmet of Valor
+Item level 50
++21(12.5-25) Armor
++14(12.5-25) Str
++16(2-50) Str, + 8(1-25) Agi, Int
++2%(1-10) Cdr
+
+-Stash
+Each Class 1 category shares a stash. When clicking the stash tab it should show a compact list of all the stashes. Vertical list of the class icon and then the class name.
+[] Acolyte
+[] Archer
+[] Druid
+[] Initiate
+[] Swordsman
+[] Templar
+[] Thief
+[] Witch Hunter
+Once you click one you will see the stash. Items can be withdrawn from the inventory and placed in the stash whenever. So a Champion and an Avenger and a swordsman can all share gear, but cannot share with a Hierophant or a templar, or anyone else. These will be named after their first class name. Villagers cannot access any stashes at all. Items can be viewed, sold, and equipped from the stash ui. So the shared stash of the Templar class would include Templar, Arch Templar, Dark Templar, Dark Arch Templar, High Templar, Grand Templar. In the stash if you click an item you have the option to equip it, sell it, or blacksmith it. If you blacksmith it costs more money depending on the level of the item, but it adds one additional roll to the item for a high cost. If your item is already purple, it will add cdr roll to the item and make it golden.
+
+-Villagers
+You start with 3 villagers. To get more you have to get lucky drops from dungeons to recruit more villagers. They are very rare.
+
+-Levels
+Start at level 1. 500 is max level. Promotions are below
+Villager -> Class 1 requires level 50.
+Class 1 -> Class 2 requires level 100.
+Class 2 -> Class 3 requires level 200.
+Class 3 -> Class 4 requires level 300.
+
+Scaling should be a mix of linear and parabolic. Getting to level 450 is the same exp as getting to level 500.
+
+-Exp
+Gain exp when enemies die in a party you are currently alive in. Enemies should have an npc level and depending on that level compared to yours you get a certain amount of exp. If you are too high of a level compared to the dungeon you are running you get reduced exp.
+
+-Stats
+Every class has different stat modifiers. Each base stat for a class is equal to the Level of the hero multiplied by the class tier they are, multiplied by their class modifier for that stat.
+For example a primary Agility class below:
+Base Str = 1.2 * 150 * 3 = 540
+Base Agi = 2.3 * 150 * 3 = 1035
+Base Str = 1.1 * 150 * 3 = 495
+
+These stats are further increased by items.
+
+HP is equal to Str * 25.
+HP Regen per action bar reset = Str * 0.05
+Action bar units gained per cycle = 100 + 100 * (AGI / (AGI + 1000))
+Cooldown Reduction = 1 / (1 + (INT / 10000))
+
+-Action bar
+Each unit begins combat with an action bar value of 0. During every cycle, each unit gains a certain amount of action bar units based on their Agility stat. When a unit's action bar reaches or exceeds 10,000 units, it becomes eligible to act. If multiple units cross this threshold within the same cycle, the one with the highest total action bar value goes first. After a unit acts, 10,000 units are subtracted from its action bar, and if it still has more than 10,000 remaining, it may act again within the same cycle if no other units have a higher value. This continues until no units have at least 10,000 units remaining. At that point, the next cycle begins and all units gain additional action bar units according to their Agi. This system ensures that faster units act more frequently, but in a dynamic, fair order that reflects their accumulated speed.
+
+-Combat class
+16 final Class 4 classes.
+(1-50) Class 0: Start as a villager. At level 50 you upgrade to pick any starter class.
+(1-100) Class 1: Archer, Swordsman, etc. Only your first combat spell and you're weak.
+(1-200) Class 2: More specialized version of your first class.
+(1-300) Class 3: Class split. Passives should make it obvious the differences.
+(1-500 ) Class 4: Final class. Gain aura that defines your class and makes every level count for the full team.
+Consume all exp upon going to next class and start again at 0 exp, level 1. All classes of a type share the first two Classes. Acolytes upgrade to clerics who then have a class split at 3. They all do this. You must choose which path to take.
+
+Acolyte -> Cleric -> Priest -> Hierophant
+Acolyte -> Cleric -> Matriarch -> Matriarch
+Archer -> Ranger -> Marksman -> Sniper
+Archer -> Ranger -> Tracker -> Monster Hunter
+Druid -> Arch Druid -> Shapeshifter -> Runemaster
+Druid -> Arch Druid -> Shaman -> Summoner
+Initiate -> Mage -> Wizard -> White Wizard
+Initiate -> Mage -> Sage -> Arch Sage
+Swordsman -> Knight -> Imperial Knight -> Champion
+Swordsman -> Knight -> Crusader -> Avenger
+Templar -> Arch Templar -> Dark Templar -> Dark Arch Templar
+Templar -> Arch Templar -> High Templar -> Grand Templar
+Thief -> Rogue -> Assassin -> Phantom Assassin
+Thief -> Rogue -> Stalker -> Master Stalker
+Witch Hunter -> Slayer -> Inquisitor -> Grand Inquisitor
+Witch Hunter -> Slayer -> Witcher -> Professional Witcher
+
+-Abilities
+Villager has 2 abilities. The first is just punch, the second is fury which doubles their action bar gain for a few turns.
+Class 1 has 1 ability, at level 1.
+Class 2 maintains the Class 1 ability, but gains the Class 2 ability, both at level 2.
+Class 3 maintains the Class 1 ability, the Class 2 ability, and gains a Class 3 ability, all at level 3.
+Class 4 maintains the Class 1, 2, and 3 abilities, and gains a Class 4 ability. This is the aura ability. All abilities are now level 4.
+Class 4 gains a 5th ability at level 500, and upgrades the level of Class 1-4 abilities to level 5.
+The first ability, the Class 1 ability, has no cooldown. The Class 2 ability has a cooldown of 5 turns, and the Class 3 ability has a cooldown of 10 turns. The Class 4 ability is an aura and requires no cooldown. The final class 4 ability that you gain at level 500 is an ultimate ability. These start dungeons with a random cooldown of 1-500. You may not get to always see it but they have a huge impact.
+
+Dungeons:
+-Easy - Items no requirements
+Satyrs - Satyr Instigator (Easy  1) (Lv 0)
+Icy Highland - Frostfang (Easy 2) (Lv 25)
+Forgotten Crypt - Stitch (Easy 3) (Lv 50)
+
+-Hard - Items Class 1 required
+Gold Mine - Goblin King (Hard 1) (Lv 75)
+Centaur Mountain - Centaur Bloodhorn (Hard 2) (Lv 100)
+Puzzle Sanctuary - Lich Queen (Hard 3) (Lv 125)
+
+-Nightmare - Items Class 2 required
+Naga Ruins - Naga Ranger (Nightmare 1) (Lv 150)
+Forgotten Sewers - Devourer (Nightmare 2) (Lv 175)
+Blighted Vale - Rotwood Horror (Nightmare 3) (Lv 200)
+
+-Hell - Items Class 3 required
+Oblivion - Hades (Hell 1) (Lv 225)
+Abyssal Labyrinth - Mindreaver (Hell 2) (Lv 250)
+Scorching Crater - Flame Revenant (Hell 3) (Lv 275)
+
+-Impossible - Items Class 4 required
+Tristam? (Impossible 1) (Lv 300)
+City of Illusions - Mirage (Impossible 2) (Lv 325)
+Dragon Fortress - Ancient Hydra (Impossible 3) (Lv 350)
+
+-Mythical - Items Class 4 and level 500 required
+Marine Fortress - Pugs (Mythical 1) (Lv 375)
+Astral Nexus (Mythical 2) (Lv 400)
+Temple of Time (Mythical 3) (Lv 425)
+
+-Divine - Items Class 4 and level 500 required
+Celestial Garden - Elysian Watcher (Divine 1) (Lv 450)
+Throne of Storms - Sovereign (Divine 2) (Lv 475)
+Heart of the World - Worldshaper (Divine 3) (Lv 500)
+
+-Ascended - Items Class 4 and level 500 required
+Starlight Citadel - Cosmic Archon (Ascended 1) (Lv 500)
+Origin Core - Primeval Entity (Ascended 2) (Lv 500)
+Final Aetherium - Eternal Singularity (Ascended 3) (Lv 500)
+
+-Transcendent - Items Class 4 and level 500 required
+Rite of Passage - All dungeons in a row without stopping (Transcendent) (Lv 1000)
