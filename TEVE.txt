@@ -15,16 +15,17 @@ Heroes tab should show all your heroes portrait at the bottom of the screen in a
 Portrait of the hero on the left, Stats panel on the right with a vertical tab selection to view different details on this hero. Vertical tab selection should have options for Info (default), Skill, Promote, Gear, and Log. The attached HeroOverviewScreen.png shows an example of the Info tab.
 
 Info tab:
-Name of hero - Name of class (Class icon) (Class tier in stars)
+Name of Class - Name of hero
+(Class tier in stars)
+Lvl ###
 Exp bar ### / ####
-Lvl ### +###
 HP  ### +###
 STR ### +###
 AGI ### +###
 INT ### +###
 
-Skill tab:
-Displays skills in a horizontal display. Clicking a skill will show details about that skill. Skills are earned by promoting to new class tiers. Tier 0 is a villager. They have two abilities. First is an ability called punch. It does 5 + Str + Agi + Int damage. Next is an ability called fury. It increases their attack speed by double for the next 5 turns. Increased attack speed means action bar recovery is doubled. All abilities will have a flat amount of value and then scale off of stats. So a archer might have a basic arrow shot that does (agi * 1.2) damage. A swordsman might have a stab attack that does 100 + (.5 str) damage. A priest could heal for 10% max hp + (int) health. Tier 0 is a villager with two abilities. After that you can promote. Tier 1 classes have one level 1 ability. Tier 2 classes get a second ability and level up the previous ability, so they have the same class 1 ability leveled up, and now a level 2 second ability. The third tier class unlocks a passive and all abilities level 3. The fourth tier unlocks an aura, and all abilities level 4. At level 500 the fourth tier can now do a special promote called an awaken. This unlocks an ultimate ability level 5 and all abilities hit level 5. When I click a skill in the skill tab I should be able to view a description of that skill. I will include a lot of this in there.
+Abilities/Skills tab:
+Displays skills in a horizontal display. Clicking a skill will show details about that skill. Skills are earned by promoting to new class tiers. Tier 0 is a villager. They have two abilities. First is an ability called punch. It does 5 + Str + Agi + Int damage. Next is an ability called fury. It increases their attack speed by double for the next 5 turns. Increased attack speed means action bar recovery is doubled. All abilities will have a flat amount of value and then scale off of stats. So a archer might have a basic arrow shot that does (agi * 1.2) damage. A swordsman might have a stab attack that does 100 + (.5 str) damage. A priest could heal for 10% max hp + (int) health. Tier 0 is a villager with two abilities. After that you can promote. Tier 1 classes have one level 1 ability. Tier 2 classes get a second ability and level up the previous ability, so they have the same class 1 ability leveled up, and now a level 2 second ability. The third tier class unlocks another ability and all abilities level 3. The fourth tier unlocks an aura, and all abilities level 4. At level 400 the fourth tier can now do a special promote called an awaken. This unlocks an ultimate ability level 5 and all abilities hit level 5. When I click a skill in the skill tab I should be able to view a description of that skill. I will include a lot of this in there.
 
 Promote tab:
 This will show your current class tier and your next tier available. So for instance for a swordsman they will see at level 200 they can promote into a knight. If they hit 200 this tab should glow and when they click promote they will have to confirm it with the purchase of x amount of gold.
@@ -36,7 +37,20 @@ Trinket / Head
 Weapon / Chest
 Offhand / Legs
 
-To the left of this should be the shared stash of that class rather than the portrait. So if we pull up a Dark Arch Templar's Character UI Panel, underneath it should show the shared stash of the Templar class. Which includes Templar, Arch Templar, Dark Templar, Dark Arch Templar, High Templar, Grand Templar.
+These should be formatted in a grid like so:
+
+  Trinket  |    Head
+ [      ]  |  [      ]
+-----------|-----------
+  Weapon   |   Chest
+ [      ]  |  [      ]
+-----------|-----------
+  Offhand  |    Legs
+ [      ]  |  [      ]
+
+The brackets indicate a square section to load in the gear image. The header indicates what gear piece it is. Only a head gear piece can go in the head slot. The gear img should be cenetered vertically and horizontally and should fill the area while maintaining aspect ratio. They should be squares anyway. The titles for that gear slot should be top-centered.
+
+To the right of this should be the shared stash of that class rather than the portrait. So if we pull up a Dark Arch Templar's Character UI Panel, underneath it should show the shared stash of the Templar class. Which includes Templar, Arch Templar, Dark Templar, Dark Arch Templar, High Templar, Grand Templar.
 
 Log:
 This is simply an activity log. Certain events will be recorded per hero like receiving loot, leveling up, promoting, dying, etc.
@@ -115,11 +129,14 @@ Villager -> Class 1 requires level 50.
 Class 1 -> Class 2 requires level 100.
 Class 2 -> Class 3 requires level 200.
 Class 3 -> Class 4 requires level 300.
+Class 4 -> Class 4 Awakened requires level 400.
+
+Villagers start with a star, every class tier up you get another star, and a final star when awakened for 6 total.
 
 Scaling should be a mix of linear and parabolic. Getting to level 450 is the same exp as getting to level 500.
 
 -Exp
-Gain exp when enemies die in a party you are currently alive in. Enemies should have an npc level and depending on that level compared to yours you get a certain amount of exp. If you are too high of a level compared to the dungeon you are running you get reduced exp.
+Gain exp after completing a dungeon. You have to have survived to be granted the exp.
 
 -Stats
 Every class has different stat modifiers. Each base stat for a class is equal to the Level of the hero multiplied by the class tier they are, multiplied by their class modifier for that stat.
@@ -142,8 +159,8 @@ Each unit begins combat with an action bar value of 0. During every cycle, each 
 16 final Class 4 classes.
 (1-50) Class 0: Start as a villager. At level 50 you upgrade to pick any starter class.
 (1-100) Class 1: Archer, Swordsman, etc. Only your first combat spell and you're weak.
-(1-200) Class 2: More specialized version of your first class.
-(1-300) Class 3: Class split. Passives should make it obvious the differences.
+(1-200) Class 2: More specialized version of your first class. Can be a passive.
+(1-300) Class 3: Class split. Should make it obvious the differences.
 (1-500 ) Class 4: Final class. Gain aura that defines your class and makes every level count for the full team.
 Consume all exp upon going to next class and start again at 0 exp, level 1. All classes of a type share the first two Classes. Acolytes upgrade to clerics who then have a class split at 3. They all do this. You must choose which path to take.
 
@@ -195,7 +212,7 @@ Abyssal Labyrinth - Mindreaver (Hell 2) (Lv 250)
 Scorching Crater - Flame Revenant (Hell 3) (Lv 275)
 
 -Impossible - Items Class 4 required
-Tristam? (Impossible 1) (Lv 300)
+Tristam (Impossible 1) (Lv 300)
 City of Illusions - Mirage (Impossible 2) (Lv 325)
 Dragon Fortress - Ancient Hydra (Impossible 3) (Lv 350)
 
