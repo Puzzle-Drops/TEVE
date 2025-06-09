@@ -1732,7 +1732,7 @@ init() {
 
             showBossInfo() {
                 const popup = document.getElementById('heroInfoPopup');
-                document.getElementById('popupHeroName').textContent = `Lv.${this.currentBoss.level} Boss | ${this.currentBoss.name}`;
+                document.getElementById('popupHeroName').textContent = `Lv.${this.currentBoss.level} ${this.currentBoss.name}`;
                 
                 // Show boss stats
                 const stats = this.currentBoss.baseStats;
