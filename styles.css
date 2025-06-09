@@ -1,1360 +1,1376 @@
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background: #0a0a0f;
-            color: #e0e0e0;
-            overflow: hidden;
-            user-select: none;
-        }
-
-        #gameContainer {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Main Menu */
-        #mainMenu {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            background: radial-gradient(ellipse at center, #0a1929 0%, #000511 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        #mainMenu::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(0, 150, 255, 0.1) 0%, transparent 70%);
-            animation: pulse 4s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.1); }
-        }
-
-        .gameTitle {
-            font-size: 72px;
-            font-weight: bold;
-            color: #4dd0e1;
-            text-shadow: 
-                0 0 40px rgba(77, 208, 225, 0.8),
-                0 0 80px rgba(77, 208, 225, 0.5),
-                3px 3px 6px rgba(0,0,0,0.9);
-            margin-bottom: 60px;
-            letter-spacing: 8px;
-            z-index: 1;
-        }
-
-        .menuButtons {
-            display: flex;
-            gap: 20px;
-            z-index: 1;
-        }
-
-        .menuButton {
-            padding: 20px 40px;
-            font-size: 24px;
-            background: linear-gradient(135deg, #0a2e4a 0%, #0f3f5f 100%);
-            border: 2px solid #2a6a8a;
-            color: #b0e0f0;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-shadow: 0 0 10px rgba(176, 224, 240, 0.5);
-            box-shadow: 
-                0 0 20px rgba(42, 106, 138, 0.5),
-                inset 0 0 20px rgba(42, 106, 138, 0.2);
-        }
-
-        .menuButton:hover {
-            background: linear-gradient(135deg, #0f3f5f 0%, #1a5a7a 100%);
-            border-color: #4dd0e1;
-            transform: translateY(-2px);
-            box-shadow: 
-                0 5px 30px rgba(77, 208, 225, 0.5),
-                inset 0 0 30px rgba(77, 208, 225, 0.3);
-            text-shadow: 0 0 20px rgba(77, 208, 225, 0.8);
-        }
-
-        /* Battle Scene */
-        #battleScene {
-            display: none;
-            height: 100%;
-            background: #0a0f1a;
-            position: relative;
-        }
-
-        .battleField {
-            position: absolute;
-            width: 100%;
-            height: 70%;
-            background: linear-gradient(to bottom, #0a1929 0%, #0a0f1a 100%);
-            background-size: cover;
-        }
-
-        .unitSlot {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .unit {
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
-            border-radius: 50%;
-            border: 2px solid #2a6a8a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            margin-bottom: 5px;
-            box-shadow: 0 0 20px rgba(42, 106, 138, 0.5);
-        }
-
-        .healthBar {
-            width: 100px;
-            height: 20px;
-            background: #0a1929;
-            border: 1px solid #2a6a8a;
-            position: relative;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-        }
-
-        .healthFill {
-            position: absolute;
-            height: 100%;
-            background: linear-gradient(90deg, #00ff88 0%, #00cc66 100%);
-            transition: width 0.3s;
-            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-        }
-
-        .healthText {
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            font-size: 12px;
-            line-height: 20px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-        }
-
-        /* Party positions */
-        .party1 { left: 200px; top: 300px; }
-        .party2 { left: 100px; top: 400px; }
-        .party3 { left: 300px; top: 400px; }
-        .party4 { left: 100px; top: 500px; }
-        .party5 { left: 300px; top: 500px; }
-
-        /* Enemy positions */
-        .enemy1 { right: 200px; top: 300px; }
-        .enemy2 { right: 100px; top: 400px; }
-        .enemy3 { right: 300px; top: 400px; }
-        .enemy4 { right: 100px; top: 500px; }
-        .enemy5 { right: 300px; top: 500px; }
-
-        /* Battle UI */
-        .battleUI {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 30%;
-            background: linear-gradient(to top, #0a0f1a 0%, rgba(10, 15, 26, 0.9) 100%);
-            border-top: 2px solid #2a6a8a;
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-            box-shadow: 0 -5px 30px rgba(0,0,0,0.5);
-        }
-
-        .battleLog {
-            width: 30%;
-            background: rgba(10, 25, 41, 0.8);
-            border: 1px solid #2a6a8a;
-            padding: 10px;
-            overflow-y: auto;
-            font-size: 12px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-        }
-
-        .abilityPanel {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .ability {
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
-            border: 2px solid #2a6a8a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            position: relative;
-            box-shadow: 0 0 20px rgba(42, 106, 138, 0.5);
-            transition: all 0.3s;
-        }
-
-        .ability:hover {
-            border-color: #4dd0e1;
-            box-shadow: 0 0 30px rgba(77, 208, 225, 0.7);
-            transform: translateY(-2px);
-        }
-
-        .ability.onCooldown {
-            opacity: 0.5;
-            cursor: not-allowed;
-            background: radial-gradient(circle, #1a2a3a 0%, #0a1a2a 100%);
-        }
-
-        .cooldownText {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            font-size: 12px;
-            color: #ffaa00;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-        }
-
-        /* Heroes Screen */
-        #heroesScreen {
-            display: none;
-            height: 100%;
-            background: linear-gradient(135deg, #0a1929 0%, #0a0f1a 100%);
-            padding: 20px;
-        }
-
-        .heroPanel {
-            display: flex;
-            height: 70%;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .heroPortrait {
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
-            border: 2px solid #2a6a8a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            box-shadow: 0 0 30px rgba(42, 106, 138, 0.5);
-        }
-
-        .heroPortrait img {
-            max-width: 180px;
-            max-height: 180px;
-            image-rendering: pixelated;
-            object-fit: contain;
-        }
-
-        .heroStats {
-            flex: 1;
-            background: rgba(10, 25, 41, 0.8);
-            border: 1px solid #2a6a8a;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-        }
-
-        .heroTabs {
-            display: flex;
-            background: rgba(10, 15, 26, 0.9);
-            border-bottom: 1px solid #2a6a8a;
-        }
-
-        .tabButton {
-            padding: 15px 30px;
-            background: transparent;
-            border: none;
-            border-right: 1px solid #2a6a8a;
-            cursor: pointer;
-            color: #6a9aaa;
-            transition: all 0.3s;
-        }
-
-        .tabButton:hover {
-            background: rgba(42, 106, 138, 0.3);
-            color: #b0e0f0;
-        }
-
-        .tabButton.active {
-            background: rgba(42, 106, 138, 0.5);
-            color: #4dd0e1;
-            text-shadow: 0 0 10px rgba(77, 208, 225, 0.5);
-        }
-
-        .tabContent {
-            padding: 20px;
-            overflow-y: auto;
-            flex: 1;
-        }
-
-        .statLine {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-            font-size: 18px;
-        }
-
-        .statName {
-            color: #6a9aaa;
-        }
-
-        .statValue {
-            color: #b0e0f0;
-        }
-
-        .statBonus {
-            color: #00ff88;
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-        }
-
-        .heroName {
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: #4dd0e1;
-            text-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
-        }
-
-        .classStars {
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-
-        .expBar {
-            background: rgba(10, 25, 41, 0.8);
-            height: 30px;
-            border: 1px solid #2a6a8a;
-            margin: 10px 0;
-            position: relative;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-        }
-
-        .expFill {
-            background: linear-gradient(90deg, #0066cc 0%, #0099ff 100%);
-            height: 100%;
-            transition: width 0.3s;
-            box-shadow: 0 0 10px rgba(0, 153, 255, 0.5);
-        }
-
-        .expText {
-            position: absolute;
-            width: 100%;
-            text-align: center;
-            line-height: 30px;
-            color: #b0e0f0;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-        }
-
-        .heroList {
-            height: 120px;
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            overflow-y: hidden;
-            padding: 10px;
-            background: rgba(10, 25, 41, 0.8);
-            border: 1px solid #2a6a8a;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-        }
-
-        .heroThumb {
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
-            border: 2px solid #2a6a8a;
-            cursor: pointer;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            padding: 8px 5px;
-            transition: all 0.2s;
-            box-shadow: 0 0 15px rgba(42, 106, 138, 0.3);
-            position: relative;
-        }
-
-        .heroThumb:hover {
-            border-color: #4dd0e1;
-            background: radial-gradient(circle, #2a5a7a 0%, #1a3a5a 100%);
-            box-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
-        }
-
-        .heroThumb.selected {
-            border-color: #ffd700;
-            background: radial-gradient(circle, #2a5a7a 0%, #1a3a5a 100%);
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
-        }
-
-        .heroThumb img {
-            width: 60px;
-            height: 60px;
-            image-rendering: pixelated;
-        }
-
-        .thumbClass {
-            font-size: 12px;
-            color: #b0e0f0;
-            margin-top: 2px;
-        }
-
-        .thumbName {
-            font-size: 11px;
-            color: #6a9aaa;
-        }
-
-        .thumbLevel {
-            position: absolute;
-            bottom: 0px;
-            right: 2px;
-            font-size: 12px;
-            font-weight: bold;
-            color: #fff;
-            text-shadow: 
-                0 0 4px rgba(0, 0, 0, 0.9),
-                1px 1px 2px rgba(0, 0, 0, 1),
-                -1px -1px 2px rgba(0, 0, 0, 1);
-        }
-
-        .thumbStars {
-            position: absolute;
-            bottom: 0px;
-            left: 2px;
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: -5px;
-            text-shadow: 
-                0 0 4px rgba(0, 0, 0, 0.9),
-                1px 1px 2px rgba(0, 0, 0, 1),
-                -1px -1px 2px rgba(0, 0, 0, 1);
-        }
-
-        .thumbStars.awakened {
-            color: #d896ff;
-        }
-
-        .thumbStars.normal {
-            color: #ffd700;
-        }
-
-        .promoteArrowThumb {
-            position: absolute;
-            top: 0px;
-            left: 2px;
-            font-size: 12px;
-            font-weight: bold;
-            color: #ffd700;
-            text-shadow: 
-                0 0 4px rgba(0, 0, 0, 0.9),
-                1px 1px 2px rgba(0, 0, 0, 1),
-                -1px -1px 2px rgba(0, 0, 0, 1);
-        }
-
-        .promoteArrowThumb.normal {
-            color: #ffd700;
-        }
-
-        .promoteArrowThumb.awaken {
-            color: #d896ff;
-        }
-
-        .editNameBtn {
-            display: inline-block;
-            margin-left: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            color: #6a9aaa;
-            transition: color 0.3s;
-        }
-
-        .editNameBtn:hover {
-            color: #4dd0e1;
-        }
-
-        /* Confirmation Modal */
-        .confirmModal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .confirmContent {
-            background: linear-gradient(135deg, #0a1929 0%, #0a0f1a 100%);
-            border: 2px solid #2a6a8a;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 0 30px rgba(77, 208, 225, 0.3);
-            max-width: 400px;
-        }
-
-        .confirmText {
-            font-size: 18px;
-            color: #b0e0f0;
-            margin-bottom: 15px;
-        }
-
-        .confirmCost {
-            font-size: 16px;
-            color: #ffd700;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        .confirmButtons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        .confirmBtn {
-            padding: 10px 30px;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-        }
-
-        .confirmYes {
-            background: linear-gradient(135deg, #4dd0e1 0%, #2a9aaa 100%);
-            color: #0a1929;
-            box-shadow: 0 0 15px rgba(77, 208, 225, 0.5);
-        }
-
-        .confirmYes:hover {
-            background: linear-gradient(135deg, #6de0f1 0%, #4dd0e1 100%);
-            box-shadow: 0 0 20px rgba(109, 224, 241, 0.7);
-        }
-
-        .confirmNo {
-            background: linear-gradient(135deg, #8a4a4a 0%, #6a2a2a 100%);
-            color: #fff;
-            box-shadow: 0 0 15px rgba(138, 74, 74, 0.5);
-        }
-
-        .confirmNo:hover {
-            background: linear-gradient(135deg, #aa5a5a 0%, #8a3a3a 100%);
-            box-shadow: 0 0 20px rgba(170, 90, 90, 0.7);
-        }
-
-        /* Skills Tab */
-        .skillsContainer {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .skillBox {
-            width: 100px;
-            height: 100px;
-            background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
-            border: 2px solid #2a6a8a;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            position: relative;
-            padding: 5px;
-            box-shadow: 0 0 15px rgba(42, 106, 138, 0.3);
-            transition: all 0.3s;
-        }
-
-        .skillBox:hover {
-            border-color: #4dd0e1;
-            box-shadow: 0 0 25px rgba(77, 208, 225, 0.5);
-            transform: translateY(-2px);
-        }
-
-        .skillBox img {
-            width: 60px;
-            height: 60px;
-            image-rendering: pixelated;
-        }
-
-        .skillName {
-            font-size: 11px;
-            margin-top: 5px;
-            text-align: center;
-            color: #b0e0f0;
-        }
-
-        .skillLevel {
-            position: absolute;
-            bottom: 5px;
-            right: 5px;
-            background: rgba(10, 15, 26, 0.9);
-            padding: 2px 6px;
-            font-size: 12px;
-            color: #ffaa00;
-            border: 1px solid #2a6a8a;
-            text-shadow: 0 0 5px rgba(255, 170, 0, 0.5);
-        }
-
-        .skillDescription {
-            margin-top: 20px;
-            padding: 20px;
-            background: rgba(10, 25, 41, 0.8);
-            border: 1px solid #2a6a8a;
-            min-height: 100px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-        }
-
-        /* Promote Tab */
-        .promoteContent {
-            text-align: center;
-            padding: 40px;
-        }
-
-        .promoteArrowPanelArrow {
-            font-size: 48px;
-            margin: 20px 0;
-            color: #4dd0e1;
-            text-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
-        }
-
-        .classCard {
-            background: rgba(10, 25, 41, 0.8);
-            border: 2px solid #2a6a8a;
-            padding: 20px;
-            margin: 20px auto;
-            width: 300px;
-            position: relative;
-            box-shadow: 0 0 20px rgba(42, 106, 138, 0.3);
-        }
-
-        .classCard img {
-            width: 80px;
-            height: 80px;
-            image-rendering: pixelated;
-            margin-bottom: 10px;
-        }
-
-        .promoteOptions {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 20px;
-        }
-
-        .promoteButton {
-            padding: 15px 40px;
-            background: linear-gradient(135deg, #4dd0e1 0%, #2a9aaa 100%);
-            border: none;
-            color: #0a1929;
-            font-size: 18px;
-            cursor: pointer;
-            margin-top: 20px;
-            box-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
-            transition: all 0.3s;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
-            font-weight: bold;
-        }
-
-        .promoteButton:hover {
-            background: linear-gradient(135deg, #6de0f1 0%, #4dd0e1 100%);
-            box-shadow: 0 0 30px rgba(109, 224, 241, 0.7);
-            transform: translateY(-2px);
-        }
-
-        .promoteButton:disabled {
-            background: #1a3a4a;
-            cursor: not-allowed;
-            box-shadow: none;
-            color: #6a9aaa;
-        }
-
-        /* Gear Tab */
-        .gearSlot {
-            background: rgba(10, 25, 41, 0.8);
-            border: 1px solid #2a6a8a;
-            padding: 15px;
-            text-align: center;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-            width: 100px;
-            height: 100px;
-        }
-
-        .gearLabel {
-            font-size: 12px;
-            color: #6a9aaa;
-            margin-top: 0px;
-            margin-bottom: 5px;
-        }
-
-        .gearItem {
-            font-size: 10px;
-            color: #b0e0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 80px;
-            height: 80px;
-        }
-
-        /* Party Select Screen */
-        #partySelectScreen {
-            display: none;
-            height: 100vh;
-            background: linear-gradient(135deg, #0a1929 0%, #0a0f1a 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .partySelectContainer {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .partySelectHeader {
-            background: linear-gradient(to bottom, rgba(42, 106, 138, 0.3) 0%, rgba(10, 25, 41, 0.5) 100%);
-            padding: 20px;
-            text-align: center;
-            border-bottom: 2px solid #2a6a8a;
-        }
-
-        .dungeonTitle {
-            font-size: 28px;
-            color: #4dd0e1;
-            text-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
-            margin-bottom: 10px;
-        }
-
-        .battlePreview {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 60px;
-            padding: 40px;
-        }
-
-        .partyFormation {
-            display: grid;
-            grid-template-columns: repeat(3, 120px);
-            grid-template-rows: repeat(2, 120px);
-            gap: 15px;
-        }
-
-        .partySlot {
-            background: rgba(10, 25, 41, 0.8);
-            border: 2px solid #2a6a8a;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .partySlot:nth-child(1) {
-            grid-column: 1;
-            grid-row: 1;
-        }
-
-        .partySlot:nth-child(2) {
-            grid-column: 2;
-            grid-row: 1;
-        }
-
-        .partySlot:nth-child(3) {
-            grid-column: 3;
-            grid-row: 1;
-        }
-
-        .partySlot:nth-child(4) {
-            grid-column: 1;
-            grid-row: 2;
-        }
-
-        .partySlot:nth-child(5) {
-            grid-column: 2;
-            grid-row: 2;
-        }
-
-        .partySlot.filled {
-            background: rgba(42, 106, 138, 0.4);
-            border-color: #4dd0e1;
-        }
-
-        .slotPlaceholder {
-            font-size: 48px;
-            color: #2a6a8a;
-            opacity: 0.5;
-        }
-
-        .vsText {
-            font-size: 48px;
-            color: #ffd700;
-            text-shadow: 
-                0 0 30px rgba(255, 215, 0, 0.8),
-                0 2px 4px rgba(0, 0, 0, 0.8);
-            font-weight: bold;
-        }
-
-        .bossPreview {
-            background: rgba(42, 106, 138, 0.3);
-            border: 3px solid #4dd0e1;
-            border-radius: 12px;
-            padding: 20px;
-            width: 200px;
-            height: 250px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .bossPreview:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(77, 208, 225, 0.5);
-        }
-
-        .bossImage {
-            width: 120px;
-            height: 120px;
-            background: #2a4a6a;
-            border-radius: 50%;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 48px;
-        }
-
-        .bossName {
-            font-size: 18px;
-            color: #b0e0f0;
-            margin-bottom: 5px;
-        }
-
-        .bossLevel {
-            font-size: 14px;
-            color: #6a9aaa;
-        }
-
-        .bossStars {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 20px;
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-
-        .heroSelectArea {
-            background: rgba(10, 25, 41, 0.9);
-            border-top: 2px solid #2a6a8a;
-            padding: 20px;
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .heroSelectList {
-            flex: 1;
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding: 10px 0;
-        }
-
-        .selectableHero {
-            position: relative;
-            transition: all 0.3s;
-        }
-
-        .selectableHero.selected {
-            opacity: 0.5;
-        }
-
-        .selectableHero.selected::after {
-            content: '✓';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 36px;
-            color: #00ff88;
-            text-shadow: 
-                0 0 10px rgba(0, 255, 136, 0.8),
-                0 2px 4px rgba(0, 0, 0, 0.8);
-            font-weight: bold;
-        }
-
-        .actionButtons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .startBattleBtn {
-            padding: 15px 40px;
-            background: linear-gradient(135deg, #4dd0e1 0%, #2a9aaa 100%);
-            border: none;
-            color: #0a1929;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .startBattleBtn:hover {
-            background: linear-gradient(135deg, #6de0f1 0%, #4dd0e1 100%);
-            box-shadow: 0 0 30px rgba(109, 224, 241, 0.7);
-            transform: translateY(-2px);
-        }
-
-        .startBattleBtn:disabled {
-            background: #1a3a4a;
-            cursor: not-allowed;
-            box-shadow: none;
-            color: #6a9aaa;
-        }
-
-        .cancelBtn {
-            padding: 15px 40px;
-            background: linear-gradient(135deg, #8a4a4a 0%, #6a2a2a 100%);
-            border: none;
-            color: #fff;
-            font-size: 18px;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(138, 74, 74, 0.5);
-            transition: all 0.3s;
-        }
-
-        .cancelBtn:hover {
-            background: linear-gradient(135deg, #aa5a5a 0%, #8a3a3a 100%);
-            box-shadow: 0 0 20px rgba(170, 90, 90, 0.7);
-        }
-
-        /* Hero Info Popup */
-        .heroInfoPopup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #0a1929 0%, #0a0f1a 100%);
-            border: 3px solid #2a6a8a;
-            padding: 20px;
-            z-index: 1001;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
-            min-width: 600px;
-        }
-
-        .heroInfoHeader {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #2a6a8a;
-        }
-
-        .heroInfoTitle {
-            font-size: 24px;
-            color: #4dd0e1;
-        }
-
-        .closeInfoBtn {
-            background: none;
-            border: none;
-            color: #6a9aaa;
-            font-size: 24px;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .closeInfoBtn:hover {
-            color: #b0e0f0;
-        }
-
-        .heroInfoContent {
-            display: flex;
-            gap: 30px;
-        }
-
-        .heroInfoStats {
-            flex: 1;
-        }
-
-        .heroInfoGear {
-            flex: 1;
-        }
-
-        .statRow {
-            display: flex;
-            justify-content: space-between;
-            margin: 8px 0;
-            font-size: 16px;
-        }
-
-        .statLabel {
-            color: #6a9aaa;
-        }
-
-        .statValue {
-            color: #b0e0f0;
-        }
-
-        .abilityList {
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid #2a6a8a;
-        }
-
-        .abilityItem {
-            margin: 10px 0;
-            padding: 10px;
-            background: rgba(10, 25, 41, 0.5);
-            border: 1px solid #2a6a8a;
-        }
-
-        .abilityIconSmall {
-            width: 40px;
-            height: 40px;
-            border: 1px solid #2a6a8a;
-            border-radius: 3px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .abilityIconSmall:hover {
-            border-color: #4dd0e1;
-            box-shadow: 0 0 10px rgba(77, 208, 225, 0.5);
-        }
-
-        /* Drag and Drop styles */
-        .partySlot.dragover {
-            background: rgba(77, 208, 225, 0.3);
-            border-color: #6de0f1;
-            box-shadow: 0 0 20px rgba(109, 224, 241, 0.5);
-        }
-
-        .partySlot.dragging {
-            opacity: 0.5;
-        }
-
-        /* Back button */
-        .backButton {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #0a2e4a 0%, #0f3f5f 100%);
-            border: 1px solid #2a6a8a;
-            cursor: pointer;
-            color: #b0e0f0;
-            transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(42, 106, 138, 0.3);
-        }
-
-        .backButton:hover {
-            background: linear-gradient(135deg, #0f3f5f 0%, #1a5a7a 100%);
-            border-color: #4dd0e1;
-            box-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
-        }
-
-        /* Dungeons Screen */
-        #dungeonsScreen {
-            display: none;
-            height: 100vh;
-            background: #0a0f1a;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .worldMap {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: url('https://puzzle-drops.github.io/TEVE/img/map.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            filter: brightness(0.8) contrast(1.1);
-        }
-
-        .mapOrb {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background: radial-gradient(circle, rgba(42, 106, 138, 0.9), rgba(26, 74, 106, 0.9));
-            border: 3px solid #4dd0e1;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #b0e0f0;
-            transition: all 0.3s;
-            box-shadow: 
-                0 0 30px rgba(77, 208, 225, 0.5),
-                inset 0 0 20px rgba(77, 208, 225, 0.3);
-            text-shadow: 0 0 10px rgba(176, 224, 240, 0.8);
-        }
-
-        .mapOrb:hover {
-            transform: scale(1.1);
-            border-color: #6de0f1;
-            box-shadow: 
-                0 0 40px rgba(109, 224, 241, 0.7),
-                inset 0 0 30px rgba(109, 224, 241, 0.5);
-        }
-
-        .mapOrb.selected {
-            border-color: #ffd700;
-            box-shadow: 
-                0 0 50px rgba(255, 215, 0, 0.7),
-                inset 0 0 30px rgba(255, 215, 0, 0.4);
-        }
-
-        /* Dungeon tier colors */
-        .mapOrb.easy { background: radial-gradient(circle, rgba(42, 138, 74, 0.9), rgba(26, 106, 42, 0.9)); }
-        .mapOrb.hard { background: radial-gradient(circle, rgba(138, 138, 42, 0.9), rgba(106, 106, 26, 0.9)); }
-        .mapOrb.nightmare { background: radial-gradient(circle, rgba(106, 42, 138, 0.9), rgba(74, 26, 106, 0.9)); }
-        .mapOrb.hell { background: radial-gradient(circle, rgba(138, 42, 42, 0.9), rgba(106, 26, 26, 0.9)); }
-        .mapOrb.impossible { background: radial-gradient(circle, rgba(138, 42, 138, 0.9), rgba(106, 26, 106, 0.9)); }
-        .mapOrb.mythical { background: radial-gradient(circle, rgba(42, 106, 138, 0.9), rgba(26, 74, 106, 0.9)); }
-        .mapOrb.divine { background: radial-gradient(circle, rgba(138, 138, 42, 0.9), rgba(106, 106, 26, 0.9)); }
-        .mapOrb.ascended { background: radial-gradient(circle, rgba(170, 74, 170, 0.9), rgba(138, 42, 138, 0.9)); }
-        .mapOrb.transcendent { background: radial-gradient(circle, rgba(170, 170, 170, 0.9), rgba(138, 138, 138, 0.9)); }
-
-        .dungeonListPanel {
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: 400px;
-            height: 100vh;
-            background: linear-gradient(to left, rgba(10, 15, 26, 0.95) 0%, rgba(10, 25, 41, 0.9) 100%);
-            border-left: 2px solid #2a6a8a;
-            padding: 20px;
-            overflow-y: auto;
-            transform: translateX(100%);
-            transition: transform 0.3s;
-            box-shadow: -5px 0 30px rgba(0,0,0,0.7);
-        }
-
-        .dungeonListPanel.show {
-            transform: translateX(0);
-        }
-
-        .dungeonTierTitle {
-            font-size: 24px;
-            color: #4dd0e1;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #2a6a8a;
-            text-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
-        }
-
-        .dungeonItem {
-            background: rgba(10, 25, 41, 0.8);
-            border: 1px solid #2a6a8a;
-            padding: 15px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
-        }
-
-        .dungeonItem:hover {
-            background: rgba(42, 106, 138, 0.4);
-            border-color: #4dd0e1;
-            box-shadow: 0 0 20px rgba(77, 208, 225, 0.3);
-        }
-
-        .dungeonItem.expanded {
-            background: rgba(42, 106, 138, 0.5);
-            border-color: #4dd0e1;
-        }
-
-        .dungeonHeader {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .dungeonName {
-            font-size: 16px;
-            color: #b0e0f0;
-        }
-
-        .dungeonQuickInfo {
-            font-size: 12px;
-            color: #6a9aaa;
-        }
-
-        .dungeonDetails {
-            display: none;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #2a6a8a;
-        }
-
-        .dungeonDetails.show {
-            display: block;
-        }
-
-        .dungeonDetailRow {
-            display: flex;
-            justify-content: space-between;
-            margin: 8px 0;
-            font-size: 14px;
-        }
-
-        .dungeonDetailLabel {
-            color: #6a9aaa;
-        }
-
-        .dungeonDetailValue {
-            color: #b0e0f0;
-        }
-
-        .enterDungeonButton {
-            width: 100%;
-            padding: 12px;
-            margin-top: 15px;
-            background: linear-gradient(135deg, #4dd0e1 0%, #2a9aaa 100%);
-            border: none;
-            color: #0a1929;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
-            font-weight: bold;
-        }
-
-        .enterDungeonButton:hover {
-            background: linear-gradient(135deg, #6de0f1 0%, #4dd0e1 100%);
-            box-shadow: 0 0 30px rgba(109, 224, 241, 0.7);
-            transform: translateY(-1px);
-        }
-
-        .enterDungeonButton:disabled {
-            background: #1a3a4a;
-            cursor: not-allowed;
-            box-shadow: none;
-            color: #6a9aaa;
-        }
-
-        /* Stash Screen */
-        #stashScreen {
-            display: none;
-            height: 100vh;
-            background: linear-gradient(135deg, #0a1929 0%, #0a0f1a 100%);
-            padding: 40px;
-            overflow-y: auto;
-        }
-
-        .stashTitle {
-            font-size: 36px;
-            color: #4dd0e1;
-            margin-bottom: 30px;
-            text-align: center;
-            text-shadow: 0 0 30px rgba(77, 208, 225, 0.5);
-        }
-
-        .stashList {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .stashItem {
-            background: rgba(10, 25, 41, 0.8);
-            border: 2px solid #2a6a8a;
-            padding: 20px;
-            margin-bottom: 15px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-        }
-
-        .stashItem:hover {
-            background: rgba(42, 106, 138, 0.5);
-            border-color: #4dd0e1;
-            transform: translateX(10px);
-            box-shadow: 0 0 30px rgba(77, 208, 225, 0.4);
-        }
-
-        .stashIcon {
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
-            border: 2px solid #2a6a8a;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-        }
-
-        .stashInfo {
-            flex: 1;
-        }
-
-        .stashName {
-            font-size: 20px;
-            color: #b0e0f0;
-            margin-bottom: 5px;
-            text-shadow: 0 0 10px rgba(176, 224, 240, 0.5);
-        }
-
-        .stashDescription {
-            font-size: 14px;
-            color: #6a9aaa;
-        }
-    </style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #0a0a0f;
+    color: #e0e0e0;
+    overflow: hidden;
+    user-select: none;
+}
+
+#gameContainer {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main Menu */
+#mainMenu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background: radial-gradient(ellipse at center, #0a1929 0%, #000511 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+#mainMenu::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(0, 150, 255, 0.1) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+
+.gameTitle {
+    font-size: 72px;
+    font-weight: bold;
+    color: #4dd0e1;
+    text-shadow: 
+        0 0 40px rgba(77, 208, 225, 0.8),
+        0 0 80px rgba(77, 208, 225, 0.5),
+        3px 3px 6px rgba(0,0,0,0.9);
+    margin-bottom: 60px;
+    letter-spacing: 8px;
+    z-index: 1;
+}
+
+.menuButtons {
+    display: flex;
+    gap: 20px;
+    z-index: 1;
+}
+
+.menuButton {
+    padding: 20px 40px;
+    font-size: 24px;
+    background: linear-gradient(135deg, #0a2e4a 0%, #0f3f5f 100%);
+    border: 2px solid #2a6a8a;
+    color: #b0e0f0;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-shadow: 0 0 10px rgba(176, 224, 240, 0.5);
+    box-shadow: 
+        0 0 20px rgba(42, 106, 138, 0.5),
+        inset 0 0 20px rgba(42, 106, 138, 0.2);
+}
+
+.menuButton:hover {
+    background: linear-gradient(135deg, #0f3f5f 0%, #1a5a7a 100%);
+    border-color: #4dd0e1;
+    transform: translateY(-2px);
+    box-shadow: 
+        0 5px 30px rgba(77, 208, 225, 0.5),
+        inset 0 0 30px rgba(77, 208, 225, 0.3);
+    text-shadow: 0 0 20px rgba(77, 208, 225, 0.8);
+}
+
+/* Battle Scene */
+#battleScene {
+    display: none;
+    height: 100%;
+    background: #0a0f1a;
+    position: relative;
+}
+
+.battleField {
+    position: absolute;
+    width: 100%;
+    height: 70%;
+    background: linear-gradient(to bottom, #0a1929 0%, #0a0f1a 100%);
+    background-size: cover;
+}
+
+.unitSlot {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.unit {
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
+    border-radius: 50%;
+    border: 2px solid #2a6a8a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    margin-bottom: 5px;
+    box-shadow: 0 0 20px rgba(42, 106, 138, 0.5);
+}
+
+.healthBar {
+    width: 100px;
+    height: 20px;
+    background: #0a1929;
+    border: 1px solid #2a6a8a;
+    position: relative;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.healthFill {
+    position: absolute;
+    height: 100%;
+    background: linear-gradient(90deg, #00ff88 0%, #00cc66 100%);
+    transition: width 0.3s;
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.healthText {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    line-height: 20px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+/* Party positions */
+.party1 { left: 200px; top: 300px; }
+.party2 { left: 100px; top: 400px; }
+.party3 { left: 300px; top: 400px; }
+.party4 { left: 100px; top: 500px; }
+.party5 { left: 300px; top: 500px; }
+
+/* Enemy positions */
+.enemy1 { right: 200px; top: 300px; }
+.enemy2 { right: 100px; top: 400px; }
+.enemy3 { right: 300px; top: 400px; }
+.enemy4 { right: 100px; top: 500px; }
+.enemy5 { right: 300px; top: 500px; }
+
+/* Battle UI */
+.battleUI {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 30%;
+    background: linear-gradient(to top, #0a0f1a 0%, rgba(10, 15, 26, 0.9) 100%);
+    border-top: 2px solid #2a6a8a;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    box-shadow: 0 -5px 30px rgba(0,0,0,0.5);
+}
+
+.battleLog {
+    width: 30%;
+    background: rgba(10, 25, 41, 0.8);
+    border: 1px solid #2a6a8a;
+    padding: 10px;
+    overflow-y: auto;
+    font-size: 12px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+.abilityPanel {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.ability {
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
+    border: 2px solid #2a6a8a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 0 20px rgba(42, 106, 138, 0.5);
+    transition: all 0.3s;
+}
+
+.ability:hover {
+    border-color: #4dd0e1;
+    box-shadow: 0 0 30px rgba(77, 208, 225, 0.7);
+    transform: translateY(-2px);
+}
+
+.ability.onCooldown {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: radial-gradient(circle, #1a2a3a 0%, #0a1a2a 100%);
+}
+
+.cooldownText {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 12px;
+    color: #ffaa00;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+/* Heroes Screen */
+#heroesScreen {
+    display: none;
+    height: 100%;
+    background: linear-gradient(135deg, #0a1929 0%, #0a0f1a 100%);
+    padding: 20px;
+}
+
+.heroPanel {
+    display: flex;
+    height: 70%;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.heroPortrait {
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
+    border: 2px solid #2a6a8a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(42, 106, 138, 0.5);
+}
+
+.heroPortrait img {
+    max-width: 180px;
+    max-height: 180px;
+    image-rendering: pixelated;
+    object-fit: contain;
+}
+
+.heroStats {
+    flex: 1;
+    background: rgba(10, 25, 41, 0.8);
+    border: 1px solid #2a6a8a;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.heroTabs {
+    display: flex;
+    background: rgba(10, 15, 26, 0.9);
+    border-bottom: 1px solid #2a6a8a;
+}
+
+.tabButton {
+    padding: 15px 30px;
+    background: transparent;
+    border: none;
+    border-right: 1px solid #2a6a8a;
+    cursor: pointer;
+    color: #6a9aaa;
+    transition: all 0.3s;
+}
+
+.tabButton:hover {
+    background: rgba(42, 106, 138, 0.3);
+    color: #b0e0f0;
+}
+
+.tabButton.active {
+    background: rgba(42, 106, 138, 0.5);
+    color: #4dd0e1;
+    text-shadow: 0 0 10px rgba(77, 208, 225, 0.5);
+}
+
+.tabContent {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.statLine {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.statName {
+    color: #6a9aaa;
+}
+
+.statValue {
+    color: #b0e0f0;
+}
+
+.statBonus {
+    color: #00ff88;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.heroName {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #4dd0e1;
+    text-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
+}
+
+.classStars {
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.expBar {
+    background: rgba(10, 25, 41, 0.8);
+    height: 30px;
+    border: 1px solid #2a6a8a;
+    margin: 10px 0;
+    position: relative;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.expFill {
+    background: linear-gradient(90deg, #0066cc 0%, #0099ff 100%);
+    height: 100%;
+    transition: width 0.3s;
+    box-shadow: 0 0 10px rgba(0, 153, 255, 0.5);
+}
+
+.expText {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    line-height: 30px;
+    color: #b0e0f0;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+.heroList {
+    height: 120px;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 10px;
+    background: rgba(10, 25, 41, 0.8);
+    border: 1px solid #2a6a8a;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+.heroThumb {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
+    border: 2px solid #2a6a8a;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 5px;
+    transition: all 0.2s;
+    box-shadow: 0 0 15px rgba(42, 106, 138, 0.3);
+    position: relative;
+}
+
+.heroThumb:hover {
+    border-color: #4dd0e1;
+    background: radial-gradient(circle, #2a5a7a 0%, #1a3a5a 100%);
+    box-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
+}
+
+.heroThumb.selected {
+    border-color: #ffd700;
+    background: radial-gradient(circle, #2a5a7a 0%, #1a3a5a 100%);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+}
+
+.heroThumb img {
+    width: 60px;
+    height: 60px;
+    image-rendering: pixelated;
+}
+
+.thumbClass {
+    font-size: 12px;
+    color: #b0e0f0;
+    margin-top: 2px;
+    line-height: 1;
+}
+
+.thumbName {
+    font-size: 11px;
+    color: #6a9aaa;
+    line-height: 1;
+}
+
+.thumbLevel {
+    position: absolute;
+    bottom: 0px;
+    right: 2px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 
+        0 0 4px rgba(0, 0, 0, 0.9),
+        1px 1px 2px rgba(0, 0, 0, 1),
+        -1px -1px 2px rgba(0, 0, 0, 1);
+}
+
+.thumbStars {
+    position: absolute;
+    bottom: 0px;
+    left: 2px;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: -5px;
+    text-shadow: 
+        0 0 4px rgba(0, 0, 0, 0.9),
+        1px 1px 2px rgba(0, 0, 0, 1),
+        -1px -1px 2px rgba(0, 0, 0, 1);
+}
+
+.thumbStars.awakened {
+    color: #d896ff;
+}
+
+.thumbStars.normal {
+    color: #ffd700;
+}
+
+.promoteArrowThumb {
+    position: absolute;
+    top: 0px;
+    left: 2px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffd700;
+    text-shadow: 
+        0 0 4px rgba(0, 0, 0, 0.9),
+        1px 1px 2px rgba(0, 0, 0, 1),
+        -1px -1px 2px rgba(0, 0, 0, 1);
+}
+
+.promoteArrowThumb.normal {
+    color: #ffd700;
+}
+
+.promoteArrowThumb.awaken {
+    color: #d896ff;
+}
+
+.editNameBtn {
+    display: inline-block;
+    margin-left: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #6a9aaa;
+    transition: color 0.3s;
+}
+
+.editNameBtn:hover {
+    color: #4dd0e1;
+}
+
+/* Confirmation Modal */
+.confirmModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.confirmContent {
+    background: linear-gradient(135deg, #0a1929 0%, #0a0f1a 100%);
+    border: 2px solid #2a6a8a;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(77, 208, 225, 0.3);
+    max-width: 400px;
+}
+
+.confirmText {
+    font-size: 18px;
+    color: #b0e0f0;
+    margin-bottom: 15px;
+}
+
+.confirmCost {
+    font-size: 16px;
+    color: #ffd700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.confirmButtons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.confirmBtn {
+    padding: 10px 30px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+}
+
+.confirmYes {
+    background: linear-gradient(135deg, #4dd0e1 0%, #2a9aaa 100%);
+    color: #0a1929;
+    box-shadow: 0 0 15px rgba(77, 208, 225, 0.5);
+}
+
+.confirmYes:hover {
+    background: linear-gradient(135deg, #6de0f1 0%, #4dd0e1 100%);
+    box-shadow: 0 0 20px rgba(109, 224, 241, 0.7);
+}
+
+.confirmNo {
+    background: linear-gradient(135deg, #8a4a4a 0%, #6a2a2a 100%);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(138, 74, 74, 0.5);
+}
+
+.confirmNo:hover {
+    background: linear-gradient(135deg, #aa5a5a 0%, #8a3a3a 100%);
+    box-shadow: 0 0 20px rgba(170, 90, 90, 0.7);
+}
+
+/* Skills Tab */
+.skillsContainer {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.skillBox {
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
+    border: 2px solid #2a6a8a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    padding: 5px;
+    box-shadow: 0 0 15px rgba(42, 106, 138, 0.3);
+    transition: all 0.3s;
+}
+
+.skillBox:hover {
+    border-color: #4dd0e1;
+    box-shadow: 0 0 25px rgba(77, 208, 225, 0.5);
+    transform: translateY(-2px);
+}
+
+.skillBox img {
+    width: 60px;
+    height: 60px;
+    image-rendering: pixelated;
+}
+
+.skillName {
+    font-size: 11px;
+    margin-top: 5px;
+    text-align: center;
+    color: #b0e0f0;
+}
+
+.skillLevel {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: rgba(10, 15, 26, 0.9);
+    padding: 2px 6px;
+    font-size: 12px;
+    color: #ffaa00;
+    border: 1px solid #2a6a8a;
+    text-shadow: 0 0 5px rgba(255, 170, 0, 0.5);
+}
+
+.skillDescription {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(10, 25, 41, 0.8);
+    border: 1px solid #2a6a8a;
+    min-height: 100px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+/* Promote Tab */
+.promoteContent {
+    text-align: center;
+    padding: 40px;
+}
+
+.promoteArrowPanelArrow {
+    font-size: 48px;
+    margin: 20px 0;
+    color: #4dd0e1;
+    text-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
+}
+
+.classCard {
+    background: rgba(10, 25, 41, 0.8);
+    border: 2px solid #2a6a8a;
+    padding: 20px;
+    margin: 20px auto;
+    width: 300px;
+    position: relative;
+    box-shadow: 0 0 20px rgba(42, 106, 138, 0.3);
+}
+
+.classCard h2 {
+    margin: 10px 0;
+}
+
+.classCard h3 {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #6a9aaa;
+}
+
+.classCard p {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #6a9aaa;
+}
+
+.classCard img {
+    width: 80px;
+    height: 80px;
+    image-rendering: pixelated;
+    margin-bottom: 10px;
+}
+
+.promoteOptions {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.promoteButton {
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #4dd0e1 0%, #2a9aaa 100%);
+    border: none;
+    color: #0a1929;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 20px;
+    box-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
+    transition: all 0.3s;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+    font-weight: bold;
+}
+
+.promoteButton:hover {
+    background: linear-gradient(135deg, #6de0f1 0%, #4dd0e1 100%);
+    box-shadow: 0 0 30px rgba(109, 224, 241, 0.7);
+    transform: translateY(-2px);
+}
+
+.promoteButton:disabled {
+    background: #1a3a4a;
+    cursor: not-allowed;
+    box-shadow: none;
+    color: #6a9aaa;
+}
+
+/* Gear Tab */
+.gearSlot {
+    background: rgba(10, 25, 41, 0.8);
+    border: 1px solid #2a6a8a;
+    padding: 15px;
+    text-align: center;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    width: 100px;
+    height: 100px;
+}
+
+.gearLabel {
+    font-size: 12px;
+    color: #6a9aaa;
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+.gearItem {
+    font-size: 10px;
+    color: #b0e0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+}
+
+/* Party Select Screen */
+#partySelectScreen {
+    display: none;
+    height: 100vh;
+    background: linear-gradient(135deg, #0a1929 0%, #0a0f1a 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.partySelectContainer {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.partySelectHeader {
+    background: linear-gradient(to bottom, rgba(42, 106, 138, 0.3) 0%, rgba(10, 25, 41, 0.5) 100%);
+    padding: 20px;
+    text-align: center;
+    border-bottom: 2px solid #2a6a8a;
+}
+
+.dungeonTitle {
+    font-size: 28px;
+    color: #4dd0e1;
+    text-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
+    margin-bottom: 10px;
+}
+
+.battlePreview {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+    padding: 40px;
+}
+
+.partyFormation {
+    display: grid;
+    grid-template-columns: repeat(3, 120px);
+    grid-template-rows: repeat(2, 120px);
+    gap: 15px;
+}
+
+.partySlot {
+    background: rgba(10, 25, 41, 0.8);
+    border: 2px solid #2a6a8a;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.partySlot:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.partySlot:nth-child(2) {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.partySlot:nth-child(3) {
+    grid-column: 3;
+    grid-row: 1;
+}
+
+.partySlot:nth-child(4) {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.partySlot:nth-child(5) {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.partySlot.filled {
+    background: rgba(42, 106, 138, 0.4);
+    border-color: #4dd0e1;
+}
+
+.slotPlaceholder {
+    font-size: 48px;
+    color: #2a6a8a;
+    opacity: 0.5;
+}
+
+.vsText {
+    font-size: 48px;
+    color: #ffd700;
+    text-shadow: 
+        0 0 30px rgba(255, 215, 0, 0.8),
+        0 2px 4px rgba(0, 0, 0, 0.8);
+    font-weight: bold;
+}
+
+.bossPreview {
+    background: rgba(42, 106, 138, 0.3);
+    border: 3px solid #4dd0e1;
+    border-radius: 12px;
+    padding: 20px;
+    width: 200px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.bossPreview:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(77, 208, 225, 0.5);
+}
+
+.bossImage {
+    width: 120px;
+    height: 120px;
+    background: #2a4a6a;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+}
+
+.bossName {
+    font-size: 18px;
+    color: #b0e0f0;
+    margin-bottom: 5px;
+}
+
+.bossLevel {
+    font-size: 14px;
+    color: #6a9aaa;
+}
+
+.bossStars {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.heroSelectArea {
+    background: rgba(10, 25, 41, 0.9);
+    border-top: 2px solid #2a6a8a;
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.heroSelectList {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 10px 0;
+}
+
+.selectableHero {
+    position: relative;
+    transition: all 0.3s;
+}
+
+.selectableHero.selected {
+    opacity: 0.5;
+}
+
+.selectableHero.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 36px;
+    color: #00ff88;
+    text-shadow: 
+        0 0 10px rgba(0, 255, 136, 0.8),
+        0 2px 4px rgba(0, 0, 0, 0.8);
+    font-weight: bold;
+}
+
+.actionButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.startBattleBtn {
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #4dd0e1 0%, #2a9aaa 100%);
+    border: none;
+    color: #0a1929;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.startBattleBtn:hover {
+    background: linear-gradient(135deg, #6de0f1 0%, #4dd0e1 100%);
+    box-shadow: 0 0 30px rgba(109, 224, 241, 0.7);
+    transform: translateY(-2px);
+}
+
+.startBattleBtn:disabled {
+    background: #1a3a4a;
+    cursor: not-allowed;
+    box-shadow: none;
+    color: #6a9aaa;
+}
+
+.cancelBtn {
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #8a4a4a 0%, #6a2a2a 100%);
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(138, 74, 74, 0.5);
+    transition: all 0.3s;
+}
+
+.cancelBtn:hover {
+    background: linear-gradient(135deg, #aa5a5a 0%, #8a3a3a 100%);
+    box-shadow: 0 0 20px rgba(170, 90, 90, 0.7);
+}
+
+/* Hero Info Popup */
+.heroInfoPopup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #0a1929 0%, #0a0f1a 100%);
+    border: 3px solid #2a6a8a;
+    padding: 20px;
+    z-index: 1001;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+    min-width: 600px;
+}
+
+.heroInfoHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #2a6a8a;
+}
+
+.heroInfoTitle {
+    font-size: 24px;
+    color: #4dd0e1;
+}
+
+.closeInfoBtn {
+    background: none;
+    border: none;
+    color: #6a9aaa;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.closeInfoBtn:hover {
+    color: #b0e0f0;
+}
+
+.heroInfoContent {
+    display: flex;
+    gap: 30px;
+}
+
+.heroInfoStats {
+    flex: 1;
+}
+
+.heroInfoGear {
+    flex: 1;
+}
+
+.statRow {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+.statLabel {
+    color: #6a9aaa;
+}
+
+.statValue {
+    color: #b0e0f0;
+}
+
+.abilityList {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #2a6a8a;
+}
+
+.abilityItem {
+    margin: 10px 0;
+    padding: 10px;
+    background: rgba(10, 25, 41, 0.5);
+    border: 1px solid #2a6a8a;
+}
+
+.abilityIconSmall {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #2a6a8a;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.abilityIconSmall:hover {
+    border-color: #4dd0e1;
+    box-shadow: 0 0 10px rgba(77, 208, 225, 0.5);
+}
+
+/* Drag and Drop styles */
+.partySlot.dragover {
+    background: rgba(77, 208, 225, 0.3);
+    border-color: #6de0f1;
+    box-shadow: 0 0 20px rgba(109, 224, 241, 0.5);
+}
+
+.partySlot.dragging {
+    opacity: 0.5;
+}
+
+/* Back button */
+.backButton {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #0a2e4a 0%, #0f3f5f 100%);
+    border: 1px solid #2a6a8a;
+    cursor: pointer;
+    color: #b0e0f0;
+    transition: all 0.3s;
+    box-shadow: 0 0 15px rgba(42, 106, 138, 0.3);
+}
+
+.backButton:hover {
+    background: linear-gradient(135deg, #0f3f5f 0%, #1a5a7a 100%);
+    border-color: #4dd0e1;
+    box-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
+}
+
+/* Dungeons Screen */
+#dungeonsScreen {
+    display: none;
+    height: 100vh;
+    background: #0a0f1a;
+    position: relative;
+    overflow: hidden;
+}
+
+.worldMap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://puzzle-drops.github.io/TEVE/img/map.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.8) contrast(1.1);
+}
+
+.mapOrb {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle, rgba(42, 106, 138, 0.9), rgba(26, 74, 106, 0.9));
+    border: 3px solid #4dd0e1;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #b0e0f0;
+    transition: all 0.3s;
+    box-shadow: 
+        0 0 30px rgba(77, 208, 225, 0.5),
+        inset 0 0 20px rgba(77, 208, 225, 0.3);
+    text-shadow: 0 0 10px rgba(176, 224, 240, 0.8);
+}
+
+.mapOrb:hover {
+    transform: scale(1.1);
+    border-color: #6de0f1;
+    box-shadow: 
+        0 0 40px rgba(109, 224, 241, 0.7),
+        inset 0 0 30px rgba(109, 224, 241, 0.5);
+}
+
+.mapOrb.selected {
+    border-color: #ffd700;
+    box-shadow: 
+        0 0 50px rgba(255, 215, 0, 0.7),
+        inset 0 0 30px rgba(255, 215, 0, 0.4);
+}
+
+/* Dungeon tier colors */
+.mapOrb.easy { background: radial-gradient(circle, rgba(42, 138, 74, 0.9), rgba(26, 106, 42, 0.9)); }
+.mapOrb.hard { background: radial-gradient(circle, rgba(138, 138, 42, 0.9), rgba(106, 106, 26, 0.9)); }
+.mapOrb.nightmare { background: radial-gradient(circle, rgba(106, 42, 138, 0.9), rgba(74, 26, 106, 0.9)); }
+.mapOrb.hell { background: radial-gradient(circle, rgba(138, 42, 42, 0.9), rgba(106, 26, 26, 0.9)); }
+.mapOrb.impossible { background: radial-gradient(circle, rgba(138, 42, 138, 0.9), rgba(106, 26, 106, 0.9)); }
+.mapOrb.mythical { background: radial-gradient(circle, rgba(42, 106, 138, 0.9), rgba(26, 74, 106, 0.9)); }
+.mapOrb.divine { background: radial-gradient(circle, rgba(138, 138, 42, 0.9), rgba(106, 106, 26, 0.9)); }
+.mapOrb.ascended { background: radial-gradient(circle, rgba(170, 74, 170, 0.9), rgba(138, 42, 138, 0.9)); }
+.transcendent { background: radial-gradient(circle, rgba(170, 170, 170, 0.9), rgba(138, 138, 138, 0.9)); }
+
+.dungeonListPanel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 400px;
+    height: 100vh;
+    background: linear-gradient(to left, rgba(10, 15, 26, 0.95) 0%, rgba(10, 25, 41, 0.9) 100%);
+    border-left: 2px solid #2a6a8a;
+    padding: 20px;
+    overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.3s;
+    box-shadow: -5px 0 30px rgba(0,0,0,0.7);
+}
+
+.dungeonListPanel.show {
+    transform: translateX(0);
+}
+
+.dungeonTierTitle {
+    font-size: 24px;
+    color: #4dd0e1;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #2a6a8a;
+    text-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
+}
+
+.dungeonItem {
+    background: rgba(10, 25, 41, 0.8);
+    border: 1px solid #2a6a8a;
+    padding: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+.dungeonItem:hover {
+    background: rgba(42, 106, 138, 0.4);
+    border-color: #4dd0e1;
+    box-shadow: 0 0 20px rgba(77, 208, 225, 0.3);
+}
+
+.dungeonItem.expanded {
+    background: rgba(42, 106, 138, 0.5);
+    border-color: #4dd0e1;
+}
+
+.dungeonHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dungeonName {
+    font-size: 16px;
+    color: #b0e0f0;
+}
+
+.dungeonQuickInfo {
+    font-size: 12px;
+    color: #6a9aaa;
+}
+
+.dungeonDetails {
+    display: none;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #2a6a8a;
+}
+
+.dungeonDetails.show {
+    display: block;
+}
+
+.dungeonDetailRow {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.dungeonDetailLabel {
+    color: #6a9aaa;
+}
+
+.dungeonDetailValue {
+    color: #b0e0f0;
+}
+
+.enterDungeonButton {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background: linear-gradient(135deg, #4dd0e1 0%, #2a9aaa 100%);
+    border: none;
+    color: #0a1929;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+    font-weight: bold;
+}
+
+.enterDungeonButton:hover {
+    background: linear-gradient(135deg, #6de0f1 0%, #4dd0e1 100%);
+    box-shadow: 0 0 30px rgba(109, 224, 241, 0.7);
+    transform: translateY(-1px);
+}
+
+.enterDungeonButton:disabled {
+    background: #1a3a4a;
+    cursor: not-allowed;
+    box-shadow: none;
+    color: #6a9aaa;
+}
+
+/* Stash Screen */
+#stashScreen {
+    display: none;
+    height: 100vh;
+    background: linear-gradient(135deg, #0a1929 0%, #0a0f1a 100%);
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.stashTitle {
+    font-size: 36px;
+    color: #4dd0e1;
+    margin-bottom: 30px;
+    text-align: center;
+    text-shadow: 0 0 30px rgba(77, 208, 225, 0.5);
+}
+
+.stashList {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.stashItem {
+    background: rgba(10, 25, 41, 0.8);
+    border: 2px solid #2a6a8a;
+    padding: 20px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+.stashItem:hover {
+    background: rgba(42, 106, 138, 0.5);
+    border-color: #4dd0e1;
+    transform: translateX(10px);
+    box-shadow: 0 0 30px rgba(77, 208, 225, 0.4);
+}
+
+.stashIcon {
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
+    border: 2px solid #2a6a8a;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+.stashInfo {
+    flex: 1;
+}
+
+.stashName {
+    font-size: 20px;
+    color: #b0e0f0;
+    margin-bottom: 5px;
+    text-shadow: 0 0 10px rgba(176, 224, 240, 0.5);
+}
+
+.stashDescription {
+    font-size: 14px;
+    color: #6a9aaa;
+}
