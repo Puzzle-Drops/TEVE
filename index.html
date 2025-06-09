@@ -13,8 +13,8 @@
 
         body {
             font-family: Arial, sans-serif;
-            background: #1a1a1a;
-            color: #fff;
+            background: #0a0a0f;
+            color: #e0e0e0;
             overflow: hidden;
             user-select: none;
         }
@@ -33,44 +33,75 @@
             justify-content: center;
             align-items: center;
             height: 100%;
-            background: linear-gradient(45deg, #2a1a3a, #1a2a3a);
+            background: radial-gradient(ellipse at center, #0a1929 0%, #000511 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #mainMenu::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(0, 150, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
         }
 
         .gameTitle {
             font-size: 72px;
             font-weight: bold;
-            color: #fff;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+            color: #4dd0e1;
+            text-shadow: 
+                0 0 40px rgba(77, 208, 225, 0.8),
+                0 0 80px rgba(77, 208, 225, 0.5),
+                3px 3px 6px rgba(0,0,0,0.9);
             margin-bottom: 60px;
             letter-spacing: 8px;
+            z-index: 1;
         }
 
         .menuButtons {
             display: flex;
             gap: 20px;
+            z-index: 1;
         }
 
         .menuButton {
             padding: 20px 40px;
             font-size: 24px;
-            background: linear-gradient(45deg, #4a3a5a, #3a4a5a);
-            border: 2px solid #6a5a7a;
-            color: #fff;
+            background: linear-gradient(135deg, #0a2e4a 0%, #0f3f5f 100%);
+            border: 2px solid #2a6a8a;
+            color: #b0e0f0;
             cursor: pointer;
             transition: all 0.3s;
+            text-shadow: 0 0 10px rgba(176, 224, 240, 0.5);
+            box-shadow: 
+                0 0 20px rgba(42, 106, 138, 0.5),
+                inset 0 0 20px rgba(42, 106, 138, 0.2);
         }
 
         .menuButton:hover {
-            background: linear-gradient(45deg, #5a4a6a, #4a5a6a);
-            border-color: #8a7a9a;
+            background: linear-gradient(135deg, #0f3f5f 0%, #1a5a7a 100%);
+            border-color: #4dd0e1;
             transform: translateY(-2px);
+            box-shadow: 
+                0 5px 30px rgba(77, 208, 225, 0.5),
+                inset 0 0 30px rgba(77, 208, 225, 0.3);
+            text-shadow: 0 0 20px rgba(77, 208, 225, 0.8);
         }
 
         /* Battle Scene */
         #battleScene {
             display: none;
             height: 100%;
-            background: #2a2a2a;
+            background: #0a0f1a;
             position: relative;
         }
 
@@ -78,7 +109,7 @@
             position: absolute;
             width: 100%;
             height: 70%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"><rect fill="%23331111" width="1920" height="1080"/></svg>');
+            background: linear-gradient(to bottom, #0a1929 0%, #0a0f1a 100%);
             background-size: cover;
         }
 
@@ -94,28 +125,32 @@
         .unit {
             width: 80px;
             height: 80px;
-            background: #4a4a4a;
+            background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
             border-radius: 50%;
+            border: 2px solid #2a6a8a;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 14px;
             margin-bottom: 5px;
+            box-shadow: 0 0 20px rgba(42, 106, 138, 0.5);
         }
 
         .healthBar {
             width: 100px;
             height: 20px;
-            background: #333;
-            border: 1px solid #666;
+            background: #0a1929;
+            border: 1px solid #2a6a8a;
             position: relative;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
 
         .healthFill {
             position: absolute;
             height: 100%;
-            background: #4a4;
+            background: linear-gradient(90deg, #00ff88 0%, #00cc66 100%);
             transition: width 0.3s;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
         }
 
         .healthText {
@@ -124,6 +159,7 @@
             text-align: center;
             font-size: 12px;
             line-height: 20px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
         }
 
         /* Party positions */
@@ -146,20 +182,22 @@
             bottom: 0;
             width: 100%;
             height: 30%;
-            background: #1a1a1a;
-            border-top: 2px solid #4a4a4a;
+            background: linear-gradient(to top, #0a0f1a 0%, rgba(10, 15, 26, 0.9) 100%);
+            border-top: 2px solid #2a6a8a;
             display: flex;
             justify-content: space-between;
             padding: 20px;
+            box-shadow: 0 -5px 30px rgba(0,0,0,0.5);
         }
 
         .battleLog {
             width: 30%;
-            background: #2a2a2a;
-            border: 1px solid #4a4a4a;
+            background: rgba(10, 25, 41, 0.8);
+            border: 1px solid #2a6a8a;
             padding: 10px;
             overflow-y: auto;
             font-size: 12px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
         }
 
         .abilityPanel {
@@ -171,22 +209,27 @@
         .ability {
             width: 80px;
             height: 80px;
-            background: #3a3a3a;
-            border: 2px solid #5a5a5a;
+            background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
+            border: 2px solid #2a6a8a;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             position: relative;
+            box-shadow: 0 0 20px rgba(42, 106, 138, 0.5);
+            transition: all 0.3s;
         }
 
         .ability:hover {
-            border-color: #7a7a7a;
+            border-color: #4dd0e1;
+            box-shadow: 0 0 30px rgba(77, 208, 225, 0.7);
+            transform: translateY(-2px);
         }
 
         .ability.onCooldown {
             opacity: 0.5;
             cursor: not-allowed;
+            background: radial-gradient(circle, #1a2a3a 0%, #0a1a2a 100%);
         }
 
         .cooldownText {
@@ -194,14 +237,15 @@
             bottom: 5px;
             right: 5px;
             font-size: 12px;
-            color: #ff6;
+            color: #ffaa00;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
         }
 
         /* Heroes Screen */
         #heroesScreen {
             display: none;
             height: 100%;
-            background: #2a2a2a;
+            background: linear-gradient(135deg, #0a1929 0%, #0a0f1a 100%);
             padding: 20px;
         }
 
@@ -213,58 +257,59 @@
         }
 
         .heroPortrait {
-            width: 50%;
-            height: 100%;
-            background: #3a3a3a;
-            border: 2px solid #5a5a5a;
-            display: inline-flex;
-            align-items: stretch;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
+            border: 2px solid #2a6a8a;
+            display: flex;
+            align-items: center;
             justify-content: center;
             overflow: hidden;
+            box-shadow: 0 0 30px rgba(42, 106, 138, 0.5);
         }
 
         .heroPortrait img {
-            max-width: 100%;
-            max-height: 100%;
+            max-width: 180px;
+            max-height: 180px;
             image-rendering: pixelated;
             object-fit: contain;
-			display: inline-flex;
-			align-items: stretch;
         }
 
         .heroStats {
             flex: 1;
-            background: #3a3a3a;
-            border: 1px solid #5a5a5a;
+            background: rgba(10, 25, 41, 0.8);
+            border: 1px solid #2a6a8a;
             padding: 0;
             display: flex;
             flex-direction: column;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
 
         .heroTabs {
             display: flex;
-            background: #2a2a2a;
-            border-bottom: 1px solid #5a5a5a;
+            background: rgba(10, 15, 26, 0.9);
+            border-bottom: 1px solid #2a6a8a;
         }
 
         .tabButton {
             padding: 15px 30px;
-            background: #3a3a3a;
+            background: transparent;
             border: none;
-            border-right: 1px solid #5a5a5a;
+            border-right: 1px solid #2a6a8a;
             cursor: pointer;
-            color: #aaa;
+            color: #6a9aaa;
             transition: all 0.3s;
         }
 
         .tabButton:hover {
-            background: #4a4a4a;
-            color: #fff;
+            background: rgba(42, 106, 138, 0.3);
+            color: #b0e0f0;
         }
 
         .tabButton.active {
-            background: #4a4a4a;
-            color: #fff;
+            background: rgba(42, 106, 138, 0.5);
+            color: #4dd0e1;
+            text-shadow: 0 0 10px rgba(77, 208, 225, 0.5);
         }
 
         .tabContent {
@@ -281,46 +326,44 @@
         }
 
         .statName {
-            color: #aaa;
+            color: #6a9aaa;
         }
 
         .statValue {
-            color: #fff;
+            color: #b0e0f0;
         }
 
         .statBonus {
-            color: #4f4;
+            color: #00ff88;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
         }
 
         .heroName {
             font-size: 24px;
             margin-bottom: 10px;
-            color: #fff;
-        }
-
-        .classInfo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
+            color: #4dd0e1;
+            text-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
         }
 
         .classStars {
-            color: #fa0;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
 
         .expBar {
-            background: #2a2a2a;
+            background: rgba(10, 25, 41, 0.8);
             height: 30px;
-            border: 1px solid #5a5a5a;
+            border: 1px solid #2a6a8a;
             margin: 10px 0;
             position: relative;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
 
         .expFill {
-            background: linear-gradient(90deg, #4a4, #6c6);
+            background: linear-gradient(90deg, #0066cc 0%, #0099ff 100%);
             height: 100%;
             transition: width 0.3s;
+            box-shadow: 0 0 10px rgba(0, 153, 255, 0.5);
         }
 
         .expText {
@@ -328,42 +371,51 @@
             width: 100%;
             text-align: center;
             line-height: 30px;
-            color: #fff;
+            color: #b0e0f0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
         }
 
         .heroList {
-            height: 20%;
+            height: 120px;
             display: flex;
             gap: 10px;
             overflow-x: auto;
+            overflow-y: hidden;
             padding: 10px;
-            background: #3a3a3a;
-            border: 1px solid #5a5a5a;
+            background: rgba(10, 25, 41, 0.8);
+            border: 1px solid #2a6a8a;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
         }
 
         .heroThumb {
             width: 100px;
             height: 100px;
-            background: #4a4a4a;
-            border: 2px solid #6a6a6a;
+            background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
+            border: 2px solid #2a6a8a;
             cursor: pointer;
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 5px;
+            justify-content: space-between;
+            padding: 8px 5px;
             transition: all 0.2s;
+            box-shadow: 0 0 15px rgba(42, 106, 138, 0.3);
+            position: relative;
         }
 
         .heroThumb:hover {
-            border-color: #8a8a8a;
-            background: #5a5a5a;
+            border-color: #4dd0e1;
+            background: radial-gradient(circle, #2a5a7a 0%, #1a3a5a 100%);
+            box-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
         }
 
         .heroThumb.selected {
-            border-color: #fa0;
-            background: #5a5a5a;
+            border-color: #ffd700;
+            background: radial-gradient(circle, #2a5a7a 0%, #1a3a5a 100%);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
         }
 
         .heroThumb img {
@@ -372,15 +424,159 @@
             image-rendering: pixelated;
         }
 
-        .thumbName {
+        .thumbClass {
             font-size: 12px;
-            margin-top: 5px;
-            color: #fff;
+            color: #b0e0f0;
+            margin-top: 2px;
+        }
+
+        .thumbName {
+            font-size: 11px;
+            color: #6a9aaa;
         }
 
         .thumbLevel {
-            font-size: 10px;
-            color: #aaa;
+            position: absolute;
+            bottom: 0px;
+            right: 2px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 
+                0 0 4px rgba(0, 0, 0, 0.9),
+                1px 1px 2px rgba(0, 0, 0, 1),
+                -1px -1px 2px rgba(0, 0, 0, 1);
+        }
+
+        .thumbStars {
+            position: absolute;
+            bottom: 0px;
+            left: 2px;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: -5px;
+            text-shadow: 
+                0 0 4px rgba(0, 0, 0, 0.9),
+                1px 1px 2px rgba(0, 0, 0, 1),
+                -1px -1px 2px rgba(0, 0, 0, 1);
+        }
+
+        .thumbStars.awakened {
+            color: #d896ff;
+        }
+
+        .thumbStars.normal {
+            color: #ffd700;
+        }
+
+        .promoteArrowThumb {
+            position: absolute;
+            top: 0px;
+            left: 2px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 
+                0 0 4px rgba(0, 0, 0, 0.9),
+                1px 1px 2px rgba(0, 0, 0, 1),
+                -1px -1px 2px rgba(0, 0, 0, 1);
+        }
+
+        .promoteArrowThumb.normal {
+            color: #ffd700;
+        }
+
+        .promoteArrowThumb.awaken {
+            color: #d896ff;
+        }
+
+        .editNameBtn {
+            display: inline-block;
+            margin-left: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #6a9aaa;
+            transition: color 0.3s;
+        }
+
+        .editNameBtn:hover {
+            color: #4dd0e1;
+        }
+
+        /* Confirmation Modal */
+        .confirmModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .confirmContent {
+            background: linear-gradient(135deg, #0a1929 0%, #0a0f1a 100%);
+            border: 2px solid #2a6a8a;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(77, 208, 225, 0.3);
+            max-width: 400px;
+        }
+
+        .confirmText {
+            font-size: 18px;
+            color: #b0e0f0;
+            margin-bottom: 15px;
+        }
+
+        .confirmCost {
+            font-size: 16px;
+            color: #ffd700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .confirmButtons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .confirmBtn {
+            padding: 10px 30px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .confirmYes {
+            background: linear-gradient(135deg, #4dd0e1 0%, #2a9aaa 100%);
+            color: #0a1929;
+            box-shadow: 0 0 15px rgba(77, 208, 225, 0.5);
+        }
+
+        .confirmYes:hover {
+            background: linear-gradient(135deg, #6de0f1 0%, #4dd0e1 100%);
+            box-shadow: 0 0 20px rgba(109, 224, 241, 0.7);
+        }
+
+        .confirmNo {
+            background: linear-gradient(135deg, #8a4a4a 0%, #6a2a2a 100%);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(138, 74, 74, 0.5);
+        }
+
+        .confirmNo:hover {
+            background: linear-gradient(135deg, #aa5a5a 0%, #8a3a3a 100%);
+            box-shadow: 0 0 20px rgba(170, 90, 90, 0.7);
         }
 
         /* Skills Tab */
@@ -393,8 +589,8 @@
         .skillBox {
             width: 100px;
             height: 100px;
-            background: #4a4a4a;
-            border: 2px solid #6a6a6a;
+            background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
+            border: 2px solid #2a6a8a;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -402,10 +598,14 @@
             cursor: pointer;
             position: relative;
             padding: 5px;
+            box-shadow: 0 0 15px rgba(42, 106, 138, 0.3);
+            transition: all 0.3s;
         }
 
         .skillBox:hover {
-            border-color: #8a8a8a;
+            border-color: #4dd0e1;
+            box-shadow: 0 0 25px rgba(77, 208, 225, 0.5);
+            transform: translateY(-2px);
         }
 
         .skillBox img {
@@ -418,24 +618,28 @@
             font-size: 11px;
             margin-top: 5px;
             text-align: center;
+            color: #b0e0f0;
         }
 
         .skillLevel {
             position: absolute;
             bottom: 5px;
             right: 5px;
-            background: #2a2a2a;
+            background: rgba(10, 15, 26, 0.9);
             padding: 2px 6px;
             font-size: 12px;
-            color: #fa0;
+            color: #ffaa00;
+            border: 1px solid #2a6a8a;
+            text-shadow: 0 0 5px rgba(255, 170, 0, 0.5);
         }
 
         .skillDescription {
             margin-top: 20px;
             padding: 20px;
-            background: #2a2a2a;
-            border: 1px solid #5a5a5a;
+            background: rgba(10, 25, 41, 0.8);
+            border: 1px solid #2a6a8a;
             min-height: 100px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
         }
 
         /* Promote Tab */
@@ -444,19 +648,21 @@
             padding: 40px;
         }
 
-        .promoteArrow {
+        .promoteArrowPanelArrow {
             font-size: 48px;
             margin: 20px 0;
-            color: #6a6a6a;
+            color: #4dd0e1;
+            text-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
         }
 
         .classCard {
-            background: #4a4a4a;
-            border: 2px solid #6a6a6a;
+            background: rgba(10, 25, 41, 0.8);
+            border: 2px solid #2a6a8a;
             padding: 20px;
             margin: 20px auto;
             width: 300px;
             position: relative;
+            box-shadow: 0 0 20px rgba(42, 106, 138, 0.3);
         }
 
         .classCard img {
@@ -475,44 +681,396 @@
 
         .promoteButton {
             padding: 15px 40px;
-            background: #5a5;
+            background: linear-gradient(135deg, #4dd0e1 0%, #2a9aaa 100%);
             border: none;
-            color: #fff;
+            color: #0a1929;
             font-size: 18px;
             cursor: pointer;
             margin-top: 20px;
+            box-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
+            transition: all 0.3s;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+            font-weight: bold;
         }
 
         .promoteButton:hover {
-            background: #6b6;
+            background: linear-gradient(135deg, #6de0f1 0%, #4dd0e1 100%);
+            box-shadow: 0 0 30px rgba(109, 224, 241, 0.7);
+            transform: translateY(-2px);
         }
 
         .promoteButton:disabled {
-            background: #555;
+            background: #1a3a4a;
             cursor: not-allowed;
+            box-shadow: none;
+            color: #6a9aaa;
         }
 
         /* Gear Tab */
         .gearSlot {
-            background: #2a2a2a;
-            border: 1px solid #5a5a5a;
+            background: rgba(10, 25, 41, 0.8);
+            border: 1px solid #2a6a8a;
             padding: 15px;
             text-align: center;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            width: 100px;
+            height: 100px;
         }
 
         .gearLabel {
             font-size: 12px;
-            color: #888;
+            color: #6a9aaa;
+            margin-top: 0px;
             margin-bottom: 5px;
         }
 
         .gearItem {
-            font-size: 14px;
-            color: #fff;
-            min-height: 30px;
+            font-size: 10px;
+            color: #b0e0f0;
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 80px;
+            height: 80px;
+        }
+
+        /* Party Select Screen */
+        #partySelectScreen {
+            display: none;
+            height: 100vh;
+            background: linear-gradient(135deg, #0a1929 0%, #0a0f1a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .partySelectContainer {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .partySelectHeader {
+            background: linear-gradient(to bottom, rgba(42, 106, 138, 0.3) 0%, rgba(10, 25, 41, 0.5) 100%);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid #2a6a8a;
+        }
+
+        .dungeonTitle {
+            font-size: 28px;
+            color: #4dd0e1;
+            text-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .leaderSkillText {
+            font-size: 16px;
+            color: #6a9aaa;
+        }
+
+        .battlePreview {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+            padding: 40px;
+        }
+
+        .partyFormation {
+            display: grid;
+            grid-template-columns: repeat(3, 120px);
+            grid-template-rows: repeat(2, 120px);
+            gap: 15px;
+        }
+
+        .partySlot {
+            background: rgba(10, 25, 41, 0.8);
+            border: 2px solid #2a6a8a;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .partySlot:nth-child(1) {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        .partySlot:nth-child(2) {
+            grid-column: 2;
+            grid-row: 1;
+        }
+
+        .partySlot:nth-child(3) {
+            grid-column: 3;
+            grid-row: 1;
+        }
+
+        .partySlot:nth-child(4) {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        .partySlot:nth-child(5) {
+            grid-column: 2;
+            grid-row: 2;
+        }
+
+        .partySlot.filled {
+            background: rgba(42, 106, 138, 0.4);
+            border-color: #4dd0e1;
+        }
+
+        .slotPlaceholder {
+            font-size: 48px;
+            color: #2a6a8a;
+            opacity: 0.5;
+        }
+
+        .vsText {
+            font-size: 48px;
+            color: #ffd700;
+            text-shadow: 
+                0 0 30px rgba(255, 215, 0, 0.8),
+                0 2px 4px rgba(0, 0, 0, 0.8);
+            font-weight: bold;
+        }
+
+        .bossPreview {
+            background: rgba(42, 106, 138, 0.3);
+            border: 3px solid #4dd0e1;
+            border-radius: 12px;
+            padding: 20px;
+            width: 200px;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .bossPreview:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(77, 208, 225, 0.5);
+        }
+
+        .bossImage {
+            width: 120px;
+            height: 120px;
+            background: #2a4a6a;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .bossName {
+            font-size: 18px;
+            color: #b0e0f0;
+            margin-bottom: 5px;
+        }
+
+        .bossLevel {
+            font-size: 14px;
+            color: #6a9aaa;
+        }
+
+        .bossStars {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .heroSelectArea {
+            background: rgba(10, 25, 41, 0.9);
+            border-top: 2px solid #2a6a8a;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .heroSelectList {
+            flex: 1;
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+
+        .selectableHero {
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .selectableHero.selected {
+            opacity: 0.5;
+        }
+
+        .selectableHero.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 36px;
+            color: #00ff88;
+            text-shadow: 
+                0 0 10px rgba(0, 255, 136, 0.8),
+                0 2px 4px rgba(0, 0, 0, 0.8);
+            font-weight: bold;
+        }
+
+        .actionButtons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .startBattleBtn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #4dd0e1 0%, #2a9aaa 100%);
+            border: none;
+            color: #0a1929;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .startBattleBtn:hover {
+            background: linear-gradient(135deg, #6de0f1 0%, #4dd0e1 100%);
+            box-shadow: 0 0 30px rgba(109, 224, 241, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .startBattleBtn:disabled {
+            background: #1a3a4a;
+            cursor: not-allowed;
+            box-shadow: none;
+            color: #6a9aaa;
+        }
+
+        .cancelBtn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #8a4a4a 0%, #6a2a2a 100%);
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(138, 74, 74, 0.5);
+            transition: all 0.3s;
+        }
+
+        .cancelBtn:hover {
+            background: linear-gradient(135deg, #aa5a5a 0%, #8a3a3a 100%);
+            box-shadow: 0 0 20px rgba(170, 90, 90, 0.7);
+        }
+
+        /* Hero Info Popup */
+        .heroInfoPopup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #0a1929 0%, #0a0f1a 100%);
+            border: 3px solid #2a6a8a;
+            padding: 20px;
+            z-index: 1001;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+            min-width: 600px;
+        }
+
+        .heroInfoHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #2a6a8a;
+        }
+
+        .heroInfoTitle {
+            font-size: 24px;
+            color: #4dd0e1;
+        }
+
+        .closeInfoBtn {
+            background: none;
+            border: none;
+            color: #6a9aaa;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .closeInfoBtn:hover {
+            color: #b0e0f0;
+        }
+
+        .heroInfoContent {
+            display: flex;
+            gap: 30px;
+        }
+
+        .heroInfoStats {
+            flex: 1;
+        }
+
+        .heroInfoGear {
+            flex: 1;
+        }
+
+        .statRow {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 16px;
+        }
+
+        .statLabel {
+            color: #6a9aaa;
+        }
+
+        .statValue {
+            color: #b0e0f0;
+        }
+
+        .abilityList {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #2a6a8a;
+        }
+
+        .abilityItem {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(10, 25, 41, 0.5);
+            border: 1px solid #2a6a8a;
+        }
+
+        .abilityName {
+            font-size: 16px;
+            color: #4dd0e1;
+            margin-bottom: 5px;
         }
 
         /* Back button */
@@ -521,15 +1079,275 @@
             top: 20px;
             left: 20px;
             padding: 10px 20px;
-            background: #4a4a4a;
-            border: 1px solid #6a6a6a;
+            background: linear-gradient(135deg, #0a2e4a 0%, #0f3f5f 100%);
+            border: 1px solid #2a6a8a;
             cursor: pointer;
-            color: #fff;
+            color: #b0e0f0;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(42, 106, 138, 0.3);
         }
 
         .backButton:hover {
-            background: #5a5a5a;
-            border-color: #8a8a8a;
+            background: linear-gradient(135deg, #0f3f5f 0%, #1a5a7a 100%);
+            border-color: #4dd0e1;
+            box-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
+        }
+
+        /* Dungeons Screen */
+        #dungeonsScreen {
+            display: none;
+            height: 100vh;
+            background: #0a0f1a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .worldMap {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://puzzle-drops.github.io/TEVE/img/map.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: brightness(0.8) contrast(1.1);
+        }
+
+        .mapOrb {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, rgba(42, 106, 138, 0.9), rgba(26, 74, 106, 0.9));
+            border: 3px solid #4dd0e1;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #b0e0f0;
+            transition: all 0.3s;
+            box-shadow: 
+                0 0 30px rgba(77, 208, 225, 0.5),
+                inset 0 0 20px rgba(77, 208, 225, 0.3);
+            text-shadow: 0 0 10px rgba(176, 224, 240, 0.8);
+        }
+
+        .mapOrb:hover {
+            transform: scale(1.1);
+            border-color: #6de0f1;
+            box-shadow: 
+                0 0 40px rgba(109, 224, 241, 0.7),
+                inset 0 0 30px rgba(109, 224, 241, 0.5);
+        }
+
+        .mapOrb.selected {
+            border-color: #ffd700;
+            box-shadow: 
+                0 0 50px rgba(255, 215, 0, 0.7),
+                inset 0 0 30px rgba(255, 215, 0, 0.4);
+        }
+
+        /* Dungeon tier colors */
+        .mapOrb.easy { background: radial-gradient(circle, rgba(42, 138, 74, 0.9), rgba(26, 106, 42, 0.9)); }
+        .mapOrb.hard { background: radial-gradient(circle, rgba(138, 138, 42, 0.9), rgba(106, 106, 26, 0.9)); }
+        .mapOrb.nightmare { background: radial-gradient(circle, rgba(106, 42, 138, 0.9), rgba(74, 26, 106, 0.9)); }
+        .mapOrb.hell { background: radial-gradient(circle, rgba(138, 42, 42, 0.9), rgba(106, 26, 26, 0.9)); }
+        .mapOrb.impossible { background: radial-gradient(circle, rgba(138, 42, 138, 0.9), rgba(106, 26, 106, 0.9)); }
+        .mapOrb.mythical { background: radial-gradient(circle, rgba(42, 106, 138, 0.9), rgba(26, 74, 106, 0.9)); }
+        .mapOrb.divine { background: radial-gradient(circle, rgba(138, 138, 42, 0.9), rgba(106, 106, 26, 0.9)); }
+        .mapOrb.ascended { background: radial-gradient(circle, rgba(170, 74, 170, 0.9), rgba(138, 42, 138, 0.9)); }
+        .mapOrb.transcendent { background: radial-gradient(circle, rgba(170, 170, 170, 0.9), rgba(138, 138, 138, 0.9)); }
+
+        .dungeonListPanel {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 400px;
+            height: 100vh;
+            background: linear-gradient(to left, rgba(10, 15, 26, 0.95) 0%, rgba(10, 25, 41, 0.9) 100%);
+            border-left: 2px solid #2a6a8a;
+            padding: 20px;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.3s;
+            box-shadow: -5px 0 30px rgba(0,0,0,0.7);
+        }
+
+        .dungeonListPanel.show {
+            transform: translateX(0);
+        }
+
+        .dungeonTierTitle {
+            font-size: 24px;
+            color: #4dd0e1;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2a6a8a;
+            text-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
+        }
+
+        .dungeonItem {
+            background: rgba(10, 25, 41, 0.8);
+            border: 1px solid #2a6a8a;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+
+        .dungeonItem:hover {
+            background: rgba(42, 106, 138, 0.4);
+            border-color: #4dd0e1;
+            box-shadow: 0 0 20px rgba(77, 208, 225, 0.3);
+        }
+
+        .dungeonItem.expanded {
+            background: rgba(42, 106, 138, 0.5);
+            border-color: #4dd0e1;
+        }
+
+        .dungeonHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dungeonName {
+            font-size: 16px;
+            color: #b0e0f0;
+        }
+
+        .dungeonQuickInfo {
+            font-size: 12px;
+            color: #6a9aaa;
+        }
+
+        .dungeonDetails {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #2a6a8a;
+        }
+
+        .dungeonDetails.show {
+            display: block;
+        }
+
+        .dungeonDetailRow {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        .dungeonDetailLabel {
+            color: #6a9aaa;
+        }
+
+        .dungeonDetailValue {
+            color: #b0e0f0;
+        }
+
+        .enterDungeonButton {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background: linear-gradient(135deg, #4dd0e1 0%, #2a9aaa 100%);
+            border: none;
+            color: #0a1929;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.3);
+            font-weight: bold;
+        }
+
+        .enterDungeonButton:hover {
+            background: linear-gradient(135deg, #6de0f1 0%, #4dd0e1 100%);
+            box-shadow: 0 0 30px rgba(109, 224, 241, 0.7);
+            transform: translateY(-1px);
+        }
+
+        .enterDungeonButton:disabled {
+            background: #1a3a4a;
+            cursor: not-allowed;
+            box-shadow: none;
+            color: #6a9aaa;
+        }
+
+        /* Stash Screen */
+        #stashScreen {
+            display: none;
+            height: 100vh;
+            background: linear-gradient(135deg, #0a1929 0%, #0a0f1a 100%);
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .stashTitle {
+            font-size: 36px;
+            color: #4dd0e1;
+            margin-bottom: 30px;
+            text-align: center;
+            text-shadow: 0 0 30px rgba(77, 208, 225, 0.5);
+        }
+
+        .stashList {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .stashItem {
+            background: rgba(10, 25, 41, 0.8);
+            border: 2px solid #2a6a8a;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .stashItem:hover {
+            background: rgba(42, 106, 138, 0.5);
+            border-color: #4dd0e1;
+            transform: translateX(10px);
+            box-shadow: 0 0 30px rgba(77, 208, 225, 0.4);
+        }
+
+        .stashIcon {
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
+            border: 2px solid #2a6a8a;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .stashInfo {
+            flex: 1;
+        }
+
+        .stashName {
+            font-size: 20px;
+            color: #b0e0f0;
+            margin-bottom: 5px;
+            text-shadow: 0 0 10px rgba(176, 224, 240, 0.5);
+        }
+
+        .stashDescription {
+            font-size: 14px;
+            color: #6a9aaa;
         }
     </style>
 </head>
@@ -610,6 +1428,116 @@
             </div>
             <button class="backButton" onclick="game.showMainMenu()">Back</button>
         </div>
+
+        <!-- Dungeons Screen -->
+        <div id="dungeonsScreen">
+            <div class="worldMap" id="worldMap">
+                <!-- Map orbs will be dynamically generated -->
+            </div>
+            <div class="dungeonListPanel" id="dungeonListPanel">
+                <h2 class="dungeonTierTitle" id="dungeonTierTitle">Select a Region</h2>
+                <div id="dungeonList">
+                    <!-- Dungeon list will be dynamically generated -->
+                </div>
+            </div>
+            <button class="backButton" onclick="game.showMainMenu()">Back</button>
+        </div>
+
+        <!-- Stash Screen -->
+        <div id="stashScreen">
+            <h1 class="stashTitle">Stash</h1>
+            <div class="stashList" id="stashList">
+                <!-- Stash list will be dynamically generated -->
+            </div>
+            <button class="backButton" onclick="game.showMainMenu()">Back</button>
+        </div>
+
+        <!-- Party Select Screen -->
+        <div id="partySelectScreen">
+            <div class="partySelectContainer">
+                <div class="partySelectHeader">
+                    <div class="dungeonTitle" id="dungeonName">Satyrs</div>
+                    <div class="leaderSkillText" id="leaderSkillText">Leader Skill: No Skills</div>
+                </div>
+                
+                <div class="battlePreview">
+                    <div class="partyFormation" id="partyFormation">
+                        <div class="partySlot" data-slot="0">
+                            <div class="slotPlaceholder">⬡</div>
+                        </div>
+                        <div class="partySlot" data-slot="1">
+                            <div class="slotPlaceholder">⬡</div>
+                        </div>
+                        <div class="partySlot" data-slot="2">
+                            <div class="slotPlaceholder">⬡</div>
+                        </div>
+                        <div class="partySlot" data-slot="3">
+                            <div class="slotPlaceholder">⬡</div>
+                        </div>
+                        <div class="partySlot" data-slot="4">
+                            <div class="slotPlaceholder">⬡</div>
+                        </div>
+                    </div>
+                    
+                    <div class="vsText">VS</div>
+                    
+                    <div class="bossPreview" onclick="game.showBossInfo()">
+                        <div class="bossStars">★</div>
+                        <div class="bossImage">👹</div>
+                        <div class="bossName" id="bossName">Satyr Instigator</div>
+                        <div class="bossLevel" id="bossLevel">Lv 25</div>
+                    </div>
+                </div>
+                
+                <div class="heroSelectArea">
+                    <div class="heroSelectList" id="heroSelectList">
+                        <!-- Hero thumbnails will be generated here -->
+                    </div>
+                    <div class="actionButtons">
+                        <button class="startBattleBtn" id="startBattleBtn" disabled onclick="game.startBattle()">
+                            ⚔️ Start
+                        </button>
+                        <button class="cancelBtn" onclick="game.closeDungeonSelect()">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hero Info Popup -->
+        <div id="heroInfoPopup" class="heroInfoPopup">
+            <div class="heroInfoHeader">
+                <div class="heroInfoTitle" id="popupHeroName">Hero Name</div>
+                <button class="closeInfoBtn" onclick="game.closeHeroInfo()">×</button>
+            </div>
+            <div class="heroInfoContent">
+                <div class="heroInfoStats">
+                    <h3>Stats</h3>
+                    <div id="popupStats"></div>
+                    <div class="abilityList">
+                        <h3>Abilities</h3>
+                        <div id="popupAbilities"></div>
+                    </div>
+                </div>
+                <div class="heroInfoGear">
+                    <h3>Gear</h3>
+                    <div id="popupGear"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="confirmModal">
+        <div class="confirmContent">
+            <div class="confirmText" id="confirmText"></div>
+            <div class="confirmCost" id="confirmCost"></div>
+            <div class="confirmButtons">
+                <button class="confirmBtn confirmYes" onclick="game.confirmPromotion()">Yes</button>
+                <button class="confirmBtn confirmNo" onclick="game.cancelPromotion()">No</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -617,7 +1545,7 @@
         const CLASSES = {
             'Villager': {
                 tier: 0,
-                modifiers: { str: 1.0, agi: 1.0, int: 1.0 },
+                modifiers: { str: 1.2, agi: .9, int: .5 },
                 sprite: 'hero0',
                 abilities: ['Punch', 'Fury']
             },
@@ -676,6 +1604,7 @@
                     trinket: null
                 };
                 this.gearStats = { str: 0, agi: 0, int: 0 };
+                this.awakened = false;
                 this.abilities = this.getClassAbilities();
             }
 
@@ -695,9 +1624,9 @@
             get baseStats() {
                 const mods = this.classData.modifiers;
                 return {
-                    str: Math.floor(this.classTier * this.level * mods.str),
-                    agi: Math.floor(this.classTier * this.level * mods.agi),
-                    int: Math.floor(this.classTier * this.level * mods.int)
+                    str: Math.floor(this.level * mods.str),
+                    agi: Math.floor(this.level * mods.agi),
+                    int: Math.floor(this.level * mods.int)
                 };
             }
 
@@ -738,33 +1667,37 @@
                 
                 const abilities = [];
                 const classAbilities = this.classData.abilities;
+                const numAbilities = Math.min(classAbilities.length, this.classTier);
                 
-                // Add abilities based on tier
-                for (let i = 0; i < Math.min(classAbilities.length, this.classTier); i++) {
+                // Determine ability level (level 5 for awakened class 4)
+                const abilityLevel = (this.classTier === 4 && this.awakened) ? 5 : this.classTier;
+                
+                // Add abilities based on tier (no duplicates)
+                for (let i = 0; i < numAbilities; i++) {
                     const ability = {
                         name: classAbilities[i],
                         cooldown: i === 0 ? 0 : (i === 1 ? 5 : 10),
                         currentCooldown: 0,
-                        level: this.classTier
+                        level: abilityLevel
                     };
                     
-                    // Mark tier 3 ability as passive
-                    if (i === 2 && this.classTier >= 3) {
-                        ability.passive = true;
+                    // Mark tier 4 ability as aura
+                    if (i === 3 && this.classTier === 4) {
+                        ability.aura = true;
                         ability.cooldown = 0;
                     }
                     
                     abilities.push(ability);
                 }
                 
-                // Add aura for tier 4 (but only if we have 4 abilities defined)
-                if (this.classTier === 4 && classAbilities.length > 3) {
+                // Add 5th ultimate ability for awakened class 4
+                if (this.classTier === 4 && this.awakened) {
                     abilities.push({
-                        name: classAbilities[3],
-                        cooldown: 0,
-                        currentCooldown: 0,
-                        level: this.classTier,
-                        aura: true
+                        name: this.className === 'Runemaster' ? 'Eternal Rune' : 'Nature\'s Wrath',
+                        cooldown: Math.floor(Math.random() * 500) + 1, // Random 1-500 cooldown at start
+                        currentCooldown: Math.floor(Math.random() * 500) + 1,
+                        level: 5,
+                        ultimate: true
                     });
                 }
                 
@@ -784,7 +1717,7 @@
             }
 
             canPromote() {
-                const promoteLevels = { 0: 50, 1: 100, 2: 200, 3: 300 };
+                const promoteLevels = { 0: 50, 1: 100, 2: 200, 3: 300, 4: 400 };
                 return this.level >= (promoteLevels[this.classTier] || 999);
             }
 
@@ -796,10 +1729,24 @@
                     'Shapeshifter': ['Runemaster'],
                     'Shaman': ['Summoner']
                 };
+                
+                // Special case for Awakening at Class 4 Level 400
+                if (this.classTier === 4 && this.level >= 400 && !this.awakened) {
+                    return ['Awaken'];
+                }
+                
                 return promotions[this.className] || [];
             }
 
             promote(newClass) {
+                // Special case for Awakening
+                if (newClass === 'Awaken' && this.classTier === 4 && this.level >= 400) {
+                    this.awakened = true;
+                    // Don't reset level for awakening
+                    this.abilities = this.getClassAbilities();
+                    return true;
+                }
+                
                 if (!this.canPromote() || !this.getPromotionOptions().includes(newClass)) {
                     return false;
                 }
@@ -813,6 +1760,49 @@
             }
         }
 
+        // Boss Class
+        class Boss {
+            constructor(name, level, stars = 1) {
+                this.name = name;
+                this.level = level;
+                this.stars = stars;
+                this.modifiers = { str: 1.5, agi: 1.2, int: 1.0 };
+                this.abilities = this.getAbilities();
+            }
+
+            get baseStats() {
+                return {
+                    str: Math.floor(this.level * this.modifiers.str),
+                    agi: Math.floor(this.level * this.modifiers.agi),
+                    int: Math.floor(this.level * this.modifiers.int)
+                };
+            }
+
+            get hp() {
+                return this.baseStats.str * 25;
+            }
+
+            getAbilities() {
+                if (this.name === 'Satyr Instigator') {
+                    return [
+                        {
+                            name: 'Slash',
+                            description: 'Deals 10% max HP or 10 damage, whichever is less',
+                            cooldown: 0,
+                            currentCooldown: 0
+                        },
+                        {
+                            name: 'Bite',
+                            description: 'Deals 20% max HP or 20 damage, whichever is more',
+                            cooldown: 3,
+                            currentCooldown: 0
+                        }
+                    ];
+                }
+                return [];
+            }
+        }
+
         // Game Core
         class Game {
             constructor() {
@@ -821,50 +1811,197 @@
                 this.currentBattle = null;
                 this.selectedHero = 0;
                 this.currentTab = 'info';
+                this.selectedTier = null;
+                this.expandedDungeon = null;
+                
+                this.dungeonTiers = {
+                    'Easy': {
+                        tier: 0,
+                        color: 'easy',
+                        position: { x: 25, y: 40 },
+                        requirement: 'Items no requirements',
+                        dungeons: [
+                            { name: 'Satyrs', boss: 'Satyr Instigator', subtitle: 'Easy 1', level: 0 },
+                            { name: 'Icy Highland', boss: 'Frostfang', subtitle: 'Easy 2', level: 25 },
+                            { name: 'Forgotten Crypt', boss: 'Stitch', subtitle: 'Easy 3', level: 50 }
+                        ]
+                    },
+                    'Hard': {
+                        tier: 1,
+                        color: 'hard',
+                        position: { x: 45, y: 25 },
+                        requirement: 'Items Class 1 required',
+                        dungeons: [
+                            { name: 'Gold Mine', boss: 'Goblin King', subtitle: 'Hard 1', level: 75 },
+                            { name: 'Centaur Mountain', boss: 'Centaur Bloodhorn', subtitle: 'Hard 2', level: 100 },
+                            { name: 'Puzzle Sanctuary', boss: 'Lich Queen', subtitle: 'Hard 3', level: 125 }
+                        ]
+                    },
+                    'Nightmare': {
+                        tier: 2,
+                        color: 'nightmare',
+                        position: { x: 65, y: 45 },
+                        requirement: 'Items Class 2 required',
+                        dungeons: [
+                            { name: 'Naga Ruins', boss: 'Naga Ranger', subtitle: 'Nightmare 1', level: 150 },
+                            { name: 'Forgotten Sewers', boss: 'Devourer', subtitle: 'Nightmare 2', level: 175 },
+                            { name: 'Blighted Vale', boss: 'Rotwood Horror', subtitle: 'Nightmare 3', level: 200 }
+                        ]
+                    },
+                    'Hell': {
+                        tier: 3,
+                        color: 'hell',
+                        position: { x: 35, y: 60 },
+                        requirement: 'Items Class 3 required',
+                        dungeons: [
+                            { name: 'Oblivion', boss: 'Hades', subtitle: 'Hell 1', level: 225 },
+                            { name: 'Abyssal Labyrinth', boss: 'Mindreaver', subtitle: 'Hell 2', level: 250 },
+                            { name: 'Scorching Crater', boss: 'Flame Revenant', subtitle: 'Hell 3', level: 275 }
+                        ]
+                    },
+                    'Impossible': {
+                        tier: 4,
+                        color: 'impossible',
+                        position: { x: 75, y: 30 },
+                        requirement: 'Items Class 4 required',
+                        dungeons: [
+                            { name: 'Tristam?', boss: '???', subtitle: 'Impossible 1', level: 300 },
+                            { name: 'City of Illusions', boss: 'Mirage', subtitle: 'Impossible 2', level: 325 },
+                            { name: 'Dragon Fortress', boss: 'Ancient Hydra', subtitle: 'Impossible 3', level: 350 }
+                        ]
+                    },
+                    'Mythical': {
+                        tier: 5,
+                        color: 'mythical',
+                        position: { x: 20, y: 25 },
+                        requirement: 'Items Class 4 and level 500 required',
+                        dungeons: [
+                            { name: 'Marine Fortress', boss: 'Pugs', subtitle: 'Mythical 1', level: 375 },
+                            { name: 'Astral Nexus', boss: 'Starweaver', subtitle: 'Mythical 2', level: 400 },
+                            { name: 'Temple of Time', boss: 'Chronarch', subtitle: 'Mythical 3', level: 425 }
+                        ]
+                    },
+                    'Divine': {
+                        tier: 6,
+                        color: 'divine',
+                        position: { x: 55, y: 55 },
+                        requirement: 'Items Class 4 and level 500 required',
+                        dungeons: [
+                            { name: 'Celestial Garden', boss: 'Elysian Watcher', subtitle: 'Divine 1', level: 450 },
+                            { name: 'Throne of Storms', boss: 'Sovereign', subtitle: 'Divine 2', level: 475 },
+                            { name: 'Heart of the World', boss: 'Worldshaper', subtitle: 'Divine 3', level: 500 }
+                        ]
+                    },
+                    'Ascended': {
+                        tier: 7,
+                        color: 'ascended',
+                        position: { x: 40, y: 35 },
+                        requirement: 'Items Class 4 and level 500 required',
+                        dungeons: [
+                            { name: 'Starlight Citadel', boss: 'Cosmic Archon', subtitle: 'Ascended 1', level: 500 },
+                            { name: 'Origin Core', boss: 'Primeval Entity', subtitle: 'Ascended 2', level: 500 },
+                            { name: 'Final Aetherium', boss: 'Eternal Singularity', subtitle: 'Ascended 3', level: 500 }
+                        ]
+                    },
+                    'Transcendent': {
+                        tier: 8,
+                        color: 'transcendent',
+                        position: { x: 50, y: 70 },
+                        requirement: 'Items Class 4 and level 500 required',
+                        dungeons: [
+                            { name: 'Rite of Passage', boss: 'All Bosses', subtitle: 'All dungeons in a row', level: 500 }
+                        ]
+                    }
+                };
+                
+                // Define the class families for stashes
+                this.classFamilies = [
+                    { name: 'Acolyte', icon: '✚', classes: ['Acolyte', 'Cleric', 'Priest', 'Hierophant', 'Matriarch', 'Prophetess'] },
+                    { name: 'Archer', icon: '🏹', classes: ['Archer', 'Ranger', 'Marksman', 'Sniper', 'Tracker', 'Monster Hunter'] },
+                    { name: 'Druid', icon: '🌿', classes: ['Druid', 'Arch Druid', 'Shapeshifter', 'Runemaster', 'Shaman', 'Summoner'] },
+                    { name: 'Initiate', icon: '✨', classes: ['Initiate', 'Mage', 'Wizard', 'White Wizard', 'Sage', 'Arch Sage'] },
+                    { name: 'Swordsman', icon: '⚔️', classes: ['Swordsman', 'Knight', 'Imperial Knight', 'Champion', 'Crusader', 'Avenger'] },
+                    { name: 'Templar', icon: '🛡️', classes: ['Templar', 'Arch Templar', 'Dark Templar', 'Dark Arch Templar', 'High Templar', 'Grand Templar'] },
+                    { name: 'Thief', icon: '🗡️', classes: ['Thief', 'Rogue', 'Assassin', 'Phantom Assassin', 'Stalker', 'Master Stalker'] },
+                    { name: 'Witch Hunter', icon: '🔥', classes: ['Witch Hunter', 'Slayer', 'Inquisitor', 'Grand Inquisitor', 'Witcher', 'Professional Witcher'] }
+                ];
                 
                 this.init();
             }
 
-            init() {
-                // Create 6 starting villagers
-                for (let i = 0; i < 6; i++) {
-                    this.heroes.push(new Hero());
-                }
-                
-                // Test promotions - need to do it properly
-                // First hero becomes a Druid
-                this.heroes[0].level = 300;
-                this.heroes[0].promote('Druid');
-                this.heroes[0].level = 300;
-                
-                // Second hero becomes an Arch Druid
-                this.heroes[1].level = 300;
-                this.heroes[1].promote('Druid');
-                this.heroes[1].level = 300;
-                this.heroes[1].promote('Arch Druid');
-                this.heroes[1].level = 300;
-				
-				// Third hero becomes a Shaman
-                this.heroes[2].level = 300;
-                this.heroes[2].promote('Druid');
-                this.heroes[2].level = 300;
-                this.heroes[2].promote('Arch Druid');
-                this.heroes[2].level = 300;
-				this.heroes[2].promote('Shaman');
-				this.heroes[2].level = 300;
-				
-				// Fourth hero becomes a Shapeshifter
-                this.heroes[3].level = 300;
-                this.heroes[3].promote('Druid');
-                this.heroes[3].level = 300;
-                this.heroes[3].promote('Arch Druid');
-                this.heroes[3].level = 300;
-				this.heroes[3].promote('Shapeshifter');
-				this.heroes[3].level = 300;
-				
-				this.heroes[4].level = 50;
-				this.heroes[5].level = 50;
-            }
+init() {
+    // Create 8 starting villagers
+    this.heroes = [];
+    for (let i = 0; i < 8; i++) {
+        this.heroes.push(new Hero());
+    }
+    
+    // Hero 0: Druid (Level 185)
+    this.heroes[0].level = 50;
+    this.heroes[0].promote('Druid');
+    this.heroes[0].level = 185;
+    this.heroes[0].exp = 900;
+    
+    // Hero 1: Arch Druid (Level 275)
+    this.heroes[1].level = 50;
+    this.heroes[1].promote('Druid');
+    this.heroes[1].level = 100;
+    this.heroes[1].promote('Arch Druid');
+    this.heroes[1].level = 275;
+    this.heroes[1].exp = 500;
+    
+    // Hero 2: Shapeshifter (Level 380)
+    this.heroes[2].level = 50;
+    this.heroes[2].promote('Druid');
+    this.heroes[2].level = 100;
+    this.heroes[2].promote('Arch Druid');
+    this.heroes[2].level = 200;
+    this.heroes[2].promote('Shapeshifter');
+    this.heroes[2].level = 380;
+    this.heroes[2].exp = 700;
+    
+    // Hero 3: Runemaster (Level 500 - max level)
+    this.heroes[3].level = 50;
+    this.heroes[3].promote('Druid');
+    this.heroes[3].level = 100;
+    this.heroes[3].promote('Arch Druid');
+    this.heroes[3].level = 200;
+    this.heroes[3].promote('Shapeshifter');
+    this.heroes[3].level = 300;
+    this.heroes[3].promote('Runemaster');
+    this.heroes[3].level = 500;
+    this.heroes[3].exp = 0; // Max level, no exp needed
+    
+    // Hero 4: Shaman (Level 315)
+    this.heroes[4].level = 50;
+    this.heroes[4].promote('Druid');
+    this.heroes[4].level = 100;
+    this.heroes[4].promote('Arch Druid');
+    this.heroes[4].level = 200;
+    this.heroes[4].promote('Shaman');
+    this.heroes[4].level = 315;
+    this.heroes[4].exp = 900;
+    
+    // Hero 5: Summoner (Level 500)
+    this.heroes[5].level = 50;
+    this.heroes[5].promote('Druid');
+    this.heroes[5].level = 100;
+    this.heroes[5].promote('Arch Druid');
+    this.heroes[5].level = 200;
+    this.heroes[5].promote('Shaman');
+    this.heroes[5].level = 300;
+    this.heroes[5].promote('Summoner');
+    this.heroes[5].level = 500;
+    this.heroes[5].exp = 0; // Max level, no exp needed
+    
+    // Hero 6: Villager (Level 50 with 300 exp)
+    this.heroes[6].level = 50;
+    this.heroes[6].exp = 300;
+    
+    // Hero 7: Villager (Level 50 with 500 exp)
+    this.heroes[7].level = 50;
+    this.heroes[7].exp = 500;
+}
 
             showMainMenu() {
                 this.hideAllScreens();
@@ -875,17 +2012,213 @@
                 this.hideAllScreens();
                 document.getElementById('heroesScreen').style.display = 'block';
                 this.updateHeroList();
-                this.selectHero(this.selectedHero);
+                
+                // Get the sorted heroes and select the first one
+                const sortedHeroes = [...this.heroes].sort((a, b) => {
+                    if (a.awakened !== b.awakened) return b.awakened ? 1 : -1;
+                    if (a.classTier !== b.classTier) return b.classTier - a.classTier;
+                    return b.level - a.level;
+                });
+                
+                if (sortedHeroes.length > 0) {
+                    this.selectHero(this.heroes.indexOf(sortedHeroes[0]));
+                }
             }
 
             showDungeons() {
-                // TODO: Implement dungeons screen
-                console.log('Dungeons screen not yet implemented');
+                this.hideAllScreens();
+                document.getElementById('dungeonsScreen').style.display = 'block';
+                this.renderWorldMap();
+                this.closeDungeonPanel();
+            }
+
+            renderWorldMap() {
+                const worldMap = document.getElementById('worldMap');
+                worldMap.innerHTML = '';
+                
+                Object.entries(this.dungeonTiers).forEach(([tierName, tierData]) => {
+                    const orb = document.createElement('div');
+                    orb.className = `mapOrb ${tierData.color}`;
+                    orb.style.left = `${tierData.position.x}%`;
+                    orb.style.top = `${tierData.position.y}%`;
+                    orb.textContent = tierData.tier;
+                    orb.onclick = () => this.selectDungeonTier(tierName);
+                    
+                    worldMap.appendChild(orb);
+                });
+            }
+
+            selectDungeonTier(tierName) {
+                // Check if clicking the same tier that's already selected
+                if (this.selectedTier === tierName && document.getElementById('dungeonListPanel').classList.contains('show')) {
+                    this.closeDungeonPanel();
+                    return;
+                }
+                
+                // Update selected orb
+                document.querySelectorAll('.mapOrb').forEach(orb => {
+                    orb.classList.remove('selected');
+                });
+                event.target.classList.add('selected');
+                
+                this.selectedTier = tierName;
+                this.expandedDungeon = null;
+                this.showDungeonList(tierName);
+            }
+
+            showDungeonList(tierName) {
+                const panel = document.getElementById('dungeonListPanel');
+                const tierData = this.dungeonTiers[tierName];
+                
+                // Calculate level range for the tier
+                const levels = tierData.dungeons.map(d => d.level);
+                const minLevel = Math.min(...levels);
+                const maxLevel = Math.max(...levels);
+                
+                // Special handling for tiers where all dungeons are level 500
+                let levelText;
+                if (minLevel === maxLevel) {
+                    levelText = `Level ${minLevel}`;
+                } else {
+                    levelText = `Level ${minLevel}-${maxLevel}`;
+                }
+                
+                document.getElementById('dungeonTierTitle').innerHTML = `
+                    <div>${tierName}</div>
+                    <div style="font-size: 16px; color: #6a9aaa; margin-top: 5px;">${levelText}</div>
+                `;
+                
+                const dungeonList = document.getElementById('dungeonList');
+                dungeonList.innerHTML = '';
+                
+                tierData.dungeons.forEach((dungeon, index) => {
+                    const dungeonItem = document.createElement('div');
+                    dungeonItem.className = 'dungeonItem';
+                    dungeonItem.innerHTML = `
+                        <div class="dungeonHeader">
+                            <div>
+                                <div class="dungeonName">${dungeon.name}</div>
+                            </div>
+                        </div>
+                        <div class="dungeonDetails" id="details-${tierName}-${index}">
+                            <div class="dungeonDetailRow">
+                                <span class="dungeonDetailLabel">Level:</span>
+                                <span class="dungeonDetailValue">${dungeon.level}</span>
+                            </div>
+                            <div class="dungeonDetailRow">
+                                <span class="dungeonDetailLabel">Boss:</span>
+                                <span class="dungeonDetailValue">${dungeon.boss}</span>
+                            </div>
+                            <div class="dungeonDetailRow">
+                                <span class="dungeonDetailLabel">Items:</span>
+                                <span class="dungeonDetailValue">${tierData.requirement.replace('Items ', '')}</span>
+                            </div>
+                            <button class="enterDungeonButton" onclick="game.enterDungeon('${tierName}', ${index})">
+                                Start
+                            </button>
+                        </div>
+                    `;
+                    
+                    dungeonItem.onclick = (e) => {
+                        if (!e.target.classList.contains('enterDungeonButton')) {
+                            this.toggleDungeonDetails(tierName, index);
+                        }
+                    };
+                    
+                    dungeonList.appendChild(dungeonItem);
+                });
+                
+                panel.classList.add('show');
+            }
+
+            toggleDungeonDetails(tierName, index) {
+                const detailsId = `details-${tierName}-${index}`;
+                const details = document.getElementById(detailsId);
+                const allDetails = document.querySelectorAll('.dungeonDetails');
+                const allItems = document.querySelectorAll('.dungeonItem');
+                
+                // Close all other details
+                allDetails.forEach(d => {
+                    if (d.id !== detailsId) {
+                        d.classList.remove('show');
+                    }
+                });
+                
+                // Remove expanded class from all items
+                allItems.forEach(item => {
+                    if (!item.contains(details)) {
+                        item.classList.remove('expanded');
+                    }
+                });
+                
+                // Toggle current details
+                details.classList.toggle('show');
+                details.parentElement.classList.toggle('expanded');
+                
+                this.expandedDungeon = details.classList.contains('show') ? index : null;
+            }
+
+            closeDungeonPanel() {
+                document.getElementById('dungeonListPanel').classList.remove('show');
+                this.selectedTier = null;
+                this.expandedDungeon = null;
+                document.querySelectorAll('.mapOrb').forEach(orb => {
+                    orb.classList.remove('selected');
+                });
+            }
+
+            enterDungeon(tierName, dungeonIndex) {
+                const dungeon = this.dungeonTiers[tierName].dungeons[dungeonIndex];
+                this.currentDungeon = dungeon;
+                
+                // Create boss based on dungeon
+                let bossLevel = dungeon.level;
+                let bossStars = 1;
+                
+                // Adjust boss level and stars based on tier
+                if (tierName === 'Easy') {
+                    bossLevel = Math.floor(dungeon.level * 1.5); // Level 0 -> 0, 25 -> 37, 50 -> 75
+                    if (bossLevel === 0) bossLevel = 25; // Minimum boss level
+                }
+                
+                this.currentBoss = new Boss(dungeon.boss, bossLevel, bossStars);
+                
+                // Reset party selection
+                this.selectedParty = [null, null, null, null, null];
+                
+                // Show party select screen
+                this.showPartySelect();
             }
 
             showStash() {
-                // TODO: Implement stash screen
-                console.log('Stash screen not yet implemented');
+                this.hideAllScreens();
+                document.getElementById('stashScreen').style.display = 'block';
+                this.renderStashList();
+            }
+
+            renderStashList() {
+                const stashList = document.getElementById('stashList');
+                stashList.innerHTML = '';
+                
+                this.classFamilies.forEach((family, index) => {
+                    const stashItem = document.createElement('div');
+                    stashItem.className = 'stashItem';
+                    stashItem.innerHTML = `
+                        <div class="stashIcon">${family.icon}</div>
+                        <div class="stashInfo">
+                            <div class="stashName">${family.name}</div>
+                            <div class="stashDescription">${family.classes.join(', ')}</div>
+                        </div>
+                    `;
+                    
+                    stashItem.onclick = () => this.openStash(family);
+                    stashList.appendChild(stashItem);
+                });
+            }
+
+            openStash(family) {
+                console.log(`Opening ${family.name} stash`);
+                // TODO: Implement individual stash view
             }
 
             showBattle() {
@@ -897,15 +2230,22 @@
                 document.getElementById('mainMenu').style.display = 'none';
                 document.getElementById('battleScene').style.display = 'none';
                 document.getElementById('heroesScreen').style.display = 'none';
+                document.getElementById('dungeonsScreen').style.display = 'none';
+                document.getElementById('stashScreen').style.display = 'none';
+                document.getElementById('partySelectScreen').style.display = 'none';
             }
 
             updateHeroList() {
                 const heroList = document.getElementById('heroList');
                 heroList.innerHTML = '';
                 
-                // Sort heroes by tier then level
+                // Sort heroes by awakened status, then tier, then level
                 const sortedHeroes = [...this.heroes].sort((a, b) => {
+                    // Awakened heroes first
+                    if (a.awakened !== b.awakened) return b.awakened ? 1 : -1;
+                    // Then by tier
                     if (a.classTier !== b.classTier) return b.classTier - a.classTier;
+                    // Finally by level
                     return b.level - a.level;
                 });
                 
@@ -916,13 +2256,37 @@
                         thumb.classList.add('selected');
                     }
                     
+                    // Generate stars
+                    let stars = '★';
+                    if (hero.classTier > 0) {
+                        const starCount = hero.awakened ? 5 : hero.classTier;
+                        for (let i = 0; i < starCount; i++) {
+                            stars += '★';
+                        }
+                    }
+                    
+                    // Check if hero can promote (but not if already awakened)
+                    const canPromote = hero.canPromote() && !hero.awakened;
+                    const isAwakenable = hero.classTier === 4 && hero.level >= 400 && !hero.awakened;
+                    
                     // Use local image files
                     const spriteName = hero.classData.sprite;
                     thumb.innerHTML = `
-                        <img src="img/${spriteName}front.gif" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${spriteName}</text></svg>'">
-                        <div class="thumbName">${hero.name}</div>
-                        <div class="thumbLevel">Lv ${hero.level}</div>
-                    `;
+    <div style="position: relative; width: 60px; height: 60px;">
+        <img src="https://puzzle-drops.github.io/TEVE/img/${spriteName}front.gif" alt="${hero.className}" 
+             onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${spriteName}</text></svg>'">
+             
+        ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
+
+        <div class="thumbLevel">${hero.level}</div>
+
+        ${canPromote ? `<div class="promoteArrowThumb ${isAwakenable ? 'awaken' : 'normal'}">^</div>` : ''}
+    </div>
+
+    <div class="thumbClass">${hero.className}</div>
+    <div class="thumbName">${hero.name}</div>
+`;
+
                     
                     thumb.onclick = () => this.selectHero(this.heroes.indexOf(hero));
                     heroList.appendChild(thumb);
@@ -936,7 +2300,7 @@
                 // Update portrait
                 const portrait = document.getElementById('heroPortrait');
                 const spriteName = hero.classData.sprite;
-                portrait.innerHTML = `<img src="img/${spriteName}front.gif" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${spriteName}</text></svg>'">`;
+                portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/${spriteName}front.gif" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${spriteName}</text></svg>'">`;
                 
                 // Update hero list selection
                 this.updateHeroList();
@@ -977,33 +2341,29 @@
             showInfoTab(hero, content) {
                 const stats = hero.totalStats;
                 const baseStats = hero.baseStats;
-                let stars = '';
+                let stars = '★';
                 
-                // Generate stars based on class tier
+                // Generate stars based on class tier and awakened status
                 if (hero.classTier > 0) {
-                    for (let i = 0; i < hero.classTier; i++) {
-                        stars += '⭐';
-                    }
-                    
-                    // Purple stars for level 500 class 4
-                    if (hero.classTier === 4 && hero.level === 500) {
-                        stars = '<span style="color: #a855f7;">' + stars + '</span>';
+                    const starCount = hero.awakened ? 5 : hero.classTier;
+                    for (let i = 0; i < starCount; i++) {
+                        stars += '★';
                     }
                 }
                 
                 content.innerHTML = `
-                    <div class="heroName">${hero.name}</div>
-                    <div class="classInfo">
-                        <span>${hero.className}</span>
-                        <span class="classStars">${stars}</span>
+                    <div style="margin-bottom: 20px;">
+                        ${stars ? `<div style="font-size: 24px; font-weight: bold; margin-bottom: 5px; ${hero.awakened ? 'color: #d896ff;' : 'color: #ffd700;'} text-shadow: 0 0 12px ${hero.awakened ? 'rgba(216, 150, 255, 0.9)' : 'rgba(255, 215, 0, 0.9)'}, 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${stars}</div>` : ''}
+                        <div class="heroName">${hero.className}</div>
+                        <div style="font-size: 18px; color: #6a9aaa;">
+                            <span id="heroNameText">${hero.name}</span>
+                            <span class="editNameBtn" onclick="game.editHeroName()">✏️</span>
+                        </div>
+                        <div style="font-size: 16px; color: #6a9aaa; margin-top: 10px;">Level ${hero.level}</div>
                     </div>
                     <div class="expBar">
                         <div class="expFill" style="width: ${(hero.exp / hero.expToNext) * 100}%"></div>
                         <div class="expText">${hero.exp} / ${hero.expToNext}</div>
-                    </div>
-                    <div class="statLine">
-                        <span class="statName">Level</span>
-                        <span class="statValue">${hero.level}</span>
                     </div>
                     <div class="statLine">
                         <span class="statName">HP</span>
@@ -1034,14 +2394,16 @@
                     'Beast Form': 'skill5.png',
                     'Elemental Shield': 'skill6.png',
                     'Runic Aura': 'skill7.png',
-                    'Nature\'s Army': 'skill8.png'
+                    'Nature\'s Army': 'skill8.png',
+                    'Eternal Rune': 'skill9.png',
+                    'Nature\'s Wrath': 'skill10.png'
                 };
                 
                 content.innerHTML = `
                     <div class="skillsContainer">
                         ${hero.abilities.map((ability, index) => `
                             <div class="skillBox" onclick="game.selectSkill(${index})">
-                                <img src="img/${skillIcons[ability.name] || 'skill1.png'}" alt="${ability.name}" onerror="this.style.display='none'">
+                                <img src="https://puzzle-drops.github.io/TEVE/img/${skillIcons[ability.name] || 'skill1.png'}" alt="${ability.name}" onerror="this.style.display='none'">
                                 <div class="skillName">${ability.name}</div>
                                 <span class="skillLevel">Lv${ability.level}</span>
                             </div>
@@ -1051,26 +2413,81 @@
                         Click on a skill to see its description
                     </div>
                 `;
+                
+                // Automatically select the first skill
+                if (hero.abilities.length > 0) {
+                    this.selectSkill(0);
+                }
             }
 
             showPromoteTab(hero, content) {
                 const canPromote = hero.canPromote();
                 const promotions = hero.getPromotionOptions();
                 
-                if (!canPromote && promotions.length === 0) {
+                // Special case for Awakening
+                if (promotions.includes('Awaken')) {
                     content.innerHTML = `
                         <div class="promoteContent">
-                            <h2>No promotions available</h2>
-                            <p>Max class tier reached!</p>
+                            <div class="classCard">
+                                <img src="https://puzzle-drops.github.io/TEVE/img/${hero.classData.sprite}front.gif" alt="${hero.className}" onerror="this.style.display='none'">
+                                <h3>Current Class</h3>
+                                <h2>${hero.className}</h2>
+                                <div class="classStars">★★★★★</div>
+                                <p>Level ${hero.level}</p>
+                            </div>
+                            <div class="promoteArrowPanelArrow">↓</div>
+                            <div class="classCard">
+                                <h2>Awaken</h2>
+                                <div style="font-size: 24px; color: #d896ff; margin: 10px 0;">★★★★★★</div>
+                                <p>Required: Level 400</p>
+                                <button class="promoteButton" style="background: linear-gradient(135deg, #d896ff 0%, #a855f7 100%); box-shadow: 0 0 20px rgba(216, 150, 255, 0.5); color: #0a1929;" onclick="game.showPromotionConfirm('Awaken')" 
+                                    onmouseover="this.style.background='linear-gradient(135deg, #e6b0ff 0%, #d896ff 100%)'; this.style.boxShadow='0 0 30px rgba(230, 176, 255, 0.7)'"
+                                    onmouseout="this.style.background='linear-gradient(135deg, #d896ff 0%, #a855f7 100%)'; this.style.boxShadow='0 0 20px rgba(216, 150, 255, 0.5)'">
+                                    Awaken<br>
+                                    <span style="font-size: 14px;">💰 -10000000</span>
+                                </button>
+                            </div>
                         </div>
                     `;
                     return;
                 }
                 
                 // Generate stars for current class
-                let currentStars = '';
-                for (let i = 0; i < hero.classTier; i++) {
-                    currentStars += '⭐';
+                let currentStars = '★';
+                if (hero.awakened) {
+                    currentStars = '<span style="color: #d896ff;">★★★★★★</span>';
+                } else {
+                    for (let i = 0; i < hero.classTier; i++) {
+                        currentStars += '★';
+                    }
+                }
+                
+                // Check if class 4 but not high enough level
+                if (hero.classTier === 4 && !hero.awakened) {
+                    content.innerHTML = `
+                        <div class="promoteContent">
+                            <div class="classCard">
+                                <img src="https://puzzle-drops.github.io/TEVE/img/${hero.classData.sprite}front.gif" alt="${hero.className}" onerror="this.style.display='none'">
+                                <h3>Current Class</h3>
+                                <h2>${hero.className}</h2>
+                                <div class="classStars">${currentStars}</div>
+                                <p>Level ${hero.level}</p>
+                            </div>
+                            <p style="margin-top: 40px; font-size: 18px; color: #6a9aaa;">Reach level 400 to awaken</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Already awakened
+                if (hero.awakened) {
+                    content.innerHTML = `
+                        <div class="promoteContent">
+                            <h2>No promotions available</h2>
+                            <p>Hero has been awakened!</p>
+                        </div>
+                    `;
+                    return;
                 }
                 
                 content.innerHTML = `
@@ -1083,30 +2500,31 @@
                             <p>Level ${hero.level}</p>
                         </div>
                         ${canPromote ? `
-                            <div class="promoteArrow">↓</div>
+                            <div class="promoteArrowPanelArrow">↓</div>
                             <div class="promoteOptions">
                                 ${promotions.map(promo => {
                                     const promoClass = CLASSES[promo];
-                                    let promoStars = '';
+                                    let promoStars = '★';
                                     for (let i = 0; i < promoClass.tier; i++) {
-                                        promoStars += '⭐';
+                                        promoStars += '★';
                                     }
                                     return `
                                         <div class="classCard">
-                                            <img src="img/${promoClass.sprite}front.gif" alt="${promo}" onerror="this.style.display='none'">
+                                            <img src="https://puzzle-drops.github.io/TEVE/img/${promoClass.sprite}front.gif" alt="${promo}" onerror="this.style.display='none'">
                                             <h3>Promote to</h3>
                                             <h2>${promo}</h2>
                                             <div class="classStars">${promoStars}</div>
                                             <p>Required: Level ${[50, 100, 200, 300][hero.classTier]}</p>
-                                            <button class="promoteButton" onclick="game.promoteHero('${promo}')">
-                                                Promote (Cost: ${1000 * Math.pow(10, hero.classTier)} Gold)
+                                            <button class="promoteButton" onclick="game.showPromotionConfirm('${promo}')">
+                                                Promote<br>
+                                                <span style="font-size: 14px;">💰 -${1000 * Math.pow(10, hero.classTier)}</span>
                                             </button>
                                         </div>
                                     `;
                                 }).join('')}
                             </div>
                         ` : `
-                            <p>Reach level ${[50, 100, 200, 300][hero.classTier]} to promote</p>
+                            <p>Reach level ${[50, 100, 200, 300, 400][hero.classTier]} to ${hero.classTier === 4 ? 'awaken' : 'promote'}</p>
                         `}
                     </div>
                 `;
@@ -1145,10 +2563,9 @@
                             </div>
                         </div>
                         <div style="flex: 1;">
-                            <h3>Class Stash</h3>
-                            <p style="color: #888;">Shared stash for ${this.getClassFamily(hero.className)} classes</p>
-                            <div style="margin-top: 20px; background: #2a2a2a; padding: 10px; min-height: 200px;">
-                                <p style="text-align: center; color: #666;">No items in stash</p>
+                            <h3>Stash</h3>
+                            <div style="margin-top: 20px; background: rgba(10, 25, 41, 0.8); padding: 10px; min-height: 200px; border: 1px solid #2a6a8a;">
+                                <p style="text-align: center; color: #6a9aaa;">No items in stash</p>
                             </div>
                         </div>
                     </div>
@@ -1189,13 +2606,16 @@
                     'Beast Form': 'Transform into beast form, gaining 50% STR and AGI',
                     'Elemental Shield': 'Shield an ally, absorbing damage equal to INT * 2',
                     'Runic Aura': 'All allies gain 20% cooldown reduction',
-                    'Nature\'s Army': 'Summon nature spirits to fight alongside you'
+                    'Nature\'s Army': 'Summon nature spirits to fight alongside you',
+                    'Eternal Rune': 'Ultimate: Unleash ancient runic power dealing massive damage',
+                    'Nature\'s Wrath': 'Ultimate: Channel the fury of nature to devastate all enemies'
                 };
                 
                 desc.innerHTML = `
                     <h3>${skill.name} (Level ${skill.level})</h3>
                     <p>${descriptions[skill.name] || 'No description available'}</p>
-                    ${skill.cooldown > 0 ? `<p>Cooldown: ${skill.cooldown} turns</p>` : ''}
+                    ${skill.cooldown > 0 && !skill.ultimate ? `<p>Cooldown: ${skill.cooldown} turns</p>` : ''}
+                    ${skill.ultimate ? `<p>Ultimate Ability - Random starting cooldown: ${skill.currentCooldown} turns</p>` : ''}
                     ${skill.passive ? '<p><em>Passive ability</em></p>' : ''}
                     ${skill.aura ? '<p><em>Aura: Affects all allies</em></p>' : ''}
                 `;
@@ -1203,23 +2623,462 @@
 
             promoteHero(newClass) {
                 const hero = this.heroes[this.selectedHero];
-                const cost = 1000 * Math.pow(10, hero.classTier);
                 
-                // TODO: Check gold and deduct cost
-                if (hero.promote(newClass)) {
-                    // Update portrait immediately after promotion
-                    const portrait = document.getElementById('heroPortrait');
-                    const spriteName = hero.classData.sprite;
-                    portrait.innerHTML = `<img src="img/${spriteName}front.gif" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${spriteName}</text></svg>'">`;
+                if (newClass === 'Awaken') {
+                    // Awakening doesn't have a gold cost in the doc
+                    if (hero.promote(newClass)) {
+                        // Update portrait remains the same
+                        const portrait = document.getElementById('heroPortrait');
+                        const spriteName = hero.classData.sprite;
+                        portrait.innerHTML = `<img src="img/${spriteName}front.gif" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${spriteName}</text></svg>'">`;
+                        
+                        this.showHeroTab('info');
+                        this.updateHeroList();
+                    }
+                } else {
+                    const cost = 1000 * Math.pow(10, hero.classTier);
                     
-                    this.showHeroTab('info');
-                    this.updateHeroList();
+                    // TODO: Check gold and deduct cost
+                    if (hero.promote(newClass)) {
+                        // Update portrait immediately after promotion
+                        const portrait = document.getElementById('heroPortrait');
+                        const spriteName = hero.classData.sprite;
+                        portrait.innerHTML = `<img src="img/${spriteName}front.gif" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${spriteName}</text></svg>'">`;
+                        
+                        this.showHeroTab('info');
+                        this.updateHeroList();
+                    }
                 }
+            }
+
+            showPromotionConfirm(newClass) {
+                const hero = this.heroes[this.selectedHero];
+                const modal = document.getElementById('confirmModal');
+                const confirmText = document.getElementById('confirmText');
+                const confirmCost = document.getElementById('confirmCost');
+                
+                this.pendingPromotion = newClass;
+                
+                if (newClass === 'Awaken') {
+                    confirmText.textContent = `Awaken ${hero.name} the ${hero.className}?`;
+                    confirmCost.innerHTML = `💰 -10000000`;
+                } else {
+                    confirmText.textContent = `Promote ${hero.name} the ${hero.className} to ${newClass}?`;
+                    const cost = 1000 * Math.pow(10, hero.classTier);
+                    confirmCost.innerHTML = `💰 -${cost}`;
+                }
+                
+                modal.style.display = 'flex';
+            }
+
+            confirmPromotion() {
+                const modal = document.getElementById('confirmModal');
+                modal.style.display = 'none';
+                
+                if (this.pendingPromotion) {
+                    this.promoteHero(this.pendingPromotion);
+                    this.pendingPromotion = null;
+                this.selectedParty = [null, null, null, null, null];
+                this.currentDungeon = null;
+                this.currentBoss = null;
+                }
+            }
+
+            cancelPromotion() {
+                const modal = document.getElementById('confirmModal');
+                modal.style.display = 'none';
+                this.pendingPromotion = null;
+            }
+
+            editHeroName() {
+                const hero = this.heroes[this.selectedHero];
+                const nameElement = document.getElementById('heroNameText');
+                
+                // Create an input field
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = hero.name;
+                input.style.cssText = 'font-size: 18px; color: #6a9aaa; background: rgba(10, 25, 41, 0.8); border: 1px solid #2a6a8a; padding: 2px 5px;';
+                
+                // Replace the span with the input
+                nameElement.parentNode.replaceChild(input, nameElement);
+                input.focus();
+                input.select();
+                
+                let saved = false;
+                
+                // Handle saving
+                const saveEdit = () => {
+                    if (saved) return;
+                    saved = true;
+                    
+                    const newName = input.value.trim();
+                    if (newName && newName !== hero.name) {
+                        hero.name = newName;
+                        this.updateHeroList();
+                    }
+                    
+                    // Recreate the span
+                    const newSpan = document.createElement('span');
+                    newSpan.id = 'heroNameText';
+                    newSpan.textContent = hero.name;
+                    
+                    if (input.parentNode) {
+                        input.parentNode.replaceChild(newSpan, input);
+                    }
+                };
+                
+                // Save on Enter or blur
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        saveEdit();
+                    }
+                });
+                
+                input.addEventListener('blur', () => {
+                    setTimeout(saveEdit, 10);
+                });
             }
 
             useAbility(index) {
                 console.log('Using ability', index);
                 // TODO: Implement ability usage
+            }
+
+            showPartySelect() {
+                this.hideAllScreens();
+                document.getElementById('partySelectScreen').style.display = 'block';
+                
+                // Update dungeon info
+                document.getElementById('dungeonName').textContent = this.currentDungeon.name;
+                document.getElementById('bossName').textContent = this.currentBoss.name;
+                document.getElementById('bossLevel').textContent = `Lv ${this.currentBoss.level}`;
+                
+                // Update boss stars
+                let stars = '★';
+                for (let i = 0; i < this.currentBoss.stars; i++) {
+                    stars += '★';
+                }
+                document.querySelector('.bossStars').textContent = stars;
+                
+                // Render hero selection list
+                this.renderHeroSelectList();
+                
+                // Clear party slots
+                this.updatePartySlots();
+                
+                // Update leader skill text
+                this.updateLeaderSkill();
+            }
+
+            renderHeroSelectList() {
+                const container = document.getElementById('heroSelectList');
+                container.innerHTML = '';
+                
+                // Sort heroes by same criteria as hero list
+                const sortedHeroes = [...this.heroes].sort((a, b) => {
+                    if (a.awakened !== b.awakened) return b.awakened ? 1 : -1;
+                    if (a.classTier !== b.classTier) return b.classTier - a.classTier;
+                    return b.level - a.level;
+                });
+                
+                sortedHeroes.forEach((hero, index) => {
+                    const heroIndex = this.heroes.indexOf(hero);
+                    const heroThumb = this.createSelectableHeroThumb(hero, heroIndex);
+                    container.appendChild(heroThumb);
+                });
+            }
+
+            createSelectableHeroThumb(hero, heroIndex) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'selectableHero';
+                
+                // Check if hero is already selected
+                if (this.selectedParty.includes(heroIndex)) {
+                    wrapper.classList.add('selected');
+                }
+                
+                // Create the same thumb structure as hero list
+                const thumb = document.createElement('div');
+                thumb.className = 'heroThumb';
+                
+                // Generate stars
+                let stars = '★';
+                if (hero.classTier > 0) {
+                    const starCount = hero.awakened ? 5 : hero.classTier;
+                    for (let i = 0; i < starCount; i++) {
+                        stars += '★';
+                    }
+                }
+                
+                const spriteName = hero.classData.sprite;
+                thumb.innerHTML = `
+                    <div style="position: relative; width: 60px; height: 60px;">
+                        <img src="https://puzzle-drops.github.io/TEVE/img/${spriteName}front.gif" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${spriteName}</text></svg>'">
+                        ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
+                        <div class="thumbLevel">${hero.level}</div>
+                    </div>
+                    <div class="thumbClass">${hero.className}</div>
+                    <div class="thumbName">${hero.name}</div>
+                `;
+                
+                wrapper.appendChild(thumb);
+                
+                // Click to select/deselect
+                wrapper.onclick = () => this.toggleHeroSelection(heroIndex);
+                
+                // Long press for info
+                let pressTimer;
+                wrapper.addEventListener('mousedown', () => {
+                    pressTimer = setTimeout(() => this.showHeroInfoPopup(hero), 500);
+                });
+                wrapper.addEventListener('mouseup', () => clearTimeout(pressTimer));
+                wrapper.addEventListener('mouseleave', () => clearTimeout(pressTimer));
+                
+                return wrapper;
+            }
+
+            toggleHeroSelection(heroIndex) {
+                // Check if hero is already selected
+                const currentIndex = this.selectedParty.indexOf(heroIndex);
+                
+                if (currentIndex !== -1) {
+                    // Remove from party
+                    this.selectedParty[currentIndex] = null;
+                } else {
+                    // Find first empty slot
+                    const emptySlot = this.selectedParty.indexOf(null);
+                    if (emptySlot !== -1) {
+                        this.selectedParty[emptySlot] = heroIndex;
+                    }
+                }
+                
+                // Update UI
+                this.renderHeroSelectList();
+                this.updatePartySlots();
+                this.updateLeaderSkill();
+                
+                // Enable/disable start button
+                const hasHeroes = this.selectedParty.some(h => h !== null);
+                document.getElementById('startBattleBtn').disabled = !hasHeroes;
+            }
+
+            updatePartySlots() {
+                const slots = document.querySelectorAll('.partySlot');
+                
+                slots.forEach((slot, index) => {
+                    const heroIndex = this.selectedParty[index];
+                    
+                    if (heroIndex !== null) {
+                        const hero = this.heroes[heroIndex];
+                        const spriteName = hero.classData.sprite;
+                        
+                        // Generate stars
+                        let stars = '★';
+                        if (hero.classTier > 0) {
+                            const starCount = hero.awakened ? 5 : hero.classTier;
+                            for (let i = 0; i < starCount; i++) {
+                                stars += '★';
+                            }
+                        }
+                        
+                        slot.innerHTML = `
+                            <div style="position: relative; width: 60px; height: 60px;">
+                                <img src="https://puzzle-drops.github.io/TEVE/img/${spriteName}front.gif" style="width: 60px; height: 60px;" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${spriteName}</text></svg>'">
+                                ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
+                                <div class="thumbLevel">${hero.level}</div>
+                            </div>
+                            <div class="thumbClass">${hero.className}</div>
+                            <div class="thumbName">${hero.name}</div>
+                        `;
+                        slot.classList.add('filled');
+                        
+                        // Add long press handler for hero info
+                        let pressTimer;
+                        slot.addEventListener('mousedown', (e) => {
+                            if (e.button === 0) { // Left click only
+                                pressTimer = setTimeout(() => this.showHeroInfoPopup(hero), 500);
+                            }
+                        });
+                        slot.addEventListener('mouseup', () => clearTimeout(pressTimer));
+                        slot.addEventListener('mouseleave', () => clearTimeout(pressTimer));
+                        
+                        // Add click handler for removal
+                        slot.onclick = () => {
+                            this.selectedParty[index] = null;
+                            this.renderHeroSelectList();
+                            this.updatePartySlots();
+                            this.updateLeaderSkill();
+                            document.getElementById('startBattleBtn').disabled = !this.selectedParty.some(h => h !== null);
+                        };
+                    } else {
+                        slot.innerHTML = '<div class="slotPlaceholder">⬡</div>';
+                        slot.classList.remove('filled');
+                        slot.onclick = null;
+                    }
+                });
+            }
+
+            updateLeaderSkill() {
+                const leaderIndex = this.selectedParty[0];
+                const leaderSkillText = document.getElementById('leaderSkillText');
+                
+                if (leaderIndex !== null) {
+                    const leader = this.heroes[leaderIndex];
+                    // TODO: Implement actual leader skills
+                    leaderSkillText.textContent = `Leader Skill: ${leader.className} - Increases team power`;
+                } else {
+                    leaderSkillText.textContent = 'Leader Skill: No Skills';
+                }
+            }
+
+            showHeroInfoPopup(hero) {
+                const popup = document.getElementById('heroInfoPopup');
+                document.getElementById('popupHeroName').textContent = `Lv.${hero.level} ${hero.name}`;
+                
+                // Show stats
+                const stats = hero.totalStats;
+                const statsHtml = `
+                    <div class="statRow">
+                        <span class="statLabel">HP</span>
+                        <span class="statValue">${hero.hp}</span>
+                    </div>
+                    <div class="statRow">
+                        <span class="statLabel">STR</span>
+                        <span class="statValue">${stats.str}</span>
+                    </div>
+                    <div class="statRow">
+                        <span class="statLabel">AGI</span>
+                        <span class="statValue">${stats.agi}</span>
+                    </div>
+                    <div class="statRow">
+                        <span class="statLabel">INT</span>
+                        <span class="statValue">${stats.int}</span>
+                    </div>
+                `;
+                document.getElementById('popupStats').innerHTML = statsHtml;
+                
+                // Show abilities as text info
+                const abilitiesHtml = hero.abilities.map((ability, index) => `
+                    <div class="abilityItem">
+                        <div class="abilityName">${ability.name} (Level ${ability.level})</div>
+                        <div class="abilityDesc">${ability.cooldown > 0 ? `Cooldown: ${ability.cooldown} turns` : 'No cooldown'}</div>
+                    </div>
+                `).join('');
+                document.getElementById('popupAbilities').innerHTML = abilitiesHtml;
+                
+                // Show ability icons at the bottom
+                const skillIcons = {
+                    'Punch': 'skill1.png',
+                    'Fury': 'skill2.png',
+                    'Nature\'s Touch': 'skill3.png',
+                    'Wild Growth': 'skill4.png',
+                    'Beast Form': 'skill5.png',
+                    'Elemental Shield': 'skill6.png',
+                    'Runic Aura': 'skill7.png',
+                    'Nature\'s Army': 'skill8.png',
+                    'Eternal Rune': 'skill9.png',
+                    'Nature\'s Wrath': 'skill9.png'
+                };
+                
+                const abilityIconsHtml = `
+                    <div class="abilityIconList">
+                        ${hero.abilities.map(ability => `
+                            <div class="abilityIcon">
+                                <img src="https://puzzle-drops.github.io/TEVE/img/${skillIcons[ability.name] || 'skill1.png'}" alt="${ability.name}" onerror="this.style.display='none'">
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                document.getElementById('popupAbilities').innerHTML += abilityIconsHtml;
+                
+                // Show gear
+                const gearHtml = `
+                    <div class="statRow">
+                        <span class="statLabel">Head</span>
+                        <span class="statValue">${hero.gear.head ? hero.gear.head.name : 'Empty'}</span>
+                    </div>
+                    <div class="statRow">
+                        <span class="statLabel">Chest</span>
+                        <span class="statValue">${hero.gear.chest ? hero.gear.chest.name : 'Empty'}</span>
+                    </div>
+                    <div class="statRow">
+                        <span class="statLabel">Legs</span>
+                        <span class="statValue">${hero.gear.legs ? hero.gear.legs.name : 'Empty'}</span>
+                    </div>
+                    <div class="statRow">
+                        <span class="statLabel">Weapon</span>
+                        <span class="statValue">${hero.gear.weapon ? hero.gear.weapon.name : 'Empty'}</span>
+                    </div>
+                    <div class="statRow">
+                        <span class="statLabel">Offhand</span>
+                        <span class="statValue">${hero.gear.offhand ? hero.gear.offhand.name : 'Empty'}</span>
+                    </div>
+                    <div class="statRow">
+                        <span class="statLabel">Trinket</span>
+                        <span class="statValue">${hero.gear.trinket ? hero.gear.trinket.name : 'Empty'}</span>
+                    </div>
+                `;
+                document.getElementById('popupGear').innerHTML = gearHtml;
+                
+                popup.style.display = 'block';
+            }
+
+            showBossInfo() {
+                const popup = document.getElementById('heroInfoPopup');
+                document.getElementById('popupHeroName').textContent = `Lv.${this.currentBoss.level} ${this.currentBoss.name}`;
+                
+                // Show boss stats
+                const stats = this.currentBoss.baseStats;
+                const statsHtml = `
+                    <div class="statRow">
+                        <span class="statLabel">HP</span>
+                        <span class="statValue">${this.currentBoss.hp}</span>
+                    </div>
+                    <div class="statRow">
+                        <span class="statLabel">STR</span>
+                        <span class="statValue">${stats.str}</span>
+                    </div>
+                    <div class="statRow">
+                        <span class="statLabel">AGI</span>
+                        <span class="statValue">${stats.agi}</span>
+                    </div>
+                    <div class="statRow">
+                        <span class="statLabel">INT</span>
+                        <span class="statValue">${stats.int}</span>
+                    </div>
+                `;
+                document.getElementById('popupStats').innerHTML = statsHtml;
+                
+                // Show abilities
+                const abilitiesHtml = this.currentBoss.abilities.map(ability => `
+                    <div class="abilityItem">
+                        <div class="abilityName">${ability.name}</div>
+                        <div class="abilityDesc">${ability.description}</div>
+                    </div>
+                `).join('');
+                document.getElementById('popupAbilities').innerHTML = abilitiesHtml;
+                
+                // No gear for bosses
+                document.getElementById('popupGear').innerHTML = '<p style="color: #6a9aaa;">No gear equipped</p>';
+                
+                popup.style.display = 'block';
+            }
+
+            closeHeroInfo() {
+                document.getElementById('heroInfoPopup').style.display = 'none';
+            }
+
+            closeDungeonSelect() {
+                this.showDungeons();
+            }
+
+            startBattle() {
+                // TODO: Implement battle system
+                console.log('Starting battle with party:', this.selectedParty);
+                console.log('Against boss:', this.currentBoss);
+                this.showBattle();
             }
         }
 
@@ -1228,4 +3087,3 @@
     </script>
 </body>
 </html>
-                
