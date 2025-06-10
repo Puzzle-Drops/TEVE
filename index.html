@@ -1043,7 +1043,7 @@ init() {
                         ${hero.abilities.map((ability, index) => `
                             <div class="skillBox" onclick="game.selectSkill(${index})">
                                 <img src="https://puzzle-drops.github.io/TEVE/img/spells/${ability.id}.png" alt="${ability.name}" onerror="this.style.display='none'">
-                                <div class="skillName">${ability.Name}</div>
+                                <div class="skillName">${ability.name}</div>
                                 <span class="skillLevel">Lv${ability.level}</span>
                             </div>
                         `).join('')}
