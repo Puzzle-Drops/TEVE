@@ -65,14 +65,8 @@ class BattleUnit {
         return this.currentHp > 0;
     }
     
-    get totalStats() {
-        // Compatibility layer for spell logic
-        return this.stats;
-    }
-    
-    get baseStats() {
-        // Compatibility layer for spell logic
-        return this.stats;
+    get abilities() {
+        return this.source.abilities || [];
     }
     
     canUseAbility(abilityIndex) {
@@ -320,7 +314,6 @@ class Battle {
             } catch (error) {
                 console.error(`Error executing ${ability.name}:`, error);
                 this.log(`${caster.name} failed to use ${ability.name}!`);
-                this.log(`Error: ${error.message}`);
             }
         }
     }
