@@ -29,7 +29,34 @@
                         <div class="healthText">100/100</div>
                     </div>
                 </div>
-                <!-- Add more party slots... -->
+                <div class="unitSlot party2" id="party2">
+                    <div class="unit">P2</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">100/100</div>
+                    </div>
+                </div>
+                <div class="unitSlot party3" id="party3">
+                    <div class="unit">P3</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">100/100</div>
+                    </div>
+                </div>
+                <div class="unitSlot party4" id="party4">
+                    <div class="unit">P4</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">100/100</div>
+                    </div>
+                </div>
+                <div class="unitSlot party5" id="party5">
+                    <div class="unit">P5</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">100/100</div>
+                    </div>
+                </div>
 
                 <!-- Enemy Units -->
                 <div class="unitSlot enemy1" id="enemy1">
@@ -39,7 +66,34 @@
                         <div class="healthText">67/67</div>
                     </div>
                 </div>
-                <!-- Add more enemy slots... -->
+                <div class="unitSlot enemy2" id="enemy2" style="display: none;">
+                    <div class="unit">E2</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">50/50</div>
+                    </div>
+                </div>
+                <div class="unitSlot enemy3" id="enemy3" style="display: none;">
+                    <div class="unit">E3</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">50/50</div>
+                    </div>
+                </div>
+                <div class="unitSlot enemy4" id="enemy4" style="display: none;">
+                    <div class="unit">E4</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">50/50</div>
+                    </div>
+                </div>
+                <div class="unitSlot enemy5" id="enemy5" style="display: none;">
+                    <div class="unit">E5</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">50/50</div>
+                    </div>
+                </div>
             </div>
 
             <div class="battleUI">
@@ -47,16 +101,9 @@
                     Battle started!<br>
                 </div>
                 <div class="abilityPanel" id="abilityPanel">
-                    <div class="ability" onclick="game.useAbility(0)">
-                        <span>Punch</span>
-                    </div>
-                    <div class="ability" onclick="game.useAbility(1)">
-                        <span>Fury</span>
-                        <span class="cooldownText">5</span>
-                    </div>
                 </div>
             </div>
-            <button class="backButton" onclick="game.showMainMenu()">Back</button>
+            <button class="backButton" onclick="game.exitBattle()">Exit Battle</button>
         </div>
 
         <!-- Heroes Screen -->
@@ -192,6 +239,7 @@
     </div>
 
     <script src="spellLogic.js"></script>
+    <script src="battle.js"></script>
     <script>
         // Global managers
         let spellManager;
@@ -891,6 +939,74 @@ init() {
                 this.hideAllScreens();
                 this.closeHeroInfo(); // Close any open popups
                 document.getElementById('battleScene').style.display = 'block';
+                
+                // Update UI with actual units
+                this.updateBattleUI();
+            }
+
+            updateBattleUI() {
+                // Hide all unit slots first
+                for (let i = 1; i <= 5; i++) {
+                    document.getElementById(`party${i}`).style.display = 'none';
+                    document.getElementById(`enemy${i}`).style.display = 'none';
+                }
+                
+                // Show party units
+                const partyUnits = this.selectedParty.map(heroIndex => 
+                    heroIndex !== null ? this.heroes[heroIndex] : null
+                ).filter(hero => hero !== null);
+                
+                partyUnits.forEach((hero, index) => {
+                    const slot = document.getElementById(`party${index + 1}`);
+                    if (slot) {
+                        slot.style.display = 'block';
+                        const unitDiv = slot.querySelector('.unit');
+                        const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+                        unitDiv.innerHTML = `
+                            <div style="font-size: 10px; text-align: center;">
+                                ${displayClassName}<br>
+                                ${hero.name}
+                            </div>
+                        `;
+                    }
+                });
+                
+                // Show enemy units (for now just the boss)
+                const enemySlot = document.getElementById('enemy1');
+                if (enemySlot && this.currentEnemy) {
+                    enemySlot.style.display = 'block';
+                    const unitDiv = enemySlot.querySelector('.unit');
+                    unitDiv.innerHTML = `
+                        <div style="font-size: 10px; text-align: center;">
+                            ${this.currentEnemy.name}
+                        </div>
+                    `;
+                }
+            }
+
+            startBattle() {
+                // Create party array from selected heroes
+                const party = this.selectedParty.map(heroIndex => 
+                    heroIndex !== null ? this.heroes[heroIndex] : null
+                ).filter(hero => hero !== null);
+                
+                // Create enemy array (for now just the boss)
+                const enemies = [this.currentEnemy];
+                
+                // Show battle screen
+                this.showBattle();
+                
+                // Create and start battle
+                this.currentBattle = new Battle(this, party, enemies);
+                this.currentBattle.start();
+            }
+
+            exitBattle() {
+                if (this.currentBattle) {
+                    // TODO: Confirm exit if battle is ongoing
+                    this.currentBattle = null;
+                }
+                this.showMainMenu();
             }
 
             hideAllScreens() {
@@ -1365,7 +1481,7 @@ init() {
 
             useAbility(index) {
                 console.log('Using ability', index);
-                // TODO: Implement ability usage
+                // Now handled by Battle class
             }
 
             showPartySelect() {
@@ -1785,13 +1901,6 @@ init() {
                 if (tooltip) {
                     tooltip.style.display = 'none';
                 }
-            }
-
-            startBattle() {
-                // TODO: Implement battle system
-                console.log('Starting battle with party:', this.selectedParty);
-                console.log('Against enemy:', this.currentEnemy);
-                this.showBattle();
             }
         }
 
