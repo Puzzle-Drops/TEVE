@@ -147,17 +147,17 @@ body {
 }
 
 /* Party positions */
-.party1 { left: 200px; bottom: 150px; }
+.party1 { left: 600px; bottom: 150px; }
 .party2 { left: 400px; bottom: 120px; }
-.party3 { left: 600px; bottom: 100px; }
-.party4 { left: 800px; bottom: 120px; }
+.party3 { left: 800px; bottom: 100px; }
+.party4 { left: 200px; bottom: 120px; }
 .party5 { left: 1000px; bottom: 150px; }
 
 /* Enemy positions */
-.enemy1 { left: 200px; top: 150px; }
+.enemy1 { left: 600px; top: 150px; }
 .enemy2 { left: 400px; top: 120px; }
-.enemy3 { left: 600px; top: 100px; }
-.enemy4 { left: 800px; top: 120px; }
+.enemy3 { left: 800px; top: 100px; }
+.enemy4 { left: 200px; top: 120px; }
 .enemy5 { left: 1000px; top: 150px; }
 
 
