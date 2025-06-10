@@ -397,14 +397,27 @@
             }
         }
 
-        // Boss Class
-        class Boss {
-            constructor(name, level, stars = 1) {
-                this.name = name;
+        // Enemy Class
+        class Enemy {
+            constructor(enemyId, level, stars = 1) {
+                this.enemyId = enemyId;
                 this.level = level;
                 this.stars = stars;
-                this.modifiers = { str: 1.5, agi: 1.2, int: 1.0 };
-                this.abilities = this.getAbilities();
+                
+                // Load enemy data from unitData
+                const enemyData = unitData?.enemies[enemyId];
+                if (enemyData) {
+                    this.name = enemyData.name;
+                    this.isBoss = enemyData.boss;
+                    this.modifiers = enemyData.modifiers;
+                    this.abilities = this.getAbilities(enemyData.spells);
+                } else {
+                    // Fallback values
+                    this.name = enemyId;
+                    this.isBoss = false;
+                    this.modifiers = { str: 1.0, agi: 1.0, int: 1.0 };
+                    this.abilities = [];
+                }
             }
 
             get baseStats() {
@@ -419,30 +432,27 @@
                 return this.baseStats.str * 25;
             }
 
-            getAbilities() {
-                // For now, return hardcoded abilities
-                // TODO: Load from spells.json when boss data is moved there
-                if (this.name === 'Satyr Instigator') {
-                    return [
-                        {
-                            id: 'slash',
-                            name: 'Slash',
-                            description: 'Deals 10% max HP or 10 damage, whichever is less',
-                            cooldown: 0,
+            getAbilities(spellIds) {
+                if (!spellIds || !spellManager) return [];
+                
+                const abilities = [];
+                const spells = spellManager.getSpellsByIds(spellIds);
+                
+                spells.forEach((spell, index) => {
+                    if (spell) {
+                        abilities.push({
+                            id: spell.id,
+                            name: spell.name,
+                            description: spell.description,
+                            cooldown: spell.cooldown,
                             currentCooldown: 0,
-                            icon: 'boss_skill1.png'
-                        },
-                        {
-                            id: 'bite',
-                            name: 'Bite',
-                            description: 'Deals 20% max HP or 20 damage, whichever is more',
-                            cooldown: 3,
-                            currentCooldown: 0,
-                            icon: 'boss_skill2.png'
-                        }
-                    ];
-                }
-                return [];
+                            icon: `${spell.id}.png`,
+                            effects: spell.effects
+                        });
+                    }
+                });
+                
+                return abilities;
             }
         }
 
@@ -817,17 +827,26 @@ init() {
                 const dungeon = this.dungeonTiers[tierName].dungeons[dungeonIndex];
                 this.currentDungeon = dungeon;
                 
-                // Create boss based on dungeon
-                let bossLevel = dungeon.level;
-                let bossStars = 1;
+                // Create enemy based on dungeon
+                let enemyLevel = dungeon.level;
+                let enemyStars = 1;
                 
-                // Adjust boss level and stars based on tier
+                // Adjust enemy level and stars based on tier
                 if (tierName === 'Easy') {
-                    bossLevel = Math.floor(dungeon.level * 1.5); // Level 0 -> 0, 25 -> 37, 50 -> 75
-                    if (bossLevel === 0) bossLevel = 25; // Minimum boss level
+                    enemyLevel = Math.floor(dungeon.level * 1.5); // Level 0 -> 0, 25 -> 37, 50 -> 75
+                    if (enemyLevel === 0) enemyLevel = 25; // Minimum enemy level
                 }
                 
-                this.currentBoss = new Boss(dungeon.boss, bossLevel, bossStars);
+                // Map boss names to enemy IDs in units.json
+                const bossToEnemyId = {
+                    'Satyr Instigator': 'satyr_instigator',
+                    'Frostfang': 'frostfang',
+                    'Goblin King': 'goblin_king'
+                    // Add more mappings as needed
+                };
+                
+                const enemyId = bossToEnemyId[dungeon.boss] || 'satyr_instigator';
+                this.currentEnemy = new Enemy(enemyId, enemyLevel, enemyStars);
                 
                 // Reset party selection
                 this.selectedParty = [null, null, null, null, null];
@@ -1284,9 +1303,6 @@ init() {
                 if (this.pendingPromotion) {
                     this.promoteHero(this.pendingPromotion);
                     this.pendingPromotion = null;
-                this.selectedParty = [null, null, null, null, null];
-                this.currentDungeon = null;
-                this.currentBoss = null;
                 }
             }
 
@@ -1358,12 +1374,12 @@ init() {
                 
                 // Update dungeon info
                 document.getElementById('dungeonName').textContent = this.currentDungeon.name;
-                document.getElementById('bossName').textContent = this.currentBoss.name;
-                document.getElementById('bossLevel').textContent = `Lv ${this.currentBoss.level}`;
+                document.getElementById('bossName').textContent = this.currentEnemy.name;
+                document.getElementById('bossLevel').textContent = `Lv ${this.currentEnemy.level}`;
                 
                 // Update boss stars
                 let stars = '★';
-                for (let i = 0; i < this.currentBoss.stars; i++) {
+                for (let i = 0; i < this.currentEnemy.stars; i++) {
                     stars += '★';
                 }
                 document.querySelector('.bossStars').textContent = stars;
@@ -1659,14 +1675,14 @@ init() {
 
             showBossInfo() {
                 const popup = document.getElementById('heroInfoPopup');
-                document.getElementById('popupHeroName').textContent = `Lv.${this.currentBoss.level} ${this.currentBoss.name}`;
+                document.getElementById('popupHeroName').textContent = `Lv.${this.currentEnemy.level} ${this.currentEnemy.name}`;
                 
                 // Show boss stats
-                const stats = this.currentBoss.baseStats;
+                const stats = this.currentEnemy.baseStats;
                 const statsHtml = `
                     <div class="statRow">
                         <span class="statLabel">HP</span>
-                        <span class="statValue">${this.currentBoss.hp}</span>
+                        <span class="statValue">${this.currentEnemy.hp}</span>
                     </div>
                     <div class="statRow">
                         <span class="statLabel">STR</span>
@@ -1684,13 +1700,13 @@ init() {
                 document.getElementById('popupStats').innerHTML = statsHtml;
                 
                 // Show ability icons with tooltips
-                const bossAbilitiesHtml = `
+                const enemyAbilitiesHtml = `
                     <div style="display: flex; gap: 8px; margin-top: 10px;">
-                        ${this.currentBoss.abilities.map((ability, index) => {
+                        ${this.currentEnemy.abilities.map((ability, index) => {
                             const escapedDesc = ability.description.replace(/'/g, "\\'");
                             const escapedName = ability.name.replace(/'/g, "\\'");
-                            // Use generic boss ability icons or create specific ones
-                            const iconName = ability.icon || `boss_skill${index + 1}.png`;
+                            // Use generic enemy ability icons or create specific ones
+                            const iconName = ability.icon || `enemy_skill${index + 1}.png`;
                             return `
                                 <div class="abilityIconSmall" 
                                      onmouseover="game.showAbilityTooltip(event, '${escapedName}', 1, ${ability.cooldown}, '${escapedDesc}')"
@@ -1704,9 +1720,9 @@ init() {
                         }).join('')}
                     </div>
                 `;
-                document.getElementById('popupAbilities').innerHTML = bossAbilitiesHtml;
+                document.getElementById('popupAbilities').innerHTML = enemyAbilitiesHtml;
                 
-                // No gear for bosses
+                // No gear for enemies
                 document.getElementById('popupGear').innerHTML = '<p style="color: #6a9aaa; text-align: center; margin-top: 20px;">No gear equipped</p>';
                 
                 popup.style.display = 'block';
@@ -1774,7 +1790,7 @@ init() {
             startBattle() {
                 // TODO: Implement battle system
                 console.log('Starting battle with party:', this.selectedParty);
-                console.log('Against boss:', this.currentBoss);
+                console.log('Against enemy:', this.currentEnemy);
                 this.showBattle();
             }
         }
