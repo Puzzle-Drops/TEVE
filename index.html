@@ -923,7 +923,7 @@ init() {
 
                     thumb.innerHTML = `
     <div style="position: relative; width: 60px; height: 60px;">
-        <img src="https://puzzle-drops.github.io/TEVE/img/${classId}_front.gif" alt="${displayClassName}" 
+        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" 
              onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'10\\'>${displayClassName}</text></svg>'">
              
         ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
@@ -951,7 +951,7 @@ init() {
                 const portrait = document.getElementById('heroPortrait');
                 const classId = hero.className.toLowerCase().replace(/ /g, '_');
 				const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${displayClassName}</text></svg>'">`;
+                portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${displayClassName}</text></svg>'">`;
                 
                 // Update hero list selection
                 this.updateHeroList();
@@ -1129,7 +1129,7 @@ init() {
                                     }
                                     return `
                                         <div class="classCard">
-                                            <img src="https://puzzle-drops.github.io/TEVE/img/${promoId}_front.gif" alt="${promo}" onerror="this.style.display='none'">
+                                            <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${promoId}_front.gif" alt="${promo}" onerror="this.style.display='none'">
 											<div class="classStars" style="font-size: 24px; font-weight: bold; color: #ffd700; text-shadow: 0 0 12px rgba(255, 215, 0, 0.9), 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${promoStars}</div>
 											<h2>${promoClass.name}</h2>
                                             <button class="promoteButton" onclick="game.showPromotionConfirm('${promo}')">
@@ -1235,7 +1235,7 @@ init() {
                         const portrait = document.getElementById('heroPortrait');
                         const classId = hero.className.toLowerCase().replace(/ /g, '_');
 						const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                        portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${displayClassName}</text></svg>'">`;
+                        portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${displayClassName}</text></svg>'">`;
                         
                         this.showHeroTab('info');
                         this.updateHeroList();
@@ -1249,7 +1249,7 @@ init() {
                         const portrait = document.getElementById('heroPortrait');
                         const classId = hero.className.toLowerCase().replace(/ /g, '_');
 						const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                        portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${displayClassName}</text></svg>'">`;
+                        portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${displayClassName}</text></svg>'">`;
                         
                         this.showHeroTab('info');
                         this.updateHeroList();
@@ -1419,7 +1419,7 @@ init() {
 				const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
                 thumb.innerHTML = `
                     <div style="position: relative; width: 60px; height: 60px;">
-                        <img src="https://puzzle-drops.github.io/TEVE/img/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${displayClassName}</text></svg>'">
+                        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${displayClassName}</text></svg>'">
                         ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
                         <div class="thumbLevel">${hero.level}</div>
                     </div>
@@ -1490,7 +1490,7 @@ init() {
                         slot.innerHTML = `
                             <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
                                 <div style="position: relative; width: 60px; height: 60px;">
-                                    <img src="https://puzzle-drops.github.io/TEVE/img/${classId}_front.gif" style="width: 60px; height: 60px;" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${displayClassName}</text></svg>'">
+                                    <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" style="width: 60px; height: 60px;" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${displayClassName}</text></svg>'">
                                     ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
                                     <div class="thumbLevel">${hero.level}</div>
                                 </div>
