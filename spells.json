@@ -1,0 +1,781 @@
+{
+  "punch": {
+    "name": "Punch",
+    "description": "Basic attack dealing 5 + STR + AGI + INT damage",
+    "cooldown": 0,
+    "effects": ["damage"],
+    "scaling": {
+      "base": 5,
+      "str": 1.0,
+      "agi": 1.0,
+      "int": 1.0
+    },
+    "target": "enemy",
+    "logicKey": "punchLogic"
+  },
+  "fury": {
+    "name": "Fury",
+    "description": "Doubles action bar gain for 5 turns",
+    "cooldown": 5,
+    "effects": ["buff", "speed"],
+    "duration": 5,
+    "target": "self",
+    "logicKey": "furyLogic"
+  },
+  "natures_touch": {
+    "name": "Nature's Touch",
+    "description": "Heals an ally for 20% max HP + INT",
+    "cooldown": 0,
+    "effects": ["heal"],
+    "scaling": {
+      "maxHpPercent": 0.2,
+      "int": 1.0
+    },
+    "target": "ally",
+    "logicKey": "naturesTouchLogic"
+  },
+  "wild_growth": {
+    "name": "Wild Growth",
+    "description": "Heals all allies for 10% max HP + (INT * 0.5)",
+    "cooldown": 5,
+    "effects": ["heal", "aoe"],
+    "scaling": {
+      "maxHpPercent": 0.1,
+      "int": 0.5
+    },
+    "target": "all_allies",
+    "logicKey": "wildGrowthLogic"
+  },
+  "beast_form": {
+    "name": "Beast Form",
+    "description": "Transform into beast form, gaining 50% STR and AGI",
+    "cooldown": 10,
+    "effects": ["buff", "transform"],
+    "statBonus": {
+      "strPercent": 0.5,
+      "agiPercent": 0.5
+    },
+    "target": "self",
+    "logicKey": "beastFormLogic"
+  },
+  "elemental_shield": {
+    "name": "Elemental Shield",
+    "description": "Shield an ally, absorbing damage equal to INT * 2",
+    "cooldown": 10,
+    "effects": ["shield"],
+    "scaling": {
+      "int": 2.0
+    },
+    "target": "ally",
+    "logicKey": "elementalShieldLogic"
+  },
+  "runic_aura": {
+    "name": "Runic Aura",
+    "description": "All allies gain 20% cooldown reduction",
+    "cooldown": 0,
+    "effects": ["aura", "cdr"],
+    "auraEffect": {
+      "cdr": 0.2
+    },
+    "target": "passive",
+    "logicKey": "runicAuraLogic"
+  },
+  "natures_army": {
+    "name": "Nature's Army",
+    "description": "Summon nature spirits to fight alongside you",
+    "cooldown": 0,
+    "effects": ["aura", "summon"],
+    "target": "passive",
+    "logicKey": "naturesArmyLogic"
+  },
+  "eternal_rune": {
+    "name": "Eternal Rune",
+    "description": "Ultimate: Unleash ancient runic power dealing massive damage",
+    "cooldown": -1,
+    "effects": ["damage", "ultimate"],
+    "scaling": {
+      "str": 3.0,
+      "int": 5.0
+    },
+    "target": "all_enemies",
+    "logicKey": "eternalRuneLogic"
+  },
+  "natures_wrath": {
+    "name": "Nature's Wrath",
+    "description": "Ultimate: Channel the fury of nature to devastate all enemies",
+    "cooldown": -1,
+    "effects": ["damage", "ultimate", "dot"],
+    "scaling": {
+      "int": 4.0,
+      "agi": 2.0
+    },
+    "target": "all_enemies",
+    "logicKey": "naturesWrathLogic"
+  },
+  "holy_light": {
+    "name": "Holy Light",
+    "description": "Divine healing restores 30% max HP to an ally",
+    "cooldown": 0,
+    "effects": ["heal", "holy"],
+    "scaling": {
+      "maxHpPercent": 0.3,
+      "int": 0.5
+    },
+    "target": "ally",
+    "logicKey": "holyLightLogic"
+  },
+  "divine_shield": {
+    "name": "Divine Shield",
+    "description": "Grant an ally immunity to damage for 2 turns",
+    "cooldown": 5,
+    "effects": ["buff", "immunity"],
+    "duration": 2,
+    "target": "ally",
+    "logicKey": "divineShieldLogic"
+  },
+  "mass_heal": {
+    "name": "Mass Heal",
+    "description": "Heals all allies for 15% max HP + INT",
+    "cooldown": 10,
+    "effects": ["heal", "aoe"],
+    "scaling": {
+      "maxHpPercent": 0.15,
+      "int": 1.0
+    },
+    "target": "all_allies",
+    "logicKey": "massHealLogic"
+  },
+  "blessed_recovery": {
+    "name": "Blessed Recovery",
+    "description": "Resurrect a fallen ally with 50% HP",
+    "cooldown": 10,
+    "effects": ["resurrect"],
+    "target": "dead_ally",
+    "logicKey": "blessedRecoveryLogic"
+  },
+  "divine_aura": {
+    "name": "Divine Aura",
+    "description": "All allies gain 25% healing received",
+    "cooldown": 0,
+    "effects": ["aura", "healing"],
+    "auraEffect": {
+      "healingReceived": 0.25
+    },
+    "target": "passive",
+    "logicKey": "divineAuraLogic"
+  },
+  "prophecy_aura": {
+    "name": "Prophecy Aura",
+    "description": "All allies gain 15% chance to dodge",
+    "cooldown": 0,
+    "effects": ["aura", "dodge"],
+    "auraEffect": {
+      "dodge": 0.15
+    },
+    "target": "passive",
+    "logicKey": "prophecyAuraLogic"
+  },
+  "heavens_wrath": {
+    "name": "Heaven's Wrath",
+    "description": "Ultimate: Call down divine judgment on all enemies",
+    "cooldown": -1,
+    "effects": ["damage", "ultimate", "holy"],
+    "scaling": {
+      "int": 6.0
+    },
+    "target": "all_enemies",
+    "logicKey": "heavensWrathLogic"
+  },
+  "divine_intervention": {
+    "name": "Divine Intervention",
+    "description": "Ultimate: Fully heal and cleanse all allies",
+    "cooldown": -1,
+    "effects": ["heal", "ultimate", "cleanse"],
+    "target": "all_allies",
+    "logicKey": "divineInterventionLogic"
+  },
+  "poison_strike": {
+    "name": "Poison Strike",
+    "description": "Strike with poison dealing AGI damage and applying poison for 3 turns",
+    "cooldown": 0,
+    "effects": ["damage", "poison", "dot"],
+    "scaling": {
+      "agi": 1.5
+    },
+    "duration": 3,
+    "target": "enemy",
+    "logicKey": "poisonStrikeLogic"
+  },
+  "multishot": {
+    "name": "Multishot",
+    "description": "Fire arrows at all enemies dealing AGI damage",
+    "cooldown": 5,
+    "effects": ["damage", "aoe"],
+    "scaling": {
+      "agi": 1.2
+    },
+    "target": "all_enemies",
+    "logicKey": "multishotLogic"
+  },
+  "aimed_shot": {
+    "name": "Aimed Shot",
+    "description": "Precise shot dealing 3x AGI damage with high crit chance",
+    "cooldown": 10,
+    "effects": ["damage", "crit"],
+    "scaling": {
+      "agi": 3.0
+    },
+    "critBonus": 0.5,
+    "target": "enemy",
+    "logicKey": "aimedShotLogic"
+  },
+  "hunters_mark": {
+    "name": "Hunter's Mark",
+    "description": "Mark an enemy, increasing damage they take by 25%",
+    "cooldown": 10,
+    "effects": ["debuff", "mark"],
+    "debuffAmount": 0.25,
+    "target": "enemy",
+    "logicKey": "huntersMarkLogic"
+  },
+  "eagle_eye_aura": {
+    "name": "Eagle Eye Aura",
+    "description": "All allies gain 20% accuracy and critical chance",
+    "cooldown": 0,
+    "effects": ["aura", "accuracy"],
+    "auraEffect": {
+      "accuracy": 0.2,
+      "crit": 0.2
+    },
+    "target": "passive",
+    "logicKey": "eagleEyeAuraLogic"
+  },
+  "predator_aura": {
+    "name": "Predator Aura",
+    "description": "All allies gain 30% damage vs marked enemies",
+    "cooldown": 0,
+    "effects": ["aura", "damage"],
+    "auraEffect": {
+      "markedDamage": 0.3
+    },
+    "target": "passive",
+    "logicKey": "predatorAuraLogic"
+  },
+  "perfect_shot": {
+    "name": "Perfect Shot",
+    "description": "Ultimate: Instant kill enemy below 30% HP, or deal massive damage",
+    "cooldown": -1,
+    "effects": ["damage", "ultimate", "execute"],
+    "scaling": {
+      "agi": 10.0
+    },
+    "executeThreshold": 0.3,
+    "target": "enemy",
+    "logicKey": "perfectShotLogic"
+  },
+  "the_wild_hunt": {
+    "name": "The Wild Hunt",
+    "description": "Ultimate: Summon spectral beasts to hunt all enemies",
+    "cooldown": -1,
+    "effects": ["damage", "ultimate", "summon"],
+    "scaling": {
+      "agi": 5.0,
+      "str": 3.0
+    },
+    "target": "all_enemies",
+    "logicKey": "theWildHuntLogic"
+  },
+  "fireball": {
+    "name": "Fireball",
+    "description": "Hurls a fiery projectile dealing INT * 2.5 damage",
+    "cooldown": 0,
+    "effects": ["damage", "fire"],
+    "scaling": {
+      "int": 2.5
+    },
+    "target": "enemy",
+    "logicKey": "fireballLogic"
+  },
+  "frost_armor": {
+    "name": "Frost Armor",
+    "description": "Shield self with ice, reducing damage by 30% for 3 turns",
+    "cooldown": 5,
+    "effects": ["buff", "defense"],
+    "defenseBonus": 0.3,
+    "duration": 3,
+    "target": "self",
+    "logicKey": "frostArmorLogic"
+  },
+  "arcane_explosion": {
+    "name": "Arcane Explosion",
+    "description": "Explode with arcane energy, damaging all nearby enemies",
+    "cooldown": 10,
+    "effects": ["damage", "aoe", "arcane"],
+    "scaling": {
+      "int": 2.0
+    },
+    "target": "all_enemies",
+    "logicKey": "arcaneExplosionLogic"
+  },
+  "mana_burn": {
+    "name": "Mana Burn",
+    "description": "Burn enemy mana, dealing damage based on mana burned",
+    "cooldown": 10,
+    "effects": ["damage", "manaburn"],
+    "scaling": {
+      "int": 1.5
+    },
+    "target": "enemy",
+    "logicKey": "manaBurnLogic"
+  },
+  "enlightenment_aura": {
+    "name": "Enlightenment Aura",
+    "description": "All allies gain 30% spell power",
+    "cooldown": 0,
+    "effects": ["aura", "spellpower"],
+    "auraEffect": {
+      "spellPower": 0.3
+    },
+    "target": "passive",
+    "logicKey": "enlightenmentAuraLogic"
+  },
+  "wisdom_aura": {
+    "name": "Wisdom Aura",
+    "description": "All allies gain mana regeneration and reduced cooldowns",
+    "cooldown": 0,
+    "effects": ["aura", "manaregen"],
+    "auraEffect": {
+      "manaRegen": 0.2,
+      "cdr": 0.15
+    },
+    "target": "passive",
+    "logicKey": "wisdomAuraLogic"
+  },
+  "meteor_storm": {
+    "name": "Meteor Storm",
+    "description": "Ultimate: Rain meteors from the sky",
+    "cooldown": -1,
+    "effects": ["damage", "ultimate", "fire", "aoe"],
+    "scaling": {
+      "int": 8.0
+    },
+    "target": "all_enemies",
+    "logicKey": "meteorStormLogic"
+  },
+  "time_stop": {
+    "name": "Time Stop",
+    "description": "Ultimate: Freeze time for enemies for 2 turns",
+    "cooldown": -1,
+    "effects": ["control", "ultimate", "stun"],
+    "duration": 2,
+    "target": "all_enemies",
+    "logicKey": "timeStopLogic"
+  },
+  "blade_strike": {
+    "name": "Blade Strike",
+    "description": "Strike with your blade dealing STR * 2 damage",
+    "cooldown": 0,
+    "effects": ["damage", "physical"],
+    "scaling": {
+      "str": 2.0
+    },
+    "target": "enemy",
+    "logicKey": "bladeStrikeLogic"
+  },
+  "shield_bash": {
+    "name": "Shield Bash",
+    "description": "Bash with shield, stunning for 1 turn",
+    "cooldown": 5,
+    "effects": ["damage", "stun"],
+    "scaling": {
+      "str": 1.5
+    },
+    "stunDuration": 1,
+    "target": "enemy",
+    "logicKey": "shieldBashLogic"
+  },
+  "royal_charge": {
+    "name": "Royal Charge",
+    "description": "Charge through enemies dealing damage to all",
+    "cooldown": 10,
+    "effects": ["damage", "aoe", "movement"],
+    "scaling": {
+      "str": 2.5
+    },
+    "target": "all_enemies",
+    "logicKey": "royalChargeLogic"
+  },
+  "holy_strike": {
+    "name": "Holy Strike",
+    "description": "Strike infused with holy power",
+    "cooldown": 10,
+    "effects": ["damage", "holy"],
+    "scaling": {
+      "str": 2.0,
+      "int": 1.0
+    },
+    "target": "enemy",
+    "logicKey": "holyStrikeLogic"
+  },
+  "valor_aura": {
+    "name": "Valor Aura",
+    "description": "All allies gain 25% damage and defense",
+    "cooldown": 0,
+    "effects": ["aura", "stats"],
+    "auraEffect": {
+      "damage": 0.25,
+      "defense": 0.25
+    },
+    "target": "passive",
+    "logicKey": "valorAuraLogic"
+  },
+  "vengeance_aura": {
+    "name": "Vengeance Aura",
+    "description": "All allies reflect 30% of damage taken",
+    "cooldown": 0,
+    "effects": ["aura", "reflect"],
+    "auraEffect": {
+      "reflect": 0.3
+    },
+    "target": "passive",
+    "logicKey": "vengeanceAuraLogic"
+  },
+  "divine_storm": {
+    "name": "Divine Storm",
+    "description": "Ultimate: Spinning blade storm of divine fury",
+    "cooldown": -1,
+    "effects": ["damage", "ultimate", "aoe"],
+    "scaling": {
+      "str": 5.0,
+      "int": 2.0
+    },
+    "target": "all_enemies",
+    "logicKey": "divineStormLogic"
+  },
+  "wrath_of_heaven": {
+    "name": "Wrath of Heaven",
+    "description": "Ultimate: Channel divine vengeance on all enemies",
+    "cooldown": -1,
+    "effects": ["damage", "ultimate", "holy"],
+    "scaling": {
+      "str": 4.0,
+      "int": 4.0
+    },
+    "target": "all_enemies",
+    "logicKey": "wrathOfHeavenLogic"
+  },
+  "shield_slam": {
+    "name": "Shield Slam",
+    "description": "Slam with shield dealing damage based on defense",
+    "cooldown": 0,
+    "effects": ["damage", "defense"],
+    "scaling": {
+      "str": 1.5,
+      "defense": 0.5
+    },
+    "target": "enemy",
+    "logicKey": "shieldSlamLogic"
+  },
+  "consecrate": {
+    "name": "Consecrate",
+    "description": "Consecrate the ground, damaging enemies over time",
+    "cooldown": 5,
+    "effects": ["damage", "aoe", "dot"],
+    "scaling": {
+      "int": 1.0
+    },
+    "duration": 3,
+    "target": "all_enemies",
+    "logicKey": "consecrateLogic"
+  },
+  "shadow_strike": {
+    "name": "Shadow Strike",
+    "description": "Strike from the shadows with dark energy",
+    "cooldown": 10,
+    "effects": ["damage", "shadow"],
+    "scaling": {
+      "str": 1.5,
+      "int": 1.5
+    },
+    "target": "enemy",
+    "logicKey": "shadowStrikeLogic"
+  },
+  "psi_storm": {
+    "name": "Psi Storm",
+    "description": "Create a psionic storm damaging all enemies",
+    "cooldown": 10,
+    "effects": ["damage", "aoe", "psionic"],
+    "scaling": {
+      "int": 3.0
+    },
+    "target": "all_enemies",
+    "logicKey": "psiStormLogic"
+  },
+  "darkness_aura": {
+    "name": "Darkness Aura",
+    "description": "All enemies have 20% miss chance",
+    "cooldown": 0,
+    "effects": ["aura", "blind"],
+    "auraEffect": {
+      "enemyMissChance": 0.2
+    },
+    "target": "passive",
+    "logicKey": "darknessAuraLogic"
+  },
+  "psionic_aura": {
+    "name": "Psionic Aura",
+    "description": "All allies gain mind shield and mana regen",
+    "cooldown": 0,
+    "effects": ["aura", "mental"],
+    "auraEffect": {
+      "mindShield": true,
+      "manaRegen": 0.25
+    },
+    "target": "passive",
+    "logicKey": "psionicAuraLogic"
+  },
+  "void_storm": {
+    "name": "Void Storm",
+    "description": "Ultimate: Tear reality with void energy",
+    "cooldown": -1,
+    "effects": ["damage", "ultimate", "void"],
+    "scaling": {
+      "int": 7.0
+    },
+    "target": "all_enemies",
+    "logicKey": "voidStormLogic"
+  },
+  "archon_form": {
+    "name": "Archon Form",
+    "description": "Ultimate: Transform into pure psionic energy",
+    "cooldown": -1,
+    "effects": ["transform", "ultimate"],
+    "statBonus": {
+      "intPercent": 1.0,
+      "spellPower": 0.5
+    },
+    "target": "self",
+    "logicKey": "archonFormLogic"
+  },
+  "backstab": {
+    "name": "Backstab",
+    "description": "Strike from behind for critical damage",
+    "cooldown": 0,
+    "effects": ["damage", "crit"],
+    "scaling": {
+      "agi": 2.5
+    },
+    "critBonus": 1.0,
+    "target": "enemy",
+    "logicKey": "backstabLogic"
+  },
+  "smoke_bomb": {
+    "name": "Smoke Bomb",
+    "description": "Vanish in smoke, gaining stealth for 2 turns",
+    "cooldown": 5,
+    "effects": ["buff", "stealth"],
+    "duration": 2,
+    "target": "self",
+    "logicKey": "smokeBombLogic"
+  },
+  "assassinate": {
+    "name": "Assassinate",
+    "description": "Attempt to instantly kill enemy below 20% HP",
+    "cooldown": 10,
+    "effects": ["damage", "execute"],
+    "scaling": {
+      "agi": 4.0
+    },
+    "executeThreshold": 0.2,
+    "target": "enemy",
+    "logicKey": "assassinateLogic"
+  },
+  "shadowstep": {
+    "name": "Shadowstep",
+    "description": "Teleport behind enemy and strike",
+    "cooldown": 10,
+    "effects": ["damage", "teleport"],
+    "scaling": {
+      "agi": 3.0
+    },
+    "target": "enemy",
+    "logicKey": "shadowstepLogic"
+  },
+  "blur_aura": {
+    "name": "Blur Aura",
+    "description": "All allies gain 25% evasion",
+    "cooldown": 0,
+    "effects": ["aura", "evasion"],
+    "auraEffect": {
+      "evasion": 0.25
+    },
+    "target": "passive",
+    "logicKey": "blurAuraLogic"
+  },
+  "shadow_mastery_aura": {
+    "name": "Shadow Mastery Aura",
+    "description": "All allies gain stealth when below 30% HP",
+    "cooldown": 0,
+    "effects": ["aura", "survival"],
+    "auraEffect": {
+      "lowHpStealth": 0.3
+    },
+    "target": "passive",
+    "logicKey": "shadowMasteryAuraLogic"
+  },
+  "coup_de_grace": {
+    "name": "Coup de Grace",
+    "description": "Ultimate: Series of devastating critical strikes",
+    "cooldown": -1,
+    "effects": ["damage", "ultimate", "multihit"],
+    "scaling": {
+      "agi": 8.0
+    },
+    "hits": 6,
+    "target": "enemy",
+    "logicKey": "coupDeGraceLogic"
+  },
+  "thousand_cuts": {
+    "name": "Thousand Cuts",
+    "description": "Ultimate: Unleash a flurry of strikes on all enemies",
+    "cooldown": -1,
+    "effects": ["damage", "ultimate", "aoe"],
+    "scaling": {
+      "agi": 6.0
+    },
+    "target": "all_enemies",
+    "logicKey": "thousandCutsLogic"
+  },
+  "silver_bolt": {
+    "name": "Silver Bolt",
+    "description": "Fire a silver bolt effective against dark creatures",
+    "cooldown": 0,
+    "effects": ["damage", "holy"],
+    "scaling": {
+      "agi": 1.5,
+      "int": 0.5
+    },
+    "bonusVsDark": 2.0,
+    "target": "enemy",
+    "logicKey": "silverBoltLogic"
+  },
+  "purge": {
+    "name": "Purge",
+    "description": "Remove all buffs from an enemy",
+    "cooldown": 5,
+    "effects": ["dispel"],
+    "target": "enemy",
+    "logicKey": "purgeLogic"
+  },
+  "holy_fire": {
+    "name": "Holy Fire",
+    "description": "Burn enemy with holy flames",
+    "cooldown": 10,
+    "effects": ["damage", "holy", "dot"],
+    "scaling": {
+      "int": 2.5
+    },
+    "duration": 3,
+    "target": "enemy",
+    "logicKey": "holyFireLogic"
+  },
+  "alchemy": {
+    "name": "Alchemy",
+    "description": "Throw a random potion with various effects",
+    "cooldown": 10,
+    "effects": ["random"],
+    "target": "any",
+    "logicKey": "alchemyLogic"
+  },
+  "zealot_aura": {
+    "name": "Zealot Aura",
+    "description": "All allies deal double damage to undead and demons",
+    "cooldown": 0,
+    "effects": ["aura", "damage"],
+    "auraEffect": {
+      "holyDamage": 1.0
+    },
+    "target": "passive",
+    "logicKey": "zealotAuraLogic"
+  },
+  "mutation_aura": {
+    "name": "Mutation Aura",
+    "description": "All allies gain random stat bonuses each turn",
+    "cooldown": 0,
+    "effects": ["aura", "mutation"],
+    "target": "passive",
+    "logicKey": "mutationAuraLogic"
+  },
+  "divine_judgment": {
+    "name": "Divine Judgment",
+    "description": "Ultimate: Judge all enemies, dealing massive holy damage",
+    "cooldown": -1,
+    "effects": ["damage", "ultimate", "holy"],
+    "scaling": {
+      "int": 10.0
+    },
+    "target": "all_enemies",
+    "logicKey": "divineJudgmentLogic"
+  },
+  "trial_of_grasses": {
+    "name": "Trial of Grasses",
+    "description": "Ultimate: Transform into a mutated hunter",
+    "cooldown": -1,
+    "effects": ["transform", "ultimate"],
+    "statBonus": {
+      "allStats": 0.5
+    },
+    "target": "self",
+    "logicKey": "trialOfGrassesLogic"
+  },
+  "slash": {
+    "name": "Slash",
+    "description": "Deals 10% max HP or 10 damage, whichever is less",
+    "cooldown": 0,
+    "effects": ["damage"],
+    "damageFormula": "min(targetMaxHp * 0.1, 10)",
+    "target": "enemy",
+    "logicKey": "slashLogic"
+  },
+  "bite": {
+    "name": "Bite",
+    "description": "Deals 20% max HP or 20 damage, whichever is more",
+    "cooldown": 3,
+    "effects": ["damage"],
+    "damageFormula": "max(targetMaxHp * 0.2, 20)",
+    "target": "enemy",
+    "logicKey": "biteLogic"
+  },
+  "frost_breath": {
+    "name": "Frost Breath",
+    "description": "Breathe frost, slowing all enemies",
+    "cooldown": 5,
+    "effects": ["damage", "slow", "aoe"],
+    "scaling": {
+      "str": 2.0
+    },
+    "target": "all_enemies",
+    "logicKey": "frostBreathLogic"
+  },
+  "gold_toss": {
+    "name": "Gold Toss",
+    "description": "Throw gold coins dealing random damage",
+    "cooldown": 3,
+    "effects": ["damage", "random"],
+    "scaling": {
+      "str": 1.0,
+      "randomMultiplier": 3.0
+    },
+    "target": "enemy",
+    "logicKey": "goldTossLogic"
+  },
+  "summon_goblins": {
+    "name": "Summon Goblins",
+    "description": "Summon goblin minions to fight",
+    "cooldown": 10,
+    "effects": ["summon"],
+    "summonCount": 2,
+    "target": "self",
+    "logicKey": "summonGoblinsLogic"
+  }
+}

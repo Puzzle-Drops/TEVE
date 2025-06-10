@@ -1,0 +1,394 @@
+{
+  "classes": {
+    "villager": {
+      "name": "Villager",
+      "tier": 0,
+      "modifiers": { "str": 1.2, "agi": 0.9, "int": 0.5 },
+      "spells": ["punch", "fury"],
+      "promotesTo": ["acolyte", "archer", "druid", "initiate", "swordsman", "templar", "thief", "witch_hunter"]
+    },
+    "acolyte": {
+      "name": "Acolyte",
+      "tier": 1,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["holy_light"],
+      "promotesTo": ["cleric"]
+    },
+    "cleric": {
+      "name": "Cleric",
+      "tier": 2,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["holy_light", "divine_shield"],
+      "promotesTo": ["priest", "matriarch"]
+    },
+    "priest": {
+      "name": "Priest",
+      "tier": 3,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["holy_light", "divine_shield", "mass_heal"],
+      "promotesTo": ["hierophant"]
+    },
+    "hierophant": {
+      "name": "Hierophant",
+      "tier": 4,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["holy_light", "divine_shield", "mass_heal", "divine_aura"],
+      "ultimateSpell": "heavens_wrath",
+      "promotesTo": []
+    },
+    "matriarch": {
+      "name": "Matriarch",
+      "tier": 3,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["holy_light", "divine_shield", "blessed_recovery"],
+      "promotesTo": ["prophetess"]
+    },
+    "prophetess": {
+      "name": "Prophetess",
+      "tier": 4,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["holy_light", "divine_shield", "blessed_recovery", "prophecy_aura"],
+      "ultimateSpell": "divine_intervention",
+      "promotesTo": []
+    },
+    "archer": {
+      "name": "Archer",
+      "tier": 1,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["poison_strike"],
+      "promotesTo": ["ranger"]
+    },
+    "ranger": {
+      "name": "Ranger",
+      "tier": 2,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["poison_strike", "multishot"],
+      "promotesTo": ["marksman", "tracker"]
+    },
+    "marksman": {
+      "name": "Marksman",
+      "tier": 3,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["poison_strike", "multishot", "aimed_shot"],
+      "promotesTo": ["sniper"]
+    },
+    "sniper": {
+      "name": "Sniper",
+      "tier": 4,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["poison_strike", "multishot", "aimed_shot", "eagle_eye_aura"],
+      "ultimateSpell": "perfect_shot",
+      "promotesTo": []
+    },
+    "tracker": {
+      "name": "Tracker",
+      "tier": 3,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["poison_strike", "multishot", "hunters_mark"],
+      "promotesTo": ["monster_hunter"]
+    },
+    "monster_hunter": {
+      "name": "Monster Hunter",
+      "tier": 4,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["poison_strike", "multishot", "hunters_mark", "predator_aura"],
+      "ultimateSpell": "the_wild_hunt",
+      "promotesTo": []
+    },
+    "druid": {
+      "name": "Druid",
+      "tier": 1,
+      "modifiers": { "str": 1.2, "agi": 1.4, "int": 1.8 },
+      "spells": ["natures_touch"],
+      "promotesTo": ["arch_druid"]
+    },
+    "arch_druid": {
+      "name": "Arch Druid",
+      "tier": 2,
+      "modifiers": { "str": 1.2, "agi": 1.4, "int": 1.8 },
+      "spells": ["natures_touch", "wild_growth"],
+      "promotesTo": ["shapeshifter", "shaman"]
+    },
+    "shapeshifter": {
+      "name": "Shapeshifter",
+      "tier": 3,
+      "modifiers": { "str": 1.8, "agi": 2.0, "int": 1.2 },
+      "spells": ["natures_touch", "wild_growth", "beast_form"],
+      "promotesTo": ["runemaster"]
+    },
+    "runemaster": {
+      "name": "Runemaster",
+      "tier": 4,
+      "modifiers": { "str": 1.5, "agi": 1.5, "int": 2.2 },
+      "spells": ["natures_touch", "wild_growth", "beast_form", "runic_aura"],
+      "ultimateSpell": "eternal_rune",
+      "promotesTo": []
+    },
+    "shaman": {
+      "name": "Shaman",
+      "tier": 3,
+      "modifiers": { "str": 1.4, "agi": 1.3, "int": 2.0 },
+      "spells": ["natures_touch", "wild_growth", "elemental_shield"],
+      "promotesTo": ["summoner"]
+    },
+    "summoner": {
+      "name": "Summoner",
+      "tier": 4,
+      "modifiers": { "str": 1.2, "agi": 1.2, "int": 2.5 },
+      "spells": ["natures_touch", "wild_growth", "elemental_shield", "natures_army"],
+      "ultimateSpell": "natures_wrath",
+      "promotesTo": []
+    },
+    "initiate": {
+      "name": "Initiate",
+      "tier": 1,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["fireball"],
+      "promotesTo": ["mage"]
+    },
+    "mage": {
+      "name": "Mage",
+      "tier": 2,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["fireball", "frost_armor"],
+      "promotesTo": ["wizard", "sage"]
+    },
+    "wizard": {
+      "name": "Wizard",
+      "tier": 3,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["fireball", "frost_armor", "arcane_explosion"],
+      "promotesTo": ["white_wizard"]
+    },
+    "white_wizard": {
+      "name": "White Wizard",
+      "tier": 4,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["fireball", "frost_armor", "arcane_explosion", "enlightenment_aura"],
+      "ultimateSpell": "meteor_storm",
+      "promotesTo": []
+    },
+    "sage": {
+      "name": "Sage",
+      "tier": 3,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["fireball", "frost_armor", "mana_burn"],
+      "promotesTo": ["arch_sage"]
+    },
+    "arch_sage": {
+      "name": "Arch Sage",
+      "tier": 4,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["fireball", "frost_armor", "mana_burn", "wisdom_aura"],
+      "ultimateSpell": "time_stop",
+      "promotesTo": []
+    },
+    "swordsman": {
+      "name": "Swordsman",
+      "tier": 1,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["blade_strike"],
+      "promotesTo": ["knight"]
+    },
+    "knight": {
+      "name": "Knight",
+      "tier": 2,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["blade_strike", "shield_bash"],
+      "promotesTo": ["imperial_knight", "crusader"]
+    },
+    "imperial_knight": {
+      "name": "Imperial Knight",
+      "tier": 3,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["blade_strike", "shield_bash", "royal_charge"],
+      "promotesTo": ["champion"]
+    },
+    "champion": {
+      "name": "Champion",
+      "tier": 4,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["blade_strike", "shield_bash", "royal_charge", "valor_aura"],
+      "ultimateSpell": "divine_storm",
+      "promotesTo": []
+    },
+    "crusader": {
+      "name": "Crusader",
+      "tier": 3,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["blade_strike", "shield_bash", "holy_strike"],
+      "promotesTo": ["avenger"]
+    },
+    "avenger": {
+      "name": "Avenger",
+      "tier": 4,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["blade_strike", "shield_bash", "holy_strike", "vengeance_aura"],
+      "ultimateSpell": "wrath_of_heaven",
+      "promotesTo": []
+    },
+    "templar": {
+      "name": "Templar",
+      "tier": 1,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["shield_slam"],
+      "promotesTo": ["arch_templar"]
+    },
+    "arch_templar": {
+      "name": "Arch Templar",
+      "tier": 2,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["shield_slam", "consecrate"],
+      "promotesTo": ["dark_templar", "high_templar"]
+    },
+    "dark_templar": {
+      "name": "Dark Templar",
+      "tier": 3,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["shield_slam", "consecrate", "shadow_strike"],
+      "promotesTo": ["dark_arch_templar"]
+    },
+    "dark_arch_templar": {
+      "name": "Dark Arch Templar",
+      "tier": 4,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["shield_slam", "consecrate", "shadow_strike", "darkness_aura"],
+      "ultimateSpell": "void_storm",
+      "promotesTo": []
+    },
+    "high_templar": {
+      "name": "High Templar",
+      "tier": 3,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["shield_slam", "consecrate", "psi_storm"],
+      "promotesTo": ["grand_templar"]
+    },
+    "grand_templar": {
+      "name": "Grand Templar",
+      "tier": 4,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["shield_slam", "consecrate", "psi_storm", "psionic_aura"],
+      "ultimateSpell": "archon_form",
+      "promotesTo": []
+    },
+    "thief": {
+      "name": "Thief",
+      "tier": 1,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["backstab"],
+      "promotesTo": ["rogue"]
+    },
+    "rogue": {
+      "name": "Rogue",
+      "tier": 2,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["backstab", "smoke_bomb"],
+      "promotesTo": ["assassin", "stalker"]
+    },
+    "assassin": {
+      "name": "Assassin",
+      "tier": 3,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["backstab", "smoke_bomb", "assassinate"],
+      "promotesTo": ["phantom_assassin"]
+    },
+    "phantom_assassin": {
+      "name": "Phantom Assassin",
+      "tier": 4,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["backstab", "smoke_bomb", "assassinate", "blur_aura"],
+      "ultimateSpell": "coup_de_grace",
+      "promotesTo": []
+    },
+    "stalker": {
+      "name": "Stalker",
+      "tier": 3,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["backstab", "smoke_bomb", "shadowstep"],
+      "promotesTo": ["master_stalker"]
+    },
+    "master_stalker": {
+      "name": "Master Stalker",
+      "tier": 4,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["backstab", "smoke_bomb", "shadowstep", "shadow_mastery_aura"],
+      "ultimateSpell": "thousand_cuts",
+      "promotesTo": []
+    },
+    "witch_hunter": {
+      "name": "Witch Hunter",
+      "tier": 1,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["silver_bolt"],
+      "promotesTo": ["slayer"]
+    },
+    "slayer": {
+      "name": "Slayer",
+      "tier": 2,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["silver_bolt", "purge"],
+      "promotesTo": ["inquisitor", "witcher"]
+    },
+    "inquisitor": {
+      "name": "Inquisitor",
+      "tier": 3,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["silver_bolt", "purge", "holy_fire"],
+      "promotesTo": ["grand_inquisitor"]
+    },
+    "grand_inquisitor": {
+      "name": "Grand Inquisitor",
+      "tier": 4,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["silver_bolt", "purge", "holy_fire", "zealot_aura"],
+      "ultimateSpell": "divine_judgment",
+      "promotesTo": []
+    },
+    "witcher": {
+      "name": "Witcher",
+      "tier": 3,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["silver_bolt", "purge", "alchemy"],
+      "promotesTo": ["professional_witcher"]
+    },
+    "professional_witcher": {
+      "name": "Professional Witcher",
+      "tier": 4,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "spells": ["silver_bolt", "purge", "alchemy", "mutation_aura"],
+      "ultimateSpell": "trial_of_grasses",
+      "promotesTo": []
+    }
+  },
+  "bosses": {
+    "satyr_instigator": {
+      "name": "Satyr Instigator",
+      "modifiers": { "str": 1.5, "agi": 1.2, "int": 1.0 },
+      "spells": ["slash", "bite"]
+    },
+    "frostfang": {
+      "name": "Frostfang",
+      "modifiers": { "str": 2.0, "agi": 1.5, "int": 0.8 },
+      "spells": ["bite", "frost_breath"]
+    },
+    "goblin_king": {
+      "name": "Goblin King",
+      "modifiers": { "str": 1.8, "agi": 1.8, "int": 1.2 },
+      "spells": ["slash", "gold_toss", "summon_goblins"]
+    }
+  },
+  "promotionRequirements": {
+    "0": 50,
+    "1": 100,
+    "2": 200,
+    "3": 300,
+    "4": 400
+  },
+  "promotionCosts": {
+    "0": 1000,
+    "1": 10000,
+    "2": 100000,
+    "3": 1000000,
+    "4": 10000000
+  }
+}
