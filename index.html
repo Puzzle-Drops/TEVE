@@ -29,7 +29,34 @@
                         <div class="healthText">100/100</div>
                     </div>
                 </div>
-                <!-- Add more party slots... -->
+                <div class="unitSlot party2" id="party2">
+                    <div class="unit">P2</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">100/100</div>
+                    </div>
+                </div>
+                <div class="unitSlot party3" id="party3">
+                    <div class="unit">P3</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">100/100</div>
+                    </div>
+                </div>
+                <div class="unitSlot party4" id="party4">
+                    <div class="unit">P4</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">100/100</div>
+                    </div>
+                </div>
+                <div class="unitSlot party5" id="party5">
+                    <div class="unit">P5</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">100/100</div>
+                    </div>
+                </div>
 
                 <!-- Enemy Units -->
                 <div class="unitSlot enemy1" id="enemy1">
@@ -39,7 +66,34 @@
                         <div class="healthText">67/67</div>
                     </div>
                 </div>
-                <!-- Add more enemy slots... -->
+                <div class="unitSlot enemy2" id="enemy2" style="display: none;">
+                    <div class="unit">E2</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">50/50</div>
+                    </div>
+                </div>
+                <div class="unitSlot enemy3" id="enemy3" style="display: none;">
+                    <div class="unit">E3</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">50/50</div>
+                    </div>
+                </div>
+                <div class="unitSlot enemy4" id="enemy4" style="display: none;">
+                    <div class="unit">E4</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">50/50</div>
+                    </div>
+                </div>
+                <div class="unitSlot enemy5" id="enemy5" style="display: none;">
+                    <div class="unit">E5</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">50/50</div>
+                    </div>
+                </div>
             </div>
 
             <div class="battleUI">
@@ -47,16 +101,9 @@
                     Battle started!<br>
                 </div>
                 <div class="abilityPanel" id="abilityPanel">
-                    <div class="ability" onclick="game.useAbility(0)">
-                        <span>Punch</span>
-                    </div>
-                    <div class="ability" onclick="game.useAbility(1)">
-                        <span>Fury</span>
-                        <span class="cooldownText">5</span>
-                    </div>
                 </div>
             </div>
-            <button class="backButton" onclick="game.showMainMenu()">Back</button>
+            <button class="backButton" onclick="game.exitBattle()">Exit Battle</button>
         </div>
 
         <!-- Heroes Screen -->
@@ -192,6 +239,7 @@
     </div>
 
     <script src="spellLogic.js"></script>
+    <script src="battle.js"></script>
     <script>
         // Global managers
         let spellManager;
@@ -827,26 +875,45 @@ init() {
                 const dungeon = this.dungeonTiers[tierName].dungeons[dungeonIndex];
                 this.currentDungeon = dungeon;
                 
-                // Create enemy based on dungeon
-                let enemyLevel = dungeon.level;
-                let enemyStars = 1;
+                // Create enemies based on dungeon
+                this.currentEnemies = [];
                 
-                // Adjust enemy level and stars based on tier
-                if (tierName === 'Easy') {
-                    enemyLevel = Math.floor(dungeon.level * 1.5); // Level 0 -> 0, 25 -> 37, 50 -> 75
-                    if (enemyLevel === 0) enemyLevel = 25; // Minimum enemy level
+                if (dungeon.name === 'Satyrs') {
+                    // Create boss
+                    const boss = new Enemy('satyr_instigator', 25, 1);
+                    this.currentEnemies.push(boss);
+                    
+                    // Add two satyr youths
+                    const youth1 = new Enemy('satyr_youth', 15, 1);
+                    const youth2 = new Enemy('satyr_youth', 15, 1);
+                    this.currentEnemies.push(youth1);
+                    this.currentEnemies.push(youth2);
+                    
+                    // Set the main enemy for display
+                    this.currentEnemy = boss;
+                } else {
+                    // Default single boss for other dungeons
+                    let enemyLevel = dungeon.level;
+                    let enemyStars = 1;
+                    
+                    // Adjust enemy level and stars based on tier
+                    if (tierName === 'Easy') {
+                        enemyLevel = Math.floor(dungeon.level * 1.5);
+                        if (enemyLevel === 0) enemyLevel = 25;
+                    }
+                    
+                    // Map boss names to enemy IDs in units.json
+                    const bossToEnemyId = {
+                        'Satyr Instigator': 'satyr_instigator',
+                        'Frostfang': 'frostfang',
+                        'Goblin King': 'goblin_king'
+                    };
+                    
+                    const enemyId = bossToEnemyId[dungeon.boss] || 'satyr_instigator';
+                    const enemy = new Enemy(enemyId, enemyLevel, enemyStars);
+                    this.currentEnemies = [enemy];
+                    this.currentEnemy = enemy;
                 }
-                
-                // Map boss names to enemy IDs in units.json
-                const bossToEnemyId = {
-                    'Satyr Instigator': 'satyr_instigator',
-                    'Frostfang': 'frostfang',
-                    'Goblin King': 'goblin_king'
-                    // Add more mappings as needed
-                };
-                
-                const enemyId = bossToEnemyId[dungeon.boss] || 'satyr_instigator';
-                this.currentEnemy = new Enemy(enemyId, enemyLevel, enemyStars);
                 
                 // Reset party selection
                 this.selectedParty = [null, null, null, null, null];
@@ -891,6 +958,84 @@ init() {
                 this.hideAllScreens();
                 this.closeHeroInfo(); // Close any open popups
                 document.getElementById('battleScene').style.display = 'block';
+                
+                // Update UI with actual units
+                this.updateBattleUI();
+            }
+
+            updateBattleUI() {
+                // Hide all unit slots first
+                for (let i = 1; i <= 5; i++) {
+                    document.getElementById(`party${i}`).style.display = 'none';
+                    document.getElementById(`enemy${i}`).style.display = 'none';
+                }
+                
+                // Show party units
+                const partyUnits = this.selectedParty.map(heroIndex => 
+                    heroIndex !== null ? this.heroes[heroIndex] : null
+                ).filter(hero => hero !== null);
+                
+                partyUnits.forEach((hero, index) => {
+                    const slot = document.getElementById(`party${index + 1}`);
+                    if (slot) {
+                        slot.style.display = 'block';
+                        const unitDiv = slot.querySelector('.unit');
+                        const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+                        
+                        // Create a shorter display for combat
+                        const shortClass = displayClassName.split(' ').map(word => word[0]).join('');
+                        
+                        unitDiv.innerHTML = `
+                            <div style="font-size: 9px; text-align: center; line-height: 1.2;">
+                                <div>${hero.name}</div>
+                                <div style="color: #6a9aaa;">Lv${hero.level}</div>
+                            </div>
+                        `;
+                        unitDiv.style.fontSize = '12px';
+                    }
+                });
+                
+                // Show enemy units
+                const enemies = this.currentEnemies || [this.currentEnemy];
+                enemies.forEach((enemy, index) => {
+                    const slot = document.getElementById(`enemy${index + 1}`);
+                    if (slot && enemy) {
+                        slot.style.display = 'block';
+                        const unitDiv = slot.querySelector('.unit');
+                        unitDiv.innerHTML = `
+                            <div style="font-size: 9px; text-align: center; line-height: 1.2;">
+                                <div>${enemy.name}</div>
+                                <div style="color: #6a9aaa;">Lv${enemy.level}</div>
+                            </div>
+                        `;
+                        unitDiv.style.fontSize = '12px';
+                    }
+                });
+            }
+
+            startBattle() {
+                // Create party array from selected heroes
+                const party = this.selectedParty.map(heroIndex => 
+                    heroIndex !== null ? this.heroes[heroIndex] : null
+                ).filter(hero => hero !== null);
+                
+                // Use the enemy array created in enterDungeon
+                const enemies = this.currentEnemies || [this.currentEnemy];
+                
+                // Show battle screen
+                this.showBattle();
+                
+                // Create and start battle
+                this.currentBattle = new Battle(this, party, enemies);
+                this.currentBattle.start();
+            }
+
+            exitBattle() {
+                if (this.currentBattle) {
+                    // TODO: Confirm exit if battle is ongoing
+                    this.currentBattle = null;
+                }
+                this.showMainMenu();
             }
 
             hideAllScreens() {
@@ -1365,7 +1510,7 @@ init() {
 
             useAbility(index) {
                 console.log('Using ability', index);
-                // TODO: Implement ability usage
+                // Now handled by Battle class
             }
 
             showPartySelect() {
@@ -1374,12 +1519,27 @@ init() {
                 
                 // Update dungeon info
                 document.getElementById('dungeonName').textContent = this.currentDungeon.name;
-                document.getElementById('bossName').textContent = this.currentEnemy.name;
-                document.getElementById('bossLevel').textContent = `Lv ${this.currentEnemy.level}`;
+                
+                // Display enemy info based on number of enemies
+                if (this.currentEnemies && this.currentEnemies.length > 1) {
+                    const boss = this.currentEnemies.find(e => e.isBoss) || this.currentEnemies[0];
+                    const minions = this.currentEnemies.filter(e => !e.isBoss);
+                    
+                    document.getElementById('bossName').textContent = boss.name;
+                    document.getElementById('bossLevel').textContent = `Lv ${boss.level}`;
+                    
+                    if (minions.length > 0) {
+                        document.getElementById('bossLevel').textContent += ` + ${minions.length} minions`;
+                    }
+                } else {
+                    document.getElementById('bossName').textContent = this.currentEnemy.name;
+                    document.getElementById('bossLevel').textContent = `Lv ${this.currentEnemy.level}`;
+                }
                 
                 // Update boss stars
                 let stars = '★';
-                for (let i = 0; i < this.currentEnemy.stars; i++) {
+                const mainEnemy = this.currentEnemy || this.currentEnemies[0];
+                for (let i = 0; i < mainEnemy.stars; i++) {
                     stars += '★';
                 }
                 document.querySelector('.bossStars').textContent = stars;
@@ -1675,52 +1835,108 @@ init() {
 
             showBossInfo() {
                 const popup = document.getElementById('heroInfoPopup');
-                document.getElementById('popupHeroName').textContent = `Lv.${this.currentEnemy.level} ${this.currentEnemy.name}`;
+                const mainEnemy = this.currentEnemy || this.currentEnemies[0];
                 
-                // Show boss stats
-                const stats = this.currentEnemy.baseStats;
-                const statsHtml = `
-                    <div class="statRow">
-                        <span class="statLabel">HP</span>
-                        <span class="statValue">${this.currentEnemy.hp}</span>
-                    </div>
-                    <div class="statRow">
-                        <span class="statLabel">STR</span>
-                        <span class="statValue">${stats.str}</span>
-                    </div>
-                    <div class="statRow">
-                        <span class="statLabel">AGI</span>
-                        <span class="statValue">${stats.agi}</span>
-                    </div>
-                    <div class="statRow">
-                        <span class="statLabel">INT</span>
-                        <span class="statValue">${stats.int}</span>
-                    </div>
-                `;
-                document.getElementById('popupStats').innerHTML = statsHtml;
-                
-                // Show ability icons with tooltips
-                const enemyAbilitiesHtml = `
-                    <div style="display: flex; gap: 8px; margin-top: 10px;">
-                        ${this.currentEnemy.abilities.map((ability, index) => {
-                            const escapedDesc = ability.description.replace(/'/g, "\\'");
-                            const escapedName = ability.name.replace(/'/g, "\\'");
-                            // Use generic enemy ability icons or create specific ones
-                            const iconName = ability.icon;
-                            return `
-                                <div class="abilityIconSmall" 
-                                     onmouseover="game.showAbilityTooltip(event, '${escapedName}', 1, ${ability.cooldown}, '${escapedDesc}')"
-                                     onmouseout="game.hideAbilityTooltip()">
-                                    <img src="https://puzzle-drops.github.io/TEVE/img/spells/${ability.id}.png" 
-                                         style="width: 40px; height: 40px;" 
-                                         alt="${ability.name}" 
-                                         onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'width:40px;height:40px;background:#2a4a6a;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:20px;\\'>⚔️</div>'">
+                if (this.currentEnemies && this.currentEnemies.length > 1) {
+                    // Show all enemies
+                    document.getElementById('popupHeroName').textContent = `${this.currentDungeon.name} Enemies`;
+                    
+                    let statsHtml = '';
+                    this.currentEnemies.forEach((enemy, index) => {
+                        const stats = enemy.baseStats;
+                        statsHtml += `
+                            <div style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #2a6a8a;">
+                                <div style="font-size: 18px; color: #4dd0e1; margin-bottom: 5px;">${enemy.name} (Lv ${enemy.level})</div>
+                                <div class="statRow">
+                                    <span class="statLabel">HP</span>
+                                    <span class="statValue">${enemy.hp}</span>
                                 </div>
-                            `;
-                        }).join('')}
-                    </div>
-                `;
-                document.getElementById('popupAbilities').innerHTML = enemyAbilitiesHtml;
+                                <div class="statRow">
+                                    <span class="statLabel">STR</span>
+                                    <span class="statValue">${stats.str}</span>
+                                </div>
+                                <div class="statRow">
+                                    <span class="statLabel">AGI</span>
+                                    <span class="statValue">${stats.agi}</span>
+                                </div>
+                                <div class="statRow">
+                                    <span class="statLabel">INT</span>
+                                    <span class="statValue">${stats.int}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    document.getElementById('popupStats').innerHTML = statsHtml;
+                    
+                    // Show abilities for the boss
+                    const boss = this.currentEnemies.find(e => e.isBoss) || this.currentEnemies[0];
+                    const enemyAbilitiesHtml = `
+                        <div style="font-size: 16px; color: #4dd0e1; margin-bottom: 10px;">${boss.name} Abilities:</div>
+                        <div style="display: flex; gap: 8px;">
+                            ${boss.abilities.map((ability, index) => {
+                                const escapedDesc = ability.description.replace(/'/g, "\\'");
+                                const escapedName = ability.name.replace(/'/g, "\\'");
+                                return `
+                                    <div class="abilityIconSmall" 
+                                         onmouseover="game.showAbilityTooltip(event, '${escapedName}', 1, ${ability.cooldown}, '${escapedDesc}')"
+                                         onmouseout="game.hideAbilityTooltip()">
+                                        <img src="https://puzzle-drops.github.io/TEVE/img/spells/${ability.id}.png" 
+                                             style="width: 40px; height: 40px;" 
+                                             alt="${ability.name}" 
+                                             onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'width:40px;height:40px;background:#2a4a6a;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:20px;\\'>⚔️</div>'">
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
+                    document.getElementById('popupAbilities').innerHTML = enemyAbilitiesHtml;
+                } else {
+                    // Single enemy display (original code)
+                    document.getElementById('popupHeroName').textContent = `Lv.${mainEnemy.level} ${mainEnemy.name}`;
+                    
+                    // Show boss stats
+                    const stats = mainEnemy.baseStats;
+                    const statsHtml = `
+                        <div class="statRow">
+                            <span class="statLabel">HP</span>
+                            <span class="statValue">${mainEnemy.hp}</span>
+                        </div>
+                        <div class="statRow">
+                            <span class="statLabel">STR</span>
+                            <span class="statValue">${stats.str}</span>
+                        </div>
+                        <div class="statRow">
+                            <span class="statLabel">AGI</span>
+                            <span class="statValue">${stats.agi}</span>
+                        </div>
+                        <div class="statRow">
+                            <span class="statLabel">INT</span>
+                            <span class="statValue">${stats.int}</span>
+                        </div>
+                    `;
+                    document.getElementById('popupStats').innerHTML = statsHtml;
+                    
+                    // Show ability icons with tooltips
+                    const enemyAbilitiesHtml = `
+                        <div style="display: flex; gap: 8px; margin-top: 10px;">
+                            ${mainEnemy.abilities.map((ability, index) => {
+                                const escapedDesc = ability.description.replace(/'/g, "\\'");
+                                const escapedName = ability.name.replace(/'/g, "\\'");
+                                return `
+                                    <div class="abilityIconSmall" 
+                                         onmouseover="game.showAbilityTooltip(event, '${escapedName}', 1, ${ability.cooldown}, '${escapedDesc}')"
+                                         onmouseout="game.hideAbilityTooltip()">
+                                        <img src="https://puzzle-drops.github.io/TEVE/img/spells/${ability.id}.png" 
+                                             style="width: 40px; height: 40px;" 
+                                             alt="${ability.name}" 
+                                             onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'width:40px;height:40px;background:#2a4a6a;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:20px;\\'>⚔️</div>'">
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
+                    document.getElementById('popupAbilities').innerHTML = enemyAbilitiesHtml;
+                }
                 
                 // No gear for enemies
                 document.getElementById('popupGear').innerHTML = `<p style="color: #6a9aaa; text-align: center; margin-top: 20px;">No gear equipped</p>`;
@@ -1785,13 +2001,6 @@ init() {
                 if (tooltip) {
                     tooltip.style.display = 'none';
                 }
-            }
-
-            startBattle() {
-                // TODO: Implement battle system
-                console.log('Starting battle with party:', this.selectedParty);
-                console.log('Against enemy:', this.currentEnemy);
-                this.showBattle();
             }
         }
 
