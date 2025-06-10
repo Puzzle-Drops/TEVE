@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEVE - Twilight's Forever</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="gameContainer">
+        <!-- Main Menu -->
+        <div id="mainMenu">
+            <div class="gameTitle">TEVE</div>
+            <div class="menuButtons">
+                <button class="menuButton" onclick="game.showHeroes()">Heroes</button>
+                <button class="menuButton" onclick="game.showDungeons()">Dungeons</button>
+                <button class="menuButton" onclick="game.showStash()">Stash</button>
+            </div>
+        </div>
+
+        <!-- Battle Scene -->
+        <div id="battleScene">
+            <div class="battleField">
+                <!-- Party Units -->
+                <div class="unitSlot party1" id="party1">
+                    <div class="unit">P1</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">100/100</div>
+                    </div>
+                </div>
+                <!-- Add more party slots... -->
+
+                <!-- Enemy Units -->
+                <div class="unitSlot enemy1" id="enemy1">
+                    <div class="unit">E1</div>
