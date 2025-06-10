@@ -728,23 +728,31 @@
     "target": "self",
     "logicKey": "trialOfGrassesLogic"
   },
-  "slash": {
+"slash": {
     "name": "Slash",
-    "description": "Deals 10% max HP or 10 damage, whichever is less",
+    "description": "Deals 10% of target's max HP or 10 damage, whichever is lower.",
     "cooldown": 0,
     "effects": ["damage"],
-    "damageFormula": "min(targetMaxHp * 0.1, 10)",
     "target": "enemy",
-    "logicKey": "slashLogic"
+    "logicKey": "slashLogic",
+    "scaling": {
+      "type": "hpPercentMinCap",
+      "percent": 0.1,
+      "cap": 10
+    }
   },
   "bite": {
     "name": "Bite",
-    "description": "Deals 20% max HP or 20 damage, whichever is more",
+    "description": "Deals 20% of target's max HP or 20 damage, whichever is higher.",
     "cooldown": 3,
     "effects": ["damage"],
-    "damageFormula": "max(targetMaxHp * 0.2, 20)",
     "target": "enemy",
-    "logicKey": "biteLogic"
+    "logicKey": "biteLogic",
+    "scaling": {
+      "type": "hpPercentMaxFloor",
+      "percent": 0.2,
+      "floor": 20
+    }
   },
   "frost_breath": {
     "name": "Frost Breath",
