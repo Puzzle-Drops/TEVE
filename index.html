@@ -962,12 +962,17 @@ init() {
                         slot.style.display = 'block';
                         const unitDiv = slot.querySelector('.unit');
                         const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+                        
+                        // Create a shorter display for combat
+                        const shortClass = displayClassName.split(' ').map(word => word[0]).join('');
+                        
                         unitDiv.innerHTML = `
-                            <div style="font-size: 10px; text-align: center;">
-                                ${displayClassName}<br>
-                                ${hero.name}
+                            <div style="font-size: 9px; text-align: center; line-height: 1.2;">
+                                <div>${hero.name}</div>
+                                <div style="color: #6a9aaa;">Lv${hero.level}</div>
                             </div>
                         `;
+                        unitDiv.style.fontSize = '12px';
                     }
                 });
                 
@@ -977,10 +982,12 @@ init() {
                     enemySlot.style.display = 'block';
                     const unitDiv = enemySlot.querySelector('.unit');
                     unitDiv.innerHTML = `
-                        <div style="font-size: 10px; text-align: center;">
-                            ${this.currentEnemy.name}
+                        <div style="font-size: 9px; text-align: center; line-height: 1.2;">
+                            <div>${this.currentEnemy.name}</div>
+                            <div style="color: #6a9aaa;">Lv${this.currentEnemy.level}</div>
                         </div>
                     `;
+                    unitDiv.style.fontSize = '12px';
                 }
             }
 
