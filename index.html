@@ -1706,7 +1706,7 @@ init() {
                             const escapedDesc = ability.description.replace(/'/g, "\\'");
                             const escapedName = ability.name.replace(/'/g, "\\'");
                             // Use generic enemy ability icons or create specific ones
-                            const iconName = ability.icon || `enemy_skill${index + 1}.png`;
+                            const iconName = ability.icon;
                             return `
                                 <div class="abilityIconSmall" 
                                      onmouseover="game.showAbilityTooltip(event, '${escapedName}', 1, ${ability.cooldown}, '${escapedDesc}')"
@@ -1723,8 +1723,8 @@ init() {
                 document.getElementById('popupAbilities').innerHTML = enemyAbilitiesHtml;
                 
                 // No gear for enemies
-                document.getElementById('popupGear').innerHTML = '<p style="color: #6a9aaa; text-align: center; margin-top: 20px;">No gear equipped</p>';
-                
+                document.getElementById('popupGear').innerHTML = `<p style="color: #6a9aaa; text-align: center; margin-top: 20px;">${ability.icon} No gear equipped</p>`;
+
                 popup.style.display = 'block';
             }
 
