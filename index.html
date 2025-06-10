@@ -191,56 +191,30 @@
         </div>
     </div>
 
+    <script src="spellLogic.js"></script>
     <script>
-        // Class definitions
-        const CLASSES = {
-            'Villager': {
-                tier: 0,
-                modifiers: { str: 1.2, agi: .9, int: .5 },
-                sprite: 'hero0',
-                abilities: ['Punch', 'Fury']
-            },
-            'Druid': {
-                tier: 1,
-                modifiers: { str: 1.2, agi: 1.4, int: 1.8 },
-                sprite: 'hero1',
-                abilities: ['Nature\'s Touch']
-            },
-            'Arch Druid': {
-                tier: 2,
-                modifiers: { str: 1.2, agi: 1.4, int: 1.8 },
-                sprite: 'hero2',
-                abilities: ['Nature\'s Touch', 'Wild Growth']
-            },
-            'Shapeshifter': {
-                tier: 3,
-                modifiers: { str: 1.8, agi: 2.0, int: 1.2 },
-                sprite: 'hero3a',
-                abilities: ['Nature\'s Touch', 'Wild Growth', 'Beast Form']
-            },
-            'Runemaster': {
-                tier: 4,
-                modifiers: { str: 1.5, agi: 1.5, int: 2.2 },
-                sprite: 'hero4a',
-                abilities: ['Nature\'s Touch', 'Wild Growth', 'Beast Form', 'Runic Aura']
-            },
-            'Shaman': {
-                tier: 3,
-                modifiers: { str: 1.4, agi: 1.3, int: 2.0 },
-                sprite: 'hero3b',
-                abilities: ['Nature\'s Touch', 'Wild Growth', 'Elemental Shield']
-            },
-            'Summoner': {
-                tier: 4,
-                modifiers: { str: 1.2, agi: 1.2, int: 2.5 },
-                sprite: 'hero4b',
-                abilities: ['Nature\'s Touch', 'Wild Growth', 'Elemental Shield', 'Nature\'s Army']
+        // Global managers
+        let spellManager;
+        let unitData;
+        
+        // Initialize data loading
+        async function loadGameData() {
+            spellManager = new SpellManager();
+            await spellManager.loadSpells();
+            
+            // Load unit data
+            try {
+                const response = await fetch('units.json');
+                unitData = await response.json();
+                console.log('Unit data loaded');
+            } catch (error) {
+                console.error('Failed to load unit data:', error);
             }
-        };
+        }
 
         // Hero Class
         class Hero {
-            constructor(className = 'Villager') {
+            constructor(className = 'villager') {
                 this.name = this.generateName();
                 this.className = className;
                 this.level = 1;
@@ -265,7 +239,13 @@
             }
 
             get classData() {
-                return CLASSES[this.className];
+                const classId = this.className.toLowerCase().replace(/ /g, '_');
+                return unitData?.classes[classId] || {
+                    name: this.className,
+                    tier: 0,
+                    modifiers: { str: 1, agi: 1, int: 1 },
+                    spells: []
+                };
             }
 
             get classTier() {
@@ -309,47 +289,59 @@
             }
 
             getClassAbilities() {
-                if (this.classTier === 0) {
-                    return [
-                        { name: 'Punch', cooldown: 0, currentCooldown: 0, level: 1 },
-                        { name: 'Fury', cooldown: 5, currentCooldown: 0, level: 1 }
-                    ];
-                }
-                
+                const classInfo = this.classData;
                 const abilities = [];
-                const classAbilities = this.classData.abilities;
-                const numAbilities = Math.min(classAbilities.length, this.classTier);
                 
-                // Determine ability level (level 5 for awakened class 4)
-                const abilityLevel = (this.classTier === 4 && this.awakened) ? 5 : this.classTier;
-                
-                // Add abilities based on tier (no duplicates)
-                for (let i = 0; i < numAbilities; i++) {
-                    const ability = {
-                        name: classAbilities[i],
-                        cooldown: i === 0 ? 0 : (i === 1 ? 5 : 10),
-                        currentCooldown: 0,
-                        level: abilityLevel
-                    };
-                    
-                    // Mark tier 4 ability as aura
-                    if (i === 3 && this.classTier === 4) {
-                        ability.aura = true;
-                        ability.cooldown = 0;
-                    }
-                    
-                    abilities.push(ability);
+                if (!classInfo.spells || classInfo.spells.length === 0) {
+                    return abilities;
                 }
                 
-                // Add 5th ultimate ability for awakened class 4
-                if (this.classTier === 4 && this.awakened) {
-                    abilities.push({
-                        name: this.className === 'Runemaster' ? 'Eternal Rune' : 'Nature\'s Wrath',
-                        cooldown: Math.floor(Math.random() * 500) + 1, // Random 1-500 cooldown at start
-                        currentCooldown: Math.floor(Math.random() * 500) + 1,
-                        level: 5,
-                        ultimate: true
-                    });
+                // Get spell data from manager
+                const spellIds = classInfo.spells;
+                const spells = spellManager ? spellManager.getSpellsByIds(spellIds) : [];
+                
+                // Determine ability level based on tier and awakened status
+                const abilityLevel = (this.classTier === 4 && this.awakened) ? 5 : this.classTier || 1;
+                
+                // Add regular abilities
+                spells.forEach((spell, index) => {
+                    if (spell) {
+                        const ability = {
+                            id: spell.id,
+                            name: spell.name,
+                            cooldown: spell.cooldown,
+                            currentCooldown: 0,
+                            level: abilityLevel,
+                            description: spell.description,
+                            icon: `${spell.id}.png`,
+                            effects: spell.effects
+                        };
+                        
+                        // Mark aura abilities
+                        if (spell.effects.includes('aura')) {
+                            ability.aura = true;
+                        }
+                        
+                        abilities.push(ability);
+                    }
+                });
+                
+                // Add ultimate ability for awakened class 4
+                if (this.classTier === 4 && this.awakened && classInfo.ultimateSpell) {
+                    const ultimateSpell = spellManager ? spellManager.getSpell(classInfo.ultimateSpell) : null;
+                    if (ultimateSpell) {
+                        abilities.push({
+                            id: ultimateSpell.id,
+                            name: ultimateSpell.name,
+                            cooldown: Math.floor(Math.random() * 500) + 1,
+                            currentCooldown: Math.floor(Math.random() * 500) + 1,
+                            level: 5,
+                            ultimate: true,
+                            description: ultimateSpell.description,
+                            icon: `${ultimateSpell.id}.png`,
+                            effects: ultimateSpell.effects
+                        });
+                    }
                 }
                 
                 return abilities;
@@ -373,20 +365,14 @@
             }
 
             getPromotionOptions() {
-                const promotions = {
-                    'Villager': ['Druid'],
-                    'Druid': ['Arch Druid'],
-                    'Arch Druid': ['Shapeshifter', 'Shaman'],
-                    'Shapeshifter': ['Runemaster'],
-                    'Shaman': ['Summoner']
-                };
+                const classInfo = this.classData;
                 
                 // Special case for Awakening at Class 4 Level 400
                 if (this.classTier === 4 && this.level >= 400 && !this.awakened) {
                     return ['Awaken'];
                 }
                 
-                return promotions[this.className] || [];
+                return classInfo.promotesTo || [];
             }
 
             promote(newClass) {
@@ -434,19 +420,25 @@
             }
 
             getAbilities() {
+                // For now, return hardcoded abilities
+                // TODO: Load from spells.json when boss data is moved there
                 if (this.name === 'Satyr Instigator') {
                     return [
                         {
+                            id: 'slash',
                             name: 'Slash',
                             description: 'Deals 10% max HP or 10 damage, whichever is less',
                             cooldown: 0,
-                            currentCooldown: 0
+                            currentCooldown: 0,
+                            icon: 'boss_skill1.png'
                         },
                         {
+                            id: 'bite',
                             name: 'Bite',
                             description: 'Deals 20% max HP or 20 damage, whichever is more',
                             cooldown: 3,
-                            currentCooldown: 0
+                            currentCooldown: 0,
+                            icon: 'boss_skill2.png'
                         }
                     ];
                 }
@@ -589,59 +581,59 @@ init() {
     
     // Hero 0: Druid (Level 185)
     this.heroes[0].level = 50;
-    this.heroes[0].promote('Druid');
+    this.heroes[0].promote('druid');
     this.heroes[0].level = 185;
     this.heroes[0].exp = 900;
     
     // Hero 1: Arch Druid (Level 275)
     this.heroes[1].level = 50;
-    this.heroes[1].promote('Druid');
+    this.heroes[1].promote('druid');
     this.heroes[1].level = 100;
-    this.heroes[1].promote('Arch Druid');
+    this.heroes[1].promote('arch_druid');
     this.heroes[1].level = 275;
     this.heroes[1].exp = 500;
     
     // Hero 2: Shapeshifter (Level 380)
     this.heroes[2].level = 50;
-    this.heroes[2].promote('Druid');
+    this.heroes[2].promote('druid');
     this.heroes[2].level = 100;
-    this.heroes[2].promote('Arch Druid');
+    this.heroes[2].promote('arch_druid');
     this.heroes[2].level = 200;
-    this.heroes[2].promote('Shapeshifter');
+    this.heroes[2].promote('shapeshifter');
     this.heroes[2].level = 380;
     this.heroes[2].exp = 700;
     
     // Hero 3: Runemaster (Level 500 - max level)
     this.heroes[3].level = 50;
-    this.heroes[3].promote('Druid');
+    this.heroes[3].promote('druid');
     this.heroes[3].level = 100;
-    this.heroes[3].promote('Arch Druid');
+    this.heroes[3].promote('arch_druid');
     this.heroes[3].level = 200;
-    this.heroes[3].promote('Shapeshifter');
+    this.heroes[3].promote('shapeshifter');
     this.heroes[3].level = 300;
-    this.heroes[3].promote('Runemaster');
+    this.heroes[3].promote('runemaster');
     this.heroes[3].level = 500;
     this.heroes[3].exp = 0; // Max level, no exp needed
     
     // Hero 4: Shaman (Level 315)
     this.heroes[4].level = 50;
-    this.heroes[4].promote('Druid');
+    this.heroes[4].promote('druid');
     this.heroes[4].level = 100;
-    this.heroes[4].promote('Arch Druid');
+    this.heroes[4].promote('arch_druid');
     this.heroes[4].level = 200;
-    this.heroes[4].promote('Shaman');
+    this.heroes[4].promote('shaman');
     this.heroes[4].level = 315;
     this.heroes[4].exp = 900;
     
     // Hero 5: Summoner (Level 500)
     this.heroes[5].level = 50;
-    this.heroes[5].promote('Druid');
+    this.heroes[5].promote('druid');
     this.heroes[5].level = 100;
-    this.heroes[5].promote('Arch Druid');
+    this.heroes[5].promote('arch_druid');
     this.heroes[5].level = 200;
-    this.heroes[5].promote('Shaman');
+    this.heroes[5].promote('shaman');
     this.heroes[5].level = 300;
-    this.heroes[5].promote('Summoner');
+    this.heroes[5].promote('summoner');
     this.heroes[5].level = 500;
     this.heroes[5].exp = 0; // Max level, no exp needed
     
@@ -925,12 +917,14 @@ init() {
                     const canPromote = hero.canPromote() && !hero.awakened;
                     const isAwakenable = hero.classTier === 4 && hero.level >= 400 && !hero.awakened;
                     
-                    // Use local image files
-                    const spriteName = hero.classData.sprite;
+                    // Use class ID for image files
+                    const classId = hero.className.toLowerCase().replace(/ /g, '_');
+					const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+
                     thumb.innerHTML = `
     <div style="position: relative; width: 60px; height: 60px;">
-        <img src="https://puzzle-drops.github.io/TEVE/img/${spriteName}front.gif" alt="${hero.className}" 
-             onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${spriteName}</text></svg>'">
+        <img src="https://puzzle-drops.github.io/TEVE/img/${classId}_front.gif" alt="${hero.className}" 
+             onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'10\\'>${hero.className}</text></svg>'">
              
         ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
 
@@ -939,7 +933,7 @@ init() {
         ${canPromote ? `<div class="promoteArrowThumb ${isAwakenable ? 'awaken' : 'normal'}">^</div>` : ''}
     </div>
 
-    <div class="thumbClass">${hero.className}</div>
+    <div class="thumbClass">${displayClassName}</div>
     <div class="thumbName">${hero.name}</div>
 `;
 
@@ -955,8 +949,8 @@ init() {
                 
                 // Update portrait
                 const portrait = document.getElementById('heroPortrait');
-                const spriteName = hero.classData.sprite;
-                portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/${spriteName}front.gif" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${spriteName}</text></svg>'">`;
+                const classId = hero.className.toLowerCase().replace(/ /g, '_');
+                portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/${classId}_front.gif" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${hero.className}</text></svg>'">`;
                 
                 // Update hero list selection
                 this.updateHeroList();
@@ -1007,10 +1001,12 @@ init() {
                     }
                 }
                 
+                const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+				
                 content.innerHTML = `
                     <div style="margin-bottom: 20px;">
                         ${stars ? `<div style="font-size: 24px; font-weight: bold; margin-bottom: 5px; ${hero.awakened ? 'color: #d896ff;' : 'color: #ffd700;'} text-shadow: 0 0 12px ${hero.awakened ? 'rgba(216, 150, 255, 0.9)' : 'rgba(255, 215, 0, 0.9)'}, 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${stars}</div>` : ''}
-                        <div class="heroName">${hero.className}</div>
+						<div class="heroName">${displayClassName}</div>
                         <div style="font-size: 18px; color: #6a9aaa;">
                             <span id="heroNameText">${hero.name}</span>
                             <span class="editNameBtn" onclick="game.editHeroName()">✏️</span>
@@ -1041,25 +1037,11 @@ init() {
             }
 
             showSkillsTab(hero, content) {
-                // Define skill icon mapping
-                const skillIcons = {
-                    'Punch': 'skill1.png',
-                    'Fury': 'skill2.png',
-                    'Nature\'s Touch': 'skill3.png',
-                    'Wild Growth': 'skill4.png',
-                    'Beast Form': 'skill5.png',
-                    'Elemental Shield': 'skill6.png',
-                    'Runic Aura': 'skill7.png',
-                    'Nature\'s Army': 'skill8.png',
-                    'Eternal Rune': 'skill9.png',
-                    'Nature\'s Wrath': 'skill10.png'
-                };
-                
                 content.innerHTML = `
                     <div class="skillsContainer">
                         ${hero.abilities.map((ability, index) => `
                             <div class="skillBox" onclick="game.selectSkill(${index})">
-                                <img src="https://puzzle-drops.github.io/TEVE/img/${skillIcons[ability.name] || 'skill1.png'}" alt="${ability.name}" onerror="this.style.display='none'">
+                                <img src="https://puzzle-drops.github.io/TEVE/img/${ability.icon || 'skill1.png'}" alt="${ability.name}" onerror="this.style.display='none'">
                                 <div class="skillName">${ability.name}</div>
                                 <span class="skillLevel">Lv${ability.level}</span>
                             </div>
@@ -1085,17 +1067,8 @@ init() {
                     content.innerHTML = `
                         <div class="promoteContent">
                             <div class="classCard">
-                                <img src="https://puzzle-drops.github.io/TEVE/img/${hero.classData.sprite}front.gif" alt="${hero.className}" onerror="this.style.display='none'">
-                                <h3>Current Class</h3>
-                                <h2>${hero.className}</h2>
-                                <div class="classStars">★★★★★</div>
-                                <p>Level ${hero.level}</p>
-                            </div>
-                            <div class="promoteArrowPanelArrow">↓</div>
-                            <div class="classCard">
                                 <h2>Awaken</h2>
-                                <div style="font-size: 24px; color: #d896ff; margin: 10px 0;">★★★★★★</div>
-                                <p>Required: Level 400</p>
+                                <div style="font-size: 24px; font-weight: bold; color: #d896ff; text-shadow: 0 0 12px rgba(216, 150, 255, 0.9), 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">★★★★★★</div>
                                 <button class="promoteButton" style="background: linear-gradient(135deg, #d896ff 0%, #a855f7 100%); box-shadow: 0 0 20px rgba(216, 150, 255, 0.5); color: #0a1929;" onclick="game.showPromotionConfirm('Awaken')" 
                                     onmouseover="this.style.background='linear-gradient(135deg, #e6b0ff 0%, #d896ff 100%)'; this.style.boxShadow='0 0 30px rgba(230, 176, 255, 0.7)'"
                                     onmouseout="this.style.background='linear-gradient(135deg, #d896ff 0%, #a855f7 100%)'; this.style.boxShadow='0 0 20px rgba(216, 150, 255, 0.5)'">
@@ -1122,14 +1095,7 @@ init() {
                 if (hero.classTier === 4 && !hero.awakened) {
                     content.innerHTML = `
                         <div class="promoteContent">
-                            <div class="classCard">
-                                <img src="https://puzzle-drops.github.io/TEVE/img/${hero.classData.sprite}front.gif" alt="${hero.className}" onerror="this.style.display='none'">
-                                <h3>Current Class</h3>
-                                <h2>${hero.className}</h2>
-                                <div class="classStars">${currentStars}</div>
-                                <p>Level ${hero.level}</p>
-                            </div>
-                            <p style="margin-top: 40px; font-size: 18px; color: #6a9aaa;">Reach level 400 to awaken</p>
+                            <p style="margin-top: 20px; font-size: 18px; color: #6a9aaa;">Reach level 400 to awaken</p>
                         </div>
                     `;
                     return;
@@ -1146,31 +1112,25 @@ init() {
                     return;
                 }
                 
+                const classId = hero.className.toLowerCase().replace(/ /g, '_');
                 content.innerHTML = `
                     <div class="promoteContent">
-                        <div class="classCard">
-                            <img src="img/${hero.classData.sprite}front.gif" alt="${hero.className}" onerror="this.style.display='none'">
-                            <h3>Current Class</h3>
-                            <h2>${hero.className}</h2>
-                            <div class="classStars">${currentStars}</div>
-                            <p>Level ${hero.level}</p>
-                        </div>
                         ${canPromote ? `
-                            <div class="promoteArrowPanelArrow">↓</div>
                             <div class="promoteOptions">
                                 ${promotions.map(promo => {
-                                    const promoClass = CLASSES[promo];
+                                    const promoId = promo.toLowerCase().replace(/ /g, '_');
+                                    const promoClass = unitData?.classes[promoId];
+                                    if (!promoClass) return '';
+                                    
                                     let promoStars = '★';
                                     for (let i = 0; i < promoClass.tier; i++) {
                                         promoStars += '★';
                                     }
                                     return `
                                         <div class="classCard">
-                                            <img src="https://puzzle-drops.github.io/TEVE/img/${promoClass.sprite}front.gif" alt="${promo}" onerror="this.style.display='none'">
-                                            <h3>Promote to</h3>
-                                            <h2>${promo}</h2>
-                                            <div class="classStars">${promoStars}</div>
-                                            <p>Required: Level ${[50, 100, 200, 300][hero.classTier]}</p>
+                                            <img src="https://puzzle-drops.github.io/TEVE/img/${promoId}_front.gif" alt="${promo}" onerror="this.style.display='none'">
+											<div class="classStars" style="font-size: 24px; font-weight: bold; color: #ffd700; text-shadow: 0 0 12px rgba(255, 215, 0, 0.9), 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${promoStars}</div>
+											<h2>${promoClass.name}</h2>
                                             <button class="promoteButton" onclick="game.showPromotionConfirm('${promo}')">
                                                 Promote<br>
                                                 <span style="font-size: 14px;">💰 -${1000 * Math.pow(10, hero.classTier)}</span>
@@ -1254,22 +1214,9 @@ init() {
                 const skill = hero.abilities[index];
                 const desc = document.getElementById('skillDescription');
                 
-                const descriptions = {
-                    'Punch': 'Basic attack dealing 5 + STR + AGI + INT damage',
-                    'Fury': 'Doubles action bar gain for 5 turns',
-                    'Nature\'s Touch': 'Heals an ally for 20% max HP + INT',
-                    'Wild Growth': 'Heals all allies for 10% max HP + (INT * 0.5)',
-                    'Beast Form': 'Transform into beast form, gaining 50% STR and AGI',
-                    'Elemental Shield': 'Shield an ally, absorbing damage equal to INT * 2',
-                    'Runic Aura': 'All allies gain 20% cooldown reduction',
-                    'Nature\'s Army': 'Summon nature spirits to fight alongside you',
-                    'Eternal Rune': 'Ultimate: Unleash ancient runic power dealing massive damage',
-                    'Nature\'s Wrath': 'Ultimate: Channel the fury of nature to devastate all enemies'
-                };
-                
                 desc.innerHTML = `
                     <h3>${skill.name} (Level ${skill.level})</h3>
-                    <p>${descriptions[skill.name] || 'No description available'}</p>
+                    <p>${skill.description || 'No description available'}</p>
                     ${skill.cooldown > 0 && !skill.ultimate ? `<p>Cooldown: ${skill.cooldown} turns</p>` : ''}
                     ${skill.ultimate ? `<p>Ultimate Ability - Random starting cooldown: ${skill.currentCooldown} turns</p>` : ''}
                     ${skill.passive ? '<p><em>Passive ability</em></p>' : ''}
@@ -1285,8 +1232,8 @@ init() {
                     if (hero.promote(newClass)) {
                         // Update portrait remains the same
                         const portrait = document.getElementById('heroPortrait');
-                        const spriteName = hero.classData.sprite;
-                        portrait.innerHTML = `<img src="img/${spriteName}front.gif" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${spriteName}</text></svg>'">`;
+                        const classId = hero.className.toLowerCase().replace(/ /g, '_');
+                        portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/${classId}_front.gif" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${hero.className}</text></svg>'">`;
                         
                         this.showHeroTab('info');
                         this.updateHeroList();
@@ -1298,8 +1245,8 @@ init() {
                     if (hero.promote(newClass)) {
                         // Update portrait immediately after promotion
                         const portrait = document.getElementById('heroPortrait');
-                        const spriteName = hero.classData.sprite;
-                        portrait.innerHTML = `<img src="img/${spriteName}front.gif" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${spriteName}</text></svg>'">`;
+                        const classId = hero.className.toLowerCase().replace(/ /g, '_');
+                        portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/${classId}_front.gif" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${hero.className}</text></svg>'">`;
                         
                         this.showHeroTab('info');
                         this.updateHeroList();
@@ -1465,14 +1412,15 @@ init() {
                     }
                 }
                 
-                const spriteName = hero.classData.sprite;
+                const classId = hero.className.toLowerCase().replace(/ /g, '_');
+				const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
                 thumb.innerHTML = `
                     <div style="position: relative; width: 60px; height: 60px;">
-                        <img src="https://puzzle-drops.github.io/TEVE/img/${spriteName}front.gif" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${spriteName}</text></svg>'">
+                        <img src="https://puzzle-drops.github.io/TEVE/img/${classId}_front.gif" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${hero.className}</text></svg>'">
                         ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
                         <div class="thumbLevel">${hero.level}</div>
                     </div>
-                    <div class="thumbClass">${hero.className}</div>
+                    <div class="thumbClass">${displayClassName}</div>
                     <div class="thumbName">${hero.name}</div>
                 `;
                 
@@ -1524,7 +1472,7 @@ init() {
                     
                     if (heroIndex !== null) {
                         const hero = this.heroes[heroIndex];
-                        const spriteName = hero.classData.sprite;
+                        const classId = hero.className.toLowerCase().replace(/ /g, '_');
                         
                         // Generate stars
                         let stars = '★';
@@ -1538,7 +1486,7 @@ init() {
                         slot.innerHTML = `
                             <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
                                 <div style="position: relative; width: 60px; height: 60px;">
-                                    <img src="https://puzzle-drops.github.io/TEVE/img/${spriteName}front.gif" style="width: 60px; height: 60px;" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${spriteName}</text></svg>'">
+                                    <img src="https://puzzle-drops.github.io/TEVE/img/${classId}_front.gif" style="width: 60px; height: 60px;" alt="${hero.className}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${hero.className}</text></svg>'">
                                     ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
                                     <div class="thumbLevel">${hero.level}</div>
                                 </div>
@@ -1625,8 +1573,9 @@ init() {
             }
 
             showHeroInfoPopup(hero) {
+			    const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
                 const popup = document.getElementById('heroInfoPopup');
-                document.getElementById('popupHeroName').textContent = `Lv.${hero.level} ${hero.className} | ${hero.name}`;
+                document.getElementById('popupHeroName').textContent = `Lv.${hero.level} ${displayClassName} | ${hero.name}`;
                 
                 // Show stats
                 const stats = hero.totalStats;
@@ -1651,43 +1600,17 @@ init() {
                 document.getElementById('popupStats').innerHTML = statsHtml;
                 
                 // Show ability icons with tooltips
-                const skillIcons = {
-                    'Punch': 'skill1.png',
-                    'Fury': 'skill2.png',
-                    'Nature\'s Touch': 'skill3.png',
-                    'Wild Growth': 'skill4.png',
-                    'Beast Form': 'skill5.png',
-                    'Elemental Shield': 'skill6.png',
-                    'Runic Aura': 'skill7.png',
-                    'Nature\'s Army': 'skill8.png',
-                    'Eternal Rune': 'skill9.png',
-                    'Nature\'s Wrath': 'skill9.png'
-                };
-                
-                const descriptions = {
-                    'Punch': 'Basic attack dealing 5 + STR + AGI + INT damage',
-                    'Fury': 'Doubles action bar gain for 5 turns',
-                    'Nature\'s Touch': 'Heals an ally for 20% max HP + INT',
-                    'Wild Growth': 'Heals all allies for 10% max HP + (INT * 0.5)',
-                    'Beast Form': 'Transform into beast form, gaining 50% STR and AGI',
-                    'Elemental Shield': 'Shield an ally, absorbing damage equal to INT * 2',
-                    'Runic Aura': 'All allies gain 20% cooldown reduction',
-                    'Nature\'s Army': 'Summon nature spirits to fight alongside you',
-                    'Eternal Rune': 'Ultimate: Unleash ancient runic power dealing massive damage',
-                    'Nature\'s Wrath': 'Ultimate: Channel the fury of nature to devastate all enemies'
-                };
-                
                 const abilityIconsHtml = `
                     <div style="display: flex; gap: 8px; margin-top: 10px;">
                         ${hero.abilities.map(ability => {
-                            const desc = descriptions[ability.name] || 'No description';
+                            const desc = ability.description || 'No description';
                             const escapedDesc = desc.replace(/'/g, "\\'");
                             const escapedName = ability.name.replace(/'/g, "\\'");
                             return `
                                 <div class="abilityIconSmall" 
                                      onmouseover="game.showAbilityTooltip(event, '${escapedName}', ${ability.level}, ${ability.cooldown}, '${escapedDesc}')"
                                      onmouseout="game.hideAbilityTooltip()">
-                                    <img src="https://puzzle-drops.github.io/TEVE/img/${skillIcons[ability.name] || 'skill1.png'}" 
+                                    <img src="https://puzzle-drops.github.io/TEVE/img/${ability.icon || 'skill1.png'}" 
                                          style="width: 40px; height: 40px;" 
                                          alt="${ability.name}" 
                                          onerror="this.style.display='none'">
@@ -1763,7 +1686,7 @@ init() {
                             const escapedDesc = ability.description.replace(/'/g, "\\'");
                             const escapedName = ability.name.replace(/'/g, "\\'");
                             // Use generic boss ability icons or create specific ones
-                            const iconName = `boss_skill${index + 1}.png`;
+                            const iconName = ability.icon || `boss_skill${index + 1}.png`;
                             return `
                                 <div class="abilityIconSmall" 
                                      onmouseover="game.showAbilityTooltip(event, '${escapedName}', 1, ${ability.cooldown}, '${escapedDesc}')"
@@ -1852,8 +1775,11 @@ init() {
             }
         }
 
-        // Initialize game
-        const game = new Game();
+        // Initialize game after loading data
+        window.addEventListener('DOMContentLoaded', async () => {
+            await loadGameData();
+            window.game = new Game();
+        });
     </script>
 </body>
 </html>
