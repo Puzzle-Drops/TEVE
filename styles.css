@@ -156,18 +156,18 @@ body {
 }
 
 /* Party positions */
-.party1 { left: calc(50% - 400px); bottom: 34%; position: absolute; }
-.party2 { left: calc(50% - 200px); bottom: 32%; position: absolute; }
-.party3 { left: 50%; bottom: 30%; position: absolute; transform: translateX(-50%); }
-.party4 { left: calc(50% + 200px); bottom: 32%; position: absolute; }
-.party5 { left: calc(50% + 400px); bottom: 34%; position: absolute; }
+.party1 { left: calc(50% - 300px); bottom: 150px; }
+.party2 { left: calc(50% - 150px); bottom: 120px; }
+.party3 { left: 50%; bottom: 100px; transform: translateX(-50%); }
+.party4 { left: calc(50% + 150px); bottom: 120px; }
+.party5 { left: calc(50% + 300px); bottom: 150px; }
 
 /* Enemy positions */
-.enemy1 { left: calc(50% - 400px); top: 34%; position: absolute; }
-.enemy2 { left: calc(50% - 200px); top: 32%; position: absolute; }
-.enemy3 { left: 50%; top: 30%; position: absolute; transform: translateX(-50%); }
-.enemy4 { left: calc(50% + 200px); top: 32%; position: absolute; }
-.enemy5 { left: calc(50% + 400px); top: 34%; position: absolute; }
+.enemy1 { left: calc(50% - 300px); top: 150px; }
+.enemy2 { left: calc(50% - 150px); top: 120px; }
+.enemy3 { left: 50%; top: 100px; transform: translateX(-50%); }
+.enemy4 { left: calc(50% + 150px); top: 120px; }
+.enemy5 { left: calc(50% + 300px); top: 150px; }; }
 
 
 /* Battle UI */
