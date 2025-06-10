@@ -13,8 +13,9 @@ class BattleUnit {
         this.cooldowns = {};
         
         // Initialize cooldowns
-        if (this.source.abilities) {
-            this.source.abilities.forEach((ability, index) => {
+        const abilities = this.abilities;
+        if (abilities && abilities.length > 0) {
+            abilities.forEach((ability, index) => {
                 if (ability.cooldown > 0) {
                     this.cooldowns[index] = 0;
                 }
@@ -24,6 +25,8 @@ class BattleUnit {
                 }
             });
         }
+        
+        console.log(`Created BattleUnit: ${this.name}, HP: ${this.currentHp}/${this.maxHp}, Speed: ${this.actionBarSpeed}`);
     }
     
     get name() {
@@ -129,6 +132,7 @@ class Battle {
         this.autoMode = false;
         this.battleLog = [];
         this.gameSpeed = 1;
+        this.running = true;
         
         // Create battle units
         this.party = party.map((hero, index) => hero ? new BattleUnit(hero, false, index) : null).filter(u => u);
@@ -157,40 +161,58 @@ class Battle {
     
     start() {
         this.log("Battle started!");
+        this.log(`Your party: ${this.party.map(u => u.name).join(', ')}`);
+        this.log(`Enemies: ${this.enemies.map(u => u.name).join(', ')}`);
+        
+        // Initial UI update
         this.updateUI();
-        this.battleLoop();
+        
+        // Start the battle loop with a small delay
+        setTimeout(() => this.battleLoop(), 500);
     }
     
     battleLoop() {
-        if (this.checkBattleEnd()) return;
+        if (!this.running || this.checkBattleEnd()) return;
         
-        // Action bar progression
-        let anyoneCanAct = false;
-        
-        while (!anyoneCanAct && !this.waitingForPlayer) {
-            // Progress action bars
-            this.allUnits.forEach(unit => {
-                if (unit.isAlive) {
-                    unit.actionBar += unit.actionBarSpeed;
-                }
-            });
-            
-            // Check who can act
-            const readyUnits = this.allUnits.filter(u => u.isAlive && u.actionBar >= 10000);
-            if (readyUnits.length > 0) {
-                // Sort by action bar value (highest first)
-                readyUnits.sort((a, b) => b.actionBar - a.actionBar);
-                this.currentUnit = readyUnits[0];
-                anyoneCanAct = true;
-            }
+        // If waiting for player, don't progress
+        if (this.waitingForPlayer) {
+            setTimeout(() => this.battleLoop(), 100);
+            return;
         }
         
-        if (anyoneCanAct && this.currentUnit) {
+        // Progress action bars for all living units
+        let highestActionBar = 0;
+        this.allUnits.forEach(unit => {
+            if (unit.isAlive) {
+                unit.actionBar += unit.actionBarSpeed;
+                if (unit.actionBar > highestActionBar) {
+                    highestActionBar = unit.actionBar;
+                }
+            }
+        });
+        
+        // Update UI to show action bar progress
+        this.updateUI();
+        
+        // Check if anyone can act
+        const readyUnits = this.allUnits.filter(u => u.isAlive && u.actionBar >= 10000);
+        
+        if (readyUnits.length > 0) {
+            // Sort by action bar value (highest first)
+            readyUnits.sort((a, b) => b.actionBar - a.actionBar);
+            this.currentUnit = readyUnits[0];
+            
             // Subtract action bar
             this.currentUnit.actionBar -= 10000;
             
+            // Log who's taking a turn
+            this.log(`${this.currentUnit.name}'s turn! (Action: ${Math.floor(this.currentUnit.actionBar)})`);
+            
             // Process turn
             this.processTurn();
+        } else {
+            // Continue the loop
+            setTimeout(() => this.battleLoop(), 50 / this.gameSpeed);
         }
     }
     
@@ -297,7 +319,9 @@ class Battle {
     }
     
     endTurn() {
-        this.currentUnit.reduceCooldowns();
+        if (this.currentUnit) {
+            this.currentUnit.reduceCooldowns();
+        }
         this.currentUnit = null;
         this.waitingForPlayer = false;
         this.turn++;
@@ -437,6 +461,8 @@ class Battle {
     }
     
     endBattle(victory) {
+        this.running = false;
+        
         if (victory) {
             // TODO: Handle loot, experience, etc.
             setTimeout(() => {
@@ -477,7 +503,7 @@ class Battle {
             abilityDiv.innerHTML = `
                 <img src="${iconUrl}" alt="${ability.name}" style="width: 60px; height: 60px;" onerror="this.style.display='none'">
                 <span style="position: absolute; bottom: 5px; font-size: 10px;">${ability.name}</span>
-                ${this.cooldowns[index] > 0 ? `<span class="cooldownText">${this.cooldowns[index]}</span>` : ''}
+                ${unit.cooldowns[index] > 0 ? `<span class="cooldownText">${unit.cooldowns[index]}</span>` : ''}
             `;
             
             if (unit.canUseAbility(index)) {
@@ -568,6 +594,7 @@ class Battle {
                 const healthText = element.querySelector('.healthText');
                 const unitDiv = element.querySelector('.unit');
                 
+                // Update health bar
                 if (healthBar) {
                     const hpPercent = (unit.currentHp / unit.maxHp) * 100;
                     healthBar.style.width = `${hpPercent}%`;
@@ -586,18 +613,48 @@ class Battle {
                     healthText.textContent = `${Math.floor(unit.currentHp)}/${unit.maxHp}`;
                 }
                 
+                // Update unit appearance
                 if (unitDiv) {
                     if (!unit.isAlive) {
                         unitDiv.style.opacity = '0.3';
                         unitDiv.style.filter = 'grayscale(100%)';
                     }
+                }
+                
+                // Update or create action bar
+                let actionBar = element.querySelector('.actionBar');
+                if (!actionBar) {
+                    actionBar = document.createElement('div');
+                    actionBar.className = 'actionBar';
+                    actionBar.style.cssText = 'width: 100px; height: 4px; background: #0a1929; border: 1px solid #2a6a8a; margin-top: 5px; position: relative;';
                     
-                    // Highlight current unit
-                    if (unit === this.currentUnit) {
-                        element.style.filter = 'drop-shadow(0 0 20px #4dd0e1)';
-                    } else {
-                        element.style.filter = '';
+                    const actionFill = document.createElement('div');
+                    actionFill.className = 'actionFill';
+                    actionFill.style.cssText = 'height: 100%; background: linear-gradient(90deg, #4dd0e1 0%, #2a9aaa 100%); transition: width 0.1s; box-shadow: 0 0 5px rgba(77, 208, 225, 0.5);';
+                    
+                    actionBar.appendChild(actionFill);
+                    element.appendChild(actionBar);
+                }
+                
+                // Update action bar fill
+                const actionFill = actionBar.querySelector('.actionFill');
+                if (actionFill) {
+                    const actionPercent = Math.min((unit.actionBar / 10000) * 100, 100);
+                    actionFill.style.width = `${actionPercent}%`;
+                    
+                    // Glow when ready
+                    if (actionPercent >= 100) {
+                        actionFill.style.boxShadow = '0 0 10px rgba(77, 208, 225, 1)';
                     }
+                }
+                
+                // Highlight current unit
+                if (unit === this.currentUnit) {
+                    element.style.border = '2px solid #4dd0e1';
+                    element.style.boxShadow = '0 0 20px rgba(77, 208, 225, 0.5)';
+                } else {
+                    element.style.border = '';
+                    element.style.boxShadow = '';
                 }
             }
         });
