@@ -165,7 +165,7 @@ Each unit begins combat with an action bar value of 0. During every cycle, each 
 Consume all exp upon going to next class and start again at 0 exp, level 1. All classes of a type share the first two Classes. Acolytes upgrade to clerics who then have a class split at 3. They all do this. You must choose which path to take.
 
 Acolyte -> Cleric -> Priest -> Hierophant
-Acolyte -> Cleric -> Matriarch -> Matriarch
+Acolyte -> Cleric -> Matriarch -> Prophetess
 Archer -> Ranger -> Marksman -> Sniper
 Archer -> Ranger -> Tracker -> Monster Hunter
 Druid -> Arch Druid -> Shapeshifter -> Runemaster
