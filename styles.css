@@ -250,8 +250,8 @@ body {
 }
 
 .heroPortrait {
-    width: 200px;
-    height: 200px;
+    width: 30%;
+    height: 100%;
     background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
     border: 2px solid #2a6a8a;
     display: flex;
@@ -262,8 +262,8 @@ body {
 }
 
 .heroPortrait img {
-    max-width: 180px;
-    max-height: 180px;
+	width: 90%;
+	height: 90%;
     image-rendering: pixelated;
     object-fit: contain;
 }
@@ -276,6 +276,7 @@ body {
     display: flex;
     flex-direction: column;
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
+	width: 70%;
 }
 
 .heroTabs {
@@ -640,7 +641,7 @@ body {
 /* Promote Tab */
 .promoteContent {
     text-align: center;
-    padding: 40px;
+    padding: 10px;
 }
 
 .promoteArrowPanelArrow {
@@ -653,15 +654,15 @@ body {
 .classCard {
     background: rgba(10, 25, 41, 0.8);
     border: 2px solid #2a6a8a;
-    padding: 20px;
+    padding: 14px;
     margin: 20px auto;
-    width: 300px;
+    width: 240px;
     position: relative;
     box-shadow: 0 0 20px rgba(42, 106, 138, 0.3);
 }
 
 .classCard h2 {
-    margin: 10px 0;
+    margin: 0;
 }
 
 .classCard h3 {
@@ -671,7 +672,7 @@ body {
 }
 
 .classCard p {
-    margin: 10px 0;
+    margin: 0 0 10px 0;
     font-size: 14px;
     color: #6a9aaa;
 }
@@ -680,13 +681,12 @@ body {
     width: 80px;
     height: 80px;
     image-rendering: pixelated;
-    margin-bottom: 10px;
 }
 
 .promoteOptions {
     display: flex;
     justify-content: center;
-    gap: 40px;
+    gap: 24px;
     margin-top: 20px;
 }
 
@@ -721,11 +721,12 @@ body {
 .gearSlot {
     background: rgba(10, 25, 41, 0.8);
     border: 1px solid #2a6a8a;
-    padding: 15px;
+    padding: 2px;
     text-align: center;
     box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
     width: 100px;
     height: 100px;
+	text-align: center;
 }
 
 .gearLabel {
@@ -733,6 +734,7 @@ body {
     color: #6a9aaa;
     margin-top: 0px;
     margin-bottom: 5px;
+	text-align: center;
 }
 
 .gearItem {
@@ -743,6 +745,7 @@ body {
     justify-content: center;
     width: 80px;
     height: 80px;
+	text-align: center;
 }
 
 /* Party Select Screen */
