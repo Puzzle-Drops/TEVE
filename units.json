@@ -360,24 +360,38 @@
       "promotesTo": []
     }
   },
-  "bosses": {
+  "enemies": {
     "satyr_instigator": {
       "name": "Satyr Instigator",
+      "boss": true,
       "modifiers": { "str": 1.5, "agi": 1.2, "int": 1.0 },
       "spells": ["slash", "bite"]
     },
     "frostfang": {
       "name": "Frostfang",
+      "boss": true,
       "modifiers": { "str": 2.0, "agi": 1.5, "int": 0.8 },
       "spells": ["bite", "frost_breath"]
     },
     "goblin_king": {
       "name": "Goblin King",
+      "boss": true,
       "modifiers": { "str": 1.8, "agi": 1.8, "int": 1.2 },
       "spells": ["slash", "gold_toss", "summon_goblins"]
+    },
+    "satyr_youth": {
+      "name": "Satyr Youth",
+      "boss": false,
+      "modifiers": { "str": 0.8, "agi": 1.0, "int": 0.7 },
+      "spells": ["slash"]
+    },
+    "aggressive_satyr": {
+      "name": "Aggressive Satyr",
+      "boss": false,
+      "modifiers": { "str": 1.2, "agi": 1.1, "int": 0.8 },
+      "spells": ["slash", "bite"]
     }
-  },
-  "promotionRequirements": {
+  },  "promotionRequirements": {
     "0": 50,
     "1": 100,
     "2": 200,
