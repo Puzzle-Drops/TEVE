@@ -574,17 +574,20 @@ const spellLogic = {
     },
 
     // Boss Spells
-    slashLogic: function(battle, caster, target) {
-        const damage = Math.min(target.maxHp * 0.1, 10);
-        battle.dealDamage(caster, target, damage, 'physical');
-        battle.log(`${caster.name} slashes ${target.name} for ${damage} damage!`);
-    },
+slashLogic: function(battle, caster, target, spell) {
+    const { percent, cap } = spell.scaling;
+    const damage = Math.min(target.maxHp * percent, cap);
+    battle.dealDamage(caster, target, damage, 'physical');
+    battle.log(`${caster.name} slashes ${target.name} for ${Math.round(damage)} damage!`);
+},
 
-    biteLogic: function(battle, caster, target) {
-        const damage = Math.max(target.maxHp * 0.2, 20);
-        battle.dealDamage(caster, target, damage, 'physical');
-        battle.log(`${caster.name} bites ${target.name} for ${damage} damage!`);
-    },
+biteLogic: function(battle, caster, target, spell) {
+    const { percent, floor } = spell.scaling;
+    const damage = Math.max(target.maxHp * percent, floor);
+    battle.dealDamage(caster, target, damage, 'physical');
+    battle.log(`${caster.name} bites ${target.name} for ${Math.round(damage)} damage!`);
+},
+
 
     frostBreathLogic: function(battle, caster, targets) {
         const enemies = battle.getEnemies(caster);
