@@ -15,6 +15,7 @@
     "logicKey": "punchLogic"
   },
   "fury": {
+    "id": "fury",
     "name": "Fury",
     "description": "Doubles action bar gain for 5 turns",
     "cooldown": 5,
@@ -24,6 +25,7 @@
     "logicKey": "furyLogic"
   },
   "natures_touch": {
+    "id": "natures_touch",
     "name": "Nature's Touch",
     "description": "Heals an ally for 20% max HP + INT",
     "cooldown": 0,
@@ -36,6 +38,7 @@
     "logicKey": "naturesTouchLogic"
   },
   "wild_growth": {
+    "id": "wild_growth",
     "name": "Wild Growth",
     "description": "Heals all allies for 10% max HP + (INT * 0.5)",
     "cooldown": 5,
