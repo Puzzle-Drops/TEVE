@@ -161,7 +161,6 @@ body {
 .party3 { left: 50%; bottom: 30%; position: absolute; transform: translateX(-50%); }
 .party4 { left: calc(50% + 200px); bottom: 32%; position: absolute; }
 .party5 { left: calc(50% + 400px); bottom: 34%; position: absolute; }
-}
 
 /* Enemy positions */
 .enemy1 { left: calc(50% - 400px); top: 34%; position: absolute; }
