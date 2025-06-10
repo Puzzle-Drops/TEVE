@@ -733,6 +733,7 @@
     "logicKey": "trialOfGrassesLogic"
   },
 "slash": {
+    "id": "slash",
     "name": "Slash",
     "description": "Deals 10% of target's max HP or 10 damage, whichever is lower.",
     "cooldown": 0,
@@ -746,6 +747,7 @@
     }
   },
   "bite": {
+    "id": "bite",
     "name": "Bite",
     "description": "Deals 20% of target's max HP or 20 damage, whichever is higher.",
     "cooldown": 3,
