@@ -1,5 +1,6 @@
 {
   "punch": {
+    "id": "punch",
     "name": "Punch",
     "description": "Basic attack dealing 5 + STR + AGI + INT damage",
     "cooldown": 0,
