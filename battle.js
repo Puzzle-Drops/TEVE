@@ -848,9 +848,11 @@ class Battle {
 
         const unitSlot = document.getElementById(elementId);
 
+        const unitDiv = unitSlot ? unitSlot.querySelector('.unit') : null;
+
         
 
-        if (unitSlot) {
+        if (unitDiv) {
 
             // Determine animation type based on spell effects
 
@@ -886,11 +888,11 @@ class Battle {
 
             
 
-            // Add animation to unit
+            // Add animation to unit sprite only
 
-            unitSlot.classList.add(animationClass);
+            unitDiv.classList.add(animationClass);
 
-            setTimeout(() => unitSlot.classList.remove(animationClass), 800);
+            setTimeout(() => unitDiv.classList.remove(animationClass), 800);
 
             
 
@@ -928,7 +930,9 @@ class Battle {
 
             
 
-            unitSlot.appendChild(spellText);
+            // Append to unit sprite div instead of unit slot
+
+            unitDiv.appendChild(spellText);
 
             
 
@@ -1592,7 +1596,7 @@ class Battle {
 
                             <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${enemyId}_front.gif" alt="${unit.name}" 
 
-                                 style="width: 90%; height: 90%; image-rendering: pixelated; object-fit: contain;"
+                                 style="width: 100%; image-rendering: pixelated; object-fit: contain;"
 
                                  onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'font-size: 9px; text-align: center; line-height: 1.2;\\'><div>${unit.name}</div><div style=\\'color: #6a9aaa;\\'>Lv${unit.source.level}</div></div>'">
 
@@ -1614,7 +1618,7 @@ class Battle {
 
                     actionBar.className = 'actionBar';
 
-                    actionBar.style.cssText = 'width: 80%; height: 4px; background: #0a1929; border: 1px solid #2a6a8a; margin-top: 2px; position: relative;';
+                    actionBar.style.cssText = 'width: 100%; height: 4px; background: #0a1929; border: 1px solid #2a6a8a; margin-top: 2px; position: relative;';
 
                     
 
