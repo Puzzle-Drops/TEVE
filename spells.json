@@ -17,10 +17,10 @@
   "fury": {
     "id": "fury",
     "name": "Fury",
-    "description": "Doubles action bar gain for 5 turns",
-    "cooldown": 5,
+    "description": "150% attack speed for 2 turns",
+    "cooldown": 4,
     "effects": ["buff", "speed"],
-    "duration": 5,
+    "duration": 2,
     "target": "self",
     "logicKey": "furyLogic"
   },
