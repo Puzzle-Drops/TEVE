@@ -978,6 +978,13 @@ init() {
                 this.closeHeroInfo(); // Close any open popups
                 document.getElementById('battleScene').style.display = 'block';
                 
+                // Set battlefield background based on current dungeon
+                const battleField = document.querySelector('.battleField');
+                if (battleField && this.currentDungeon) {
+                    const dungeonName = this.currentDungeon.name.toLowerCase().replace(/ /g, '_');
+                    battleField.style.backgroundImage = `url('https://puzzle-drops.github.io/TEVE/img/fields/${dungeonName}.png')`;
+                }
+                
                 // Reset auto mode toggle
                 document.getElementById('autoModeToggle').checked = false;
                 
