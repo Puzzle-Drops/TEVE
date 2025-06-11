@@ -1148,19 +1148,19 @@ init() {
 				
                 content.innerHTML = `
                     <div style="margin-bottom: 20px;">
-                        ${stars ? `<div style="font-size: 24px; font-weight: bold; margin-bottom: 5px; ${hero.awakened ? 'color: #d896ff;' : 'color: #ffd700;'} text-shadow: 0 0 12px ${hero.awakened ? 'rgba(216, 150, 255, 0.9)' : 'rgba(255, 215, 0, 0.9)'}, 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${stars}</div>` : ''}
+                        ${stars ? `<div style="font-size: 24px; font-weight: bold; ${hero.awakened ? 'color: #d896ff;' : 'color: #ffd700;'} text-shadow: 0 0 12px ${hero.awakened ? 'rgba(216, 150, 255, 0.9)' : 'rgba(255, 215, 0, 0.9)'}, 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${stars}</div>` : ''}
 						<div class="heroName">${displayClassName}</div>
                         <div style="font-size: 18px; color: #6a9aaa;">
                             <span id="heroNameText">${hero.name}</span>
                             <span class="editNameBtn" onclick="game.editHeroName()">✏️</span>
                         </div>
-                        <div style="font-size: 16px; color: #6a9aaa; margin-top: 10px;">Level ${hero.level}</div>
+                        <div style="font-size: 16px; color: #6a9aaa; margin-top: 40px;">Level ${hero.level}</div>
                     </div>
                     <div class="expBar">
                         <div class="expFill" style="width: ${(hero.exp / hero.expToNext) * 100}%"></div>
                         <div class="expText">${hero.exp} / ${hero.expToNext}</div>
                     </div>
-                    <div class="statLine">
+                    <div class="statLine" style="margin-top: 40px;">
                         <span class="statName">HP</span>
                         <span class="statValue">${hero.hp} ${hero.gearStats.str > 0 ? `<span class="statBonus">+${hero.gearStats.str * 25}</span>` : ''}</span>
                     </div>
