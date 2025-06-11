@@ -501,8 +501,8 @@ class Battle {
             const iconUrl = `https://puzzle-drops.github.io/TEVE/img/spells/${ability.id}.png`;
             
             abilityDiv.innerHTML = `
-                <img src="${iconUrl}" alt="${ability.name}" style="width: 60px; height: 60px;" onerror="this.style.display='none'">
-                <span style="position: absolute; bottom: 5px; font-size: 10px;">${ability.name}</span>
+                <img src="${iconUrl}" alt="${ability.name}" style="width: 72px; height: 72px;" onerror="this.style.display='none'">
+                <span style="position: absolute; bottom: 0px; font-size: 10px;">${ability.name}</span>
                 ${unit.cooldowns[index] > 0 ? `<span class="cooldownText">${unit.cooldowns[index]}</span>` : ''}
             `;
             
