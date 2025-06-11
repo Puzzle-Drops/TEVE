@@ -8,8 +8,8 @@ const spellLogic = {
     },
 
     furyLogic: function(battle, caster, target) {
-        battle.applyBuff(caster, 'fury', 5, { actionBarMultiplier: 2 });
-        battle.log(`${caster.name} enters a fury, doubling action bar gain!`);
+        battle.applyBuff(caster, 'fury', 2, { actionBarMultiplier: 1.5 });
+        battle.log(`${caster.name} enters a fury, increasing attack speed for 2 turns!`);
     },
 
     // Druid Spells
