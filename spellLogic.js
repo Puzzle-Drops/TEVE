@@ -2,14 +2,14 @@
 const spellLogic = {
     // Villager Spells
     punchLogic: function(battle, caster, target) {
-        const damage = 5 + caster.stats.str + caster.stats.agi + caster.stats.int;
+        const damage = 5 + (.5*caster.stats.str) + (.5*caster.stats.agi) + (.5*caster.stats.int);
         battle.dealDamage(caster, target, damage, 'physical');
         battle.log(`${caster.name} punches ${target.name} for ${damage} damage!`);
     },
 
     furyLogic: function(battle, caster, target) {
-        battle.applyBuff(caster, 'fury', 2, { actionBarMultiplier: 1.5 });
-        battle.log(`${caster.name} enters a fury, increasing attack speed for 2 turns!`);
+        battle.applyBuff(caster, 'fury', 3, { actionBarMultiplier: 1.5 });
+        battle.log(`${caster.name} enters a fury, increasing attack speed for 3 turns!`);
     },
 
     // Druid Spells
