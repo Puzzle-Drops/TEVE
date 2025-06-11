@@ -593,12 +593,6 @@ class Battle {
                 const healthBar = element.querySelector('.healthFill');
                 const healthText = element.querySelector('.healthText');
                 const unitDiv = element.querySelector('.unit');
-                const unitNameDiv = element.querySelector('.unitName');
-
-                if (unitNameDiv) {
-                    unitNameDiv.textContent = unit.name || "unknown";
-
-                }
                 
                 // Update health bar
                 if (healthBar) {
