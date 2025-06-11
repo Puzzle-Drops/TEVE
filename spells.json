@@ -756,7 +756,7 @@
     "logicKey": "biteLogic",
     "scaling": {
       "type": "hpPercentMaxFloor",
-      "percent": 0.5,
+      "percent": 0.05,
       "floor": 5
     }
   },
