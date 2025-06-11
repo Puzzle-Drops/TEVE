@@ -268,6 +268,8 @@ class Battle {
 
         this.running = true;
 
+        this.processingWaveTransition = false;
+
         
 
         // Wave management
@@ -320,7 +322,31 @@ class Battle {
 
         
 
-        // Clear any existing enemies
+        // Clear any existing enemies and their UI
+
+        for (let i = 1; i <= 5; i++) {
+
+            const element = document.getElementById(`enemy${i}`);
+
+            if (element) {
+
+                const unitDiv = element.querySelector('.unit');
+
+                if (unitDiv) {
+
+                    delete unitDiv.dataset.spriteSet;
+
+                    unitDiv.innerHTML = 'E' + i;
+
+                }
+
+            }
+
+        }
+
+        
+
+        // Clear enemies array
 
         this.enemies = [];
 
@@ -332,7 +358,15 @@ class Battle {
 
             if (enemy) {
 
-                this.enemies.push(new BattleUnit(enemy, true, index));
+                const newUnit = new BattleUnit(enemy, true, index);
+
+                // Ensure HP is set properly
+
+                newUnit.currentHp = newUnit.maxHp;
+
+                this.enemies.push(newUnit);
+
+                console.log(`Created enemy: ${newUnit.name} with ${newUnit.currentHp}/${newUnit.maxHp} HP`);
 
             }
 
@@ -362,9 +396,9 @@ class Battle {
 
         
 
-        // Force UI update to show new enemy sprites
+        // Force complete UI update
 
-        this.updateUI(true);
+        this.updateUI();
 
         
 
@@ -428,7 +462,25 @@ class Battle {
 
     battleLoop() {
 
-        if (!this.running || this.checkBattleEnd()) return;
+        if (!this.running) return;
+
+        
+
+        // Check for battle end first
+
+        if (this.checkBattleEnd()) return;
+
+        
+
+        // If processing wave transition, wait
+
+        if (this.processingWaveTransition) {
+
+            setTimeout(() => this.battleLoop(), 100);
+
+            return;
+
+        }
 
         
 
@@ -506,7 +558,7 @@ class Battle {
 
         } else {
 
-            // Continue the loop - keep consistent speed
+            // Continue the loop
 
             setTimeout(() => this.battleLoop(), 50);
 
@@ -828,7 +880,7 @@ class Battle {
 
         
 
-        // Continue battle loop - keep consistent timing
+        // Continue battle loop
 
         setTimeout(() => this.battleLoop(), 100);
 
@@ -1072,41 +1124,45 @@ class Battle {
 
             if (this.currentWave < this.enemyWaves.length - 1) {
 
-                this.log("Wave cleared!");
+                // Prevent multiple wave transitions
 
-                
+                if (!this.processingWaveTransition) {
 
-                // Heal party to full between waves
+                    this.processingWaveTransition = true;
 
-                this.party.forEach(unit => {
+                    this.log("Wave cleared!");
 
-                    if (unit.isAlive) {
+                    
 
-                        unit.currentHp = unit.maxHp;
+                    // Heal party to full between waves
 
-                        this.log(`${unit.name} restored to full health!`);
+                    this.party.forEach(unit => {
 
-                    }
+                        if (unit.isAlive) {
 
-                });
+                            unit.currentHp = unit.maxHp;
 
-                
+                            this.log(`${unit.name} restored to full health!`);
 
-                // Load next wave after a delay
+                        }
 
-                setTimeout(() => {
+                    });
 
-                    this.loadWave(this.currentWave + 1);
+                    
 
-                    // Continue the battle loop
+                    // Load next wave
 
-                    setTimeout(() => this.battleLoop(), 500);
+                    setTimeout(() => {
 
-                }, 2000);
+                        this.loadWave(this.currentWave + 1);
 
-                
+                        this.processingWaveTransition = false;
 
-                return false; // Battle continues but pause the current loop
+                    }, 2000);
+
+                }
+
+                return false; // Battle continues
 
             } else {
 
@@ -1352,7 +1408,7 @@ class Battle {
 
     
 
-    updateUI(forceUpdate = false) {
+    updateUI() {
 
         // Update all unit displays
 
@@ -1432,9 +1488,9 @@ class Battle {
 
                     
 
-                    // Update sprite - force update on new waves or if not set
+                    // Update sprite for enemies - always update to ensure correct sprite
 
-                    if (unit.isEnemy && (!unitDiv.dataset.spriteSet || forceUpdate)) {
+                    if (unit.isEnemy && unit.isAlive) {
 
                         const enemyId = unit.source.enemyId;
 
@@ -1447,8 +1503,6 @@ class Battle {
                                  onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'font-size: 9px; text-align: center; line-height: 1.2;\\'><div>${unit.name}</div><div style=\\'color: #6a9aaa;\\'>Lv${unit.source.level}</div></div>'">
 
                         `;
-
-                        unitDiv.dataset.spriteSet = 'true';
 
                     }
 
