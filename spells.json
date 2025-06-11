@@ -2,14 +2,14 @@
   "punch": {
     "id": "punch",
     "name": "Punch",
-    "description": "Basic attack dealing 5 + STR + AGI + INT damage",
+    "description": "Basic attack dealing 5 + (.5)STR + (.5)AGI + (.5)INT damage",
     "cooldown": 0,
     "effects": ["damage"],
     "scaling": {
       "base": 5,
-      "str": 1.0,
-      "agi": 1.0,
-      "int": 1.0
+      "str": 0.5,
+      "agi": 0.5,
+      "int": 0.5
     },
     "target": "enemy",
     "logicKey": "punchLogic"
@@ -17,10 +17,10 @@
   "fury": {
     "id": "fury",
     "name": "Fury",
-    "description": "150% attack speed for 2 turns",
-    "cooldown": 4,
+    "description": "150% attack speed for 3 turns",
+    "cooldown": 5,
     "effects": ["buff", "speed"],
-    "duration": 2,
+    "duration": 3,
     "target": "self",
     "logicKey": "furyLogic"
   },
