@@ -735,29 +735,29 @@
 "slash": {
     "id": "slash",
     "name": "Slash",
-    "description": "Deals 10% of target's max HP or 10 damage, whichever is lower.",
+    "description": "Deals 5% of target's max HP or 5 damage, whichever is lower.",
     "cooldown": 0,
     "effects": ["damage"],
     "target": "enemy",
     "logicKey": "slashLogic",
     "scaling": {
       "type": "hpPercentMinCap",
-      "percent": 0.1,
-      "cap": 10
+      "percent": 0.05,
+      "cap": 5
     }
   },
   "bite": {
     "id": "bite",
     "name": "Bite",
-    "description": "Deals 20% of target's max HP or 20 damage, whichever is higher.",
+    "description": "Deals 10% of target's max HP or 10 damage, whichever is higher.",
     "cooldown": 3,
     "effects": ["damage"],
     "target": "enemy",
     "logicKey": "biteLogic",
     "scaling": {
       "type": "hpPercentMaxFloor",
-      "percent": 0.2,
-      "floor": 20
+      "percent": 0.1,
+      "floor": 10
     }
   },
   "frost_breath": {
