@@ -188,11 +188,22 @@
                     
                     <div class="vsText">VS</div>
                     
-                    <div class="bossPreview" onclick="game.showBossInfo()">
-                        <div class="bossStars">★</div>
-                        <div class="bossImage">👹</div>
-                        <div class="bossName" id="bossName">Satyr Instigator</div>
-                        <div class="bossLevel" id="bossLevel">Lv 25</div>
+                    <div class="enemyFormation" id="enemyFormation">
+                        <div class="enemySlot" data-slot="0">
+                            <div class="slotPlaceholder">⬡</div>
+                        </div>
+                        <div class="enemySlot" data-slot="1">
+                            <div class="slotPlaceholder">⬡</div>
+                        </div>
+                        <div class="enemySlot" data-slot="2">
+                            <div class="slotPlaceholder">⬡</div>
+                        </div>
+                        <div class="enemySlot" data-slot="3">
+                            <div class="slotPlaceholder">⬡</div>
+                        </div>
+                        <div class="enemySlot" data-slot="4">
+                            <div class="slotPlaceholder">⬡</div>
+                        </div>
                     </div>
                 </div>
                 
@@ -456,7 +467,7 @@
             constructor(enemyId, level, stars = 1) {
                 this.enemyId = enemyId;
                 this.level = level;
-                this.stars = stars;
+                this.stars = this.calculateStars(level);
                 
                 // Load enemy data from unitData
                 const enemyData = unitData?.enemies[enemyId];
@@ -472,6 +483,17 @@
                     this.modifiers = { str: 1.0, agi: 1.0, int: 1.0 };
                     this.abilities = [];
                 }
+            }
+
+            calculateStars(level) {
+                if (level < 50) return 1;
+                if (level < 100) return 2;
+                if (level < 200) return 3;
+                if (level < 300) return 4;
+                if (level < 400) return 5;
+                if (level < 800) return 6;
+                if (level < 1000) return 7;
+                return 8;
             }
 
             get baseStats() {
@@ -960,6 +982,9 @@ init() {
                 // Set current enemy for display purposes (first enemy of last wave)
                 this.currentEnemy = this.dungeonWaves[this.dungeonWaves.length - 1][0];
                 
+                // Get the last wave for enemy display
+                this.lastWaveEnemies = this.dungeonWaves[this.dungeonWaves.length - 1];
+                
                 // Reset party selection
                 this.selectedParty = [null, null, null, null, null];
                 
@@ -1040,7 +1065,7 @@ init() {
                         
                         unitDiv.innerHTML = `
                             <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_back.gif" alt="${displayClassName}" 
-                                 style="width: 90%; height: 90%; image-rendering: pixelated; object-fit: contain;"
+                                 style="width: 100%; image-rendering: pixelated; object-fit: contain;"
                                  onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'font-size: 9px; text-align: center; line-height: 1.2;\\'><div>${hero.name}</div><div style=\\'color: #6a9aaa;\\'>Lv${hero.level}</div></div>'">
                         `;
                     }
@@ -1552,21 +1577,70 @@ init() {
                 
                 // Update dungeon info
                 document.getElementById('dungeonName').textContent = this.currentDungeon.name;
-                document.getElementById('bossName').textContent = this.currentEnemy.name;
-                document.getElementById('bossLevel').textContent = `Lv ${this.currentEnemy.level}`;
-                
-                // Update boss stars
-                let stars = '★';
-                for (let i = 0; i < this.currentEnemy.stars; i++) {
-                    stars += '★';
-                }
-                document.querySelector('.bossStars').textContent = stars;
                 
                 // Render hero selection list
                 this.renderHeroSelectList();
                 
                 // Clear party slots
                 this.updatePartySlots();
+                
+                // Update enemy formation
+                this.updateEnemyFormation();
+            }
+
+            updateEnemyFormation() {
+                const enemyFormation = document.getElementById('enemyFormation');
+                const slots = enemyFormation.querySelectorAll('.enemySlot');
+                
+                // Clear all enemy slots first
+                slots.forEach(slot => {
+                    slot.innerHTML = '<div class="slotPlaceholder">⬡</div>';
+                    slot.classList.remove('filled');
+                });
+                
+                // Populate with last wave enemies
+                this.lastWaveEnemies.forEach((enemy, index) => {
+                    if (index < 5) { // Ensure we don't exceed 5 slots
+                        const slot = slots[index];
+                        
+                        // Generate stars based on level
+                        let stars = '';
+                        const starCount = enemy.stars;
+                        for (let i = 0; i < starCount; i++) {
+                            stars += '★';
+                        }
+                        
+                        // Determine star color class
+                        let starClass = 'normal';
+                        if (starCount === 6) starClass = 'purple';
+                        else if (starCount >= 7) starClass = 'red';
+                        
+                        slot.innerHTML = `
+                            <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
+                                <div style="position: relative; width: 60px; height: 60px;">
+                                    <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${enemy.enemyId}_front.gif" 
+                                         style="width: 60px; height: 60px; image-rendering: pixelated;" 
+                                         alt="${enemy.name}" 
+                                         onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'10\\'>${enemy.name}</text></svg>'">
+                                    ${stars ? `<div class="enemyStars ${starClass}">${stars}</div>` : ''}
+                                    <div class="enemyLevel">${enemy.level}</div>
+                                </div>
+                                <div class="enemyName">${enemy.name}</div>
+                            </div>
+                        `;
+                        slot.classList.add('filled');
+                        
+                        // Add long press handler for enemy info
+                        let pressTimer;
+                        slot.addEventListener('mousedown', (e) => {
+                            if (e.button === 0 && !e.ctrlKey && !e.shiftKey) { // Left click only, no modifiers
+                                pressTimer = setTimeout(() => this.showEnemyInfoPopup(enemy), 500);
+                            }
+                        });
+                        slot.addEventListener('mouseup', () => clearTimeout(pressTimer));
+                        slot.addEventListener('mouseleave', () => clearTimeout(pressTimer));
+                    }
+                });
             }
 
             renderHeroSelectList() {
@@ -1851,16 +1925,16 @@ init() {
                 popup.style.display = 'block';
             }
 
-            showBossInfo() {
+            showEnemyInfoPopup(enemy) {
                 const popup = document.getElementById('heroInfoPopup');
-                document.getElementById('popupHeroName').textContent = `Lv.${this.currentEnemy.level} ${this.currentEnemy.name}`;
+                document.getElementById('popupHeroName').textContent = `Lv.${enemy.level} ${enemy.name}`;
                 
-                // Show boss stats
-                const stats = this.currentEnemy.baseStats;
+                // Show enemy stats
+                const stats = enemy.baseStats;
                 const statsHtml = `
                     <div class="statRow">
                         <span class="statLabel">HP</span>
-                        <span class="statValue">${this.currentEnemy.hp}</span>
+                        <span class="statValue">${enemy.hp}</span>
                     </div>
                     <div class="statRow">
                         <span class="statLabel">STR</span>
@@ -1880,11 +1954,9 @@ init() {
                 // Show ability icons with tooltips
                 const enemyAbilitiesHtml = `
                     <div style="display: flex; gap: 8px; margin-top: 10px;">
-                        ${this.currentEnemy.abilities.map((ability, index) => {
+                        ${enemy.abilities.map((ability, index) => {
                             const escapedDesc = ability.description.replace(/'/g, "\\'");
                             const escapedName = ability.name.replace(/'/g, "\\'");
-                            // Use generic enemy ability icons or create specific ones
-                            const iconName = ability.icon;
                             return `
                                 <div class="abilityIconSmall" 
                                      onmouseover="game.showAbilityTooltip(event, '${escapedName}', 1, ${ability.cooldown}, '${escapedDesc}')"
