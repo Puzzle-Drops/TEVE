@@ -163,18 +163,18 @@ body {
 }
 
 /* Party positions */
-.party1 { left: calc(50% - 180px); bottom: 12%; }
-.party2 { left: calc(35% - 180px); bottom: 13%; }
-.party3 { left: calc(65% - 180px); bottom: 14%; }
-.party4 { left: calc(20% - 180px); bottom: 15%; }
-.party5 { left: calc(80% - 180px); bottom: 16%; }
+.party1 { left: calc(50% - 90px); bottom: 12%; }
+.party2 { left: calc(32.5% - 90px); bottom: 14%; }
+.party3 { left: calc(62.5% - 90px); bottom: 14%; }
+.party4 { left: calc(15% - 90px); bottom: 16%; }
+.party5 { left: calc(85% - 90px); bottom: 16%; }
 
 /* Enemy positions */
-.enemy1 { left: calc(50% - 180px); top: 6%; }
-.enemy2 { left: calc(65% - 180px); top: 7%; }
-.enemy3 { left: calc(35% - 180px)%; top: 8%; }
-.enemy4 { left: calc(80% - 180px); top: 9%; }
-.enemy5 { left: calc(20% - 180px); top: 10%; }
+.enemy1 { left: calc(50% - 90px); top: 6%; }
+.enemy2 { left: calc(62.5% - 90px); top: 7%; }
+.enemy3 { left: calc(32.5% - 90px); top: 7%; }
+.enemy4 { left: calc(85% - 90px); top: 8%; }
+.enemy5 { left: calc(15% - 90px); top: 8%; }
 
 
 /* Battle UI */
@@ -1443,6 +1443,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    display: inline-block; /* needed for true centering of text width */
     font-size: 16px;
     font-weight: bold;
     text-align: center;
@@ -1456,6 +1457,9 @@ body {
     z-index: 100;
     animation: spellCast 1.5s ease-out forwards;
     letter-spacing: 1px;
+
+    /* optional: allow text to go beyond container */
+    overflow: visible;
 }
 
 /* Spell type colors */
