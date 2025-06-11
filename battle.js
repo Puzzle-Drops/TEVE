@@ -466,7 +466,7 @@ class Battle {
 
         // Start the battle loop with a small delay
 
-        setTimeout(() => this.battleLoop(), 8000);
+        setTimeout(() => this.battleLoop(), 500);
 
     }
 
@@ -980,7 +980,7 @@ class Battle {
 
         // Continue battle loop after delay
 
-        setTimeout(() => this.battleLoop(), 500);
+        setTimeout(() => this.battleLoop(), 5000);
 
     }
 
