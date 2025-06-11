@@ -525,7 +525,7 @@ class Battle {
         
         // Add auto-battle toggle
         const autoDiv = document.createElement('div');
-        autoDiv.style.cssText = 'position: absolute; bottom: -30px; left: 0;';
+        autoDiv.style.cssText = 'position: absolute; bottom: 30px; left: 0;';
         autoDiv.innerHTML = `
             <label style="color: #b0e0f0;">
                 <input type="checkbox" ${this.autoMode ? 'checked' : ''} onchange="game.currentBattle.toggleAutoMode(this.checked)">
@@ -626,7 +626,7 @@ class Battle {
                 if (!actionBar) {
                     actionBar = document.createElement('div');
                     actionBar.className = 'actionBar';
-                    actionBar.style.cssText = 'width: 100px; height: 4px; background: #0a1929; border: 1px solid #2a6a8a; margin-top: 5px; position: relative;';
+                    actionBar.style.cssText = 'width: 100px; height: 4px; background: #0a1929; border: 1px solid #2a6a8a; margin-top: 2px; position: relative;';
                     
                     const actionFill = document.createElement('div');
                     actionFill.className = 'actionFill';
