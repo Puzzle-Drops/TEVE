@@ -980,7 +980,7 @@ class Battle {
 
         // Continue battle loop after delay
 
-        setTimeout(() => this.battleLoop(), 500);
+        setTimeout(() => this.battleLoop(), 1000);
 
     }
 
@@ -1240,7 +1240,7 @@ class Battle {
 
                         this.processingWaveTransition = false;
 
-                    }, 2000);
+                    }, 1000);
 
                 }
 
