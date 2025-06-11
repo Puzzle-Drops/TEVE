@@ -1515,38 +1515,37 @@ body {
 }
 
 /* Animation classes */
-.unit.casting-damage {
+.unitSlot.casting-damage {
     animation: unitShake 0.4s ease-in-out;
 }
 
-.unit.casting-speed,
-.unit.casting-buff {
+.unitSlot.casting-speed,
+.unitSlot.casting-buff {
   0%   { transform: rotate(0deg); }
   30%  { transform: rotate(20deg); }
   70%  { transform: rotate(-20deg); }
   100% { transform: rotate(0deg); }
 }
 
-.unit.casting-heal {
+.unitSlot.casting-heal {
     animation: unitPulse 0.6s ease-in-out;
 }
 
-.unit.casting-holy {
+.unitSlot.casting-holy {
     animation: unitGlow 0.8s ease-in-out;
 }
 
-.unit.casting-shadow,
-.unit.casting-debuff {
+.unitSlot.casting-shadow,
+.unitSlot.casting-debuff {
     animation: unitFlash 0.6s ease-in-out;
 }
 
-.unit.casting-shield,
-.unit.casting-defense {
+.unitSlot.casting-shield,
+.unitSlot.casting-defense {
     animation: unitFloat 0.6s ease-in-out;
 }
 
-.unit.casting-summon,
-.unit.casting-transform {
+.unitSlot.casting-summon,
+.unitSlot.casting-transform {
     animation: unitBounce 0.8s ease-in-out;
 }
-
