@@ -110,7 +110,7 @@ Item level 50
 +2%(1-10) Cdr
 
 -Stash
-Each Class 1 category shares a stash. When clicking the stash tab it should show a compact list of all the stashes. Vertical list of the class icon and then the class name.
+Each Class 1 category shares a stash. When clicking the stash tab it should show a compact list of all the stashes. 4x3 grid list of the class icon and then the class name.
 [] Acolyte
 [] Archer
 [] Druid
@@ -151,7 +151,12 @@ These stats are further increased by items.
 HP is equal to Str * 25.
 HP Regen per action bar reset = Str * 0.05
 Action bar units gained per cycle = 100 + 100 * (AGI / (AGI + 1000))
-Cooldown Reduction = 1 / (1 + (INT / 10000))
+
+TotalArmor = 0.25 * STR + 0.05 * AGI + GearArmor
+TotalResist = 0.25 * INT + GearResist
+
+PhysicalDamageReduction = 0.95 * TotalArmor / (TotalArmor + 500)
+MagicDamageReduction = 0.50 * TotalResist / (TotalResist + 1000)
 
 -Action bar
 Each unit begins combat with an action bar value of 0. During every cycle, each unit gains a certain amount of action bar units based on their Agility stat. When a unit's action bar reaches or exceeds 10,000 units, it becomes eligible to act. If multiple units cross this threshold within the same cycle, the one with the highest total action bar value goes first. After a unit acts, 10,000 units are subtracted from its action bar, and if it still has more than 10,000 remaining, it may act again within the same cycle if no other units have a higher value. This continues until no units have at least 10,000 units remaining. At that point, the next cycle begins and all units gain additional action bar units according to their Agi. This system ensures that faster units act more frequently, but in a dynamic, fair order that reflects their accumulated speed.
