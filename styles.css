@@ -113,33 +113,31 @@ body {
 .waveCounter {
     position: absolute;
     top: 20px;
-    left: 160px;
+    right: 20px;
     padding: 10px 20px;
     background: rgba(10, 25, 41, 0.9);
     border: 1px solid #2a6a8a;
     color: #4dd0e1;
-    font-size: 18px;
+    font-size: 24px;
     font-weight: bold;
     box-shadow: 0 0 15px rgba(42, 106, 138, 0.5);
     text-shadow: 0 0 10px rgba(77, 208, 225, 0.5);
 }
 
 .unit {
-    width: 80%;
-    height: 80%;
+    width: 100%;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 14px;
     margin: 5px 0 0 0;
-    box-shadow: 0 0 20px rgba(42, 106, 138, 0.5);
     position: absolute;
     bottom: 0;
 }
 
 .healthBar {
-    width: 80%;
+    width: 100%;
     height: 20px;
     background: #0a1929;
     border: 1px solid #2a6a8a;
@@ -165,18 +163,18 @@ body {
 }
 
 /* Party positions */
-.party1 { left: 50%; bottom: 12%; }
-.party2 { left: 35%; bottom: 17%; }
-.party3 { left: 65%; bottom: 16%; }
-.party4 { left: 20%; bottom: 21%; }
-.party5 { left: 80%; bottom: 20%; }
+.party1 { left: 50%; bottom: 10%; }
+.party2 { left: 35%; bottom: 12%; }
+.party3 { left: 65%; bottom: 14%; }
+.party4 { left: 20%; bottom: 16%; }
+.party5 { left: 80%; bottom: 18%; }
 
 /* Enemy positions */
-.enemy1 { left: 50%; top: 6%; }
-.enemy2 { left: 65%; top: 9%; }
-.enemy3 { left: 35%; top: 8%; }
-.enemy4 { left: 80%; top: 13%; }
-.enemy5 { left: 20%; top: 12%; }
+.enemy1 { left: 50%; top: 5%; }
+.enemy2 { left: 65%; top: 6%; }
+.enemy3 { left: 35%; top: 7%; }
+.enemy4 { left: 80%; top: 8%; }
+.enemy5 { left: 20%; top: 9%; }
 
 
 /* Battle UI */
@@ -198,7 +196,7 @@ body {
 }
 
 .autoToggleContainer {
-    position: absolute;
+/*    position: absolute;
     bottom: 180px;
     right: 20px;
     background: rgba(10, 25, 41, 0.9);
@@ -206,6 +204,18 @@ body {
     border: 1px solid #2a6a8a;
     border-radius: 4px;
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
+*/
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    padding: 10px 20px;
+    background: rgba(10, 25, 41, 0.9);
+    border: 1px solid #2a6a8a;
+    color: #4dd0e1;
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(42, 106, 138, 0.5);
+    text-shadow: 0 0 10px rgba(77, 208, 225, 0.5)
 }
 
 .battleLog {
