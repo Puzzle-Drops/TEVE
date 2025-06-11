@@ -196,17 +196,8 @@ body {
 }
 
 .autoToggleContainer {
-/*    position: absolute;
-    bottom: 180px;
-    right: 20px;
-    background: rgba(10, 25, 41, 0.9);
-    padding: 8px 12px;
-    border: 1px solid #2a6a8a;
-    border-radius: 4px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-*/
     position: absolute;
-    top: 60px;
+    bottom: 180px;
     right: 20px;
     padding: 10px 20px;
     background: rgba(10, 25, 41, 0.9);
@@ -215,7 +206,7 @@ body {
     font-size: 24px;
     font-weight: bold;
     box-shadow: 0 0 15px rgba(42, 106, 138, 0.5);
-    text-shadow: 0 0 10px rgba(77, 208, 225, 0.5)
+    text-shadow: 0 0 10px rgba(77, 208, 225, 0.5);
 }
 
 .battleLog {
