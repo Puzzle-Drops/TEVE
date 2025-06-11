@@ -396,6 +396,12 @@ class Battle {
 
         
 
+        // Update wave counter
+
+        this.updateWaveCounter();
+
+        
+
         // Force complete UI update
 
         this.updateUI();
@@ -446,6 +452,12 @@ class Battle {
 
         
 
+        // Create wave counter
+
+        this.createWaveCounter();
+
+        
+
         // Initial UI update
 
         this.updateUI();
@@ -455,6 +467,58 @@ class Battle {
         // Start the battle loop with a small delay
 
         setTimeout(() => this.battleLoop(), 500);
+
+    }
+
+    
+
+    createWaveCounter() {
+
+        // Remove any existing wave counter
+
+        const existingCounter = document.getElementById('waveCounter');
+
+        if (existingCounter) {
+
+            existingCounter.remove();
+
+        }
+
+        
+
+        // Create new wave counter
+
+        const waveCounter = document.createElement('div');
+
+        waveCounter.id = 'waveCounter';
+
+        waveCounter.className = 'waveCounter';
+
+        waveCounter.textContent = `Wave: ${this.currentWave + 1}/${this.enemyWaves.length}`;
+
+        
+
+        const battleScene = document.getElementById('battleScene');
+
+        if (battleScene) {
+
+            battleScene.appendChild(waveCounter);
+
+        }
+
+    }
+
+    
+
+    updateWaveCounter() {
+
+        const waveCounter = document.getElementById('waveCounter');
+
+        if (waveCounter) {
+
+            waveCounter.textContent = `Wave: ${this.currentWave + 1}/${this.enemyWaves.length}`;
+
+        }
 
     }
 
@@ -1134,22 +1198,6 @@ class Battle {
 
                     
 
-                    // Heal party to full between waves
-
-                    this.party.forEach(unit => {
-
-                        if (unit.isAlive) {
-
-                            unit.currentHp = unit.maxHp;
-
-                            this.log(`${unit.name} restored to full health!`);
-
-                        }
-
-                    });
-
-                    
-
                     // Load next wave
 
                     setTimeout(() => {
@@ -1187,6 +1235,18 @@ class Battle {
     endBattle(victory) {
 
         this.running = false;
+
+        
+
+        // Clean up wave counter
+
+        const waveCounter = document.getElementById('waveCounter');
+
+        if (waveCounter) {
+
+            waveCounter.remove();
+
+        }
 
         
 
