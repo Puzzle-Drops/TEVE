@@ -639,7 +639,7 @@
 init() {
     // Create 8 starting villagers
     this.heroes = [];
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 16; i++) {
         this.heroes.push(new Hero());
     }
     
@@ -708,6 +708,24 @@ init() {
     // Hero 7: Villager (Level 50 with 500 exp)
     this.heroes[7].level = 50;
     this.heroes[7].exp = 500;
+
+    // Hero 8: Villager (Level 50 with 500 exp)
+    this.heroes[8].level = 50;
+    this.heroes[8].exp = 500;
+
+    // Hero 9: Villager (Level 10 with 500 exp)
+    this.heroes[9].level = 10;
+    this.heroes[9].exp = 500;
+
+    // Hero 10: Villager (Level 10 with 500 exp)
+    this.heroes[10].level = 10;
+    this.heroes[10].exp = 500;
+
+    // Hero 11: Villager (Level 10 with 500 exp)
+    this.heroes[11].level = 10;
+    this.heroes[11].exp = 500;
+
+	
 }
 
             showMainMenu() {
