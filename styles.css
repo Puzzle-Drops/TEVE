@@ -122,12 +122,6 @@ body {
     bottom: 0;
 }
 
-.unitName {
-    font-size: 24px;
-    color: #4dd0e1;
-    text-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
-}
-
 .healthBar {
     width: 80%;
     height: 20px;
