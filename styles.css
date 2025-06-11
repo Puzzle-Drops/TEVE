@@ -149,18 +149,18 @@ body {
 }
 
 /* Party positions */
-.party1 { left: 50%; bottom: 15%; }
-.party2 { left: 35%; bottom: 12%; }
-.party3 { left: 65%; bottom: 8%; }
-.party4 { left: 20%; bottom: 22%; }
-.party5 { left: 80%; bottom: 18%; }
+.party1 { left: 50%; bottom: 12%; }
+.party2 { left: 35%; bottom: 10%; }
+.party3 { left: 65%; bottom: 14%; }
+.party4 { left: 20%; bottom: 8%; }
+.party5 { left: 80%; bottom: 16%; }
 
 /* Enemy positions */
-.enemy1 { left: 50%; top: 15%; }
-.enemy2 { left: 65%; top: 12%; }
-.enemy3 { left: 35%; top: 8%; }
-.enemy4 { left: 80%; top: 22%; }
-.enemy5 { left: 20%; top: 18%; }
+.enemy1 { left: 50%; top: 12%; }
+.enemy2 { left: 65%; top: 10%; }
+.enemy3 { left: 35%; top: 14%; }
+.enemy4 { left: 80%; top: 8%; }
+.enemy5 { left: 20%; top: 16%; }
 
 
 /* Battle UI */
@@ -208,7 +208,7 @@ body {
     position: absolute;
     width: 180px;
     height: 260px;
-    display: flex !important;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
