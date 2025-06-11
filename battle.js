@@ -11,19 +11,6 @@ class BattleUnit {
         this.buffs = [];
         this.debuffs = [];
         this.cooldowns = {};
-        this.isDead = false;
-        
-        // Combat modifiers
-        this.damageMultiplier = 1;
-        this.defenseMultiplier = 1;
-        this.healingReceived = 1;
-        this.spellPower = 1;
-        this.accuracy = 1;
-        this.evasion = 0;
-        this.critChance = 0.1;
-        this.dodgeChance = 0;
-        this.missChance = 0;
-        this.damageReflect = 0;
         
         // Initialize cooldowns
         const abilities = this.abilities;
@@ -75,7 +62,7 @@ class BattleUnit {
     }
     
     get isAlive() {
-        return this.currentHp > 0 && !this.isDead;
+        return this.currentHp > 0;
     }
     
     get abilities() {
@@ -91,12 +78,6 @@ class BattleUnit {
         
         // Check if stunned
         if (this.debuffs.some(d => d.stunned)) return false;
-        
-        // Check if ability is passive or aura
-        const spell = spellManager.getSpell(ability.id);
-        if (spell && (spell.target === 'passive' || spell.effects.includes('aura'))) {
-            return false;
-        }
         
         return true;
     }
@@ -140,51 +121,6 @@ class BattleUnit {
             return debuff.duration === -1; // Permanent debuffs
         });
     }
-    
-    applyStatModifiers() {
-        // Reset modifiers
-        this.damageMultiplier = 1;
-        this.defenseMultiplier = 1;
-        this.healingReceived = 1;
-        this.spellPower = 1;
-        this.accuracy = 1;
-        this.evasion = 0;
-        this.critChance = 0.1;
-        this.dodgeChance = 0;
-        this.missChance = 0;
-        this.damageReflect = 0;
-        
-        // Apply buff effects
-        this.buffs.forEach(buff => {
-            if (buff.damageMultiplier) this.damageMultiplier *= buff.damageMultiplier;
-            if (buff.defenseMultiplier) this.defenseMultiplier *= buff.defenseMultiplier;
-            if (buff.healingReceived) this.healingReceived *= buff.healingReceived;
-            if (buff.spellPowerMultiplier) this.spellPower *= buff.spellPowerMultiplier;
-            if (buff.accuracy) this.accuracy *= buff.accuracy;
-            if (buff.evasion) this.evasion += buff.evasion;
-            if (buff.critChance) this.critChance += buff.critChance;
-            if (buff.dodgeChance) this.dodgeChance += buff.dodgeChance;
-            if (buff.strMultiplier) this.stats.str = Math.floor(this.stats.str * buff.strMultiplier);
-            if (buff.agiMultiplier) this.stats.agi = Math.floor(this.stats.agi * buff.agiMultiplier);
-            if (buff.intMultiplier) this.stats.int = Math.floor(this.stats.int * buff.intMultiplier);
-            if (buff.allStatsMultiplier) {
-                this.stats.str = Math.floor(this.stats.str * buff.allStatsMultiplier);
-                this.stats.agi = Math.floor(this.stats.agi * buff.allStatsMultiplier);
-                this.stats.int = Math.floor(this.stats.int * buff.allStatsMultiplier);
-            }
-        });
-        
-        // Apply debuff effects
-        this.debuffs.forEach(debuff => {
-            if (debuff.damageTakenMultiplier) this.defenseMultiplier /= debuff.damageTakenMultiplier;
-            if (debuff.missChance) this.missChance += debuff.missChance;
-            if (debuff.allStatsMultiplier) {
-                this.stats.str = Math.floor(this.stats.str * debuff.allStatsMultiplier);
-                this.stats.agi = Math.floor(this.stats.agi * debuff.allStatsMultiplier);
-                this.stats.int = Math.floor(this.stats.int * debuff.allStatsMultiplier);
-            }
-        });
-    }
 }
 
 class Battle {
@@ -197,7 +133,6 @@ class Battle {
         this.battleLog = [];
         this.gameSpeed = 1;
         this.running = true;
-        this.selectedTargets = [];
         
         // Create battle units
         this.party = party.map((hero, index) => hero ? new BattleUnit(hero, false, index) : null).filter(u => u);
@@ -213,10 +148,9 @@ class Battle {
         // Apply aura abilities at battle start
         this.allUnits.forEach(unit => {
             unit.abilities.forEach((ability, index) => {
-                const spell = spellManager.getSpell(ability.id);
-                if (spell && spell.effects.includes('aura') && spellLogic[spell.logicKey]) {
+                if (ability.aura && spellLogic[ability.logicKey]) {
                     try {
-                        spellLogic[spell.logicKey](this, unit);
+                        spellLogic[ability.logicKey](this, unit);
                     } catch (error) {
                         console.error(`Error applying aura ${ability.name}:`, error);
                     }
@@ -271,9 +205,6 @@ class Battle {
             // Subtract action bar
             this.currentUnit.actionBar -= 10000;
             
-            // Apply stat modifiers at turn start
-            this.currentUnit.applyStatModifiers();
-            
             // Log who's taking a turn
             this.log(`${this.currentUnit.name}'s turn! (Action: ${Math.floor(this.currentUnit.actionBar)})`);
             
@@ -294,23 +225,11 @@ class Battle {
         // Apply DOT effects
         this.applyDotEffects(unit);
         
-        // Check if unit died from DOT
-        if (!unit.isAlive) {
-            this.endTurn();
-            return;
-        }
-        
         // Check if unit is stunned
         if (unit.debuffs.some(d => d.stunned)) {
             this.log(`${unit.name} is stunned!`);
             this.endTurn();
             return;
-        }
-        
-        // Check for stealth break
-        if (unit.buffs.some(b => b.untargetable)) {
-            // Remove stealth if attacking
-            unit.buffs = unit.buffs.filter(b => !b.untargetable);
         }
         
         // Check if it's a player unit and not in auto mode
@@ -324,34 +243,55 @@ class Battle {
     }
     
     executeAITurn(unit) {
-        // Find the best available ability
+        // Find the strongest available ability
         let bestAbility = null;
         let bestIndex = -1;
-        let bestScore = -1;
         
-        // Evaluate each ability
         for (let i = unit.abilities.length - 1; i >= 0; i--) {
             if (unit.canUseAbility(i)) {
-                const ability = unit.abilities[i];
-                const spell = spellManager.getSpell(ability.id);
-                if (!spell) continue;
-                
-                // Score the ability based on situation
-                let score = this.scoreAbility(unit, ability, spell);
-                if (score > bestScore) {
-                    bestScore = score;
-                    bestAbility = ability;
-                    bestIndex = i;
-                }
+                bestAbility = unit.abilities[i];
+                bestIndex = i;
+                break;
             }
         }
         
         if (bestAbility && bestIndex >= 0) {
+            // Determine target based on ability
+            let target = null;
             const spell = spellManager.getSpell(bestAbility.id);
-            let target = this.selectAITarget(unit, spell);
             
-            if (target || spell.target === 'passive' || spell.target === 'self') {
-                this.executeAbility(unit, bestIndex, target);
+            if (spell) {
+                switch (spell.target) {
+                    case 'enemy':
+                        const enemies = unit.isEnemy ? this.party : this.enemies;
+                        const aliveEnemies = enemies.filter(e => e && e.isAlive);
+                        if (aliveEnemies.length > 0) {
+                            target = aliveEnemies[Math.floor(Math.random() * aliveEnemies.length)];
+                        }
+                        break;
+                    case 'ally':
+                        const allies = unit.isEnemy ? this.enemies : this.party;
+                        const aliveAllies = allies.filter(a => a && a.isAlive);
+                        // Prioritize low HP allies for heals
+                        if (spell.effects.includes('heal')) {
+                            aliveAllies.sort((a, b) => (a.currentHp / a.maxHp) - (b.currentHp / b.maxHp));
+                        }
+                        if (aliveAllies.length > 0) {
+                            target = aliveAllies[0];
+                        }
+                        break;
+                    case 'self':
+                        target = unit;
+                        break;
+                    case 'all_enemies':
+                    case 'all_allies':
+                        target = 'all';
+                        break;
+                }
+                
+                if (target || spell.target === 'passive') {
+                    this.executeAbility(unit, bestIndex, target);
+                }
             }
         } else {
             this.log(`${unit.name} has no abilities available!`);
@@ -360,131 +300,12 @@ class Battle {
         this.endTurn();
     }
     
-    scoreAbility(unit, ability, spell) {
-        let score = 0;
-        
-        // Base score from ability level
-        score += ability.level * 10;
-        
-        // Score based on effects
-        if (spell.effects.includes('damage')) {
-            // Prefer damage when enemies are healthy
-            const enemyHealthPercent = this.getAverageHealthPercent(unit.isEnemy ? this.party : this.enemies);
-            score += enemyHealthPercent * 50;
-        }
-        
-        if (spell.effects.includes('heal')) {
-            // Prefer healing when allies are hurt
-            const allyHealthPercent = this.getAverageHealthPercent(unit.isEnemy ? this.enemies : this.party);
-            score += (1 - allyHealthPercent) * 60;
-        }
-        
-        if (spell.effects.includes('buff')) {
-            // Buffs are good early in battle
-            score += Math.max(30 - this.turn, 0);
-        }
-        
-        if (spell.effects.includes('debuff')) {
-            // Debuffs are always useful
-            score += 40;
-        }
-        
-        if (spell.effects.includes('execute')) {
-            // Check if any enemy can be executed
-            const enemies = unit.isEnemy ? this.party : this.enemies;
-            const hasLowHpTarget = enemies.some(e => e.isAlive && (e.currentHp / e.maxHp) <= 0.3);
-            if (hasLowHpTarget) score += 100;
-        }
-        
-        if (spell.effects.includes('resurrect')) {
-            // Check if any ally is dead
-            const allies = unit.isEnemy ? this.enemies : this.party;
-            const hasDeadAlly = allies.some(a => !a.isAlive);
-            if (hasDeadAlly) score += 80;
-        }
-        
-        if (spell.effects.includes('aoe')) {
-            // AOE is better when more targets
-            const targetCount = (unit.isEnemy ? this.party : this.enemies).filter(u => u.isAlive).length;
-            score += targetCount * 15;
-        }
-        
-        // Ultimate abilities get bonus score
-        if (ability.ultimate) score += 50;
-        
-        return score;
-    }
-    
-    selectAITarget(unit, spell) {
-        let potentialTargets = [];
-        
-        switch (spell.target) {
-            case 'enemy':
-                potentialTargets = (unit.isEnemy ? this.party : this.enemies).filter(e => e && e.isAlive);
-                
-                // Smart targeting
-                if (spell.effects.includes('execute')) {
-                    // Target lowest HP percentage
-                    potentialTargets.sort((a, b) => (a.currentHp / a.maxHp) - (b.currentHp / b.maxHp));
-                } else if (spell.effects.includes('debuff') || spell.effects.includes('mark')) {
-                    // Target highest threat (highest damage dealers)
-                    potentialTargets.sort((a, b) => b.stats.str + b.stats.agi + b.stats.int - (a.stats.str + a.stats.agi + a.stats.int));
-                } else {
-                    // Default: target lowest absolute HP
-                    potentialTargets.sort((a, b) => a.currentHp - b.currentHp);
-                }
-                break;
-                
-            case 'ally':
-                potentialTargets = (unit.isEnemy ? this.enemies : this.party).filter(a => a && a.isAlive);
-                
-                if (spell.effects.includes('heal')) {
-                    // Target lowest HP percentage
-                    potentialTargets.sort((a, b) => (a.currentHp / a.maxHp) - (b.currentHp / b.maxHp));
-                } else if (spell.effects.includes('buff')) {
-                    // Target strongest ally
-                    potentialTargets.sort((a, b) => b.stats.str + b.stats.agi + b.stats.int - (a.stats.str + a.stats.agi + a.stats.int));
-                }
-                break;
-                
-            case 'dead_ally':
-                potentialTargets = (unit.isEnemy ? this.enemies : this.party).filter(a => a && !a.isAlive);
-                break;
-                
-            case 'self':
-                return unit;
-                
-            case 'all_enemies':
-            case 'all_allies':
-                return 'all';
-        }
-        
-        return potentialTargets.length > 0 ? potentialTargets[0] : null;
-    }
-    
-    getAverageHealthPercent(units) {
-        const aliveUnits = units.filter(u => u && u.isAlive);
-        if (aliveUnits.length === 0) return 0;
-        
-        const totalPercent = aliveUnits.reduce((sum, u) => sum + (u.currentHp / u.maxHp), 0);
-        return totalPercent / aliveUnits.length;
-    }
-    
     executeAbility(caster, abilityIndex, target) {
         const ability = caster.abilities[abilityIndex];
         if (!ability || !caster.useAbility(abilityIndex)) return;
         
         const spell = spellManager.getSpell(ability.id);
         if (!spell) return;
-        
-        // Check for miss
-        if (spell.target === 'enemy' && target !== 'all') {
-            const missRoll = Math.random();
-            if (missRoll < caster.missChance || missRoll < target.evasion) {
-                this.log(`${caster.name}'s ${ability.name} missed!`);
-                return;
-            }
-        }
         
         // Execute spell logic
         if (spellLogic[spell.logicKey]) {
@@ -521,23 +342,6 @@ class Battle {
         
         let damage = Math.floor(amount);
         
-        // Apply attacker's damage multiplier
-        damage *= attacker.damageMultiplier;
-        
-        // Apply spell power for magical damage
-        if (damageType !== 'physical') {
-            damage *= attacker.spellPower;
-        }
-        
-        // Check for critical hit
-        if (Math.random() < attacker.critChance) {
-            damage *= 2;
-            this.log("Critical hit!");
-        }
-        
-        // Apply target's defense
-        damage /= target.defenseMultiplier;
-        
         // Apply damage reduction from buffs
         target.buffs.forEach(buff => {
             if (buff.damageReduction) {
@@ -552,30 +356,10 @@ class Battle {
             }
         });
         
-        // Check for immunity
-        if (target.buffs.some(b => b.immunity)) {
-            this.log(`${target.name} is immune to damage!`);
-            return 0;
-        }
-        
         damage = Math.floor(damage);
-        const actualDamage = Math.min(damage, target.currentHp);
         target.currentHp = Math.max(0, target.currentHp - damage);
         
-        // Check for damage reflection
-        if (target.damageReflect > 0 && attacker !== target) {
-            const reflectedDamage = Math.floor(actualDamage * target.damageReflect);
-            attacker.currentHp = Math.max(0, attacker.currentHp - reflectedDamage);
-            this.log(`${attacker.name} takes ${reflectedDamage} reflected damage!`);
-        }
-        
-        // Check if target died
-        if (target.currentHp <= 0) {
-            target.isDead = true;
-            this.log(`${target.name} has been slain!`);
-        }
-        
-        return actualDamage;
+        return damage;
     }
     
     healUnit(target, amount) {
@@ -584,10 +368,9 @@ class Battle {
         let heal = Math.floor(amount);
         
         // Apply healing received modifiers
-        heal *= target.healingReceived;
-        
-        // Apply spell power for magical healing
-        heal *= this.currentUnit.spellPower;
+        if (target.healingReceived) {
+            heal *= target.healingReceived;
+        }
         
         heal = Math.floor(heal);
         const actualHeal = Math.min(heal, target.maxHp - target.currentHp);
@@ -598,14 +381,6 @@ class Battle {
     
     applyBuff(target, buffName, duration, effects) {
         if (!target.isAlive) return;
-        
-        // Check if buff already exists
-        const existingBuff = target.buffs.find(b => b.name === buffName);
-        if (existingBuff) {
-            // Refresh duration
-            existingBuff.duration = Math.max(existingBuff.duration, duration);
-            return;
-        }
         
         const buff = {
             name: buffName,
@@ -618,20 +393,6 @@ class Battle {
     
     applyDebuff(target, debuffName, duration, effects) {
         if (!target.isAlive) return;
-        
-        // Check for debuff immunity
-        if (target.buffs.some(b => b.immunity || b.mindShield)) {
-            this.log(`${target.name} resists the debuff!`);
-            return;
-        }
-        
-        // Check if debuff already exists
-        const existingDebuff = target.debuffs.find(d => d.name === debuffName);
-        if (existingDebuff) {
-            // Refresh duration
-            existingDebuff.duration = Math.max(existingDebuff.duration, duration);
-            return;
-        }
         
         const debuff = {
             name: debuffName,
@@ -647,23 +408,14 @@ class Battle {
         
         // For now, treat shields as temporary HP
         target.currentHp += Math.floor(amount);
-        this.log(`${target.name} gains a ${Math.floor(amount)} point shield!`);
     }
     
     removeBuffs(target) {
-        const removedCount = target.buffs.filter(b => b.duration !== -1).length;
         target.buffs = target.buffs.filter(buff => buff.duration === -1);
-        if (removedCount > 0) {
-            this.log(`${target.name}'s buffs were purged!`);
-        }
     }
     
     removeDebuffs(target) {
-        const removedCount = target.debuffs.length;
         target.debuffs = [];
-        if (removedCount > 0) {
-            this.log(`${target.name} was cleansed!`);
-        }
     }
     
     getParty(unit) {
@@ -680,24 +432,13 @@ class Battle {
     }
     
     applyDotEffects(unit) {
-        let totalDotDamage = 0;
-        
         unit.debuffs.forEach(debuff => {
             if (debuff.dotDamage && unit.isAlive) {
                 const damage = Math.floor(debuff.dotDamage);
-                totalDotDamage += damage;
+                unit.currentHp = Math.max(0, unit.currentHp - damage);
+                this.log(`${unit.name} takes ${damage} damage from ${debuff.name}!`);
             }
         });
-        
-        if (totalDotDamage > 0) {
-            unit.currentHp = Math.max(0, unit.currentHp - totalDotDamage);
-            this.log(`${unit.name} takes ${totalDotDamage} damage over time!`);
-            
-            if (unit.currentHp <= 0) {
-                unit.isDead = true;
-                this.log(`${unit.name} died from damage over time!`);
-            }
-        }
     }
     
     checkBattleEnd() {
@@ -723,37 +464,15 @@ class Battle {
         this.running = false;
         
         if (victory) {
-            // Grant experience to surviving heroes
-            const baseExp = 100; // Base experience per enemy
-            const expGain = this.enemies.reduce((sum, enemy) => {
-                return sum + (enemy.source.level * baseExp);
-            }, 0);
-            
-            this.party.forEach(unit => {
-                if (unit.isAlive) {
-                    unit.source.exp += expGain;
-                    this.log(`${unit.name} gains ${expGain} experience!`);
-                    
-                    // Check for level up
-                    while (unit.source.exp >= unit.source.expToNext && unit.source.level < 500) {
-                        unit.source.exp -= unit.source.expToNext;
-                        unit.source.level++;
-                        unit.source.expToNext = unit.source.calculateExpToNext();
-                        this.log(`${unit.name} reached level ${unit.source.level}!`);
-                    }
-                }
-            });
-            
-            // TODO: Handle loot
-            
+            // TODO: Handle loot, experience, etc.
             setTimeout(() => {
                 this.game.showMainMenu();
-            }, 3000);
+            }, 2000);
         } else {
             // TODO: Handle defeat
             setTimeout(() => {
                 this.game.showMainMenu();
-            }, 3000);
+            }, 2000);
         }
     }
     
@@ -771,13 +490,6 @@ class Battle {
         abilityPanel.innerHTML = '';
         
         unit.abilities.forEach((ability, index) => {
-            const spell = spellManager.getSpell(ability.id);
-            
-            // Skip passive and aura abilities
-            if (spell && (spell.target === 'passive' || spell.effects.includes('aura'))) {
-                return;
-            }
-            
             const abilityDiv = document.createElement('div');
             abilityDiv.className = 'ability';
             
@@ -785,6 +497,7 @@ class Battle {
                 abilityDiv.classList.add('onCooldown');
             }
             
+            const spell = spellManager.getSpell(ability.id);
             const iconUrl = `https://puzzle-drops.github.io/TEVE/img/spells/${ability.id}.png`;
             
             abilityDiv.innerHTML = `
@@ -797,7 +510,7 @@ class Battle {
                 abilityDiv.onclick = () => {
                     if (spell) {
                         // For targeted abilities, highlight valid targets
-                        if (spell.target === 'enemy' || spell.target === 'ally' || spell.target === 'dead_ally') {
+                        if (spell.target === 'enemy' || spell.target === 'ally') {
                             this.selectTarget(unit, index, spell.target);
                         } else {
                             this.executeAbility(unit, index, spell.target === 'self' ? unit : 'all');
@@ -830,52 +543,28 @@ class Battle {
     }
     
     selectTarget(caster, abilityIndex, targetType) {
-        // Clear previous target indicators
-        this.clearTargetIndicators();
+        // Highlight valid targets
+        const validTargets = targetType === 'enemy' ? 
+            this.enemies.filter(e => e && e.isAlive) : 
+            this.party.filter(p => p && p.isAlive);
         
-        // Determine valid targets
-        let validTargets = [];
-        switch (targetType) {
-            case 'enemy':
-                validTargets = this.enemies.filter(e => e && e.isAlive && !e.buffs.some(b => b.untargetable));
-                break;
-            case 'ally':
-                validTargets = this.party.filter(p => p && p.isAlive);
-                break;
-            case 'dead_ally':
-                validTargets = this.party.filter(p => p && !p.isAlive);
-                break;
-        }
-        
-        // Add target indicators and click handlers
+        // Add click handlers to valid targets
         validTargets.forEach(target => {
             const element = document.getElementById(target.isEnemy ? `enemy${target.position + 1}` : `party${target.position + 1}`);
             if (element) {
-                // Add green arrow indicator
-                const arrow = document.createElement('div');
-                arrow.className = 'targetArrow';
-                arrow.innerHTML = '▼';
-                arrow.style.cssText = `
-                    position: absolute;
-                    top: -30px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    font-size: 24px;
-                    color: #00ff88;
-                    text-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
-                    animation: bounce 1s infinite;
-                `;
-                element.appendChild(arrow);
-                
-                // Add glow effect
                 element.style.cursor = 'pointer';
-                element.style.filter = 'brightness(1.3)';
-                element.style.boxShadow = '0 0 20px rgba(0, 255, 136, 0.5)';
+                element.style.filter = 'brightness(1.2)';
                 
-                // Add click handler
                 const clickHandler = () => {
-                    // Remove all handlers and indicators
-                    this.clearTargetIndicators();
+                    // Remove all handlers and highlighting
+                    validTargets.forEach(t => {
+                        const el = document.getElementById(t.isEnemy ? `enemy${t.position + 1}` : `party${t.position + 1}`);
+                        if (el) {
+                            el.style.cursor = '';
+                            el.style.filter = '';
+                            el.replaceWith(el.cloneNode(true));
+                        }
+                    });
                     
                     // Execute ability
                     this.executeAbility(caster, abilityIndex, target);
@@ -883,39 +572,6 @@ class Battle {
                 };
                 
                 element.addEventListener('click', clickHandler);
-                element.dataset.clickHandler = clickHandler;
-            }
-        });
-        
-        // Add CSS animation for bouncing arrow
-        if (!document.getElementById('targetArrowStyle')) {
-            const style = document.createElement('style');
-            style.id = 'targetArrowStyle';
-            style.textContent = `
-                @keyframes bounce {
-                    0%, 100% { transform: translateX(-50%) translateY(0); }
-                    50% { transform: translateX(-50%) translateY(-10px); }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-    }
-    
-    clearTargetIndicators() {
-        // Remove all target indicators and handlers
-        document.querySelectorAll('.unitSlot').forEach(element => {
-            element.style.cursor = '';
-            element.style.filter = '';
-            element.style.boxShadow = '';
-            
-            // Remove arrow
-            const arrow = element.querySelector('.targetArrow');
-            if (arrow) arrow.remove();
-            
-            // Remove click handler
-            if (element.dataset.clickHandler) {
-                element.removeEventListener('click', element.dataset.clickHandler);
-                delete element.dataset.clickHandler;
             }
         });
     }
@@ -962,13 +618,7 @@ class Battle {
                     if (!unit.isAlive) {
                         unitDiv.style.opacity = '0.3';
                         unitDiv.style.filter = 'grayscale(100%)';
-                    } else {
-                        unitDiv.style.opacity = '1';
-                        unitDiv.style.filter = '';
                     }
-                    
-                    // Show buff/debuff indicators
-                    this.updateStatusEffects(unitDiv, unit);
                 }
                 
                 // Update or create action bar
@@ -1008,69 +658,5 @@ class Battle {
                 }
             }
         });
-    }
-    
-    updateStatusEffects(unitDiv, unit) {
-        // Remove existing status container
-        let statusContainer = unitDiv.querySelector('.statusEffects');
-        if (statusContainer) {
-            statusContainer.remove();
-        }
-        
-        // Create new status container if needed
-        if (unit.buffs.length > 0 || unit.debuffs.length > 0) {
-            statusContainer = document.createElement('div');
-            statusContainer.className = 'statusEffects';
-            statusContainer.style.cssText = `
-                position: absolute;
-                top: -25px;
-                left: 50%;
-                transform: translateX(-50%);
-                display: flex;
-                gap: 2px;
-            `;
-            
-            // Add buff indicators
-            unit.buffs.forEach(buff => {
-                const buffIcon = document.createElement('div');
-                buffIcon.style.cssText = `
-                    width: 16px;
-                    height: 16px;
-                    background: #00ff88;
-                    border: 1px solid #00cc66;
-                    border-radius: 2px;
-                    font-size: 10px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: #000;
-                `;
-                buffIcon.textContent = buff.duration > 0 ? buff.duration : '∞';
-                buffIcon.title = buff.name;
-                statusContainer.appendChild(buffIcon);
-            });
-            
-            // Add debuff indicators
-            unit.debuffs.forEach(debuff => {
-                const debuffIcon = document.createElement('div');
-                debuffIcon.style.cssText = `
-                    width: 16px;
-                    height: 16px;
-                    background: #ff4444;
-                    border: 1px solid #cc0000;
-                    border-radius: 2px;
-                    font-size: 10px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: #fff;
-                `;
-                debuffIcon.textContent = debuff.duration > 0 ? debuff.duration : '∞';
-                debuffIcon.title = debuff.name;
-                statusContainer.appendChild(debuffIcon);
-            });
-            
-            unitDiv.appendChild(statusContainer);
-        }
     }
 }
