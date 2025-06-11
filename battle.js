@@ -852,11 +852,45 @@ class Battle {
 
         if (unitSlot) {
 
-            // Add shake animation to unit
+            // Determine animation type based on spell effects
 
-            unitSlot.classList.add('casting');
+            let animationClass = 'casting-damage'; // default
 
-            setTimeout(() => unitSlot.classList.remove('casting'), 400);
+            
+
+            if (effects.includes('speed') || effects.includes('buff')) {
+
+                animationClass = 'casting-speed';
+
+            } else if (effects.includes('heal')) {
+
+                animationClass = 'casting-heal';
+
+            } else if (effects.includes('holy')) {
+
+                animationClass = 'casting-holy';
+
+            } else if (effects.includes('shadow') || effects.includes('debuff')) {
+
+                animationClass = 'casting-shadow';
+
+            } else if (effects.includes('shield') || effects.includes('defense')) {
+
+                animationClass = 'casting-shield';
+
+            } else if (effects.includes('summon') || effects.includes('transform')) {
+
+                animationClass = 'casting-summon';
+
+            }
+
+            
+
+            // Add animation to unit
+
+            unitSlot.classList.add(animationClass);
+
+            setTimeout(() => unitSlot.classList.remove(animationClass), 800);
 
             
 
@@ -944,9 +978,9 @@ class Battle {
 
         
 
-        // Continue battle loop
+        // Continue battle loop after delay
 
-        setTimeout(() => this.battleLoop(), 100);
+        setTimeout(() => this.battleLoop(), 500);
 
     }
 
@@ -1580,7 +1614,7 @@ class Battle {
 
                     actionBar.className = 'actionBar';
 
-                    actionBar.style.cssText = 'width: 100%; height: 4px; background: #0a1929; border: 1px solid #2a6a8a; margin-top: 2px; position: relative;';
+                    actionBar.style.cssText = 'width: 80%; height: 4px; background: #0a1929; border: 1px solid #2a6a8a; margin-top: 2px; position: relative;';
 
                     
 
