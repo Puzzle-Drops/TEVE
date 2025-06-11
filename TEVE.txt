@@ -182,13 +182,21 @@ Witch Hunter -> Slayer -> Inquisitor -> Grand Inquisitor
 Witch Hunter -> Slayer -> Witcher -> Professional Witcher
 
 -Abilities
-Villager has 2 abilities. The first is just punch, the second is fury which doubles their action bar gain for a few turns.
-Class 1 has 1 ability, at level 1.
-Class 2 maintains the Class 1 ability, but gains the Class 2 ability, both at level 2.
-Class 3 maintains the Class 1 ability, the Class 2 ability, and gains a Class 3 ability, all at level 3.
-Class 4 maintains the Class 1, 2, and 3 abilities, and gains a Class 4 ability. This is the aura ability. All abilities are now level 4.
-Class 4 gains a 5th ability at level 500, and upgrades the level of Class 1-4 abilities to level 5.
-The first ability, the Class 1 ability, has no cooldown. The Class 2 ability has a cooldown of 5 turns, and the Class 3 ability has a cooldown of 10 turns. The Class 4 ability is an aura and requires no cooldown. The final class 4 ability that you gain at level 500 is an ultimate ability. These start dungeons with a random cooldown of 1-500. You may not get to always see it but they have a huge impact.
+Villager has 2 abilities: punch (basic) and fury (doubles action bar gain for a few turns).
+Class 1 gains 1 ability at level 1.
+Class 2 keeps the Class 1 ability and gains a new one at level 2.
+Class 3 keeps the Class 1 and 2 abilities, and gains a third at level 3.
+Class 4 keeps all previous abilities, gains a Class 4 ability (always an aura) at level 4, and all abilities are upgraded to level 4.
+At level 400, Class 4 gains a 5th ability and upgrades all existing abilities to level 5.
+
+The Class 1 ability has no cooldown. Others may be passive or use a cooldown (defined in spells.json).
+
+Passives are always active, e.g., “1 in 5 chance to double damage” or “reduce all damage by 50%.”
+
+Ability levels just add to the flat damage at the front end. For instance: damage = (classtier * 250) + (int * 1.25); in this instance the flat damage scales off the ability level, and also scales off the int stat of the hero. In this way ability levels matter but so do the stats of the hero.
+
+-Buffs/Debuffs
+Abilities can have multiple affects. These are called buffs or debuffs. For instance the villager has a buff he applies to himself in the fury ability. He speeds himself up. While this affect is active, it should be displayed above the unit's healthbar as an icon with a small number in the bottom right of that icon. Debuffs work the same way, but are negative. I will need to flesh these out below.
 
 Dungeons:
 -Easy - Items no requirements
@@ -233,3 +241,4 @@ Final Aetherium - Eternal Singularity (Ascended 3) (Lv 500)
 
 -Transcendent - Items Class 4 and level 500 required
 Rite of Passage - All dungeons in a row without stopping (Transcendent) (Lv 1000)
+
