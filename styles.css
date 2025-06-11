@@ -1465,13 +1465,85 @@ body {
 .spellText.fire { color: #ff6600; }
 .spellText.frost { color: #40c4ff; }
 
-/* Unit shake animation */
+/* Different spell animations */
 @keyframes unitShake {
     0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-6px); }
-    20%, 40%, 60%, 80% { transform: translateX(6px); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+    20%, 40%, 60%, 80% { transform: translateX(3px); }
 }
 
-.unitSlot.casting {
+@keyframes unitSpin {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(360deg); }
+    100% { transform: rotate(720deg); }
+}
+
+@keyframes unitPulse {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.1); }
+    50% { transform: scale(0.9); }
+    75% { transform: scale(1.05); }
+}
+
+@keyframes unitGlow {
+    0%, 100% { 
+        filter: brightness(1);
+        box-shadow: 0 0 20px rgba(42, 106, 138, 0.5);
+    }
+    50% { 
+        filter: brightness(1.5);
+        box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+    }
+}
+
+@keyframes unitFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes unitBounce {
+    0%, 100% { transform: translateY(0); }
+    25% { transform: translateY(-8px); }
+    50% { transform: translateY(0); }
+    75% { transform: translateY(-4px); }
+}
+
+@keyframes unitFlash {
+    0%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0.4; }
+    50% { opacity: 1; }
+}
+
+/* Animation classes */
+.unitSlot.casting-damage {
     animation: unitShake 0.4s ease-in-out;
 }
+
+.unitSlot.casting-speed,
+.unitSlot.casting-buff {
+    animation: unitSpin 0.6s ease-in-out;
+}
+
+.unitSlot.casting-heal {
+    animation: unitPulse 0.6s ease-in-out;
+}
+
+.unitSlot.casting-holy {
+    animation: unitGlow 0.8s ease-in-out;
+}
+
+.unitSlot.casting-shadow,
+.unitSlot.casting-debuff {
+    animation: unitFlash 0.6s ease-in-out;
+}
+
+.unitSlot.casting-shield,
+.unitSlot.casting-defense {
+    animation: unitFloat 0.6s ease-in-out;
+}
+
+.unitSlot.casting-summon,
+.unitSlot.casting-transform {
+    animation: unitBounce 0.8s ease-in-out;
+}
+
