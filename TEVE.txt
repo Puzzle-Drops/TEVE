@@ -196,7 +196,23 @@ Passives are always active, e.g., “1 in 5 chance to double damage” or “red
 Ability levels just add to the flat damage at the front end. For instance: damage = (classtier * 250) + (int * 1.25); in this instance the flat damage scales off the ability level, and also scales off the int stat of the hero. In this way ability levels matter but so do the stats of the hero.
 
 -Buffs/Debuffs
-Abilities can have multiple affects. These are called buffs or debuffs. For instance the villager has a buff he applies to himself in the fury ability. He speeds himself up. While this affect is active, it should be displayed above the unit's healthbar as an icon with a small number in the bottom right of that icon. Debuffs work the same way, but are negative. I will need to flesh these out below.
+Abilities can have multiple affects. These are called buffs or debuffs. For instance the villager has a buff he applies to himself in the fury ability. He speeds himself up. While this affect is active, it should be displayed above the unit's healthbar as an icon with a small number in the bottom right of that icon. Debuffs work the same way, but are negative.
+
+--Buffs
+Attack boost: deal 50% increased damage
+Speed boost: 50% increased action bar progress
+Armor boost: 50% increased armor
+Immune: cannot gain debuffs
+Shield: attacks reduce shield hp before unit hp
+
+--Debuffs
+Attack break: 50% attack
+Slow: 50% action bar progress
+Armor break: 50% armor
+Blight: no health regen, not valid healing target
+Bleed: deals 5% max hp damage on turn start
+Stun: turn ends on turn start
+Taunt: forces skill 1 attack on unit that cast taunt
 
 Dungeons:
 -Easy - Items no requirements
