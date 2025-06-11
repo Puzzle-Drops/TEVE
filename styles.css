@@ -134,6 +134,7 @@ body {
     margin: 5px 0 0 0;
     position: absolute;
     bottom: 0;
+    position: relative;
 }
 
 .healthBar {
@@ -1515,38 +1516,38 @@ body {
 }
 
 /* Animation classes */
-.unitSlot.casting-damage {
+.unit.casting-damage {
     animation: unitShake 0.4s ease-in-out;
 }
 
-.unitSlot.casting-speed,
-.unitSlot.casting-buff {
+.unit.casting-speed,
+.unit.casting-buff {
   0%   { transform: rotate(0deg); }
   30%  { transform: rotate(20deg); }
   70%  { transform: rotate(-20deg); }
   100% { transform: rotate(0deg); }
 }
 
-.unitSlot.casting-heal {
+.unit.casting-heal {
     animation: unitPulse 0.6s ease-in-out;
 }
 
-.unitSlot.casting-holy {
+.unit.casting-holy {
     animation: unitGlow 0.8s ease-in-out;
 }
 
-.unitSlot.casting-shadow,
-.unitSlot.casting-debuff {
+.unit.casting-shadow,
+.unit.casting-debuff {
     animation: unitFlash 0.6s ease-in-out;
 }
 
-.unitSlot.casting-shield,
-.unitSlot.casting-defense {
+.unit.casting-shield,
+.unit.casting-defense {
     animation: unitFloat 0.6s ease-in-out;
 }
 
-.unitSlot.casting-summon,
-.unitSlot.casting-transform {
+.unit.casting-summon,
+.unit.casting-transform {
     animation: unitBounce 0.8s ease-in-out;
 }
 
