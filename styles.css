@@ -154,11 +154,11 @@ body {
 .party5 { left: 80%; bottom: 20%; }
 
 /* Enemy positions */
-.enemy1 { left: 50%; top: 12%; }
-.enemy2 { left: 65%; top: 17%; }
-.enemy3 { left: 35%; top: 16%; }
-.enemy4 { left: 80%; top: 21%; }
-.enemy5 { left: 20%; top: 20%; }
+.enemy1 { left: 50%; top: 6%; }
+.enemy2 { left: 65%; top: 9%; }
+.enemy3 { left: 35%; top: 8%; }
+.enemy4 { left: 80%; top: 13%; }
+.enemy5 { left: 20%; top: 12%; }
 
 
 /* Battle UI */
