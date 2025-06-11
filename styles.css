@@ -152,15 +152,15 @@ body {
 .party1 { left: 50%; bottom: 12%; }
 .party2 { left: 35%; bottom: 17%; }
 .party3 { left: 65%; bottom: 16%; }
-.party4 { left: 20%; bottom: 20%; }
-.party5 { left: 80%; bottom: 21%; }
+.party4 { left: 20%; bottom: 21%; }
+.party5 { left: 80%; bottom: 20%; }
 
 /* Enemy positions */
 .enemy1 { left: 50%; top: 12%; }
 .enemy2 { left: 65%; top: 17%; }
 .enemy3 { left: 35%; top: 16%; }
-.enemy4 { left: 80%; top: 20%; }
-.enemy5 { left: 20%; top: 21%; }
+.enemy4 { left: 80%; top: 21%; }
+.enemy5 { left: 20%; top: 20%; }
 
 
 /* Battle UI */
