@@ -627,7 +627,7 @@ class Battle {
                 if (!actionBar) {
                     actionBar = document.createElement('div');
                     actionBar.className = 'actionBar';
-                    actionBar.style.cssText = 'width: 100px; height: 4px; background: #0a1929; border: 1px solid #2a6a8a; margin-top: 2px; position: relative;';
+                    actionBar.style.cssText = 'width: 80%; height: 4px; background: #0a1929; border: 1px solid #2a6a8a; margin-top: 2px; position: relative;';
                     
                     const actionFill = document.createElement('div');
                     actionFill.className = 'actionFill';
