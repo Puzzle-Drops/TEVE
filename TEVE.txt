@@ -16,17 +16,23 @@ Heroes tab should show all your heroes portrait at the bottom of the screen in a
 Portrait of the hero on the left, Stats panel on the right with a vertical tab selection to view different details on this hero. Vertical tab selection should have options for Info (default), Skill, Promote, Gear, and Log. The attached HeroOverviewScreen.png shows an example of the Info tab.
 
 Info tab:
-Name of Class - Name of hero
+Name of Class
+Name of hero
 (Class tier in stars)
+
+
 Lvl ###
 Exp bar ### / ####
+
 HP  ### +###
+Armor ### +###
+Resist ### +###
 STR ### +###
 AGI ### +###
 INT ### +###
 
 Abilities/Skills tab:
-Displays skills in a horizontal display. Clicking a skill will show details about that skill. Skills are earned by promoting to new class tiers. Tier 0 is a villager. They have two abilities. First is an ability called punch. It does 5 + Str + Agi + Int damage. Next is an ability called fury. It increases their attack speed by double for the next 5 turns. Increased attack speed means action bar recovery is doubled. All abilities will have a flat amount of value and then scale off of stats. So a archer might have a basic arrow shot that does (agi * 1.2) damage. A swordsman might have a stab attack that does 100 + (.5 str) damage. A priest could heal for 10% max hp + (int) health. Tier 0 is a villager with two abilities. After that you can promote. Tier 1 classes have one level 1 ability. Tier 2 classes get a second ability and level up the previous ability, so they have the same class 1 ability leveled up, and now a level 2 second ability. The third tier class unlocks another ability and all abilities level 3. The fourth tier unlocks an aura, and all abilities level 4. At level 400 the fourth tier can now do a special promote called an awaken. This unlocks an ultimate ability level 5 and all abilities hit level 5. When I click a skill in the skill tab I should be able to view a description of that skill. I will include a lot of this in there.
+Displays skills in a horizontal display. Clicking a skill will show details about that skill. Skills are earned by promoting to new class tiers. Tier 0 is a villager. They have two abilities. First is an ability called punch. It does 5 + Str + Agi + Int damage. Next is an ability called fury. It increases their attack speed by 150% for the next 2 turns. Increased attack speed means action bar recovery is 150%. All abilities will have a flat amount of value and then scale off of stats. So a archer might have a basic arrow shot that does (classtier * 25) + (agi * 1.2) damage. A swordsman might have a stab attack that does (classtier * 100) + (.5 str) damage. A priest could heal for 10% max hp + (classtier * 2%) + (int) health. Tier 0 is a villager with two abilities. After that you can promote. Tier 1 classes have one level 1 ability. Tier 2 classes get a second ability and level up the previous ability, so they have the same class 1 ability leveled up, and now a level 2 second ability. The third tier class unlocks another ability and all abilities level 3. The fourth tier unlocks an aura, and all abilities level 4. At level 400 the fourth tier can now do a special promote called an awaken. This unlocks an ultimate ability level 5 and all abilities hit level 5. When I click a skill in the skill tab I should be able to view a description of that skill. I will include a lot of this in there.
 
 Promote tab:
 This will show your current class tier and your next tier available. So for instance for a swordsman they will see at level 200 they can promote into a knight. If they hit 200 this tab should glow and when they click promote they will have to confirm it with the purchase of x amount of gold.
@@ -83,7 +89,7 @@ Boss: Stitch
 Items: no requirements
 Enter dungeon (button)
 
-When you click the enter dungeon button, you get a compact list of your heroes. You may select 5 to enter. When your party beats a dungeon they roll for loot, and go again. Anybody who died will be revived to full hp before the next dungeon starts. This will repeat until the player exits or until the party wipes. If your full team dies you get one more try. After two wipes in a row meaning every member of your party has died it will automatically begin the dungeon one tier down so from forgotten crypt to icy highland instead.
+When you click the enter dungeon button, you get a compact list of your heroes. You may select 5 heroes to enter. When your party beats a dungeon they roll for loot, and go again. Anybody who died will be revived to full hp before the next dungeon starts. This will repeat until the player exits or until the party wipes. If your full team dies you get one more try. After two wipes in a row meaning every member of your party has died it will automatically begin the dungeon one tier down so from forgotten crypt to icy highland instead.
 
 -Items-
 Items are obtained from dungeons and are incredibly rare, and they can give up to 3 types of rolls on them. The first stat is guaranteed and rolls for 75-100% of the offered stat. The second stat is a 50% chance and rolls for 50-100% of the offered stat. The final is stats at a 50% chance as well for 1-100% at the offered stat. Offered stats are half the level of the item. So 1-100 for a 100 stat increase. If it rolls 80, it will give +80 stats to two of them, and +160 to one random stat of the three.
@@ -110,15 +116,10 @@ Item level 50
 +2%(1-10) Cdr
 
 -Stash
-Each Class 1 category shares a stash. When clicking the stash tab it should show a compact list of all the stashes. 4x3 grid list of the class icon and then the class name.
-[] Acolyte
-[] Archer
-[] Druid
-[] Initiate
-[] Swordsman
-[] Templar
-[] Thief
-[] Witch Hunter
+Each Class 1 category shares a stash. When clicking the stash tab it should show a compact list of all the stashes. 4x2 grid list of the class icon and then the class name.
+[] Acolyte, [] Archer, [] Druid, [] Initiate
+[] Swordsman, [] Templar, [] Thief, [] Witch Hunter
+
 Once you click one you will see the stash. Items can be withdrawn from the inventory and placed in the stash whenever. So a Champion and an Avenger and a swordsman can all share gear, but cannot share with a Hierophant or a templar, or anyone else. These will be named after their first class name. Villagers cannot access any stashes at all. Items can be viewed, sold, and equipped from the stash ui. So the shared stash of the Templar class would include Templar, Arch Templar, Dark Templar, Dark Arch Templar, High Templar, Grand Templar. In the stash if you click an item you have the option to equip it, sell it, or blacksmith it. If you blacksmith it costs more money depending on the level of the item, but it adds one additional roll to the item for a high cost. If your item is already purple, it will add cdr roll to the item and make it golden.
 
 -Villagers
