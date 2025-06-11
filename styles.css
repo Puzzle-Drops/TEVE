@@ -1400,3 +1400,65 @@ body {
     font-size: 14px;
     color: #6a9aaa;
 }
+
+/* Spell cast animation */
+@keyframes spellCast {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.8);
+    }
+    20% {
+        opacity: 1;
+        transform: translateY(-10px) scale(1.1);
+    }
+    80% {
+        opacity: 1;
+        transform: translateY(-20px) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-40px) scale(0.9);
+    }
+}
+
+.spellText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow: 
+        0 0 10px rgba(0, 0, 0, 0.9),
+        0 0 20px rgba(0, 0, 0, 0.7),
+        0 0 30px currentColor,
+        0 2px 4px rgba(0, 0, 0, 1);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 100;
+    animation: spellCast 1.5s ease-out forwards;
+    letter-spacing: 1px;
+}
+
+/* Spell type colors */
+.spellText.damage { color: #ff4444; }
+.spellText.heal { color: #00ff88; }
+.spellText.buff { color: #4dd0e1; }
+.spellText.debuff { color: #ff8800; }
+.spellText.holy { color: #ffd700; }
+.spellText.shadow { color: #9a4dc7; }
+.spellText.nature { color: #00cc66; }
+.spellText.arcane { color: #e040fb; }
+.spellText.fire { color: #ff6600; }
+.spellText.frost { color: #40c4ff; }
+
+/* Unit shake animation */
+@keyframes unitShake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+    20%, 40%, 60%, 80% { transform: translateX(3px); }
+}
+
+.unitSlot.casting {
+    animation: unitShake 0.4s ease-in-out;
+}
