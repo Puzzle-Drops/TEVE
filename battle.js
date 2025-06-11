@@ -593,6 +593,12 @@ class Battle {
                 const healthBar = element.querySelector('.healthFill');
                 const healthText = element.querySelector('.healthText');
                 const unitDiv = element.querySelector('.unit');
+                const unitNameDiv = element.querySelector('.unitName');
+
+                if (unitNameDiv) {
+                    unitNameDiv.textContent = unit.name || "unknown";
+
+                }
                 
                 // Update health bar
                 if (healthBar) {
@@ -618,8 +624,9 @@ class Battle {
                     if (!unit.isAlive) {
                         unitDiv.style.opacity = '0.3';
                         unitDiv.style.filter = 'grayscale(100%)';
-                    }
-                    unitDiv.style.display = 'flex';
+                    } else {
+                        unitDiv.style.opacity = '';
+                        unitDiv.style.filter = '';
                 }
                 
                 // Update or create action bar
