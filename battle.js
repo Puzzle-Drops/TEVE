@@ -466,7 +466,7 @@ class Battle {
 
         // Start the battle loop with a small delay
 
-        setTimeout(() => this.battleLoop(), 2500);
+        setTimeout(() => this.battleLoop(), 4000);
 
     }
 
@@ -942,7 +942,7 @@ class Battle {
 
                 }
 
-            }, 1500);
+            }, 2500);
 
         }
 
@@ -1592,7 +1592,7 @@ class Battle {
 
                             <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${enemyId}_front.gif" alt="${unit.name}" 
 
-                                 style="width: 100%; object-fit: contain;"
+                                 style="width: 100%; image-rendering: pixelated; object-fit: contain;"
 
                                  onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'font-size: 9px; text-align: center; line-height: 1.2;\\'><div>${unit.name}</div><div style=\\'color: #6a9aaa;\\'>Lv${unit.source.level}</div></div>'">
 
