@@ -627,6 +627,7 @@ class Battle {
                     } else {
                         unitDiv.style.opacity = '';
                         unitDiv.style.filter = '';
+                    }
                 }
                 
                 // Update or create action bar
