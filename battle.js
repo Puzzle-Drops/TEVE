@@ -362,6 +362,12 @@ class Battle {
 
         
 
+        // Force UI update to show new enemy sprites
+
+        this.updateUI(true);
+
+        
+
         return true;
 
     }
@@ -500,9 +506,9 @@ class Battle {
 
         } else {
 
-            // Continue the loop
+            // Continue the loop - keep consistent speed
 
-            setTimeout(() => this.battleLoop(), 50 / this.gameSpeed);
+            setTimeout(() => this.battleLoop(), 50);
 
         }
 
@@ -692,6 +698,12 @@ class Battle {
 
         
 
+        // Show spell animation
+
+        this.showSpellAnimation(caster, ability.name, spell.effects);
+
+        
+
         // Execute spell logic
 
         if (spellLogic[spell.logicKey]) {
@@ -707,6 +719,80 @@ class Battle {
                 this.log(`${caster.name} failed to use ${ability.name}!`);
 
             }
+
+        }
+
+    }
+
+    
+
+    showSpellAnimation(caster, spellName, effects) {
+
+        const elementId = caster.isEnemy ? `enemy${caster.position + 1}` : `party${caster.position + 1}`;
+
+        const unitSlot = document.getElementById(elementId);
+
+        
+
+        if (unitSlot) {
+
+            // Add shake animation to unit
+
+            unitSlot.classList.add('casting');
+
+            setTimeout(() => unitSlot.classList.remove('casting'), 400);
+
+            
+
+            // Create spell text
+
+            const spellText = document.createElement('div');
+
+            spellText.className = 'spellText';
+
+            spellText.textContent = spellName;
+
+            
+
+            // Add appropriate color class based on spell type
+
+            if (effects.includes('damage')) spellText.classList.add('damage');
+
+            else if (effects.includes('heal')) spellText.classList.add('heal');
+
+            else if (effects.includes('buff')) spellText.classList.add('buff');
+
+            else if (effects.includes('debuff')) spellText.classList.add('debuff');
+
+            else if (effects.includes('holy')) spellText.classList.add('holy');
+
+            else if (effects.includes('shadow')) spellText.classList.add('shadow');
+
+            else if (effects.includes('fire')) spellText.classList.add('fire');
+
+            else if (effects.includes('frost')) spellText.classList.add('frost');
+
+            else if (effects.includes('arcane')) spellText.classList.add('arcane');
+
+            else spellText.classList.add('damage'); // default
+
+            
+
+            unitSlot.appendChild(spellText);
+
+            
+
+            // Remove spell text after animation
+
+            setTimeout(() => {
+
+                if (spellText.parentNode) {
+
+                    spellText.remove();
+
+                }
+
+            }, 1500);
 
         }
 
@@ -742,9 +828,9 @@ class Battle {
 
         
 
-        // Continue battle loop
+        // Continue battle loop - keep consistent timing
 
-        setTimeout(() => this.battleLoop(), 100 / this.gameSpeed);
+        setTimeout(() => this.battleLoop(), 100);
 
     }
 
@@ -1006,19 +1092,21 @@ class Battle {
 
                 
 
-                // Load next wave
+                // Load next wave after a delay
 
                 setTimeout(() => {
 
                     this.loadWave(this.currentWave + 1);
 
-                    this.updateUI();
+                    // Continue the battle loop
 
-                    this.battleLoop();
+                    setTimeout(() => this.battleLoop(), 500);
 
                 }, 2000);
 
-                return false; // Battle continues
+                
+
+                return false; // Battle continues but pause the current loop
 
             } else {
 
@@ -1264,7 +1352,7 @@ class Battle {
 
     
 
-    updateUI() {
+    updateUI(forceUpdate = false) {
 
         // Update all unit displays
 
@@ -1344,9 +1432,9 @@ class Battle {
 
                     
 
-                    // Update sprite if not already set
+                    // Update sprite - force update on new waves or if not set
 
-                    if (unit.isEnemy && !unitDiv.dataset.spriteSet) {
+                    if (unit.isEnemy && (!unitDiv.dataset.spriteSet || forceUpdate)) {
 
                         const enemyId = unit.source.enemyId;
 
