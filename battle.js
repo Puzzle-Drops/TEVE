@@ -1588,7 +1588,7 @@ showPlayerAbilities(unit) {
 
                     actionBar.className = 'actionBar';
 
-                    actionBar.style.cssText = 'width: 100%; height: 4px; background: #0a1929; border: 1px solid #2a6a8a; margin-top: 2px; position: relative;';
+                    actionBar.style.cssText = 'width: 100%; height: 10px; background: #0a1929; border: 1px solid #2a6a8a; margin-top: 2px; position: relative;';
 
                     
 
