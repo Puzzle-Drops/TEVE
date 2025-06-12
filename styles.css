@@ -536,12 +536,14 @@ body {
     color: #b0e0f0;
     margin-top: 2px;
     line-height: 1;
+    text-align: center;
 }
 
 .thumbName {
     font-size: 13px;
     color: #6a9aaa;
     line-height: 1;
+    text-align: center;
 }
 
 .thumbLevel {
