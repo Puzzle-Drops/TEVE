@@ -371,7 +371,7 @@ body {
     color: #b0e0f0;
     font-size: 24px;
     width: 40px;
-    height: 40px;
+    height: 20px;
     cursor: pointer;
     transition: all 0.3s;
     display: flex;
