@@ -212,7 +212,7 @@ body {
 .battleLog {
     position: absolute;
     bottom: 0px;
-    left: 20px;
+    left: 0px;
     width: 340px;
     height: 120px;
     background: rgba(10, 25, 41, 0.9);
