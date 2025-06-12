@@ -27,7 +27,7 @@
   "natures_touch": {
     "id": "natures_touch",
     "name": "Nature's Touch",
-    "description": "[Heal] Heals an ally for 20% max HP + INT",
+    "description": "Heals an ally for 20% max HP + INT",
     "cooldown": 0,
     "effects": ["heal"],
     "scaling": {
@@ -40,7 +40,7 @@
   "wild_growth": {
     "id": "wild_growth",
     "name": "Wild Growth",
-    "description": "[Heal] Heals all allies for 10% max HP + (INT * 0.5)",
+    "description": "Heals all allies for 10% max HP + (INT * 0.5)",
     "cooldown": 5,
     "effects": ["heal", "aoe"],
     "scaling": {
