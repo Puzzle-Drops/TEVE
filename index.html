@@ -1334,11 +1334,11 @@ init() {
 						
 						<div style="flex: 1;">
 							<div class="statLine" onmouseover="game.showStatTooltip(event, 'HP Regeneration')" onmouseout="game.hideStatTooltip()">
-								<span class="statName">HP Regen</span>
+								<span class="statName">Regen</span>
 								<span class="statValue">${hero.hpRegen.toFixed(1)}</span>
 							</div>
 							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Attack Speed')" onmouseout="game.hideStatTooltip()">
-								<span class="statName">Attack Speed</span>
+								<span class="statName">Atk Spd</span>
 								<span class="statValue">${hero.actionBarSpeed.toFixed(1)}%</span>
 							</div>
 							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Armor')" onmouseout="game.hideStatTooltip()">
@@ -1346,7 +1346,7 @@ init() {
 								<span class="statValue">${Math.floor(armor)} <span style="color: #6a9aaa;">(${(physicalDR * 100).toFixed(1)}%)</span></span>
 							</div>
 							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Resistance')" onmouseout="game.hideStatTooltip()">
-								<span class="statName">Resistance</span>
+								<span class="statName">Resist</span>
 								<span class="statValue">${Math.floor(resist)} <span style="color: #6a9aaa;">(${(magicalDR * 100).toFixed(1)}%)</span></span>
 							</div>
 						</div>
@@ -2014,11 +2014,11 @@ init() {
 						</div>
 						<div style="flex: 1;">
 							<div class="statRow">
-								<span class="statLabel">HP Regen</span>
+								<span class="statLabel">Regen</span>
 								<span class="statValue">${hero.hpRegen.toFixed(1)}</span>
 							</div>
 							<div class="statRow">
-								<span class="statLabel">Attack Speed</span>
+								<span class="statLabel">Atk Spd</span>
 								<span class="statValue">${hero.actionBarSpeed.toFixed(1)}%</span>
 							</div>
 							<div class="statRow">
@@ -2026,7 +2026,7 @@ init() {
 								<span class="statValue">${Math.floor(hero.armor)} <span style="color: #6a9aaa;">(${(hero.physicalDamageReduction * 100).toFixed(1)}%)</span></span>
 							</div>
 							<div class="statRow">
-								<span class="statLabel">Resistance</span>
+								<span class="statLabel">Resist</span>
 								<span class="statValue">${Math.floor(hero.resist)} <span style="color: #6a9aaa;">(${(hero.magicDamageReduction * 100).toFixed(1)}%)</span></span>
 							</div>
 						</div>
@@ -2116,11 +2116,11 @@ init() {
 						</div>
 						<div style="flex: 1;">
 							<div class="statRow">
-								<span class="statLabel">HP Regen</span>
+								<span class="statLabel">Regen</span>
 								<span class="statValue">${(stats.str * 0.05).toFixed(1)}</span>
 							</div>
 							<div class="statRow">
-								<span class="statLabel">Attack Speed</span>
+								<span class="statLabel">Atk Spd</span>
 								<span class="statValue">${(100 + 100 * (stats.agi / (stats.agi + 1000))).toFixed(1)}%</span>
 							</div>
 							<div class="statRow">
@@ -2128,7 +2128,7 @@ init() {
 								<span class="statValue">${Math.floor(enemy.armor)} <span style="color: #6a9aaa;">(${(enemy.physicalDamageReduction * 100).toFixed(1)}%)</span></span>
 							</div>
 							<div class="statRow">
-								<span class="statLabel">Resistance</span>
+								<span class="statLabel">Resist</span>
 								<span class="statValue">${Math.floor(enemy.resist)} <span style="color: #6a9aaa;">(${(enemy.magicDamageReduction * 100).toFixed(1)}%)</span></span>
 							</div>
 						</div>
