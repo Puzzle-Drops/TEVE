@@ -324,6 +324,26 @@ body {
     text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
 }
 
+.partyLabel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    background: rgba(10, 25, 41, 0.8);
+    border: 1px solid #2a6a8a;
+    padding: 10px 20px;
+    border-radius: 4px;
+    box-shadow: 0 0 15px rgba(42, 106, 138, 0.3);
+    min-width: 180px; /* Match the wave navigation width */
+}
+
+.partyLabelText {
+    font-size: 20px;
+    color: #4dd0e1;
+    text-shadow: 0 0 10px rgba(77, 208, 225, 0.5);
+    text-align: center;
+}
+
 /* Wave Navigation */
 .waveNavigation {
     display: flex;
