@@ -2,7 +2,7 @@
   "punch": {
     "id": "punch",
     "name": "Punch",
-    "description": "[Physical] Basic attack dealing 5 + (.5 * all stats) damage",
+    "description": "[Physical] Basic attack dealing 5 + (.5 all stats) damage",
     "cooldown": 0,
     "effects": ["damage"],
     "scaling": {
