@@ -1272,15 +1272,15 @@ init() {
 				
 				content.innerHTML = `
 					<div style="margin-bottom: 20px;">
-						${stars ? `<div style="font-size: 24px; font-weight: bold; ${hero.awakened ? 'color: #d896ff;' : 'color: #ffd700;'} text-shadow: 0 0 12px ${hero.awakened ? 'rgba(216, 150, 255, 0.9)' : 'rgba(255, 215, 0, 0.9)'}, 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${stars}</div>` : ''}
+						${stars ? `<div style="font-size: 48px; font-weight: bold; ${hero.awakened ? 'color: #d896ff;' : 'color: #ffd700;'} text-shadow: 0 0 12px ${hero.awakened ? 'rgba(216, 150, 255, 0.9)' : 'rgba(255, 215, 0, 0.9)'}, 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${stars}</div>` : ''}
 						<div class="heroName">${displayClassName}</div>
-						<div style="font-size: 18px; color: #6a9aaa; cursor: pointer;" onclick="game.editHeroName()">
+						<div style="font-size: 32px; color: #6a9aaa; cursor: pointer;" onclick="game.editHeroName()">
 							<span id="heroNameText">${hero.name}</span>
 						</div>
-						<div style="font-size: 16px; color: #6a9aaa; margin-top: 40px;">Level ${hero.level}</div>
+						<div style="font-size: 32px; color: #6a9aaa; margin-top: 40px;">Level ${hero.level}</div>
 					</div>
 					<div class="expBar">
-						<div class="expFill" style="width: ${Math.max(0, Math.min((hero.exp / hero.expToNext) * 100, 100))}%"></div>
+						<div class="expFill" style="width: ${Math.max(0, Math.min((hero.exp / hero.expToNext) * 100, 100))}%; display: flex; align-items: center; justify-content: center; font-size: 20px;">${hero.exp} / ${hero.expToNext}</div>
 						<div class="expText">${hero.exp} / ${hero.expToNext}</div>
 					</div>
 					
