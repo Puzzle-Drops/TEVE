@@ -509,8 +509,8 @@ body {
 }
 
 .heroThumb img {
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: 100%;
     image-rendering: pixelated;
 }
 
@@ -953,6 +953,10 @@ body {
     transition: all 0.3s;
 }
 
+.selectableHero .heroThumb {
+    /* Inherits all styles from regular heroThumb */
+}
+
 .selectableHero.selected {
     opacity: 0.5;
 }
@@ -969,6 +973,7 @@ body {
         0 0 10px rgba(0, 255, 136, 0.8),
         0 2px 4px rgba(0, 0, 0, 0.8);
     font-weight: bold;
+    z-index: 10;
 }
 
 /* Enemy Formation - matches party formation */
