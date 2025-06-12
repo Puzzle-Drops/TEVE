@@ -292,6 +292,8 @@ class Battle {
 
         this.processingWaveTransition = false;
 
+        this.targetingState = null; // Track targeting state
+
         
 
         // Wave management
@@ -1296,6 +1298,11 @@ class Battle {
 
         
 
+        // Clear any active targeting
+        if (this.targetingState) {
+            this.clearTargeting();
+        }
+
         // Clean up wave counter
 
         const waveCounter = document.getElementById('waveCounter');
@@ -1331,7 +1338,7 @@ class Battle {
 
             setTimeout(() => {
 
-                this.game.showMainMenu();
+                this.game.showPartySelect();
 
             }, 2000);
 
@@ -1341,7 +1348,7 @@ class Battle {
 
             setTimeout(() => {
 
-                this.game.showMainMenu();
+                this.game.showPartySelect();
 
             }, 2000);
 
@@ -1447,6 +1454,13 @@ showPlayerAbilities(unit) {
 
     selectTarget(caster, abilityIndex, targetType) {
 
+        // Store targeting state
+        this.targetingState = {
+            caster: caster,
+            abilityIndex: abilityIndex,
+            targetType: targetType
+        };
+
         // Highlight valid targets
 
         const validTargets = targetType === 'enemy' ? 
@@ -1475,21 +1489,7 @@ showPlayerAbilities(unit) {
 
                     // Remove all handlers and highlighting
 
-                    validTargets.forEach(t => {
-
-                        const el = document.getElementById(t.isEnemy ? `enemy${t.position + 1}` : `party${t.position + 1}`);
-
-                        if (el) {
-
-                            el.style.cursor = '';
-
-                            el.style.filter = '';
-
-                            el.replaceWith(el.cloneNode(true));
-
-                        }
-
-                    });
+                    this.clearTargeting();
 
                     
 
@@ -1509,6 +1509,23 @@ showPlayerAbilities(unit) {
 
         });
 
+    }
+    
+    clearTargeting() {
+        // Clear targeting state
+        this.targetingState = null;
+        
+        // Remove all targeting highlights and handlers
+        this.allUnits.forEach(unit => {
+            const element = document.getElementById(unit.isEnemy ? `enemy${unit.position + 1}` : `party${unit.position + 1}`);
+            if (element) {
+                element.style.cursor = '';
+                element.style.filter = '';
+                // Clone to remove event listeners
+                const newElement = element.cloneNode(true);
+                element.parentNode.replaceChild(newElement, element);
+            }
+        });
     }
 
     
