@@ -140,11 +140,21 @@ Scaling should be a mix of linear and parabolic. Getting to level 450 is the sam
 Gain exp after completing a dungeon. You have to have survived to be granted the exp.
 
 -Stats
-Every class has different stat modifiers. Each base stat for a class is equal to the Level of the hero multiplied by the class tier they are, multiplied by their class modifier for that stat.
-For example a primary Agility class below:
-Base Str = 1.2 * 150 * 3 = 540
-Base Agi = 2.3 * 150 * 3 = 1035
-Base Str = 1.1 * 150 * 3 = 495
+Every class has different stat modifiers. Each base stat for a class is equal to the Level of the hero multiplied by their class modifier for that stat.
+
+stat scaling notes:
+3 total    tier 0
+4 total    tier 1
+6 total    tier 2
+9 total    tier 3
+12 total   tier 4
+
+each stat minimum per tier
+min 1.0    tier 0
+min 1.25   tier 1
+min 1.5    tier 2
+min 2      tier 3
+min 2.5    tier 4
 
 These stats are further increased by items.
 
