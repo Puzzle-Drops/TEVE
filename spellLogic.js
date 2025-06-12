@@ -14,7 +14,7 @@ const spellLogic = {
 
     // Druid Spells
     naturesTouchLogic: function(battle, caster, target) {
-        const healAmount = Math.floor(target.maxHp * 0.2 + caster.totalStats.int);
+        const healAmount = Math.floor(target.maxHp * 0.2 + caster.stats.int);
         battle.healUnit(target, healAmount);
         battle.log(`${caster.name} heals ${target.name} for ${healAmount} HP!`);
     },
@@ -23,7 +23,7 @@ const spellLogic = {
         const party = battle.getParty(caster);
         party.forEach(ally => {
             if (ally.currentHp > 0) {
-                const healAmount = Math.floor(ally.maxHp * 0.1 + caster.totalStats.int * 0.5);
+                const healAmount = Math.floor(ally.maxHp * 0.1 + caster.stats.int * 0.5);
                 battle.healUnit(ally, healAmount);
             }
         });
@@ -39,7 +39,7 @@ const spellLogic = {
     },
 
     elementalShieldLogic: function(battle, caster, target) {
-        const shieldAmount = caster.totalStats.int * 2;
+        const shieldAmount = caster.stats.int * 2;
         battle.applyShield(target, shieldAmount);
         battle.log(`${caster.name} shields ${target.name} for ${shieldAmount} damage!`);
     },
@@ -62,7 +62,7 @@ const spellLogic = {
         const enemies = battle.getEnemies(caster);
         enemies.forEach(enemy => {
             if (enemy.currentHp > 0) {
-                const damage = caster.totalStats.str * 3 + caster.totalStats.int * 5;
+                const damage = caster.stats.str * 3 + caster.stats.int * 5;
                 battle.dealDamage(caster, enemy, damage, 'magical');
             }
         });
@@ -73,7 +73,7 @@ const spellLogic = {
         const enemies = battle.getEnemies(caster);
         enemies.forEach(enemy => {
             if (enemy.currentHp > 0) {
-                const damage = caster.totalStats.int * 4 + caster.totalStats.agi * 2;
+                const damage = caster.stats.int * 4 + caster.stats.agi * 2;
                 battle.dealDamage(caster, enemy, damage, 'magical');
                 battle.applyDebuff(enemy, 'naturesDot', 3, { dotDamage: damage * 0.2 });
             }
@@ -83,7 +83,7 @@ const spellLogic = {
 
     // Acolyte/Priest Spells
     holyLightLogic: function(battle, caster, target) {
-        const healAmount = Math.floor(target.maxHp * 0.3 + caster.totalStats.int * 0.5);
+        const healAmount = Math.floor(target.maxHp * 0.3 + caster.stats.int * 0.5);
         battle.healUnit(target, healAmount);
         battle.log(`${caster.name} heals ${target.name} with Holy Light for ${healAmount} HP!`);
     },
@@ -97,7 +97,7 @@ const spellLogic = {
         const party = battle.getParty(caster);
         party.forEach(ally => {
             if (ally.currentHp > 0) {
-                const healAmount = Math.floor(ally.maxHp * 0.15 + caster.totalStats.int);
+                const healAmount = Math.floor(ally.maxHp * 0.15 + caster.stats.int);
                 battle.healUnit(ally, healAmount);
             }
         });
@@ -132,7 +132,7 @@ const spellLogic = {
         const enemies = battle.getEnemies(caster);
         enemies.forEach(enemy => {
             if (enemy.currentHp > 0) {
-                const damage = caster.totalStats.int * 6;
+                const damage = caster.stats.int * 6;
                 battle.dealDamage(caster, enemy, damage, 'holy');
             }
         });
@@ -150,7 +150,7 @@ const spellLogic = {
 
     // Archer Spells
     poisonStrikeLogic: function(battle, caster, target) {
-        const damage = caster.totalStats.agi * 1.5;
+        const damage = caster.stats.agi * 1.5;
         battle.dealDamage(caster, target, damage, 'physical');
         battle.applyDebuff(target, 'poison', 3, { dotDamage: damage * 0.3 });
         battle.log(`${caster.name} poisons ${target.name}!`);
@@ -160,7 +160,7 @@ const spellLogic = {
         const enemies = battle.getEnemies(caster);
         enemies.forEach(enemy => {
             if (enemy.currentHp > 0) {
-                const damage = caster.totalStats.agi * 1.2;
+                const damage = caster.stats.agi * 1.2;
                 battle.dealDamage(caster, enemy, damage, 'physical');
             }
         });
@@ -168,7 +168,7 @@ const spellLogic = {
     },
 
     aimedShotLogic: function(battle, caster, target) {
-        const damage = caster.totalStats.agi * 3;
+        const damage = caster.stats.agi * 3;
         const isCrit = Math.random() < 0.5;
         battle.dealDamage(caster, target, damage * (isCrit ? 2 : 1), 'physical');
         battle.log(`${caster.name} fires an Aimed Shot${isCrit ? ' (CRIT!)' : ''}!`);
@@ -201,7 +201,7 @@ const spellLogic = {
             target.currentHp = 0;
             battle.log(`${caster.name} executes ${target.name} with a Perfect Shot!`);
         } else {
-            const damage = caster.totalStats.agi * 10;
+            const damage = caster.stats.agi * 10;
             battle.dealDamage(caster, target, damage, 'physical');
             battle.log(`${caster.name} fires a Perfect Shot!`);
         }
@@ -211,7 +211,7 @@ const spellLogic = {
         const enemies = battle.getEnemies(caster);
         enemies.forEach(enemy => {
             if (enemy.currentHp > 0) {
-                const damage = caster.totalStats.agi * 5 + caster.totalStats.str * 3;
+                const damage = caster.stats.agi * 5 + caster.stats.str * 3;
                 battle.dealDamage(caster, enemy, damage, 'physical');
             }
         });
@@ -220,7 +220,7 @@ const spellLogic = {
 
     // Mage Spells
     fireballLogic: function(battle, caster, target) {
-        const damage = caster.totalStats.int * 2.5;
+        const damage = caster.stats.int * 2.5;
         battle.dealDamage(caster, target, damage, 'fire');
         battle.log(`${caster.name} hurls a Fireball at ${target.name}!`);
     },
@@ -234,7 +234,7 @@ const spellLogic = {
         const enemies = battle.getEnemies(caster);
         enemies.forEach(enemy => {
             if (enemy.currentHp > 0) {
-                const damage = caster.totalStats.int * 2;
+                const damage = caster.stats.int * 2;
                 battle.dealDamage(caster, enemy, damage, 'arcane');
             }
         });
@@ -244,7 +244,7 @@ const spellLogic = {
     manaBurnLogic: function(battle, caster, target) {
         const manaBurned = Math.min(target.currentMana || 0, 100);
         target.currentMana = (target.currentMana || 0) - manaBurned;
-        const damage = manaBurned * 1.5 + caster.totalStats.int * 1.5;
+        const damage = manaBurned * 1.5 + caster.stats.int * 1.5;
         battle.dealDamage(caster, target, damage, 'arcane');
         battle.log(`${caster.name} burns ${target.name}'s mana!`);
     },
@@ -270,7 +270,7 @@ const spellLogic = {
         const enemies = battle.getEnemies(caster);
         enemies.forEach(enemy => {
             if (enemy.currentHp > 0) {
-                const damage = caster.totalStats.int * 8;
+                const damage = caster.stats.int * 8;
                 battle.dealDamage(caster, enemy, damage, 'fire');
             }
         });
@@ -287,13 +287,13 @@ const spellLogic = {
 
     // Swordsman/Knight Spells
     bladeStrikeLogic: function(battle, caster, target) {
-        const damage = caster.totalStats.str * 2;
+        const damage = caster.stats.str * 2;
         battle.dealDamage(caster, target, damage, 'physical');
         battle.log(`${caster.name} strikes with their blade!`);
     },
 
     shieldBashLogic: function(battle, caster, target) {
-        const damage = caster.totalStats.str * 1.5;
+        const damage = caster.stats.str * 1.5;
         battle.dealDamage(caster, target, damage, 'physical');
         battle.applyDebuff(target, 'stun', 1, { stunned: true });
         battle.log(`${caster.name} bashes ${target.name} with their shield!`);
@@ -303,7 +303,7 @@ const spellLogic = {
         const enemies = battle.getEnemies(caster);
         enemies.forEach(enemy => {
             if (enemy.currentHp > 0) {
-                const damage = caster.totalStats.str * 2.5;
+                const damage = caster.stats.str * 2.5;
                 battle.dealDamage(caster, enemy, damage, 'physical');
             }
         });
@@ -311,7 +311,7 @@ const spellLogic = {
     },
 
     holyStrikeLogic: function(battle, caster, target) {
-        const damage = caster.totalStats.str * 2 + caster.totalStats.int;
+        const damage = caster.stats.str * 2 + caster.stats.int;
         battle.dealDamage(caster, target, damage, 'holy');
         battle.log(`${caster.name} delivers a Holy Strike!`);
     },
@@ -337,7 +337,7 @@ const spellLogic = {
         const enemies = battle.getEnemies(caster);
         enemies.forEach(enemy => {
             if (enemy.currentHp > 0) {
-                const damage = caster.totalStats.str * 5 + caster.totalStats.int * 2;
+                const damage = caster.stats.str * 5 + caster.stats.int * 2;
                 battle.dealDamage(caster, enemy, damage, 'holy');
             }
         });
@@ -348,7 +348,7 @@ const spellLogic = {
         const enemies = battle.getEnemies(caster);
         enemies.forEach(enemy => {
             if (enemy.currentHp > 0) {
-                const damage = caster.totalStats.str * 4 + caster.totalStats.int * 4;
+                const damage = caster.stats.str * 4 + caster.stats.int * 4;
                 battle.dealDamage(caster, enemy, damage, 'holy');
             }
         });
@@ -357,8 +357,8 @@ const spellLogic = {
 
     // Templar Spells
     shieldSlamLogic: function(battle, caster, target) {
-        const defense = caster.totalStats.str * 0.5; // Use STR as proxy for defense
-        const damage = caster.totalStats.str * 1.5 + defense * 0.5;
+        const defense = caster.stats.str * 0.5; // Use STR as proxy for defense
+        const damage = caster.stats.str * 1.5 + defense * 0.5;
         battle.dealDamage(caster, target, damage, 'physical');
         battle.log(`${caster.name} slams with their shield!`);
     },
@@ -367,14 +367,14 @@ const spellLogic = {
         const enemies = battle.getEnemies(caster);
         enemies.forEach(enemy => {
             battle.applyDebuff(enemy, 'consecration', 3, { 
-                dotDamage: caster.totalStats.int 
+                dotDamage: caster.stats.int 
             });
         });
         battle.log(`${caster.name} consecrates the ground!`);
     },
 
     shadowStrikeLogic: function(battle, caster, target) {
-        const damage = caster.totalStats.str * 1.5 + caster.totalStats.int * 1.5;
+        const damage = caster.stats.str * 1.5 + caster.stats.int * 1.5;
         battle.dealDamage(caster, target, damage, 'shadow');
         battle.log(`${caster.name} strikes from the shadows!`);
     },
@@ -383,7 +383,7 @@ const spellLogic = {
         const enemies = battle.getEnemies(caster);
         enemies.forEach(enemy => {
             if (enemy.currentHp > 0) {
-                const damage = caster.totalStats.int * 3;
+                const damage = caster.stats.int * 3;
                 battle.dealDamage(caster, enemy, damage, 'psionic');
             }
         });
@@ -411,7 +411,7 @@ const spellLogic = {
         const enemies = battle.getEnemies(caster);
         enemies.forEach(enemy => {
             if (enemy.currentHp > 0) {
-                const damage = caster.totalStats.int * 7;
+                const damage = caster.stats.int * 7;
                 battle.dealDamage(caster, enemy, damage, 'void');
             }
         });
@@ -428,7 +428,7 @@ const spellLogic = {
 
     // Thief/Rogue Spells
     backstabLogic: function(battle, caster, target) {
-        const damage = caster.totalStats.agi * 2.5;
+        const damage = caster.stats.agi * 2.5;
         const isCrit = Math.random() < 0.5;
         battle.dealDamage(caster, target, damage * (isCrit ? 3 : 1), 'physical');
         battle.log(`${caster.name} backstabs ${target.name}${isCrit ? ' (CRIT!)' : ''}!`);
@@ -447,14 +447,14 @@ const spellLogic = {
             target.currentHp = 0;
             battle.log(`${caster.name} assassinates ${target.name}!`);
         } else {
-            const damage = caster.totalStats.agi * 4;
+            const damage = caster.stats.agi * 4;
             battle.dealDamage(caster, target, damage, 'physical');
             battle.log(`${caster.name} attempts to assassinate ${target.name}!`);
         }
     },
 
     shadowstepLogic: function(battle, caster, target) {
-        const damage = caster.totalStats.agi * 3;
+        const damage = caster.stats.agi * 3;
         battle.dealDamage(caster, target, damage, 'physical');
         battle.log(`${caster.name} shadowsteps behind ${target.name}!`);
     },
@@ -475,7 +475,7 @@ const spellLogic = {
     coupDeGraceLogic: function(battle, caster, target) {
         for (let i = 0; i < 6; i++) {
             if (target.currentHp > 0) {
-                const damage = caster.totalStats.agi * 1.5;
+                const damage = caster.stats.agi * 1.5;
                 const isCrit = Math.random() < 0.8; // High crit chance
                 battle.dealDamage(caster, target, damage * (isCrit ? 2 : 1), 'physical');
             }
@@ -487,7 +487,7 @@ const spellLogic = {
         const enemies = battle.getEnemies(caster);
         enemies.forEach(enemy => {
             if (enemy.currentHp > 0) {
-                const damage = caster.totalStats.agi * 6;
+                const damage = caster.stats.agi * 6;
                 battle.dealDamage(caster, enemy, damage, 'physical');
             }
         });
@@ -496,7 +496,7 @@ const spellLogic = {
 
     // Witch Hunter Spells
     silverBoltLogic: function(battle, caster, target) {
-        let damage = caster.totalStats.agi * 1.5 + caster.totalStats.int * 0.5;
+        let damage = caster.stats.agi * 1.5 + caster.stats.int * 0.5;
         if (target.type === 'undead' || target.type === 'demon') {
             damage *= 2;
         }
@@ -510,7 +510,7 @@ const spellLogic = {
     },
 
     holyFireLogic: function(battle, caster, target) {
-        const damage = caster.totalStats.int * 2.5;
+        const damage = caster.stats.int * 2.5;
         battle.dealDamage(caster, target, damage, 'holy');
         battle.applyDebuff(target, 'holyFire', 3, { dotDamage: damage * 0.3 });
         battle.log(`${caster.name} burns ${target.name} with Holy Fire!`);
@@ -522,7 +522,7 @@ const spellLogic = {
         
         switch(effect) {
             case 'damage':
-                battle.dealDamage(caster, target, caster.totalStats.int * 3, 'random');
+                battle.dealDamage(caster, target, caster.stats.int * 3, 'random');
                 battle.log(`${caster.name}'s potion explodes!`);
                 break;
             case 'heal':
@@ -557,7 +557,7 @@ const spellLogic = {
         const enemies = battle.getEnemies(caster);
         enemies.forEach(enemy => {
             if (enemy.currentHp > 0) {
-                const damage = caster.totalStats.int * 10;
+                const damage = caster.stats.int * 10;
                 battle.dealDamage(caster, enemy, damage, 'holy');
             }
         });
