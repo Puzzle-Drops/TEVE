@@ -365,7 +365,7 @@
       "name": "Satyr Instigator",
       "boss": true,
       "modifiers": { "str": 1.5, "agi": 1.2, "int": 1.0 },
-      "spells": ["slash", "bite"]
+      "spells": ["slash", "bite", "fury"]
     },
     "frostfang": {
       "name": "Frostfang",
