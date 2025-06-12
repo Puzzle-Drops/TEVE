@@ -1627,8 +1627,10 @@ body {
 
 /* Spell type colors */
 .spellText.damage { color: #ff4444; }
+.spellText.physical { color: #f3b03a; }
+.spellText.magical { color: #aa3af3; }
 .spellText.heal { color: #00ff88; }
-.spellText.buff { color: #4dd0e1; }
+.spellText.buff { color: #f3f33a; }
 .spellText.debuff { color: #ff8800; }
 .spellText.holy { color: #ffd700; }
 .spellText.shadow { color: #9a4dc7; }
@@ -1637,6 +1639,7 @@ body {
 .spellText.fire { color: #ff6600; }
 .spellText.frost { color: #40c4ff; }
 .spellText.pure { color: #fdffc4; }
+.spelltext.aoe { color: #b8a5ff; }
 
 /* Add styles for ability effect tags in tooltips */
 .abilityEffectTag {
@@ -1652,13 +1655,13 @@ body {
 
 .abilityEffectTag.physical { 
     background: rgba(255, 68, 68, 0.2); 
-    color: #ff4444; 
-    border: 1px solid #ff4444;
+    color: #f3b03a; 
+    border: 1px solid #f3b03a;
 }
 .abilityEffectTag.magical { 
     background: rgba(224, 64, 251, 0.2); 
-    color: #e040fb; 
-    border: 1px solid #e040fb;
+    color: #aa3af3; 
+    border: 1px solid #aa3af3;
 }
 .abilityEffectTag.pure { 
     background: rgba(255, 255, 255, 0.2); 
@@ -1678,7 +1681,7 @@ body {
 .abilityEffectTag.buff { 
     background: rgba(77, 208, 225, 0.2); 
     color: #4dd0e1; 
-    border: 1px solid #4dd0e1;
+    border: 1px solid #f3f33a;
 }
 .abilityEffectTag.debuff { 
     background: rgba(255, 136, 0, 0.2); 
@@ -1719,6 +1722,11 @@ body {
     background: rgba(0, 204, 102, 0.2); 
     color: #00cc66; 
     border: 1px solid #00cc66;
+}
+.abilityEffectTag.aoe { 
+    background: rgba(0, 204, 102, 0.2); 
+    color: #00cc66; 
+    border: 1px solid #b8a5ff;
 }
 .abilityEffectTag.speed { 
     background: rgba(77, 208, 225, 0.2); 
