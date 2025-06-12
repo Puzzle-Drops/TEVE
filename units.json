@@ -139,94 +139,95 @@
   "ultimateSpell": "natures_wrath",
   "promotesTo": []
 },
-    "initiate": {
-      "name": "Initiate",
-      "tier": 1,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
-      "spells": ["fireball"],
-      "promotesTo": ["mage"]
-    },
-    "mage": {
-      "name": "Mage",
-      "tier": 2,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
-      "spells": ["fireball", "frost_armor"],
-      "promotesTo": ["wizard", "sage"]
-    },
-    "wizard": {
-      "name": "Wizard",
-      "tier": 3,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
-      "spells": ["fireball", "frost_armor", "arcane_explosion"],
-      "promotesTo": ["white_wizard"]
-    },
-    "white_wizard": {
-      "name": "White Wizard",
-      "tier": 4,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
-      "spells": ["fireball", "frost_armor", "arcane_explosion", "enlightenment_aura"],
-      "ultimateSpell": "meteor_storm",
-      "promotesTo": []
-    },
-    "sage": {
-      "name": "Sage",
-      "tier": 3,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
-      "spells": ["fireball", "frost_armor", "mana_burn"],
-      "promotesTo": ["arch_sage"]
-    },
-    "arch_sage": {
-      "name": "Arch Sage",
-      "tier": 4,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
-      "spells": ["fireball", "frost_armor", "mana_burn", "wisdom_aura"],
-      "ultimateSpell": "time_stop",
-      "promotesTo": []
-    },
-    "swordsman": {
-      "name": "Swordsman",
-      "tier": 1,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
-      "spells": ["blade_strike"],
-      "promotesTo": ["knight"]
-    },
-    "knight": {
-      "name": "Knight",
-      "tier": 2,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
-      "spells": ["blade_strike", "shield_bash"],
-      "promotesTo": ["imperial_knight", "crusader"]
-    },
-    "imperial_knight": {
-      "name": "Imperial Knight",
-      "tier": 3,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
-      "spells": ["blade_strike", "shield_bash", "royal_charge"],
-      "promotesTo": ["champion"]
-    },
-    "champion": {
-      "name": "Champion",
-      "tier": 4,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
-      "spells": ["blade_strike", "shield_bash", "royal_charge", "valor_aura"],
-      "ultimateSpell": "divine_storm",
-      "promotesTo": []
-    },
-    "crusader": {
-      "name": "Crusader",
-      "tier": 3,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
-      "spells": ["blade_strike", "shield_bash", "holy_strike"],
-      "promotesTo": ["avenger"]
-    },
-    "avenger": {
-      "name": "Avenger",
-      "tier": 4,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
-      "spells": ["blade_strike", "shield_bash", "holy_strike", "vengeance_aura"],
-      "ultimateSpell": "wrath_of_heaven",
-      "promotesTo": []
-    },
+"initiate": {
+  "name": "Initiate",
+  "tier": 1,
+  "modifiers": { "str": 1.3, "agi": 1.4, "int": 1.3 },
+  "spells": ["fireball"],
+  "promotesTo": ["mage"]
+},
+"mage": {
+  "name": "Mage",
+  "tier": 2,
+  "modifiers": { "str": 1.6, "agi": 1.8, "int": 2.6 },
+  "spells": ["fireball", "frost_armor"],
+  "promotesTo": ["wizard", "sage"]
+},
+"wizard": {
+  "name": "Wizard",
+  "tier": 3,
+  "modifiers": { "str": 2.3, "agi": 2.6, "int": 4.1 },
+  "spells": ["fireball", "frost_armor", "arcane_explosion"],
+  "promotesTo": ["white_wizard"]
+},
+"white_wizard": {
+  "name": "White Wizard",
+  "tier": 4,
+  "modifiers": { "str": 3.5, "agi": 3.0, "int": 5.5 },
+  "spells": ["fireball", "frost_armor", "arcane_explosion", "enlightenment_aura"],
+  "ultimateSpell": "meteor_storm",
+  "promotesTo": []
+},
+"sage": {
+  "name": "Sage",
+  "tier": 3,
+  "modifiers": { "str": 2.0, "agi": 2.8, "int": 4.2 },
+  "spells": ["fireball", "frost_armor", "mana_burn"],
+  "promotesTo": ["arch_sage"]
+},
+"arch_sage": {
+  "name": "Arch Sage",
+  "tier": 4,
+  "modifiers": { "str": 3.0, "agi": 3.5, "int": 5.5 },
+  "spells": ["fireball", "frost_armor", "mana_burn", "wisdom_aura"],
+  "ultimateSpell": "time_stop",
+  "promotesTo": []
+},
+"swordsman": {
+  "name": "Swordsman",
+  "tier": 1,
+  "modifiers": { "str": 1.5, "agi": 1.5, "int": 1.0 },
+  "spells": ["blade_strike"],
+  "promotesTo": ["knight"]
+},
+"knight": {
+  "name": "Knight",
+  "tier": 2,
+  "modifiers": { "str": 3.0, "agi": 1.5, "int": 1.5 },
+  "spells": ["blade_strike", "shield_bash"],
+  "promotesTo": ["imperial_knight", "crusader"]
+},
+"imperial_knight": {
+  "name": "Imperial Knight",
+  "tier": 3,
+  "modifiers": { "str": 5.0, "agi": 2.0, "int": 2.0 },
+  "spells": ["blade_strike", "shield_bash", "royal_charge"],
+  "promotesTo": ["champion"]
+},
+"champion": {
+  "name": "Champion",
+  "tier": 4,
+  "modifiers": { "str": 6.5, "agi": 2.5, "int": 3.0 },
+  "spells": ["blade_strike", "shield_bash", "royal_charge", "valor_aura"],
+  "ultimateSpell": "divine_storm",
+  "promotesTo": []
+},
+"crusader": {
+  "name": "Crusader",
+  "tier": 3,
+  "modifiers": { "str": 4.5, "agi": 2.5, "int": 2.0 },
+  "spells": ["blade_strike", "shield_bash", "holy_strike"],
+  "promotesTo": ["avenger"]
+},
+"avenger": {
+  "name": "Avenger",
+  "tier": 4,
+  "modifiers": { "str": 6.0, "agi": 3.0, "int": 3.0 },
+  "spells": ["blade_strike", "shield_bash", "holy_strike", "vengeance_aura"],
+  "ultimateSpell": "wrath_of_heaven",
+  "promotesTo": []
+},
+
     "templar": {
       "name": "Templar",
       "tier": 1,
