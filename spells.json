@@ -2,9 +2,9 @@
   "punch": {
     "id": "punch",
     "name": "Punch",
-    "description": "[Physical] Basic attack dealing 5 + (.5 all stats) damage",
+    "description": "Basic attack dealing 5 + (.5 all stats) damage",
     "cooldown": 0,
-    "effects": ["damage"],
+    "effects": ["damage", "physical"],
     "scaling": {
       "base": 5,
       "str": 0.5,
@@ -735,9 +735,9 @@
 "slash": {
     "id": "slash",
     "name": "Slash",
-    "description": "[Physical] Deals 5% of target's max HP or 5 damage, whichever is lower.",
+    "description": "Deals 5% of target's max HP or 5 damage, whichever is lower.",
     "cooldown": 0,
-    "effects": ["damage"],
+    "effects": ["damage", "physical"],
     "target": "enemy",
     "logicKey": "slashLogic",
     "scaling": {
@@ -749,9 +749,9 @@
   "bite": {
     "id": "bite",
     "name": "Bite",
-    "description": "[Physical] Deals 5% of target's max HP or 5 damage, whichever is higher.",
+    "description": "Deals 5% of target's max HP or 5 damage, whichever is higher.",
     "cooldown": 3,
-    "effects": ["damage"],
+    "effects": ["damage", "physical"],
     "target": "enemy",
     "logicKey": "biteLogic",
     "scaling": {
