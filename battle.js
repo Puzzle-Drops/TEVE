@@ -1394,18 +1394,15 @@ showPlayerAbilities(unit) {
         const spell = spellManager.getSpell(ability.id);
         const iconUrl = `https://puzzle-drops.github.io/TEVE/img/spells/${ability.id}.png`;
         
-        // Escape quotes in description for tooltip
-        const escapedDesc = (ability.description || 'No description').replace(/'/g, "\\'");
-        const escapedName = ability.name.replace(/'/g, "\\'");
-        
         abilityDiv.innerHTML = `
             <img src="${iconUrl}" alt="${ability.name}" style="width: 100px; height: 100px;" onerror="this.style.display='none'">
             ${unit.cooldowns[index] > 0 ? `<span class="cooldownText">${unit.cooldowns[index]}</span>` : ''}
         `;
         
-        // Add tooltip on hover
+        // Add tooltip on hover using the new format
         abilityDiv.onmouseover = (e) => {
-            game.showAbilityTooltip(e, escapedName, ability.level, ability.cooldown, escapedDesc);
+            const tooltipHtml = game.formatAbilityTooltip(ability, ability.level);
+            game.showAbilityTooltipFromHTML(e, tooltipHtml);
         };
         
         abilityDiv.onmouseout = () => {
@@ -1435,8 +1432,7 @@ showPlayerAbilities(unit) {
     // Apply centering based on ability count
     abilityPanel.style.justifyContent = 'center';
     abilityPanel.style.width = '100%';
-}
-    
+}    
 
     hidePlayerAbilities() {
 
