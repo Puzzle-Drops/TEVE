@@ -526,19 +526,6 @@ body {
     color: #d896ff;
 }
 
-.editNameBtn {
-    display: inline-block;
-    margin-left: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    color: #6a9aaa;
-    transition: color 0.3s;
-}
-
-.editNameBtn:hover {
-    color: #4dd0e1;
-}
-
 /* Confirmation Modal */
 .confirmModal {
     display: none;
