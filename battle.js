@@ -1328,82 +1328,57 @@ class Battle {
 
     
 
-    showPlayerAbilities(unit) {
-
-        const abilityPanel = document.getElementById('abilityPanel');
-
-        abilityPanel.innerHTML = '';
-
+showPlayerAbilities(unit) {
+    const abilityPanel = document.getElementById('abilityPanel');
+    abilityPanel.innerHTML = '';
+    
+    unit.abilities.forEach((ability, index) => {
+        const abilityDiv = document.createElement('div');
+        abilityDiv.className = 'ability';
         
-
-        unit.abilities.forEach((ability, index) => {
-
-            const abilityDiv = document.createElement('div');
-
-            abilityDiv.className = 'ability';
-
-            
-
-            if (!unit.canUseAbility(index)) {
-
-                abilityDiv.classList.add('onCooldown');
-
-            }
-
-            
-
-            const spell = spellManager.getSpell(ability.id);
-
-            const iconUrl = `https://puzzle-drops.github.io/TEVE/img/spells/${ability.id}.png`;
-
-            
-
-            abilityDiv.innerHTML = `
-
-                <img src="${iconUrl}" alt="${ability.name}" style="width: 72px; height: 72px;" onerror="this.style.display='none'">
-
-                <span style="position: absolute; bottom: 0px; font-size: 10px;">${ability.name}</span>
-
-                ${unit.cooldowns[index] > 0 ? `<span class="cooldownText">${unit.cooldowns[index]}</span>` : ''}
-
-            `;
-
-            
-
-            if (unit.canUseAbility(index)) {
-
-                abilityDiv.onclick = () => {
-
-                    if (spell) {
-
-                        // For targeted abilities, highlight valid targets
-
-                        if (spell.target === 'enemy' || spell.target === 'ally') {
-
-                            this.selectTarget(unit, index, spell.target);
-
-                        } else {
-
-                            this.executeAbility(unit, index, spell.target === 'self' ? unit : 'all');
-
-                            this.endTurn();
-
-                        }
-
+        if (!unit.canUseAbility(index)) {
+            abilityDiv.classList.add('onCooldown');
+        }
+        
+        const spell = spellManager.getSpell(ability.id);
+        const iconUrl = `https://puzzle-drops.github.io/TEVE/img/spells/${ability.id}.png`;
+        
+        // Escape quotes in description for tooltip
+        const escapedDesc = (ability.description || 'No description').replace(/'/g, "\\'");
+        const escapedName = ability.name.replace(/'/g, "\\'");
+        
+        abilityDiv.innerHTML = `
+            <img src="${iconUrl}" alt="${ability.name}" style="width: 72px; height: 72px;" onerror="this.style.display='none'">
+            <span style="position: absolute; bottom: 0px; font-size: 10px;">${ability.name}</span>
+            ${unit.cooldowns[index] > 0 ? `<span class="cooldownText">${unit.cooldowns[index]}</span>` : ''}
+        `;
+        
+        // Add tooltip on hover
+        abilityDiv.onmouseover = (e) => {
+            game.showAbilityTooltip(e, escapedName, ability.level, ability.cooldown, escapedDesc);
+        };
+        
+        abilityDiv.onmouseout = () => {
+            game.hideAbilityTooltip();
+        };
+        
+        if (unit.canUseAbility(index)) {
+            abilityDiv.onclick = () => {
+                if (spell) {
+                    // For targeted abilities, highlight valid targets
+                    if (spell.target === 'enemy' || spell.target === 'ally') {
+                        this.selectTarget(unit, index, spell.target);
+                    } else {
+                        this.executeAbility(unit, index, spell.target === 'self' ? unit : 'all');
+                        this.endTurn();
                     }
-
-                };
-
-            }
-
-            
-
-            abilityPanel.appendChild(abilityDiv);
-
-        });
-
-    }
-
+                }
+            };
+        }
+        
+        abilityPanel.appendChild(abilityDiv);
+    });
+}
     
 
     hidePlayerAbilities() {
