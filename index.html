@@ -1278,11 +1278,13 @@ init() {
 							<span id="heroNameText">${hero.name}</span>
 						</div>
 						<div style="font-size: 32px; color: #6a9aaa; margin-top: 40px;">Level ${hero.level}</div>
-					</div>
-					<div class="expBar">
-						<div class="expFill" style="width: ${Math.max(0, Math.min((hero.exp / hero.expToNext) * 100, 100))}%; display: flex; align-items: center; justify-content: center; font-size: 20px;">${hero.exp} / ${hero.expToNext}</div>
-						<div class="expText">${hero.exp} / ${hero.expToNext}</div>
-					</div>
+						</div>
+						<div class="expBar" style="position: relative; height: 24px; background: #222; border: 1px solid #444;">
+ 						 <div class="expFill" style="width: ${Math.max(0, Math.min((hero.exp / hero.expToNext) * 100, 100))}%; height: 100%; background: #4caf50;"></div>
+						  <div class="expText" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14px; color: white;">
+						    ${hero.exp} / ${hero.expToNext} (${((hero.exp / hero.expToNext) * 100).toFixed(1)}%)
+						  </div>
+						</div>
 					
 					<div style="margin-top: 40px;">
 						<div class="statLine" onmouseover="game.showStatTooltip(event, 'Strength')" onmouseout="game.hideStatTooltip()">
