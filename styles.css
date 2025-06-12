@@ -1276,6 +1276,7 @@ body {
     justify-content: space-between;
     margin: 8px 0;
     font-size: 16px;
+    min-width: 200px;
 }
 
 .statLabel {
