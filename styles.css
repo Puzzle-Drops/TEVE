@@ -286,7 +286,7 @@ body {
 
 .heroPanel {
     display: flex;
-    height: 70%;
+    height: 75%;
     gap: 20px;
     margin-bottom: 20px;
 }
