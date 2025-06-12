@@ -1401,7 +1401,7 @@ enterDungeon(tierName, dungeonIndex) {
 				`;
 			}
 			
-		showStatTooltip(event, statName) {
+showStatTooltip(event, statName) {
 	// Define tooltip content map
 	const tooltipData = {
 		"Strength": "Increases Max HP, HP Regeneration, and Armor. Boosts Strength-based abilities.",
@@ -1440,36 +1440,33 @@ enterDungeon(tierName, dungeonIndex) {
 
 	// Set tooltip content
 	tooltip.innerHTML = tooltipData[statName] || "No tooltip available.";
+	tooltip.style.display = 'block';
 
-	// Position tooltip near the cursor
-	tooltip.style.left = event.pageX + 15 + "px";
-	tooltip.style.top = event.pageY + 15 + "px";
-	tooltip.style.display = "block";
+	// Position near bottom of hovered element
+	const rect = event.target.getBoundingClientRect();
+	const tooltipRect = tooltip.getBoundingClientRect();
+
+	let left = rect.left;
+	let top = rect.bottom + 5;
+
+	// Adjust if tooltip would overflow the screen
+	if (left + tooltipRect.width > window.innerWidth) {
+		left = window.innerWidth - tooltipRect.width - 10;
+	}
+	if (top + tooltipRect.height > window.innerHeight) {
+		top = rect.top - tooltipRect.height - 5;
+	}
+
+	tooltip.style.left = `${left}px`;
+	tooltip.style.top = `${top}px`;
 }
-				
-				// Position tooltip
-				const rect = event.target.getBoundingClientRect();
-				tooltip.style.left = rect.left + 'px';
-				tooltip.style.top = (rect.bottom + 5) + 'px';
-				tooltip.style.display = 'block';
-				
-				// Adjust if tooltip goes off screen
-				const tooltipRect = tooltip.getBoundingClientRect();
-				if (tooltipRect.right > window.innerWidth) {
-					tooltip.style.left = (window.innerWidth - tooltipRect.width - 10) + 'px';
-				}
-				if (tooltipRect.bottom > window.innerHeight) {
-					tooltip.style.top = (rect.top - tooltipRect.height - 5) + 'px';
-				}
-			}
 
-			hideStatTooltip() {
-				const tooltip = document.getElementById('statTooltip');
-				if (tooltip) {
-					tooltip.style.display = 'none';
-				}
-			}
-
+hideStatTooltip() {
+	const tooltip = document.getElementById('statTooltip');
+	if (tooltip) {
+		tooltip.style.display = 'none';
+	}
+}
             showSkillsTab(hero, content) {
                 content.innerHTML = `
                     <div class="skillsContainer">
