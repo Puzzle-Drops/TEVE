@@ -82,8 +82,28 @@ class BattleUnit {
 
     }
 
-    
+	get armor() {
+		const stats = this.stats;
+		const gearArmor = this.isEnemy ? 0 : (this.source.gearStats.armor || 0);
+		return (0.25 * stats.str) + (0.05 * stats.agi) + gearArmor;
+	}
 
+	get resist() {
+		const stats = this.stats;
+		const gearResist = this.isEnemy ? 0 : (this.source.gearStats.resist || 0);
+		return (0.25 * stats.int) + gearResist;
+	}
+
+	get physicalDamageReduction() {
+		const totalArmor = this.armor;
+		return (0.9 * totalArmor) / (totalArmor + 500);
+	}
+
+	get magicDamageReduction() {
+		const totalResist = this.resist;
+		return (0.3 * totalResist) / (totalResist + 1000);
+	}
+    
     get actionBarSpeed() {
 
         const agi = this.stats.agi;
@@ -950,91 +970,71 @@ class Battle {
 
     
 
-    endTurn() {
-
-        if (this.currentUnit) {
-
-            this.currentUnit.reduceCooldowns();
-
-        }
-
-        this.currentUnit = null;
-
-        this.waitingForPlayer = false;
-
-        this.turn++;
-
-        
-
-        // Hide ability panel
-
-        this.hidePlayerAbilities();
-
-        
-
-        // Update UI
-
-        this.updateUI();
-
-        
-
-        // Continue battle loop after delay
-
-        setTimeout(() => this.battleLoop(), 1000);
-
-    }
+	endTurn() {
+		if (this.currentUnit) {
+			this.currentUnit.reduceCooldowns();
+			// Apply HP regen after turn
+			if (this.currentUnit.isAlive) {
+				const regen = Math.floor(this.currentUnit.stats.str * 0.05);
+				if (regen > 0) {
+					const actualRegen = Math.min(regen, this.currentUnit.maxHp - this.currentUnit.currentHp);
+					if (actualRegen > 0) {
+						this.currentUnit.currentHp += actualRegen;
+						this.log(`${this.currentUnit.name} regenerates ${actualRegen} HP.`);
+					}
+				}
+			}
+		}
+		this.currentUnit = null;
+		this.waitingForPlayer = false;
+		this.turn++;
+		
+		// Hide ability panel
+		this.hidePlayerAbilities();
+		
+		// Update UI
+		this.updateUI();
+		
+		// Continue battle loop after delay
+		setTimeout(() => this.battleLoop(), 1000);
+	}
 
     
 
     // Combat methods referenced by spells
 
-    dealDamage(attacker, target, amount, damageType = 'physical') {
-
-        if (!target.isAlive) return 0;
-
-        
-
-        let damage = Math.floor(amount);
-
-        
-
-        // Apply damage reduction from buffs
-
-        target.buffs.forEach(buff => {
-
-            if (buff.damageReduction) {
-
-                damage *= (1 - buff.damageReduction);
-
-            }
-
-        });
-
-        
-
-        // Apply damage increase from debuffs
-
-        target.debuffs.forEach(debuff => {
-
-            if (debuff.damageTakenMultiplier) {
-
-                damage *= debuff.damageTakenMultiplier;
-
-            }
-
-        });
-
-        
-
-        damage = Math.floor(damage);
-
-        target.currentHp = Math.max(0, target.currentHp - damage);
-
-        
-
-        return damage;
-
-    }
+	dealDamage(attacker, target, amount, damageType = 'physical') {
+		if (!target.isAlive) return 0;
+		
+		let damage = Math.floor(amount);
+		
+		// Apply damage reduction based on type
+		if (damageType === 'physical') {
+			damage = damage * (1 - target.physicalDamageReduction);
+		} else {
+			// All non-physical damage is considered magical
+			damage = damage * (1 - target.magicDamageReduction);
+		}
+		
+		// Apply damage reduction from buffs
+		target.buffs.forEach(buff => {
+			if (buff.damageReduction) {
+				damage *= (1 - buff.damageReduction);
+			}
+		});
+		
+		// Apply damage increase from debuffs
+		target.debuffs.forEach(debuff => {
+			if (debuff.damageTakenMultiplier) {
+				damage *= debuff.damageTakenMultiplier;
+			}
+		});
+		
+		damage = Math.floor(damage);
+		target.currentHp = Math.max(0, target.currentHp - damage);
+		
+		return damage;
+	}
 
     
 
