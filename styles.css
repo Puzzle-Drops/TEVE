@@ -325,6 +325,7 @@ body {
     display: flex;
     background: rgba(10, 15, 26, 0.9);
     border-bottom: 1px solid #2a6a8a;
+    font-size: 32px;
 }
 
 .tabButton {
