@@ -1542,7 +1542,7 @@ showPlayerAbilities(unit) {
 
                     if (!unit.isAlive) {
 
-                        unitDiv.style.opacity = '0.1';
+                        unitDiv.style.opacity = '0';
 
                         unitDiv.style.filter = 'grayscale(100%)';
 
