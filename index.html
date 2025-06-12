@@ -1183,50 +1183,50 @@ init() {
                     return b.level - a.level;
                 });
                 
-                sortedHeroes.forEach((hero, index) => {
-                    const thumb = document.createElement('div');
-                    thumb.className = 'heroThumb';
-                    if (this.heroes.indexOf(hero) === this.selectedHero) {
-                        thumb.classList.add('selected');
-                    }
-                    
-                    // Generate stars
-                    let stars = '★';
-                    if (hero.classTier > 0) {
-                        const starCount = hero.awakened ? 5 : hero.classTier;
-                        for (let i = 0; i < starCount; i++) {
-                            stars += '★';
-                        }
-                    }
-                    
-                    // Check if hero can promote (but not if already awakened)
-                    const canPromote = hero.canPromote() && !hero.awakened;
-                    const isAwakenable = hero.classTier === 4 && hero.level >= 400 && !hero.awakened;
-                    
-                    // Use class ID for image files
-                    const classId = hero.className.toLowerCase().replace(/ /g, '_');
-					const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+sortedHeroes.forEach((hero, index) => {
+    const thumb = document.createElement('div');
+    thumb.className = 'heroThumb';
+    if (this.heroes.indexOf(hero) === this.selectedHero) {
+        thumb.classList.add('selected');
+    }
+    
+    // Generate stars
+    let stars = '★';
+    if (hero.classTier > 0) {
+        const starCount = hero.awakened ? 5 : hero.classTier;
+        for (let i = 0; i < starCount; i++) {
+            stars += '★';
+        }
+    }
+    
+    // Check if hero can promote (but not if already awakened)
+    const canPromote = hero.canPromote() && !hero.awakened;
+    const isAwakenable = hero.classTier === 4 && hero.level >= 400 && !hero.awakened;
+    
+    // Use class ID for image files
+    const classId = hero.className.toLowerCase().replace(/ /g, '_');
+    const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
 
-                    thumb.innerHTML = `
-    <div style="position: relative; width: 100px; height: 100px;">
-        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" 
-             onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${displayClassName}</text></svg>'">
-             
-        ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
+    thumb.innerHTML = `
+<div style="position: relative; width: 100px; height: 100px;">
+    <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" 
+         onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${displayClassName}</text></svg>'">
+         
+    ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
 
-        <div class="thumbLevel">${hero.level}</div>
+    <div class="thumbLevel">${hero.level}</div>
 
-        ${canPromote ? `<div class="promoteArrowThumb ${isAwakenable ? 'awaken' : 'normal'}">^</div>` : ''}
-    </div>
+    ${canPromote ? `<div class="promoteArrowThumb ${isAwakenable ? 'awaken' : 'normal'}">^</div>` : ''}
+</div>
 
-    <div class="thumbClass">${displayClassName}</div>
-    <div class="thumbName">${hero.name}</div>
+<div class="thumbClass">${displayClassName}</div>
+<div class="thumbName">${hero.name}</div>
 `;
 
-                    
-                    thumb.onclick = () => this.selectHero(this.heroes.indexOf(hero));
-                    heroList.appendChild(thumb);
-                });
+    
+    thumb.onclick = () => this.selectHero(this.heroes.indexOf(hero));
+    heroList.appendChild(thumb);
+});
             }
 
             selectHero(index) {
