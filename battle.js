@@ -1348,8 +1348,7 @@ showPlayerAbilities(unit) {
         const escapedName = ability.name.replace(/'/g, "\\'");
         
         abilityDiv.innerHTML = `
-            <img src="${iconUrl}" alt="${ability.name}" style="width: 72px; height: 72px;" onerror="this.style.display='none'">
-            <span style="position: absolute; bottom: 0px; font-size: 10px;">${ability.name}</span>
+            <img src="${iconUrl}" alt="${ability.name}" style="width: 100px; height: 100px;" onerror="this.style.display='none'">
             ${unit.cooldowns[index] > 0 ? `<span class="cooldownText">${unit.cooldowns[index]}</span>` : ''}
         `;
         
