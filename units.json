@@ -390,6 +390,132 @@
       "boss": false,
       "modifiers": { "str": 1.2, "agi": 1.1, "int": 0.8 },
       "spells": ["slash", "bite"]
+    },
+        "stitch": {
+      "name": "Stitch",
+      "boss": true,
+      "modifiers": { "str": 2.2, "agi": 1.0, "int": 1.5 },
+      "spells": ["slash", "poison_strike"]
+    },
+    "centaur_bloodhorn": {
+      "name": "Centaur Bloodhorn",
+      "boss": true,
+      "modifiers": { "str": 2.5, "agi": 1.8, "int": 1.0 },
+      "spells": ["blade_strike", "fury"]
+    },
+    "lich_queen": {
+      "name": "Lich Queen",
+      "boss": true,
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 3.0 },
+      "spells": ["frost_bolt", "shadow_strike", "mana_burn"]
+    },
+    "naga_ranger": {
+      "name": "Naga Ranger",
+      "boss": true,
+      "modifiers": { "str": 1.5, "agi": 2.5, "int": 1.5 },
+      "spells": ["poison_strike", "multishot"]
+    },
+    "devourer": {
+      "name": "Devourer",
+      "boss": true,
+      "modifiers": { "str": 3.0, "agi": 0.8, "int": 1.2 },
+      "spells": ["bite", "poison_strike"]
+    },
+    "rotwood_horror": {
+      "name": "Rotwood Horror",
+      "boss": true,
+      "modifiers": { "str": 2.8, "agi": 0.5, "int": 2.0 },
+      "spells": ["poison_strike", "shadow_strike"]
+    },
+    "hades": {
+      "name": "Hades",
+      "boss": true,
+      "modifiers": { "str": 2.5, "agi": 2.0, "int": 2.5 },
+      "spells": ["shadow_strike", "holy_fire", "psi_storm"]
+    },
+    "mindreaver": {
+      "name": "Mindreaver",
+      "boss": true,
+      "modifiers": { "str": 1.0, "agi": 1.5, "int": 4.0 },
+      "spells": ["mana_burn", "psi_storm", "shadow_strike"]
+    },
+    "flame_revenant": {
+      "name": "Flame Revenant",
+      "boss": true,
+      "modifiers": { "str": 2.0, "agi": 1.5, "int": 3.0 },
+      "spells": ["fireball", "holy_fire", "arcane_explosion"]
+    },
+    "unknown_entity": {
+      "name": "???",
+      "boss": true,
+      "modifiers": { "str": 3.0, "agi": 3.0, "int": 3.0 },
+      "spells": ["shadow_strike", "psi_storm", "mana_burn"]
+    },
+    "mirage": {
+      "name": "Mirage",
+      "boss": true,
+      "modifiers": { "str": 2.0, "agi": 4.0, "int": 2.5 },
+      "spells": ["shadowstep", "smoke_bomb", "assassinate"]
+    },
+    "ancient_hydra": {
+      "name": "Ancient Hydra",
+      "boss": true,
+      "modifiers": { "str": 4.0, "agi": 2.0, "int": 2.0 },
+      "spells": ["bite", "multishot", "fury"]
+    },
+    "pugs": {
+      "name": "Pugs",
+      "boss": true,
+      "modifiers": { "str": 3.5, "agi": 3.5, "int": 3.0 },
+      "spells": ["blade_strike", "shield_bash", "royal_charge"]
+    },
+    "starweaver": {
+      "name": "Starweaver",
+      "boss": true,
+      "modifiers": { "str": 2.0, "agi": 3.0, "int": 4.5 },
+      "spells": ["arcane_explosion", "psi_storm", "mana_burn"]
+    },
+    "chronarch": {
+      "name": "Chronarch",
+      "boss": true,
+      "modifiers": { "str": 3.0, "agi": 3.0, "int": 4.0 },
+      "spells": ["frost_bolt", "shadowstep", "smoke_bomb"]
+    },
+    "elysian_watcher": {
+      "name": "Elysian Watcher",
+      "boss": true,
+      "modifiers": { "str": 3.5, "agi": 3.5, "int": 3.5 },
+      "spells": ["holy_light", "divine_shield", "holy_fire"]
+    },
+    "sovereign": {
+      "name": "Sovereign",
+      "boss": true,
+      "modifiers": { "str": 4.0, "agi": 3.0, "int": 4.0 },
+      "spells": ["psi_storm", "arcane_explosion", "royal_charge"]
+    },
+    "worldshaper": {
+      "name": "Worldshaper",
+      "boss": true,
+      "modifiers": { "str": 4.5, "agi": 3.5, "int": 4.5 },
+      "spells": ["arcane_explosion", "psi_storm", "holy_fire", "mana_burn"]
+    },
+    "cosmic_archon": {
+      "name": "Cosmic Archon",
+      "boss": true,
+      "modifiers": { "str": 5.0, "agi": 5.0, "int": 5.0 },
+      "spells": ["arcane_explosion", "psi_storm", "holy_fire", "shadow_strike"]
+    },
+    "primeval_entity": {
+      "name": "Primeval Entity",
+      "boss": true,
+      "modifiers": { "str": 5.5, "agi": 4.5, "int": 5.5 },
+      "spells": ["shadow_strike", "mana_burn", "psi_storm", "arcane_explosion"]
+    },
+    "eternal_singularity": {
+      "name": "Eternal Singularity",
+      "boss": true,
+      "modifiers": { "str": 6.0, "agi": 6.0, "int": 6.0 },
+      "spells": ["arcane_explosion", "psi_storm", "shadow_strike", "holy_fire", "mana_burn"]
     }
   },  "promotionRequirements": {
     "0": 50,
