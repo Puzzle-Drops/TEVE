@@ -466,7 +466,7 @@ body {
 }
 
 .heroList {
-    height: 160px;
+    height: 180px;
     display: flex;
     gap: 10px;
     overflow-x: auto;
