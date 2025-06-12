@@ -17,7 +17,7 @@
   "fury": {
     "id": "fury",
     "name": "Fury",
-    "description": "150% attack speed for 3 turns",
+    "description": "[Buff] 150% attack speed for 3 turns",
     "cooldown": 5,
     "effects": ["buff", "speed"],
     "duration": 3,
@@ -27,7 +27,7 @@
   "natures_touch": {
     "id": "natures_touch",
     "name": "Nature's Touch",
-    "description": "Heals an ally for 20% max HP + INT",
+    "description": "[Heal] Heals an ally for 20% max HP + INT",
     "cooldown": 0,
     "effects": ["heal"],
     "scaling": {
@@ -40,7 +40,7 @@
   "wild_growth": {
     "id": "wild_growth",
     "name": "Wild Growth",
-    "description": "Heals all allies for 10% max HP + (INT * 0.5)",
+    "description": "[Heal] Heals all allies for 10% max HP + (INT * 0.5)",
     "cooldown": 5,
     "effects": ["heal", "aoe"],
     "scaling": {
