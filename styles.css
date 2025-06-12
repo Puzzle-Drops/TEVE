@@ -324,6 +324,63 @@ body {
     text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
 }
 
+/* Wave Navigation */
+.waveNavigation {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 15px;
+    background: rgba(10, 25, 41, 0.8);
+    border: 1px solid #2a6a8a;
+    padding: 10px 20px;
+    border-radius: 4px;
+    box-shadow: 0 0 15px rgba(42, 106, 138, 0.3);
+}
+
+.waveText {
+    font-size: 20px;
+    color: #4dd0e1;
+    text-shadow: 0 0 10px rgba(77, 208, 225, 0.5);
+    min-width: 100px;
+    text-align: center;
+}
+
+.waveArrow {
+    background: linear-gradient(135deg, #0a2e4a 0%, #0f3f5f 100%);
+    border: 1px solid #2a6a8a;
+    color: #b0e0f0;
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px rgba(42, 106, 138, 0.3);
+}
+
+.waveArrow:hover {
+    background: linear-gradient(135deg, #0f3f5f 0%, #1a5a7a 100%);
+    border-color: #4dd0e1;
+    box-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
+    transform: scale(1.1);
+}
+
+.waveArrow:active {
+    transform: scale(0.95);
+}
+
+/* Updated Stash Grid Layout */
+.stashGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
 /* Heroes Screen */
 #heroesScreen {
     display: none;
@@ -1489,30 +1546,27 @@ body {
     text-shadow: 0 0 30px rgba(77, 208, 225, 0.5);
 }
 
-.stashList {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
 .stashItem {
     background: rgba(10, 25, 41, 0.8);
     border: 2px solid #2a6a8a;
-    padding: 20px;
-    margin-bottom: 15px;
+    padding: 30px 20px;
     cursor: pointer;
     transition: all 0.3s;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    min-height: 140px;
 }
 
 .stashItem:hover {
     background: rgba(42, 106, 138, 0.5);
     border-color: #4dd0e1;
-    transform: translateX(10px);
+    transform: translateY(-5px);
     box-shadow: 0 0 30px rgba(77, 208, 225, 0.4);
 }
+
 
 .stashIcon {
     width: 60px;
@@ -1523,24 +1577,15 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 32px;
     box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
 }
 
-.stashInfo {
-    flex: 1;
-}
-
 .stashName {
-    font-size: 20px;
+    font-size: 18px;
     color: #b0e0f0;
-    margin-bottom: 5px;
     text-shadow: 0 0 10px rgba(176, 224, 240, 0.5);
-}
-
-.stashDescription {
-    font-size: 14px;
-    color: #6a9aaa;
+    text-align: center;
 }
 
 /* Spell cast animation */
