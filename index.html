@@ -1802,7 +1802,7 @@ init() {
                 });
             }
 
-            createSelectableHeroThumb(hero, heroIndex) {
+createSelectableHeroThumb(hero, heroIndex) {
                 const wrapper = document.createElement('div');
                 wrapper.className = 'selectableHero';
                 
@@ -1827,14 +1827,18 @@ init() {
                 const classId = hero.className.toLowerCase().replace(/ /g, '_');
 				const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
                 thumb.innerHTML = `
-                    <div style="position: relative; width: 60px; height: 60px;">
-                        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${displayClassName}</text></svg>'">
-                        ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
-                        <div class="thumbLevel">${hero.level}</div>
-                    </div>
-                    <div class="thumbClass">${displayClassName}</div>
-                    <div class="thumbName">${hero.name}</div>
-                `;
+    <div style="position: relative; width: 100px; height: 100px;">
+        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" 
+             onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${displayClassName}</text></svg>'">
+             
+        ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
+
+        <div class="thumbLevel">${hero.level}</div>
+    </div>
+
+    <div class="thumbClass">${displayClassName}</div>
+    <div class="thumbName">${hero.name}</div>
+`;
                 
                 wrapper.appendChild(thumb);
                 
@@ -1851,7 +1855,7 @@ init() {
                 
                 return wrapper;
             }
-
+		
             toggleHeroSelection(heroIndex) {
                 // Check if hero is already selected
                 const currentIndex = this.selectedParty.indexOf(heroIndex);
