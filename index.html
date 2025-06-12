@@ -2311,9 +2311,11 @@ hideStatTooltip() {
                 
                 // Add other effect tags
                 effects.forEach(effect => {
-                    if (effect !== 'physical' && effect !== 'holy' && effect !== damageType) {
-                        effectTags += `<span class="abilityEffectTag ${effect}">${effect.charAt(0).toUpperCase() + effect.slice(1)}</span>`;
-                    }
+                    // Skip damage type tags (physical, holy) as we already handled them
+                    if (effect === 'physical' || effect === 'holy') return;
+                    
+                    // Add all other effect tags including 'damage'
+                    effectTags += `<span class="abilityEffectTag ${effect}">${effect.charAt(0).toUpperCase() + effect.slice(1)}</span>`;
                 });
                 
                 // Format cooldown
