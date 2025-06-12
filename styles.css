@@ -1048,6 +1048,13 @@ body {
     border-color: #aa5a5a;
 }
 
+.enemySlot.filled:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(170, 90, 90, 0.3);
+    background: rgba(170, 74, 74, 0.5);
+    cursor: pointer;
+}
+
 .enemySlot:hover {
     transform: scale(1.05);
     box-shadow: 0 0 20px rgba(170, 90, 90, 0.3);
