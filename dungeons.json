@@ -24,9 +24,9 @@
         },
         {
           "enemies": [
-            { "id": "satyr_youth", "level": 2 },
-            { "id": "satyr_youth", "level": 2 },
             { "id": "satyr_youth", "level": 3 },
+            { "id": "satyr_youth", "level": 2 },
+            { "id": "satyr_youth", "level": 2 },
             { "id": "satyr_youth", "level": 2 },
             { "id": "satyr_youth", "level": 2 }
           ]
