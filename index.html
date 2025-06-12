@@ -1306,7 +1306,7 @@ init() {
 						</div>
 						<div class="statLine" onmouseover="game.showStatTooltip(event, 'HP Regeneration')" onmouseout="game.hideStatTooltip()">
 							<span class="statName">HP Regen</span>
-							<span class="statValue">${Math.floor(hero.hpRegen)}</span>
+							<span class="statValue">${hero.hpRegen.toFixed(1)}</span>
 						</div>
 						<div class="statLine" onmouseover="game.showStatTooltip(event, 'Attack Speed')" onmouseout="game.hideStatTooltip()">
 							<span class="statName">Attack Speed</span>
@@ -1982,7 +1982,7 @@ init() {
 						</div>
 						<div class="statRow">
 							<span class="statLabel">HP Regen</span>
-							<span class="statValue">${Math.floor(hero.hpRegen)}</span>
+							<span class="statValue">${hero.hpRegen.toFixed(1)}</span>
 						</div>
 						<div class="statRow">
 							<span class="statLabel">Attack Speed</span>
@@ -2080,7 +2080,7 @@ init() {
 						</div>
 						<div class="statRow">
 							<span class="statLabel">HP Regen</span>
-							<span class="statValue">${Math.floor(stats.str * 0.05)}</span>
+							<span class="statValue">${(stats.str * 0.05).toFixed(1)}</span>
 						</div>
 						<div class="statRow">
 							<span class="statLabel">Attack Speed</span>
