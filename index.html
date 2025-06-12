@@ -28,6 +28,7 @@
                         <div class="healthText">100/100</div>
                     </div>
 	            <div class="unit">P1</div>
+                    <div class="unitShadow"></div>
                 </div>
                 <div class="unitSlot party2" id="party2">
                     <div class="unit">P2</div>
@@ -35,6 +36,7 @@
                         <div class="healthFill" style="width: 100%"></div>
                         <div class="healthText">100/100</div>
                     </div>
+                    <div class="unitShadow"></div>
                 </div>
                 <div class="unitSlot party3" id="party3">
                     <div class="unit">P3</div>
@@ -42,6 +44,7 @@
                         <div class="healthFill" style="width: 100%"></div>
                         <div class="healthText">100/100</div>
                     </div>
+                    <div class="unitShadow"></div>
                 </div>
                 <div class="unitSlot party4" id="party4">
                     <div class="unit">P4</div>
@@ -49,6 +52,7 @@
                         <div class="healthFill" style="width: 100%"></div>
                         <div class="healthText">100/100</div>
                     </div>
+                    <div class="unitShadow"></div>
                 </div>
                 <div class="unitSlot party5" id="party5">
                     <div class="unit">P5</div>
@@ -56,6 +60,7 @@
                         <div class="healthFill" style="width: 100%"></div>
                         <div class="healthText">100/100</div>
                     </div>
+                    <div class="unitShadow"></div>
                 </div>
 
                 <!-- Enemy Units -->
@@ -65,6 +70,7 @@
                         <div class="healthFill" style="width: 100%"></div>
                         <div class="healthText">67/67</div>
                     </div>
+                    <div class="unitShadow"></div>
                 </div>
                 <div class="unitSlot enemy2" id="enemy2" style="display: none;">
                     <div class="unit">E2</div>
@@ -72,6 +78,7 @@
                         <div class="healthFill" style="width: 100%"></div>
                         <div class="healthText">50/50</div>
                     </div>
+                    <div class="unitShadow"></div>
                 </div>
                 <div class="unitSlot enemy3" id="enemy3" style="display: none;">
                     <div class="unit">E3</div>
@@ -79,6 +86,7 @@
                         <div class="healthFill" style="width: 100%"></div>
                         <div class="healthText">50/50</div>
                     </div>
+                    <div class="unitShadow"></div>
                 </div>
                 <div class="unitSlot enemy4" id="enemy4" style="display: none;">
                     <div class="unit">E4</div>
@@ -86,6 +94,7 @@
                         <div class="healthFill" style="width: 100%"></div>
                         <div class="healthText">50/50</div>
                     </div>
+                    <div class="unitShadow"></div>
                 </div>
                 <div class="unitSlot enemy5" id="enemy5" style="display: none;">
                     <div class="unit">E5</div>
@@ -93,6 +102,7 @@
                         <div class="healthFill" style="width: 100%"></div>
                         <div class="healthText">50/50</div>
                     </div>
+                    <div class="unitShadow"></div>
                 </div>
             </div>
 
@@ -109,7 +119,7 @@
                 <div class="abilityPanel" id="abilityPanel">
                 </div>
             </div>
-            <button class="backButton" onclick="game.exitBattle()">Exit Battle</button>
+            <button class="exitBattleButton" onclick="game.exitBattle()">Exit Battle</button>
         </div>
 
         <!-- Heroes Screen -->
@@ -1128,8 +1138,24 @@ init() {
 
             exitBattle() {
                 if (this.currentBattle) {
-                    // TODO: Confirm exit if battle is ongoing
+                    // Stop the battle and clean up
+                    this.currentBattle.running = false;
                     this.currentBattle = null;
+                    
+                    // Clean up any lingering UI elements
+                    const waveCounter = document.getElementById('waveCounter');
+                    if (waveCounter) {
+                        waveCounter.remove();
+                    }
+                    
+                    // Clear ability panel
+                    document.getElementById('abilityPanel').innerHTML = '';
+                    
+                    // Reset all battle-related variables
+                    this.dungeonWaves = null;
+                    this.currentDungeon = null;
+                    this.currentEnemy = null;
+                    this.lastWaveEnemies = null;
                 }
                 this.showMainMenu();
             }
@@ -1182,9 +1208,9 @@ init() {
 					const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
 
                     thumb.innerHTML = `
-    <div style="position: relative; width: 60px; height: 60px;">
+    <div style="position: relative; width: 100px; height: 100px;">
         <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" 
-             onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'10\\'>${displayClassName}</text></svg>'">
+             onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${displayClassName}</text></svg>'">
              
         ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
 
@@ -1286,41 +1312,43 @@ init() {
 						  </div>
 						</div>
 					
-					<div style="margin-top: 40px;">
-						<div class="statLine" onmouseover="game.showStatTooltip(event, 'Strength')" onmouseout="game.hideStatTooltip()">
-							<span class="statName">STR</span>
-							<span class="statValue">${baseStats.str} ${hero.gearStats.str > 0 ? `<span class="statBonus">+${hero.gearStats.str}</span>` : ''}</span>
+					<div style="margin-top: 40px; display: flex; gap: 60px;">
+						<div style="flex: 1;">
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Health Points')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">HP</span>
+								<span class="statValue">${hero.hp}</span>
+							</div>
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Strength')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">STR</span>
+								<span class="statValue">${baseStats.str} ${hero.gearStats.str > 0 ? `<span class="statBonus">+${hero.gearStats.str}</span>` : ''}</span>
+							</div>
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Agility')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">AGI</span>
+								<span class="statValue">${baseStats.agi} ${hero.gearStats.agi > 0 ? `<span class="statBonus">+${hero.gearStats.agi}</span>` : ''}</span>
+							</div>
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Intelligence')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">INT</span>
+								<span class="statValue">${baseStats.int} ${hero.gearStats.int > 0 ? `<span class="statBonus">+${hero.gearStats.int}</span>` : ''}</span>
+							</div>
 						</div>
-						<div class="statLine" onmouseover="game.showStatTooltip(event, 'Agility')" onmouseout="game.hideStatTooltip()">
-							<span class="statName">AGI</span>
-							<span class="statValue">${baseStats.agi} ${hero.gearStats.agi > 0 ? `<span class="statBonus">+${hero.gearStats.agi}</span>` : ''}</span>
-						</div>
-						<div class="statLine" onmouseover="game.showStatTooltip(event, 'Intelligence')" onmouseout="game.hideStatTooltip()">
-							<span class="statName">INT</span>
-							<span class="statValue">${baseStats.int} ${hero.gearStats.int > 0 ? `<span class="statBonus">+${hero.gearStats.int}</span>` : ''}</span>
-						</div>
-					</div>
-					
-					<div style="margin-top: 40px;">
-						<div class="statLine" onmouseover="game.showStatTooltip(event, 'Health Points')" onmouseout="game.hideStatTooltip()">
-							<span class="statName">HP</span>
-							<span class="statValue">${hero.hp}</span>
-						</div>
-						<div class="statLine" onmouseover="game.showStatTooltip(event, 'HP Regeneration')" onmouseout="game.hideStatTooltip()">
-							<span class="statName">HP Regen</span>
-							<span class="statValue">${hero.hpRegen.toFixed(1)}</span>
-						</div>
-						<div class="statLine" onmouseover="game.showStatTooltip(event, 'Attack Speed')" onmouseout="game.hideStatTooltip()">
-							<span class="statName">Attack Speed</span>
-							<span class="statValue">${hero.actionBarSpeed.toFixed(1)}%</span>
-						</div>
-						<div class="statLine" onmouseover="game.showStatTooltip(event, 'Armor')" onmouseout="game.hideStatTooltip()">
-							<span class="statName">Armor</span>
-							<span class="statValue">${Math.floor(armor)} <span style="color: #6a9aaa;">(${(physicalDR * 100).toFixed(1)}%)</span></span>
-						</div>
-						<div class="statLine" onmouseover="game.showStatTooltip(event, 'Resistance')" onmouseout="game.hideStatTooltip()">
-							<span class="statName">Resistance</span>
-							<span class="statValue">${Math.floor(resist)} <span style="color: #6a9aaa;">(${(magicalDR * 100).toFixed(1)}%)</span></span>
+						
+						<div style="flex: 1;">
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'HP Regeneration')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">HP Regen</span>
+								<span class="statValue">${hero.hpRegen.toFixed(1)}</span>
+							</div>
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Attack Speed')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">Attack Speed</span>
+								<span class="statValue">${hero.actionBarSpeed.toFixed(1)}%</span>
+							</div>
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Armor')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">Armor</span>
+								<span class="statValue">${Math.floor(armor)} <span style="color: #6a9aaa;">(${(physicalDR * 100).toFixed(1)}%)</span></span>
+							</div>
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Resistance')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">Resistance</span>
+								<span class="statValue">${Math.floor(resist)} <span style="color: #6a9aaa;">(${(magicalDR * 100).toFixed(1)}%)</span></span>
+							</div>
 						</div>
 					</div>
 				`;
@@ -1962,41 +1990,45 @@ init() {
 				const popup = document.getElementById('heroInfoPopup');
 				document.getElementById('popupHeroName').textContent = `Lv.${hero.level} ${displayClassName} | ${hero.name}`;
 				
-				// Show stats
+				// Show stats in double column format
 				const stats = hero.totalStats;
 				const statsHtml = `
-					<div class="statRow">
-						<span class="statLabel">STR</span>
-						<span class="statValue">${stats.str}</span>
-					</div>
-					<div class="statRow">
-						<span class="statLabel">AGI</span>
-						<span class="statValue">${stats.agi}</span>
-					</div>
-					<div class="statRow">
-						<span class="statLabel">INT</span>
-						<span class="statValue">${stats.int}</span>
-					</div>
-					<div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #2a6a8a;">
-						<div class="statRow">
-							<span class="statLabel">HP</span>
-							<span class="statValue">${hero.hp}</span>
+					<div style="display: flex; gap: 40px;">
+						<div style="flex: 1;">
+							<div class="statRow">
+								<span class="statLabel">HP</span>
+								<span class="statValue">${hero.hp}</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">STR</span>
+								<span class="statValue">${stats.str}</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">AGI</span>
+								<span class="statValue">${stats.agi}</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">INT</span>
+								<span class="statValue">${stats.int}</span>
+							</div>
 						</div>
-						<div class="statRow">
-							<span class="statLabel">HP Regen</span>
-							<span class="statValue">${hero.hpRegen.toFixed(1)}</span>
-						</div>
-						<div class="statRow">
-							<span class="statLabel">Attack Speed</span>
-							<span class="statValue">${hero.actionBarSpeed.toFixed(1)}%</span>
-						</div>
-						<div class="statRow">
-							<span class="statLabel">Armor</span>
-							<span class="statValue">${Math.floor(hero.armor)} <span style="color: #6a9aaa;">(${(hero.physicalDamageReduction * 100).toFixed(1)}%)</span></span>
-						</div>
-						<div class="statRow">
-							<span class="statLabel">Resistance</span>
-							<span class="statValue">${Math.floor(hero.resist)} <span style="color: #6a9aaa;">(${(hero.magicDamageReduction * 100).toFixed(1)}%)</span></span>
+						<div style="flex: 1;">
+							<div class="statRow">
+								<span class="statLabel">HP Regen</span>
+								<span class="statValue">${hero.hpRegen.toFixed(1)}</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">Attack Speed</span>
+								<span class="statValue">${hero.actionBarSpeed.toFixed(1)}%</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">Armor</span>
+								<span class="statValue">${Math.floor(hero.armor)} <span style="color: #6a9aaa;">(${(hero.physicalDamageReduction * 100).toFixed(1)}%)</span></span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">Resistance</span>
+								<span class="statValue">${Math.floor(hero.resist)} <span style="color: #6a9aaa;">(${(hero.magicDamageReduction * 100).toFixed(1)}%)</span></span>
+							</div>
 						</div>
 					</div>
 				`;
@@ -2060,41 +2092,45 @@ init() {
 				const popup = document.getElementById('heroInfoPopup');
 				document.getElementById('popupHeroName').textContent = `Lv.${enemy.level} ${enemy.name}`;
 				
-				// Show enemy stats
+				// Show enemy stats in double column format
 				const stats = enemy.baseStats;
 				const statsHtml = `
-					<div class="statRow">
-						<span class="statLabel">STR</span>
-						<span class="statValue">${stats.str}</span>
-					</div>
-					<div class="statRow">
-						<span class="statLabel">AGI</span>
-						<span class="statValue">${stats.agi}</span>
-					</div>
-					<div class="statRow">
-						<span class="statLabel">INT</span>
-						<span class="statValue">${stats.int}</span>
-					</div>
-					<div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #2a6a8a;">
-						<div class="statRow">
-							<span class="statLabel">HP</span>
-							<span class="statValue">${enemy.hp}</span>
+					<div style="display: flex; gap: 40px;">
+						<div style="flex: 1;">
+							<div class="statRow">
+								<span class="statLabel">HP</span>
+								<span class="statValue">${enemy.hp}</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">STR</span>
+								<span class="statValue">${stats.str}</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">AGI</span>
+								<span class="statValue">${stats.agi}</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">INT</span>
+								<span class="statValue">${stats.int}</span>
+							</div>
 						</div>
-						<div class="statRow">
-							<span class="statLabel">HP Regen</span>
-							<span class="statValue">${(stats.str * 0.05).toFixed(1)}</span>
-						</div>
-						<div class="statRow">
-							<span class="statLabel">Attack Speed</span>
-							<span class="statValue">${(100 + 100 * (stats.agi / (stats.agi + 1000))).toFixed(1)}%</span>
-						</div>
-						<div class="statRow">
-							<span class="statLabel">Armor</span>
-							<span class="statValue">${Math.floor(enemy.armor)} <span style="color: #6a9aaa;">(${(enemy.physicalDamageReduction * 100).toFixed(1)}%)</span></span>
-						</div>
-						<div class="statRow">
-							<span class="statLabel">Resistance</span>
-							<span class="statValue">${Math.floor(enemy.resist)} <span style="color: #6a9aaa;">(${(enemy.magicDamageReduction * 100).toFixed(1)}%)</span></span>
+						<div style="flex: 1;">
+							<div class="statRow">
+								<span class="statLabel">HP Regen</span>
+								<span class="statValue">${(stats.str * 0.05).toFixed(1)}</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">Attack Speed</span>
+								<span class="statValue">${(100 + 100 * (stats.agi / (stats.agi + 1000))).toFixed(1)}%</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">Armor</span>
+								<span class="statValue">${Math.floor(enemy.armor)} <span style="color: #6a9aaa;">(${(enemy.physicalDamageReduction * 100).toFixed(1)}%)</span></span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">Resistance</span>
+								<span class="statValue">${Math.floor(enemy.resist)} <span style="color: #6a9aaa;">(${(enemy.magicDamageReduction * 100).toFixed(1)}%)</span></span>
+							</div>
 						</div>
 					</div>
 				`;
@@ -2147,10 +2183,10 @@ init() {
                         position: fixed;
                         background: rgba(10, 15, 26, 0.95);
                         border: 2px solid #2a6a8a;
-                        padding: 12px;
+                        padding: 16px;
                         border-radius: 4px;
                         z-index: 1002;
-                        max-width: 300px;
+                        max-width: 400px;
                         box-shadow: 0 0 20px rgba(0,0,0,0.8);
                         pointer-events: none;
                     `;
@@ -2158,9 +2194,9 @@ init() {
                 }
                 
                 tooltip.innerHTML = `
-                    <div style="font-size: 16px; color: #4dd0e1; margin-bottom: 5px;">${name} (Level ${level})</div>
-                    ${cooldown > 0 ? `<div style="font-size: 14px; color: #6a9aaa; margin-bottom: 5px;">Cooldown: ${cooldown} turns</div>` : ''}
-                    <div style="font-size: 14px; color: #b0e0f0;">${description}</div>
+                    <div style="font-size: 24px; color: #4dd0e1; margin-bottom: 8px;">${name} (Level ${level})</div>
+                    ${cooldown > 0 ? `<div style="font-size: 18px; color: #6a9aaa; margin-bottom: 8px;">Cooldown: ${cooldown} turns</div>` : ''}
+                    <div style="font-size: 18px; color: #b0e0f0;">${description}</div>
                 `;
                 
                 // Position tooltip
