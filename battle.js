@@ -282,6 +282,8 @@ class Battle {
 
         this.autoMode = false;
 
+        this.pendingAutoMode = null; // Track pending auto mode changes
+
         this.battleLog = [];
 
         this.gameSpeed = 1;
@@ -357,6 +359,16 @@ class Battle {
                     delete unitDiv.dataset.spriteSet;
 
                     unitDiv.innerHTML = 'E' + i;
+
+                }
+
+                // Remove any existing shadow
+
+                const shadow = element.querySelector('.unitShadow');
+
+                if (shadow) {
+
+                    shadow.remove();
 
                 }
 
@@ -575,6 +587,18 @@ class Battle {
             setTimeout(() => this.battleLoop(), 100);
 
             return;
+
+        }
+
+        
+
+        // Check for pending auto mode changes at cycle start
+
+        if (this.pendingAutoMode !== null) {
+
+            this.autoMode = this.pendingAutoMode;
+
+            this.pendingAutoMode = null;
 
         }
 
@@ -1332,6 +1356,9 @@ showPlayerAbilities(unit) {
     const abilityPanel = document.getElementById('abilityPanel');
     abilityPanel.innerHTML = '';
     
+    // Count abilities
+    const abilityCount = unit.abilities.length;
+    
     unit.abilities.forEach((ability, index) => {
         const abilityDiv = document.createElement('div');
         abilityDiv.className = 'ability';
@@ -1363,6 +1390,9 @@ showPlayerAbilities(unit) {
         
         if (unit.canUseAbility(index)) {
             abilityDiv.onclick = () => {
+                // Hide tooltip when clicked
+                game.hideAbilityTooltip();
+                
                 if (spell) {
                     // For targeted abilities, highlight valid targets
                     if (spell.target === 'enemy' || spell.target === 'ally') {
@@ -1377,6 +1407,10 @@ showPlayerAbilities(unit) {
         
         abilityPanel.appendChild(abilityDiv);
     });
+    
+    // Apply centering based on ability count
+    abilityPanel.style.justifyContent = 'center';
+    abilityPanel.style.width = '100%';
 }
     
 
@@ -1464,7 +1498,13 @@ showPlayerAbilities(unit) {
 
     toggleAutoMode(enabled) {
 
-        this.autoMode = enabled;
+        // Set pending auto mode change
+
+        this.pendingAutoMode = enabled;
+
+        
+
+        // If currently waiting for player and auto mode is enabled, execute AI turn
 
         if (enabled && this.waitingForPlayer) {
 
@@ -1573,6 +1613,22 @@ showPlayerAbilities(unit) {
                         `;
 
                     }
+
+                }
+
+                
+
+                // Update or create shadow if it doesn't exist
+
+                let shadow = element.querySelector('.unitShadow');
+
+                if (!shadow && unit.isAlive) {
+
+                    shadow = document.createElement('div');
+
+                    shadow.className = 'unitShadow';
+
+                    element.appendChild(shadow);
 
                 }
 
