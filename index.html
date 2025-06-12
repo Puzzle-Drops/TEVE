@@ -1136,29 +1136,62 @@ init() {
                 this.currentBattle.start();
             }
 
-            exitBattle() {
-                if (this.currentBattle) {
-                    // Stop the battle and clean up
-                    this.currentBattle.running = false;
-                    this.currentBattle = null;
-                    
-                    // Clean up any lingering UI elements
-                    const waveCounter = document.getElementById('waveCounter');
-                    if (waveCounter) {
-                        waveCounter.remove();
+exitBattle() {
+    if (this.currentBattle) {
+        // Clear any active targeting
+        if (this.currentBattle.targetingState) {
+            this.currentBattle.clearTargeting();
+        }
+        
+        // Stop the battle and clean up
+        this.currentBattle.running = false;
+        this.currentBattle = null;
+        
+        // Clean up any lingering UI elements
+        const waveCounter = document.getElementById('waveCounter');
+        if (waveCounter) {
+            waveCounter.remove();
+        }
+        
+        // Clear ability panel
+        document.getElementById('abilityPanel').innerHTML = '';
+        
+        // Clean up health bar event listeners
+        for (let i = 1; i <= 5; i++) {
+            ['party', 'enemy'].forEach(type => {
+                const element = document.getElementById(`${type}${i}`);
+                if (element) {
+                    const healthBar = element.querySelector('.healthBar');
+                    if (healthBar && healthBar._unitInfoHandler) {
+                        healthBar.removeEventListener('click', healthBar._unitInfoHandler);
+                        delete healthBar._unitInfoHandler;
                     }
-                    
-                    // Clear ability panel
-                    document.getElementById('abilityPanel').innerHTML = '';
-                    
-                    // Reset all battle-related variables
-                    this.dungeonWaves = null;
-                    this.currentDungeon = null;
-                    this.currentEnemy = null;
-                    this.lastWaveEnemies = null;
                 }
-                this.showMainMenu();
+            });
+        }
+        
+        // Close any open popup
+        this.closeHeroInfo();
+        
+        // Reset party's action bars for next battle
+        this.selectedParty.forEach(heroIndex => {
+            if (heroIndex !== null) {
+                const hero = this.heroes[heroIndex];
+                // Reset cooldowns if needed
             }
+        });
+        
+        // Only reset battle instance, not dungeon data
+        this.currentBattle = null;
+    }
+    
+    // Return to party select screen instead of main menu
+    if (this.currentDungeon) {
+        this.showPartySelect();
+    } else {
+        this.showMainMenu();
+    }
+}
 
             hideAllScreens() {
                 document.getElementById('mainMenu').style.display = 'none';
@@ -1712,13 +1745,18 @@ init() {
                 // Now handled by Battle class
             }
 
-            showPartySelect() {
-                this.hideAllScreens();
-                document.getElementById('partySelectScreen').style.display = 'block';
-                
-                // Update dungeon info
-                document.getElementById('dungeonName').textContent = this.currentDungeon.name;
-                
+showPartySelect() {
+    this.hideAllScreens();
+    document.getElementById('partySelectScreen').style.display = 'block';
+    
+    // Reset party selection if entering fresh (not from battle)
+    if (!this.currentBattle) {
+        this.selectedParty = [null, null, null, null, null];
+    }
+    
+    // Update dungeon info
+    document.getElementById('dungeonName').textContent = this.currentDungeon.name;
+    
                 // Render hero selection list
                 this.renderHeroSelectList();
                 
@@ -1845,13 +1883,12 @@ createSelectableHeroThumb(hero, heroIndex) {
                 // Click to select/deselect
                 wrapper.onclick = () => this.toggleHeroSelection(heroIndex);
                 
-                // Long press for info
-                let pressTimer;
-                wrapper.addEventListener('mousedown', () => {
-                    pressTimer = setTimeout(() => this.showHeroInfoPopup(hero), 500);
-                });
-                wrapper.addEventListener('mouseup', () => clearTimeout(pressTimer));
-                wrapper.addEventListener('mouseleave', () => clearTimeout(pressTimer));
+// Add click handler for enemy info
+slot.style.cursor = 'pointer';
+slot.onclick = (e) => {
+    e.stopPropagation();
+    this.showEnemyInfoPopup(enemy);
+};
                 
                 return wrapper;
             }
@@ -2172,10 +2209,18 @@ createSelectableHeroThumb(hero, heroIndex) {
                 this.hideAbilityTooltip();
             }
 
-            closeDungeonSelect() {
-                this.closeHeroInfo(); // Close any open popups
-                this.showDungeons();
-            }
+closeDungeonSelect() {
+    this.closeHeroInfo(); // Close any open popups
+    
+    // Reset dungeon-related data
+    this.dungeonWaves = null;
+    this.currentDungeon = null;
+    this.currentEnemy = null;
+    this.lastWaveEnemies = null;
+    this.selectedParty = [null, null, null, null, null];
+    
+    this.showDungeons();
+}
 
             showAbilityTooltip(event, name, level, cooldown, description) {
                 // Create or get tooltip element
@@ -2227,11 +2272,36 @@ createSelectableHeroThumb(hero, heroIndex) {
             }
         }
 
-        // Initialize game after loading data
-        window.addEventListener('DOMContentLoaded', async () => {
-            await loadGameData();
-            window.game = new Game();
-        });
+// Initialize game after loading data
+window.addEventListener('DOMContentLoaded', async () => {
+    await loadGameData();
+    window.game = new Game();
+    
+    // Add global escape key handler
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            // Close hero info popup if open
+            const heroInfoPopup = document.getElementById('heroInfoPopup');
+            if (heroInfoPopup && heroInfoPopup.style.display === 'block') {
+                game.closeHeroInfo();
+                e.preventDefault();
+            }
+            
+            // Close confirmation modal if open
+            const confirmModal = document.getElementById('confirmModal');
+            if (confirmModal && confirmModal.style.display === 'flex') {
+                game.cancelPromotion();
+                e.preventDefault();
+            }
+            
+            // Clear targeting in battle if active
+            if (game.currentBattle && game.currentBattle.targetingState) {
+                game.currentBattle.clearTargeting();
+                e.preventDefault();
+            }
+        }
+    });
+});
     </script>
 </body>
 </html>
