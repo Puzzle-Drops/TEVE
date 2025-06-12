@@ -3,35 +3,35 @@
     "villager": {
       "name": "Villager",
       "tier": 0,
-      "modifiers": { "str": 1.2, "agi": 0.9, "int": 0.5 },
+      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
       "spells": ["punch", "fury"],
       "promotesTo": ["acolyte", "archer", "druid", "initiate", "swordsman", "templar", "thief", "witch_hunter"]
     },
     "acolyte": {
       "name": "Acolyte",
       "tier": 1,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "modifiers": { "str": 1.25, "agi": 1.35, "int": 1.4 },
       "spells": ["holy_light"],
       "promotesTo": ["cleric"]
     },
     "cleric": {
       "name": "Cleric",
       "tier": 2,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "modifiers": { "str": 1.55, "agi": 1.9, "int": 2.55 },
       "spells": ["holy_light", "divine_shield"],
       "promotesTo": ["priest", "matriarch"]
     },
     "priest": {
       "name": "Priest",
       "tier": 3,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "modifiers": { "str": 2.15, "agi": 2.95, "int": 3.9 },
       "spells": ["holy_light", "divine_shield", "mass_heal"],
       "promotesTo": ["hierophant"]
     },
     "hierophant": {
       "name": "Hierophant",
       "tier": 4,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "modifiers": { "str": 2.5, "agi": 3.95, "int": 5.55 },
       "spells": ["holy_light", "divine_shield", "mass_heal", "divine_aura"],
       "ultimateSpell": "heavens_wrath",
       "promotesTo": []
@@ -39,14 +39,14 @@
     "matriarch": {
       "name": "Matriarch",
       "tier": 3,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "modifiers": { "str": 2.65, "agi": 2.0, "int": 4.35 },
       "spells": ["holy_light", "divine_shield", "blessed_recovery"],
       "promotesTo": ["prophetess"]
     },
     "prophetess": {
       "name": "Prophetess",
       "tier": 4,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "modifiers": { "str": 3.55, "agi": 2.85, "int": 5.6 },
       "spells": ["holy_light", "divine_shield", "blessed_recovery", "prophecy_aura"],
       "ultimateSpell": "divine_intervention",
       "promotesTo": []
