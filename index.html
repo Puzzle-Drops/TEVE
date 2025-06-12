@@ -1955,32 +1955,50 @@ init() {
                 });
             }
 
-            showHeroInfoPopup(hero) {
-			    const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                const popup = document.getElementById('heroInfoPopup');
-                document.getElementById('popupHeroName').textContent = `Lv.${hero.level} ${displayClassName} | ${hero.name}`;
-                
-                // Show stats
-                const stats = hero.totalStats;
-                const statsHtml = `
-                    <div class="statRow">
-                        <span class="statLabel">HP</span>
-                        <span class="statValue">${hero.hp}</span>
-                    </div>
-                    <div class="statRow">
-                        <span class="statLabel">STR</span>
-                        <span class="statValue">${stats.str}</span>
-                    </div>
-                    <div class="statRow">
-                        <span class="statLabel">AGI</span>
-                        <span class="statValue">${stats.agi}</span>
-                    </div>
-                    <div class="statRow">
-                        <span class="statLabel">INT</span>
-                        <span class="statValue">${stats.int}</span>
-                    </div>
-                `;
-                document.getElementById('popupStats').innerHTML = statsHtml;
+			showHeroInfoPopup(hero) {
+				const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+				const popup = document.getElementById('heroInfoPopup');
+				document.getElementById('popupHeroName').textContent = `Lv.${hero.level} ${displayClassName} | ${hero.name}`;
+				
+				// Show stats
+				const stats = hero.totalStats;
+				const statsHtml = `
+					<div class="statRow">
+						<span class="statLabel">STR</span>
+						<span class="statValue">${stats.str}</span>
+					</div>
+					<div class="statRow">
+						<span class="statLabel">AGI</span>
+						<span class="statValue">${stats.agi}</span>
+					</div>
+					<div class="statRow">
+						<span class="statLabel">INT</span>
+						<span class="statValue">${stats.int}</span>
+					</div>
+					<div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #2a6a8a;">
+						<div class="statRow">
+							<span class="statLabel">HP</span>
+							<span class="statValue">${hero.hp}</span>
+						</div>
+						<div class="statRow">
+							<span class="statLabel">HP Regen</span>
+							<span class="statValue">${Math.floor(hero.hpRegen)}</span>
+						</div>
+						<div class="statRow">
+							<span class="statLabel">Attack Speed</span>
+							<span class="statValue">${Math.floor(hero.actionBarSpeed)}</span>
+						</div>
+						<div class="statRow">
+							<span class="statLabel">Armor</span>
+							<span class="statValue">${Math.floor(hero.armor)} <span style="color: #6a9aaa;">(${Math.floor(hero.physicalDamageReduction * 100)}% DR)</span></span>
+						</div>
+						<div class="statRow">
+							<span class="statLabel">Resistance</span>
+							<span class="statValue">${Math.floor(hero.resist)} <span style="color: #6a9aaa;">(${Math.floor(hero.magicDamageReduction * 100)}% DR)</span></span>
+						</div>
+					</div>
+				`;
+				document.getElementById('popupStats').innerHTML = statsHtml;
                 
                 // Show ability icons with tooltips
                 const abilityIconsHtml = `
@@ -2036,31 +2054,49 @@ init() {
                 popup.style.display = 'block';
             }
 
-            showEnemyInfoPopup(enemy) {
-                const popup = document.getElementById('heroInfoPopup');
-                document.getElementById('popupHeroName').textContent = `Lv.${enemy.level} ${enemy.name}`;
-                
-                // Show enemy stats
-                const stats = enemy.baseStats;
-                const statsHtml = `
-                    <div class="statRow">
-                        <span class="statLabel">HP</span>
-                        <span class="statValue">${enemy.hp}</span>
-                    </div>
-                    <div class="statRow">
-                        <span class="statLabel">STR</span>
-                        <span class="statValue">${stats.str}</span>
-                    </div>
-                    <div class="statRow">
-                        <span class="statLabel">AGI</span>
-                        <span class="statValue">${stats.agi}</span>
-                    </div>
-                    <div class="statRow">
-                        <span class="statLabel">INT</span>
-                        <span class="statValue">${stats.int}</span>
-                    </div>
-                `;
-                document.getElementById('popupStats').innerHTML = statsHtml;
+			showEnemyInfoPopup(enemy) {
+				const popup = document.getElementById('heroInfoPopup');
+				document.getElementById('popupHeroName').textContent = `Lv.${enemy.level} ${enemy.name}`;
+				
+				// Show enemy stats
+				const stats = enemy.baseStats;
+				const statsHtml = `
+					<div class="statRow">
+						<span class="statLabel">STR</span>
+						<span class="statValue">${stats.str}</span>
+					</div>
+					<div class="statRow">
+						<span class="statLabel">AGI</span>
+						<span class="statValue">${stats.agi}</span>
+					</div>
+					<div class="statRow">
+						<span class="statLabel">INT</span>
+						<span class="statValue">${stats.int}</span>
+					</div>
+					<div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #2a6a8a;">
+						<div class="statRow">
+							<span class="statLabel">HP</span>
+							<span class="statValue">${enemy.hp}</span>
+						</div>
+						<div class="statRow">
+							<span class="statLabel">HP Regen</span>
+							<span class="statValue">${Math.floor(stats.str * 0.05)}</span>
+						</div>
+						<div class="statRow">
+							<span class="statLabel">Attack Speed</span>
+							<span class="statValue">${Math.floor(100 + 100 * (stats.agi / (stats.agi + 1000)))}</span>
+						</div>
+						<div class="statRow">
+							<span class="statLabel">Armor</span>
+							<span class="statValue">${Math.floor(enemy.armor)} <span style="color: #6a9aaa;">(${Math.floor(enemy.physicalDamageReduction * 100)}% DR)</span></span>
+						</div>
+						<div class="statRow">
+							<span class="statLabel">Resistance</span>
+							<span class="statValue">${Math.floor(enemy.resist)} <span style="color: #6a9aaa;">(${Math.floor(enemy.magicDamageReduction * 100)}% DR)</span></span>
+						</div>
+					</div>
+				`;
+				document.getElementById('popupStats').innerHTML = statsHtml;
                 
                 // Show ability icons with tooltips
                 const enemyAbilitiesHtml = `
