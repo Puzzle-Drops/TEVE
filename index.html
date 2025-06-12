@@ -164,8 +164,8 @@
         <!-- Stash Screen -->
         <div id="stashScreen">
             <h1 class="stashTitle">Stash</h1>
-            <div class="stashList" id="stashList">
-                <!-- Stash list will be dynamically generated -->
+            <div class="stashGrid" id="stashList">
+                <!-- Stash grid will be dynamically generated -->
             </div>
             <button class="backButton" onclick="game.showMainMenu()">Back</button>
         </div>
@@ -198,21 +198,28 @@
                     
                     <div class="vsText">VS</div>
                     
-                    <div class="enemyFormation" id="enemyFormation">
-                        <div class="enemySlot" data-slot="0">
-                            <div class="slotPlaceholder">⬡</div>
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <div id="waveNavigation" class="waveNavigation">
+                            <button class="waveArrow" onclick="game.navigateWave('prev')">←</button>
+                            <span class="waveText">Wave 1/1</span>
+                            <button class="waveArrow" onclick="game.navigateWave('next')">→</button>
                         </div>
-                        <div class="enemySlot" data-slot="1">
-                            <div class="slotPlaceholder">⬡</div>
-                        </div>
-                        <div class="enemySlot" data-slot="2">
-                            <div class="slotPlaceholder">⬡</div>
-                        </div>
-                        <div class="enemySlot" data-slot="3">
-                            <div class="slotPlaceholder">⬡</div>
-                        </div>
-                        <div class="enemySlot" data-slot="4">
-                            <div class="slotPlaceholder">⬡</div>
+                        <div class="enemyFormation" id="enemyFormation">
+                            <div class="enemySlot" data-slot="0">
+                                <div class="slotPlaceholder">⬡</div>
+                            </div>
+                            <div class="enemySlot" data-slot="1">
+                                <div class="slotPlaceholder">⬡</div>
+                            </div>
+                            <div class="enemySlot" data-slot="2">
+                                <div class="slotPlaceholder">⬡</div>
+                            </div>
+                            <div class="enemySlot" data-slot="3">
+                                <div class="slotPlaceholder">⬡</div>
+                            </div>
+                            <div class="enemySlot" data-slot="4">
+                                <div class="slotPlaceholder">⬡</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -600,6 +607,7 @@
                 this.currentTab = 'info';
                 this.selectedTier = null;
                 this.expandedDungeon = null;
+                this.currentPreviewWave = 0;
                 
                 this.dungeonTiers = {
                     'Easy': {
@@ -811,12 +819,14 @@ init() {
             showMainMenu() {
                 this.hideAllScreens();
                 this.closeHeroInfo(); // Close any open popups
+                this.currentScreen = 'mainMenu';
                 document.getElementById('mainMenu').style.display = 'flex';
             }
 
             showHeroes() {
                 this.hideAllScreens();
                 this.closeHeroInfo(); // Close any open popups
+                this.currentScreen = 'heroesScreen';
                 document.getElementById('heroesScreen').style.display = 'block';
                 this.updateHeroList();
                 
@@ -835,6 +845,7 @@ init() {
             showDungeons() {
                 this.hideAllScreens();
                 this.closeHeroInfo(); // Close any open popups
+                this.currentScreen = 'dungeonsScreen';
                 document.getElementById('dungeonsScreen').style.display = 'block';
                 this.renderWorldMap();
                 this.closeDungeonPanel();
@@ -1006,6 +1017,9 @@ enterDungeon(tierName, dungeonIndex) {
         return;
     }
     
+    // Reset preview to first wave
+    this.currentPreviewWave = 0;
+    
     // Set current enemy for display purposes (first enemy of last wave)
     this.currentEnemy = this.dungeonWaves[this.dungeonWaves.length - 1][0];
     
@@ -1018,9 +1032,29 @@ enterDungeon(tierName, dungeonIndex) {
     // Show party select screen
     this.showPartySelect();
 }
+
+            navigateWave(direction) {
+                if (!this.dungeonWaves || this.dungeonWaves.length === 0) return;
+                
+                if (direction === 'prev') {
+                    this.currentPreviewWave--;
+                    if (this.currentPreviewWave < 0) {
+                        this.currentPreviewWave = this.dungeonWaves.length - 1;
+                    }
+                } else {
+                    this.currentPreviewWave++;
+                    if (this.currentPreviewWave >= this.dungeonWaves.length) {
+                        this.currentPreviewWave = 0;
+                    }
+                }
+                
+                this.updateEnemyFormation();
+            }
+
             showStash() {
                 this.hideAllScreens();
                 this.closeHeroInfo(); // Close any open popups
+                this.currentScreen = 'stashScreen';
                 document.getElementById('stashScreen').style.display = 'block';
                 this.renderStashList();
             }
@@ -1034,10 +1068,7 @@ enterDungeon(tierName, dungeonIndex) {
                     stashItem.className = 'stashItem';
                     stashItem.innerHTML = `
                         <div class="stashIcon">${family.icon}</div>
-                        <div class="stashInfo">
-                            <div class="stashName">${family.name}</div>
-                            <div class="stashDescription">${family.classes.join(', ')}</div>
-                        </div>
+                        <div class="stashName">${family.name}</div>
                     `;
                     
                     stashItem.onclick = () => this.openStash(family);
@@ -1053,6 +1084,7 @@ enterDungeon(tierName, dungeonIndex) {
             showBattle() {
                 this.hideAllScreens();
                 this.closeHeroInfo(); // Close any open popups
+                this.currentScreen = 'battleScene';
                 document.getElementById('battleScene').style.display = 'block';
                 
                 // Set battlefield background based on current dungeon
@@ -1725,6 +1757,7 @@ enterDungeon(tierName, dungeonIndex) {
 
             showPartySelect() {
                 this.hideAllScreens();
+                this.currentScreen = 'partySelectScreen';
                 document.getElementById('partySelectScreen').style.display = 'block';
                 
                 // Reset party selection if entering fresh (not from battle)
@@ -1755,8 +1788,20 @@ enterDungeon(tierName, dungeonIndex) {
                     slot.classList.remove('filled');
                 });
                 
-                // Populate with last wave enemies
-                this.lastWaveEnemies.forEach((enemy, index) => {
+                // Get the current wave enemies
+                const currentWaveEnemies = this.dungeonWaves[this.currentPreviewWave];
+                
+                // Update wave counter
+                const waveNav = document.getElementById('waveNavigation');
+                if (waveNav) {
+                    const waveText = waveNav.querySelector('.waveText');
+                    if (waveText) {
+                        waveText.textContent = `Wave ${this.currentPreviewWave + 1}/${this.dungeonWaves.length}`;
+                    }
+                }
+                
+                // Populate with current wave enemies
+                currentWaveEnemies.forEach((enemy, index) => {
                     if (index < 5) { // Ensure we don't exceed 5 slots
                         const slot = slots[index];
                         
@@ -2261,6 +2306,7 @@ enterDungeon(tierName, dungeonIndex) {
                     if (heroInfoPopup && heroInfoPopup.style.display === 'block') {
                         game.closeHeroInfo();
                         e.preventDefault();
+                        return;
                     }
                     
                     // Close confirmation modal if open
@@ -2268,12 +2314,34 @@ enterDungeon(tierName, dungeonIndex) {
                     if (confirmModal && confirmModal.style.display === 'flex') {
                         game.cancelPromotion();
                         e.preventDefault();
+                        return;
                     }
                     
                     // Clear targeting in battle if active
                     if (game.currentBattle && game.currentBattle.targetingState) {
                         game.currentBattle.clearTargeting();
                         e.preventDefault();
+                        return;
+                    }
+                    
+                    // Navigate between screens based on current screen
+                    switch(game.currentScreen) {
+                        case 'partySelectScreen':
+                            game.closeDungeonSelect();
+                            e.preventDefault();
+                            break;
+                        case 'dungeonsScreen':
+                            game.showMainMenu();
+                            e.preventDefault();
+                            break;
+                        case 'stashScreen':
+                            game.showMainMenu();
+                            e.preventDefault();
+                            break;
+                        case 'heroesScreen':
+                            game.showMainMenu();
+                            e.preventDefault();
+                            break;
                     }
                 }
             });
