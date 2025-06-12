@@ -54,28 +54,28 @@
     "archer": {
       "name": "Archer",
       "tier": 1,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "modifiers": { "str": 1.25, "agi": 1.45, "int": 1.3 },
       "spells": ["poison_strike"],
       "promotesTo": ["ranger"]
     },
     "ranger": {
       "name": "Ranger",
       "tier": 2,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "modifiers": { "str": 1.5, "agi": 2.9, "int": 1.6 },
       "spells": ["poison_strike", "multishot"],
       "promotesTo": ["marksman", "tracker"]
     },
     "marksman": {
       "name": "Marksman",
       "tier": 3,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "modifiers": { "str": 2.05, "agi": 4.6, "int": 2.35 },
       "spells": ["poison_strike", "multishot", "aimed_shot"],
       "promotesTo": ["sniper"]
     },
     "sniper": {
       "name": "Sniper",
       "tier": 4,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "modifiers": { "str": 2.55, "agi": 6.7, "int": 2.75 },
       "spells": ["poison_strike", "multishot", "aimed_shot", "eagle_eye_aura"],
       "ultimateSpell": "perfect_shot",
       "promotesTo": []
@@ -83,14 +83,14 @@
     "tracker": {
       "name": "Tracker",
       "tier": 3,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "modifiers": { "str": 2.5, "agi": 4.25, "int": 2.25 },
       "spells": ["poison_strike", "multishot", "hunters_mark"],
       "promotesTo": ["monster_hunter"]
     },
     "monster_hunter": {
       "name": "Monster Hunter",
       "tier": 4,
-      "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
+      "modifiers": { "str": 3.35, "agi": 6.1, "int": 2.55 },
       "spells": ["poison_strike", "multishot", "hunters_mark", "predator_aura"],
       "ultimateSpell": "the_wild_hunt",
       "promotesTo": []
