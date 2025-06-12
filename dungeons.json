@@ -10,43 +10,43 @@
       "waves": [
         {
           "enemies": [
-            { "id": "satyr_youth", "level": 3 },
-            { "id": "satyr_youth", "level": 3 },
-            { "id": "satyr_youth", "level": 3 }
+            { "id": "satyr_youth", "level": 2 },
+            { "id": "satyr_youth", "level": 2 },
+            { "id": "satyr_youth", "level": 2 }
           ]
         },
         {
           "enemies": [
-            { "id": "aggressive_satyr", "level": 6 },
-            { "id": "satyr_youth", "level": 3 },
-            { "id": "satyr_youth", "level": 3 }
+            { "id": "aggressive_satyr", "level": 4 },
+            { "id": "satyr_youth", "level": 2 },
+            { "id": "satyr_youth", "level": 2 }
           ]
         },
         {
           "enemies": [
+            { "id": "satyr_youth", "level": 2 },
+            { "id": "satyr_youth", "level": 2 },
             { "id": "satyr_youth", "level": 3 },
-            { "id": "satyr_youth", "level": 4 },
-            { "id": "satyr_youth", "level": 5 },
-            { "id": "satyr_youth", "level": 4 },
-            { "id": "satyr_youth", "level": 3 }
+            { "id": "satyr_youth", "level": 2 },
+            { "id": "satyr_youth", "level": 2 }
           ]
         },
         {
           "enemies": [
-            { "id": "aggressive_satyr", "level": 6 },
-            { "id": "satyr_youth", "level": 4 },
-            { "id": "satyr_youth", "level": 4 },
+            { "id": "aggressive_satyr", "level": 4 },
             { "id": "satyr_youth", "level": 3 },
-            { "id": "satyr_youth", "level": 3 }
+            { "id": "satyr_youth", "level": 3 },
+            { "id": "satyr_youth", "level": 2 },
+            { "id": "satyr_youth", "level": 2 }
           ]
         },
         {
           "enemies": [
-            { "id": "satyr_instigator", "level": 10 },
-            { "id": "aggressive_satyr", "level": 8 },
-            { "id": "aggressive_satyr", "level": 8 },
-            { "id": "satyr_youth", "level": 4 },
-            { "id": "satyr_youth", "level": 4 }
+            { "id": "satyr_instigator", "level": 6 },
+            { "id": "aggressive_satyr", "level": 4 },
+            { "id": "aggressive_satyr", "level": 4 },
+            { "id": "satyr_youth", "level": 3 },
+            { "id": "satyr_youth", "level": 3 }
           ]
         }
       ],
