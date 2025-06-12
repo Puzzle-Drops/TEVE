@@ -1578,24 +1578,26 @@ showPlayerAbilities(unit) {
 
                 // Update unit appearance with sprites
 
-                if (unitDiv) {
-
-                    if (!unit.isAlive) {
-
-                        unitDiv.style.opacity = '0';
-
-                        unitDiv.style.filter = 'grayscale(100%)';
-
-                    } else {
-
-                        unitDiv.style.opacity = '';
-
-                        unitDiv.style.filter = '';
-
-                    }
-
-                    
-
+if (unitDiv) {
+    if (!unit.isAlive) {
+        unitDiv.style.opacity = '0';
+        unitDiv.style.filter = 'grayscale(100%)';
+        
+        // Hide health bar and action bar when dead
+        const healthBar = element.querySelector('.healthBar');
+        const actionBar = element.querySelector('.actionBar');
+        if (healthBar) healthBar.style.display = 'none';
+        if (actionBar) actionBar.style.display = 'none';
+    } else {
+        unitDiv.style.opacity = '';
+        unitDiv.style.filter = '';
+        
+        // Show health bar and action bar when alive
+        const healthBar = element.querySelector('.healthBar');
+        const actionBar = element.querySelector('.actionBar');
+        if (healthBar) healthBar.style.display = '';
+        if (actionBar) actionBar.style.display = '';
+    }
                     // Update sprite for enemies - always update to ensure correct sprite
 
                     if (unit.isEnemy && unit.isAlive) {
