@@ -1632,12 +1632,6 @@ body {
 .spellText.heal { color: #00ff88; }
 .spellText.buff { color: #f3f33a; }
 .spellText.debuff { color: #ff8800; }
-.spellText.holy { color: #ffd700; }
-.spellText.shadow { color: #9a4dc7; }
-.spellText.nature { color: #00cc66; }
-.spellText.arcane { color: #e040fb; }
-.spellText.fire { color: #ff6600; }
-.spellText.frost { color: #40c4ff; }
 .spellText.pure { color: #fdffc4; }
 .spelltext.aoe { color: #b8a5ff; }
 
@@ -1680,7 +1674,7 @@ body {
 }
 .abilityEffectTag.buff { 
     background: rgba(77, 208, 225, 0.2); 
-    color: #4dd0e1; 
+    color: #f3f33a; 
     border: 1px solid #f3f33a;
 }
 .abilityEffectTag.debuff { 
@@ -1688,44 +1682,9 @@ body {
     color: #ff8800; 
     border: 1px solid #ff8800;
 }
-.abilityEffectTag.holy { 
-    background: rgba(255, 215, 0, 0.2); 
-    color: #ffd700; 
-    border: 1px solid #ffd700;
-}
-.abilityEffectTag.shadow { 
-    background: rgba(154, 77, 199, 0.2); 
-    color: #9a4dc7; 
-    border: 1px solid #9a4dc7;
-}
-.abilityEffectTag.fire { 
-    background: rgba(255, 102, 0, 0.2); 
-    color: #ff6600; 
-    border: 1px solid #ff6600;
-}
-.abilityEffectTag.frost { 
-    background: rgba(64, 196, 255, 0.2); 
-    color: #40c4ff; 
-    border: 1px solid #40c4ff;
-}
-.abilityEffectTag.arcane { 
-    background: rgba(224, 64, 251, 0.2); 
-    color: #e040fb; 
-    border: 1px solid #e040fb;
-}
-.abilityEffectTag.nature { 
-    background: rgba(0, 204, 102, 0.2); 
-    color: #00cc66; 
-    border: 1px solid #00cc66;
-}
-.abilityEffectTag.poison { 
-    background: rgba(0, 204, 102, 0.2); 
-    color: #00cc66; 
-    border: 1px solid #00cc66;
-}
 .abilityEffectTag.aoe { 
     background: rgba(0, 204, 102, 0.2); 
-    color: #00cc66; 
+    color: #b8a5ff; 
     border: 1px solid #b8a5ff;
 }
 .abilityEffectTag.speed { 
