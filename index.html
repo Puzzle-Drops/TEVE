@@ -1476,8 +1476,6 @@ hideStatTooltip() {
                         ${hero.abilities.map((ability, index) => `
                             <div class="skillBox" onclick="game.selectSkill(${index})">
                                 <img src="https://puzzle-drops.github.io/TEVE/img/spells/${ability.id}.png" alt="${ability.name}" onerror="this.style.display='none'">
-                                <div class="skillName">${ability.name}</div>
-                                <span class="skillLevel">Lv${ability.level}</span>
                             </div>
                         `).join('')}
                     </div>
@@ -1648,14 +1646,8 @@ hideStatTooltip() {
                 const skill = hero.abilities[index];
                 const desc = document.getElementById('skillDescription');
                 
-                desc.innerHTML = `
-                    <h3>${skill.name} (Level ${skill.level})</h3>
-                    <p>${skill.description || 'No description available'}</p>
-                    ${skill.cooldown > 0 && !skill.ultimate ? `<p>Cooldown: ${skill.cooldown} turns</p>` : ''}
-                    ${skill.ultimate ? `<p>Ultimate Ability - Random starting cooldown: ${skill.currentCooldown} turns</p>` : ''}
-                    ${skill.passive ? '<p><em>Passive ability</em></p>' : ''}
-                    ${skill.aura ? '<p><em>Aura: Affects all allies</em></p>' : ''}
-                `;
+                // Format ability tooltip
+                desc.innerHTML = this.formatAbilityTooltip(skill, skill.level);
             }
 
             promoteHero(newClass) {
@@ -2127,12 +2119,10 @@ hideStatTooltip() {
                 const abilityIconsHtml = `
                     <div style="display: flex; gap: 8px; margin-top: 10px;">
                         ${hero.abilities.map(ability => {
-                            const desc = ability.description || 'No description';
-                            const escapedDesc = desc.replace(/'/g, "\\'");
-                            const escapedName = ability.name.replace(/'/g, "\\'");
+                            const tooltipHtml = this.formatAbilityTooltip(ability, ability.level).replace(/'/g, '&apos;').replace(/"/g, '&quot;');
                             return `
                                 <div class="abilityIconSmall" 
-                                     onmouseover="game.showAbilityTooltip(event, '${escapedName}', ${ability.level}, ${ability.cooldown}, '${escapedDesc}')"
+                                     onmouseover="game.showAbilityTooltipFromHTML(event, '${tooltipHtml}')"
                                      onmouseout="game.hideAbilityTooltip()">
                                     <img src="https://puzzle-drops.github.io/TEVE/img/spells/${ability.id}.png" 
                                          style="width: 40px; height: 40px;" 
@@ -2229,11 +2219,10 @@ hideStatTooltip() {
                 const enemyAbilitiesHtml = `
                     <div style="display: flex; gap: 8px; margin-top: 10px;">
                         ${enemy.abilities.map((ability, index) => {
-                            const escapedDesc = ability.description.replace(/'/g, "\\'");
-                            const escapedName = ability.name.replace(/'/g, "\\'");
+                            const tooltipHtml = this.formatAbilityTooltip(ability, 1).replace(/'/g, '&apos;').replace(/"/g, '&quot;');
                             return `
                                 <div class="abilityIconSmall" 
-                                     onmouseover="game.showAbilityTooltip(event, '${escapedName}', 1, ${ability.cooldown}, '${escapedDesc}')"
+                                     onmouseover="game.showAbilityTooltipFromHTML(event, '${tooltipHtml}')"
                                      onmouseout="game.hideAbilityTooltip()">
                                     <img src="https://puzzle-drops.github.io/TEVE/img/spells/${ability.id}.png" 
                                          style="width: 40px; height: 40px;" 
@@ -2270,7 +2259,74 @@ hideStatTooltip() {
                 this.showDungeons();
             }
 
+            formatAbilityTooltip(ability, level) {
+                const spell = spellManager ? spellManager.getSpell(ability.id) : null;
+                if (!spell) return `<h3>${ability.name} (Level ${level})</h3><p>${ability.description}</p>`;
+                
+                // Build effect tags
+                let effectTags = '';
+                const effects = spell.effects || [];
+                
+                // Determine damage type (physical, magical, or pure)
+                let damageType = '';
+                if (effects.includes('damage')) {
+                    if (effects.includes('physical')) {
+                        damageType = 'physical';
+                    } else if (effects.includes('holy')) {
+                        damageType = 'pure';
+                    } else {
+                        // Default to magical for most damage types
+                        damageType = 'magical';
+                    }
+                }
+                
+                // Add damage type tag if applicable
+                if (damageType) {
+                    effectTags += `<span class="abilityEffectTag ${damageType}">[${damageType.charAt(0).toUpperCase() + damageType.slice(1)}]</span>`;
+                }
+                
+                // Add other effect tags
+                effects.forEach(effect => {
+                    if (effect !== 'physical' && effect !== 'holy' && effect !== damageType) {
+                        effectTags += `<span class="abilityEffectTag ${effect}">[${effect.charAt(0).toUpperCase() + effect.slice(1)}]</span>`;
+                    }
+                });
+                
+                // Format cooldown
+                let cooldownText = 'Cooldown: ';
+                if (ability.aura || effects.includes('aura')) {
+                    cooldownText += 'Passive';
+                } else if (ability.cooldown === 0) {
+                    cooldownText += 'none';
+                } else if (ability.cooldown === -1 || ability.ultimate) {
+                    cooldownText += `${ability.currentCooldown || ability.cooldown} turns`;
+                } else {
+                    cooldownText += `${ability.cooldown} turns`;
+                }
+                
+                return `
+                    <div style="font-size: 24px; color: #4dd0e1; margin-bottom: 8px;">${ability.name} (Level ${level})</div>
+                    <div style="margin-bottom: 8px;">${effectTags}</div>
+                    <div style="font-size: 18px; color: #6a9aaa; margin-bottom: 8px;">${cooldownText}</div>
+                    <div style="font-size: 18px; color: #b0e0f0;">${ability.description}</div>
+                `;
+            }
+
             showAbilityTooltip(event, name, level, cooldown, description) {
+                // This old method is still called by battle.js showPlayerAbilities
+                // We'll convert it to use the new format
+                const ability = {
+                    name: name,
+                    description: description,
+                    cooldown: cooldown,
+                    effects: []
+                };
+                
+                const html = this.formatAbilityTooltip(ability, level);
+                this.showAbilityTooltipFromHTML(event, html);
+            }
+            
+            showAbilityTooltipFromHTML(event, html) {
                 // Create or get tooltip element
                 let tooltip = document.getElementById('abilityTooltip');
                 if (!tooltip) {
@@ -2290,11 +2346,7 @@ hideStatTooltip() {
                     document.body.appendChild(tooltip);
                 }
                 
-                tooltip.innerHTML = `
-                    <div style="font-size: 24px; color: #4dd0e1; margin-bottom: 8px;">${name} (Level ${level})</div>
-                    ${cooldown > 0 ? `<div style="font-size: 18px; color: #6a9aaa; margin-bottom: 8px;">Cooldown: ${cooldown} turns</div>` : ''}
-                    <div style="font-size: 18px; color: #b0e0f0;">${description}</div>
-                `;
+                tooltip.innerHTML = html;
                 
                 // Position tooltip
                 const rect = event.target.getBoundingClientRect();
