@@ -1569,9 +1569,33 @@ showPlayerAbilities(unit) {
                 
 
                 if (healthText) {
-
                     healthText.textContent = `${Math.floor(unit.currentHp)}/${unit.maxHp}`;
-
+                }
+                
+                // Add long press handler for unit info on health bar
+                const healthBarElement = element.querySelector('.healthBar');
+                if (healthBarElement && unit.isAlive) {
+                    let pressTimer;
+                    
+                    healthBarElement.style.cursor = 'pointer';
+                    
+                    healthBarElement.addEventListener('mousedown', (e) => {
+                        if (e.button === 0 && !e.ctrlKey && !e.shiftKey) { // Left click only, no modifiers
+                            pressTimer = setTimeout(() => {
+                                if (unit.isEnemy) {
+                                    this.game.showEnemyInfoPopup(unit.source);
+                                } else {
+                                    this.game.showHeroInfoPopup(unit.source);
+                                }
+                            }, 500);
+                        }
+                    });
+                    
+                    healthBarElement.addEventListener('mouseup', () => clearTimeout(pressTimer));
+                    healthBarElement.addEventListener('mouseleave', () => clearTimeout(pressTimer));
+                    
+                    // Prevent text selection on health bar
+                    healthBarElement.addEventListener('selectstart', (e) => e.preventDefault());
                 }
 
                 
