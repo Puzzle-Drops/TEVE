@@ -1,0 +1,535 @@
+{
+  "dungeons": {
+    "satyrs": {
+      "id": "satyrs",
+      "name": "Satyrs",
+      "boss": "Satyr Instigator",
+      "tier": "Easy",
+      "subtitle": "Easy 1",
+      "level": 0,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "satyr_youth", "level": 3 },
+            { "id": "satyr_youth", "level": 3 },
+            { "id": "satyr_youth", "level": 3 }
+          ]
+        },
+        {
+          "enemies": [
+            { "id": "aggressive_satyr", "level": 6 },
+            { "id": "satyr_youth", "level": 3 },
+            { "id": "satyr_youth", "level": 3 }
+          ]
+        },
+        {
+          "enemies": [
+            { "id": "satyr_youth", "level": 3 },
+            { "id": "satyr_youth", "level": 4 },
+            { "id": "satyr_youth", "level": 5 },
+            { "id": "satyr_youth", "level": 4 },
+            { "id": "satyr_youth", "level": 3 }
+          ]
+        },
+        {
+          "enemies": [
+            { "id": "aggressive_satyr", "level": 6 },
+            { "id": "satyr_youth", "level": 4 },
+            { "id": "satyr_youth", "level": 4 },
+            { "id": "satyr_youth", "level": 3 },
+            { "id": "satyr_youth", "level": 3 }
+          ]
+        },
+        {
+          "enemies": [
+            { "id": "satyr_instigator", "level": 10 },
+            { "id": "aggressive_satyr", "level": 8 },
+            { "id": "aggressive_satyr", "level": 8 },
+            { "id": "satyr_youth", "level": 4 },
+            { "id": "satyr_youth", "level": 4 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 100,
+        "exp": 50,
+        "items": []
+      }
+    },
+    "icy_highland": {
+      "id": "icy_highland",
+      "name": "Icy Highland",
+      "boss": "Frostfang",
+      "tier": "Easy",
+      "subtitle": "Easy 2",
+      "level": 25,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "frostfang", "level": 38 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 250,
+        "exp": 125,
+        "items": []
+      }
+    },
+    "forgotten_crypt": {
+      "id": "forgotten_crypt",
+      "name": "Forgotten Crypt",
+      "boss": "Stitch",
+      "tier": "Easy",
+      "subtitle": "Easy 3",
+      "level": 50,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "stitch", "level": 75 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 500,
+        "exp": 250,
+        "items": []
+      }
+    },
+    "gold_mine": {
+      "id": "gold_mine",
+      "name": "Gold Mine",
+      "boss": "Goblin King",
+      "tier": "Hard",
+      "subtitle": "Hard 1",
+      "level": 75,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "goblin_king", "level": 75 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 1000,
+        "exp": 500,
+        "items": []
+      }
+    },
+    "centaur_mountain": {
+      "id": "centaur_mountain",
+      "name": "Centaur Mountain",
+      "boss": "Centaur Bloodhorn",
+      "tier": "Hard",
+      "subtitle": "Hard 2",
+      "level": 100,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "centaur_bloodhorn", "level": 100 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 2000,
+        "exp": 1000,
+        "items": []
+      }
+    },
+    "puzzle_sanctuary": {
+      "id": "puzzle_sanctuary",
+      "name": "Puzzle Sanctuary",
+      "boss": "Lich Queen",
+      "tier": "Hard",
+      "subtitle": "Hard 3",
+      "level": 125,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "lich_queen", "level": 125 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 4000,
+        "exp": 2000,
+        "items": []
+      }
+    },
+    "naga_ruins": {
+      "id": "naga_ruins",
+      "name": "Naga Ruins",
+      "boss": "Naga Ranger",
+      "tier": "Nightmare",
+      "subtitle": "Nightmare 1",
+      "level": 150,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "naga_ranger", "level": 150 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 8000,
+        "exp": 4000,
+        "items": []
+      }
+    },
+    "forgotten_sewers": {
+      "id": "forgotten_sewers",
+      "name": "Forgotten Sewers",
+      "boss": "Devourer",
+      "tier": "Nightmare",
+      "subtitle": "Nightmare 2",
+      "level": 175,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "devourer", "level": 175 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 16000,
+        "exp": 8000,
+        "items": []
+      }
+    },
+    "blighted_vale": {
+      "id": "blighted_vale",
+      "name": "Blighted Vale",
+      "boss": "Rotwood Horror",
+      "tier": "Nightmare",
+      "subtitle": "Nightmare 3",
+      "level": 200,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "rotwood_horror", "level": 200 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 32000,
+        "exp": 16000,
+        "items": []
+      }
+    },
+    "oblivion": {
+      "id": "oblivion",
+      "name": "Oblivion",
+      "boss": "Hades",
+      "tier": "Hell",
+      "subtitle": "Hell 1",
+      "level": 225,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "hades", "level": 225 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 64000,
+        "exp": 32000,
+        "items": []
+      }
+    },
+    "abyssal_labyrinth": {
+      "id": "abyssal_labyrinth",
+      "name": "Abyssal Labyrinth",
+      "boss": "Mindreaver",
+      "tier": "Hell",
+      "subtitle": "Hell 2",
+      "level": 250,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "mindreaver", "level": 250 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 128000,
+        "exp": 64000,
+        "items": []
+      }
+    },
+    "scorching_crater": {
+      "id": "scorching_crater",
+      "name": "Scorching Crater",
+      "boss": "Flame Revenant",
+      "tier": "Hell",
+      "subtitle": "Hell 3",
+      "level": 275,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "flame_revenant", "level": 275 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 256000,
+        "exp": 128000,
+        "items": []
+      }
+    },
+    "tristam": {
+      "id": "tristam",
+      "name": "Tristam?",
+      "boss": "???",
+      "tier": "Impossible",
+      "subtitle": "Impossible 1",
+      "level": 300,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "unknown_entity", "level": 300 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 512000,
+        "exp": 256000,
+        "items": []
+      }
+    },
+    "city_of_illusions": {
+      "id": "city_of_illusions",
+      "name": "City of Illusions",
+      "boss": "Mirage",
+      "tier": "Impossible",
+      "subtitle": "Impossible 2",
+      "level": 325,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "mirage", "level": 325 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 1024000,
+        "exp": 512000,
+        "items": []
+      }
+    },
+    "dragon_fortress": {
+      "id": "dragon_fortress",
+      "name": "Dragon Fortress",
+      "boss": "Ancient Hydra",
+      "tier": "Impossible",
+      "subtitle": "Impossible 3",
+      "level": 350,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "ancient_hydra", "level": 350 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 2048000,
+        "exp": 1024000,
+        "items": []
+      }
+    },
+    "marine_fortress": {
+      "id": "marine_fortress",
+      "name": "Marine Fortress",
+      "boss": "Pugs",
+      "tier": "Mythical",
+      "subtitle": "Mythical 1",
+      "level": 375,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "pugs", "level": 375 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 4096000,
+        "exp": 2048000,
+        "items": []
+      }
+    },
+    "astral_nexus": {
+      "id": "astral_nexus",
+      "name": "Astral Nexus",
+      "boss": "Starweaver",
+      "tier": "Mythical",
+      "subtitle": "Mythical 2",
+      "level": 400,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "starweaver", "level": 400 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 8192000,
+        "exp": 4096000,
+        "items": []
+      }
+    },
+    "temple_of_time": {
+      "id": "temple_of_time",
+      "name": "Temple of Time",
+      "boss": "Chronarch",
+      "tier": "Mythical",
+      "subtitle": "Mythical 3",
+      "level": 425,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "chronarch", "level": 425 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 16384000,
+        "exp": 8192000,
+        "items": []
+      }
+    },
+    "celestial_garden": {
+      "id": "celestial_garden",
+      "name": "Celestial Garden",
+      "boss": "Elysian Watcher",
+      "tier": "Divine",
+      "subtitle": "Divine 1",
+      "level": 450,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "elysian_watcher", "level": 450 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 32768000,
+        "exp": 16384000,
+        "items": []
+      }
+    },
+    "throne_of_storms": {
+      "id": "throne_of_storms",
+      "name": "Throne of Storms",
+      "boss": "Sovereign",
+      "tier": "Divine",
+      "subtitle": "Divine 2",
+      "level": 475,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "sovereign", "level": 475 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 65536000,
+        "exp": 32768000,
+        "items": []
+      }
+    },
+    "heart_of_the_world": {
+      "id": "heart_of_the_world",
+      "name": "Heart of the World",
+      "boss": "Worldshaper",
+      "tier": "Divine",
+      "subtitle": "Divine 3",
+      "level": 500,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "worldshaper", "level": 500 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 131072000,
+        "exp": 65536000,
+        "items": []
+      }
+    },
+    "starlight_citadel": {
+      "id": "starlight_citadel",
+      "name": "Starlight Citadel",
+      "boss": "Cosmic Archon",
+      "tier": "Ascended",
+      "subtitle": "Ascended 1",
+      "level": 500,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "cosmic_archon", "level": 500 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 262144000,
+        "exp": 131072000,
+        "items": []
+      }
+    },
+    "origin_core": {
+      "id": "origin_core",
+      "name": "Origin Core",
+      "boss": "Primeval Entity",
+      "tier": "Ascended",
+      "subtitle": "Ascended 2",
+      "level": 500,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "primeval_entity", "level": 500 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 524288000,
+        "exp": 262144000,
+        "items": []
+      }
+    },
+    "final_aetherium": {
+      "id": "final_aetherium",
+      "name": "Final Aetherium",
+      "boss": "Eternal Singularity",
+      "tier": "Ascended",
+      "subtitle": "Ascended 3",
+      "level": 500,
+      "waves": [
+        {
+          "enemies": [
+            { "id": "eternal_singularity", "level": 500 }
+          ]
+        }
+      ],
+      "rewards": {
+        "gold": 1048576000,
+        "exp": 524288000,
+        "items": []
+      }
+    },
+    "rite_of_passage": {
+      "id": "rite_of_passage",
+      "name": "Rite of Passage",
+      "boss": "All Bosses",
+      "tier": "Transcendent",
+      "subtitle": "All dungeons in a row",
+      "level": 500,
+      "special": "gauntlet",
+      "waves": [],
+      "rewards": {
+        "gold": 2147483647,
+        "exp": 1073741824,
+        "items": []
+      }
+    }
+  }
+}
