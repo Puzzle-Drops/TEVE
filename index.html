@@ -1809,15 +1809,12 @@ showPartySelect() {
                         `;
                         slot.classList.add('filled');
                         
-                        // Add long press handler for enemy info
-                        let pressTimer;
-                        slot.addEventListener('mousedown', (e) => {
-                            if (e.button === 0 && !e.ctrlKey && !e.shiftKey) { // Left click only, no modifiers
-                                pressTimer = setTimeout(() => this.showEnemyInfoPopup(enemy), 500);
-                            }
-                        });
-                        slot.addEventListener('mouseup', () => clearTimeout(pressTimer));
-                        slot.addEventListener('mouseleave', () => clearTimeout(pressTimer));
+                        // Add click handler for enemy info
+slot.style.cursor = 'pointer';
+slot.onclick = (e) => {
+    e.stopPropagation();
+    this.showEnemyInfoPopup(enemy);
+};mer));
                     }
                 });
             }
@@ -1882,14 +1879,7 @@ createSelectableHeroThumb(hero, heroIndex) {
                 
                 // Click to select/deselect
                 wrapper.onclick = () => this.toggleHeroSelection(heroIndex);
-                
-// Add click handler for enemy info
-slot.style.cursor = 'pointer';
-slot.onclick = (e) => {
-    e.stopPropagation();
-    this.showEnemyInfoPopup(enemy);
-};
-                
+                                
                 return wrapper;
             }
 		
