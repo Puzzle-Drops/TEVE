@@ -1169,7 +1169,7 @@ init() {
                 document.getElementById('partySelectScreen').style.display = 'none';
             }
 
-updateHeroList() {
+            updateHeroList() {
                 const heroList = document.getElementById('heroList');
                 heroList.innerHTML = '';
                 
@@ -1205,19 +1205,24 @@ updateHeroList() {
                     
                     // Use class ID for image files
                     const classId = hero.className.toLowerCase().replace(/ /g, '_');
-                    const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+					const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
 
                     thumb.innerHTML = `
-                        <div style="position: relative; width: 100px; height: 100px;">
-                            <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" 
-                                 onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${displayClassName}</text></svg>'">
-                            ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
-                            <div class="thumbLevel">${hero.level}</div>
-                            ${canPromote ? `<div class="promoteArrowThumb ${isAwakenable ? 'awaken' : 'normal'}">^</div>` : ''}
-                        </div>
-                        <div class="thumbClass">${displayClassName}</div>
-                        <div class="thumbName">${hero.name}</div>
-                    `;
+    <div style="position: relative; width: 100px; height: 100px;">
+        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" 
+             onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${displayClassName}</text></svg>'">
+             
+        ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
+
+        <div class="thumbLevel">${hero.level}</div>
+
+        ${canPromote ? `<div class="promoteArrowThumb ${isAwakenable ? 'awaken' : 'normal'}">^</div>` : ''}
+    </div>
+
+    <div class="thumbClass">${displayClassName}</div>
+    <div class="thumbName">${hero.name}</div>
+`;
+
                     
                     thumb.onclick = () => this.selectHero(this.heroes.indexOf(hero));
                     heroList.appendChild(thumb);
@@ -1270,84 +1275,84 @@ updateHeroList() {
                 }
             }
 
-showInfoTab(hero, content) {
-    const stats = hero.totalStats;
-    const baseStats = hero.baseStats;
-    let stars = '★';
-    
-    // Generate stars based on class tier and awakened status
-    if (hero.classTier > 0) {
-        const starCount = hero.awakened ? 5 : hero.classTier;
-        for (let i = 0; i < starCount; i++) {
-            stars += '★';
-        }
-    }
-    
-    const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-    
-    // Calculate derived stats
-    const armor = hero.armor;
-    const resist = hero.resist;
-    const physicalDR = hero.physicalDamageReduction;
-    const magicalDR = hero.magicDamageReduction;
-    
-    content.innerHTML = `
-        <div style="margin-bottom: 20px;">
-            ${stars ? `<div style="font-size: 48px; font-weight: bold; ${hero.awakened ? 'color: #d896ff;' : 'color: #ffd700;'} text-shadow: 0 0 12px ${hero.awakened ? 'rgba(216, 150, 255, 0.9)' : 'rgba(255, 215, 0, 0.9)'}, 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${stars}</div>` : ''}
-            <div class="heroName">${displayClassName}</div>
-            <div style="font-size: 32px; color: #6a9aaa; cursor: pointer;" onclick="game.editHeroName()">
-                <span id="heroNameText">${hero.name}</span>
-            </div>
-            <div style="font-size: 32px; color: #4dd0e1; margin-top: 40px;">Level ${hero.level}</div>
-            </div>
-            <div class="expBar" style="position: relative; height: 40px; border: 1px solid #2a6a8a;">
-             <div class="expFill" style="width: ${Math.max(0, Math.min((hero.exp / hero.expToNext) * 100, 100))}%; height: 100%; background: #4dd0e1;"></div>
-              <div class="expText" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; color: #6a9aaa;">
-                ${hero.exp} / ${hero.expToNext} (${((hero.exp / hero.expToNext) * 100).toFixed(1)}%)
-              </div>
-            </div>
-        
-        <div style="margin-top: 40px; display: flex; gap: 80px;">
-            <div style="flex: 1;">
-                <div class="statLine" onmouseover="game.showStatTooltip(event, 'Health Points')" onmouseout="game.hideStatTooltip()">
-                    <span class="statName">HP</span>
-                    <span class="statValue">${hero.hp}</span>
-                </div>
-                <div class="statLine" onmouseover="game.showStatTooltip(event, 'Strength')" onmouseout="game.hideStatTooltip()">
-                    <span class="statName">STR</span>
-                    <span class="statValue">${baseStats.str} ${hero.gearStats.str > 0 ? `<span class="statBonus">+${hero.gearStats.str}</span>` : ''}</span>
-                </div>
-                <div class="statLine" onmouseover="game.showStatTooltip(event, 'Agility')" onmouseout="game.hideStatTooltip()">
-                    <span class="statName">AGI</span>
-                    <span class="statValue">${baseStats.agi} ${hero.gearStats.agi > 0 ? `<span class="statBonus">+${hero.gearStats.agi}</span>` : ''}</span>
-                </div>
-                <div class="statLine" onmouseover="game.showStatTooltip(event, 'Intelligence')" onmouseout="game.hideStatTooltip()">
-                    <span class="statName">INT</span>
-                    <span class="statValue">${baseStats.int} ${hero.gearStats.int > 0 ? `<span class="statBonus">+${hero.gearStats.int}</span>` : ''}</span>
-                </div>
-            </div>
-            
-            <div style="flex: 1;">
-                <div class="statLine" onmouseover="game.showStatTooltip(event, 'HP Regeneration')" onmouseout="game.hideStatTooltip()">
-                    <span class="statName">HP Regen</span>
-                    <span class="statValue">${hero.hpRegen.toFixed(1)}</span>
-                </div>
-                <div class="statLine" onmouseover="game.showStatTooltip(event, 'Attack Speed')" onmouseout="game.hideStatTooltip()">
-                    <span class="statName">Att Spd</span>
-                    <span class="statValue">${hero.actionBarSpeed.toFixed(1)}%</span>
-                </div>
-                <div class="statLine" onmouseover="game.showStatTooltip(event, 'Armor')" onmouseout="game.hideStatTooltip()">
-                    <span class="statName">Armor</span>
-                    <span class="statValue">${Math.floor(armor)} <span style="color: #6a9aaa;">(${(physicalDR * 100).toFixed(1)}%)</span></span>
-                </div>
-                <div class="statLine" onmouseover="game.showStatTooltip(event, 'Resistance')" onmouseout="game.hideStatTooltip()">
-                    <span class="statName">Resist</span>
-                    <span class="statValue">${Math.floor(resist)} <span style="color: #6a9aaa;">(${(magicalDR * 100).toFixed(1)}%)</span></span>
-                </div>
-            </div>
-        </div>
-    `;
-}
+			showInfoTab(hero, content) {
+				const stats = hero.totalStats;
+				const baseStats = hero.baseStats;
+				let stars = '★';
+				
+				// Generate stars based on class tier and awakened status
+				if (hero.classTier > 0) {
+					const starCount = hero.awakened ? 5 : hero.classTier;
+					for (let i = 0; i < starCount; i++) {
+						stars += '★';
+					}
+				}
+				
+				const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+				
+				// Calculate derived stats
+				const armor = hero.armor;
+				const resist = hero.resist;
+				const physicalDR = hero.physicalDamageReduction;
+				const magicalDR = hero.magicDamageReduction;
+				
+				content.innerHTML = `
+					<div style="margin-bottom: 20px;">
+						${stars ? `<div style="font-size: 48px; font-weight: bold; ${hero.awakened ? 'color: #d896ff;' : 'color: #ffd700;'} text-shadow: 0 0 12px ${hero.awakened ? 'rgba(216, 150, 255, 0.9)' : 'rgba(255, 215, 0, 0.9)'}, 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${stars}</div>` : ''}
+						<div class="heroName">${displayClassName}</div>
+						<div style="font-size: 32px; color: #6a9aaa; cursor: pointer;" onclick="game.editHeroName()">
+							<span id="heroNameText">${hero.name}</span>
+						</div>
+						<div style="font-size: 32px; color: #4dd0e1; margin-top: 40px;">Level ${hero.level}</div>
+						</div>
+						<div class="expBar" style="position: relative; height: 40px; border: 1px solid #2a6a8a;">
+ 						 <div class="expFill" style="width: ${Math.max(0, Math.min((hero.exp / hero.expToNext) * 100, 100))}%; height: 100%; background: #4dd0e1;"></div>
+						  <div class="expText" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; color: #6a9aaa;">
+						    ${hero.exp} / ${hero.expToNext} (${((hero.exp / hero.expToNext) * 100).toFixed(1)}%)
+						  </div>
+						</div>
+					
+					<div style="margin-top: 40px; display: flex; gap: 60px;">
+						<div style="flex: 1;">
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Health Points')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">HP</span>
+								<span class="statValue">${hero.hp}</span>
+							</div>
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Strength')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">STR</span>
+								<span class="statValue">${baseStats.str} ${hero.gearStats.str > 0 ? `<span class="statBonus">+${hero.gearStats.str}</span>` : ''}</span>
+							</div>
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Agility')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">AGI</span>
+								<span class="statValue">${baseStats.agi} ${hero.gearStats.agi > 0 ? `<span class="statBonus">+${hero.gearStats.agi}</span>` : ''}</span>
+							</div>
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Intelligence')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">INT</span>
+								<span class="statValue">${baseStats.int} ${hero.gearStats.int > 0 ? `<span class="statBonus">+${hero.gearStats.int}</span>` : ''}</span>
+							</div>
+						</div>
+						
+						<div style="flex: 1;">
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'HP Regeneration')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">HP Regen</span>
+								<span class="statValue">${hero.hpRegen.toFixed(1)}</span>
+							</div>
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Attack Speed')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">Attack Speed</span>
+								<span class="statValue">${hero.actionBarSpeed.toFixed(1)}%</span>
+							</div>
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Armor')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">Armor</span>
+								<span class="statValue">${Math.floor(armor)} <span style="color: #6a9aaa;">(${(physicalDR * 100).toFixed(1)}%)</span></span>
+							</div>
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Resistance')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">Resistance</span>
+								<span class="statValue">${Math.floor(resist)} <span style="color: #6a9aaa;">(${(magicalDR * 100).toFixed(1)}%)</span></span>
+							</div>
+						</div>
+					</div>
+				`;
+			}
 			
 			showStatTooltip(event, statName) {
 				// Create or get stat tooltip element
@@ -1797,56 +1802,55 @@ showInfoTab(hero, content) {
                 });
             }
 
-createSelectableHeroThumb(hero, heroIndex) {
-    const wrapper = document.createElement('div');
-    wrapper.className = 'selectableHero';
-    
-    // Check if hero is already selected
-    if (this.selectedParty.includes(heroIndex)) {
-        wrapper.classList.add('selected');
-    }
-    
-    // Create the same thumb structure as hero list
-    const thumb = document.createElement('div');
-    thumb.className = 'heroThumb';
-    
-    // Generate stars
-    let stars = '★';
-    if (hero.classTier > 0) {
-        const starCount = hero.awakened ? 5 : hero.classTier;
-        for (let i = 0; i < starCount; i++) {
-            stars += '★';
-        }
-    }
-    
-    const classId = hero.className.toLowerCase().replace(/ /g, '_');
-    const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-    thumb.innerHTML = `
-        <div style="position: relative; width: 100px; height: 100px;">
-            <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" 
-                 onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${displayClassName}</text></svg>'">
-            ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
-            <div class="thumbLevel">${hero.level}</div>
-        </div>
-        <div class="thumbClass">${displayClassName}</div>
-        <div class="thumbName">${hero.name}</div>
-    `;
-    
-    wrapper.appendChild(thumb);
-    
-    // Click to select/deselect
-    wrapper.onclick = () => this.toggleHeroSelection(heroIndex);
-    
-    // Long press for info
-    let pressTimer;
-    wrapper.addEventListener('mousedown', () => {
-        pressTimer = setTimeout(() => this.showHeroInfoPopup(hero), 500);
-    });
-    wrapper.addEventListener('mouseup', () => clearTimeout(pressTimer));
-    wrapper.addEventListener('mouseleave', () => clearTimeout(pressTimer));
-    
-    return wrapper;
-}
+            createSelectableHeroThumb(hero, heroIndex) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'selectableHero';
+                
+                // Check if hero is already selected
+                if (this.selectedParty.includes(heroIndex)) {
+                    wrapper.classList.add('selected');
+                }
+                
+                // Create the same thumb structure as hero list
+                const thumb = document.createElement('div');
+                thumb.className = 'heroThumb';
+                
+                // Generate stars
+                let stars = '★';
+                if (hero.classTier > 0) {
+                    const starCount = hero.awakened ? 5 : hero.classTier;
+                    for (let i = 0; i < starCount; i++) {
+                        stars += '★';
+                    }
+                }
+                
+                const classId = hero.className.toLowerCase().replace(/ /g, '_');
+				const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+                thumb.innerHTML = `
+                    <div style="position: relative; width: 60px; height: 60px;">
+                        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${displayClassName}</text></svg>'">
+                        ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
+                        <div class="thumbLevel">${hero.level}</div>
+                    </div>
+                    <div class="thumbClass">${displayClassName}</div>
+                    <div class="thumbName">${hero.name}</div>
+                `;
+                
+                wrapper.appendChild(thumb);
+                
+                // Click to select/deselect
+                wrapper.onclick = () => this.toggleHeroSelection(heroIndex);
+                
+                // Long press for info
+                let pressTimer;
+                wrapper.addEventListener('mousedown', () => {
+                    pressTimer = setTimeout(() => this.showHeroInfoPopup(hero), 500);
+                });
+                wrapper.addEventListener('mouseup', () => clearTimeout(pressTimer));
+                wrapper.addEventListener('mouseleave', () => clearTimeout(pressTimer));
+                
+                return wrapper;
+            }
 
             toggleHeroSelection(heroIndex) {
                 // Check if hero is already selected
@@ -1981,55 +1985,55 @@ createSelectableHeroThumb(hero, heroIndex) {
                 });
             }
 
-showHeroInfoPopup(hero) {
-    const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-    const popup = document.getElementById('heroInfoPopup');
-    document.getElementById('popupHeroName').textContent = `Lv.${hero.level} ${displayClassName} | ${hero.name}`;
-    
-    // Show stats in double column format with more spacing
-    const stats = hero.totalStats;
-    const statsHtml = `
-        <div style="display: flex; gap: 60px;">
-            <div style="flex: 1;">
-                <div class="statRow">
-                    <span class="statLabel">HP</span>
-                    <span class="statValue">${hero.hp}</span>
-                </div>
-                <div class="statRow">
-                    <span class="statLabel">STR</span>
-                    <span class="statValue">${stats.str}</span>
-                </div>
-                <div class="statRow">
-                    <span class="statLabel">AGI</span>
-                    <span class="statValue">${stats.agi}</span>
-                </div>
-                <div class="statRow">
-                    <span class="statLabel">INT</span>
-                    <span class="statValue">${stats.int}</span>
-                </div>
-            </div>
-            <div style="flex: 1;">
-                <div class="statRow">
-                    <span class="statLabel">HP Regen</span>
-                    <span class="statValue">${hero.hpRegen.toFixed(1)}</span>
-                </div>
-                <div class="statRow">
-                    <span class="statLabel">Att Spd</span>
-                    <span class="statValue">${hero.actionBarSpeed.toFixed(1)}%</span>
-                </div>
-                <div class="statRow">
-                    <span class="statLabel">Armor</span>
-                    <span class="statValue">${Math.floor(hero.armor)} <span style="color: #6a9aaa;">(${(hero.physicalDamageReduction * 100).toFixed(1)}%)</span></span>
-                </div>
-                <div class="statRow">
-                    <span class="statLabel">Resist</span>
-                    <span class="statValue">${Math.floor(hero.resist)} <span style="color: #6a9aaa;">(${(hero.magicDamageReduction * 100).toFixed(1)}%)</span></span>
-                </div>
-            </div>
-        </div>
-    `;
-    document.getElementById('popupStats').innerHTML = statsHtml;
-	
+			showHeroInfoPopup(hero) {
+				const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+				const popup = document.getElementById('heroInfoPopup');
+				document.getElementById('popupHeroName').textContent = `Lv.${hero.level} ${displayClassName} | ${hero.name}`;
+				
+				// Show stats in double column format
+				const stats = hero.totalStats;
+				const statsHtml = `
+					<div style="display: flex; gap: 40px;">
+						<div style="flex: 1;">
+							<div class="statRow">
+								<span class="statLabel">HP</span>
+								<span class="statValue">${hero.hp}</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">STR</span>
+								<span class="statValue">${stats.str}</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">AGI</span>
+								<span class="statValue">${stats.agi}</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">INT</span>
+								<span class="statValue">${stats.int}</span>
+							</div>
+						</div>
+						<div style="flex: 1;">
+							<div class="statRow">
+								<span class="statLabel">HP Regen</span>
+								<span class="statValue">${hero.hpRegen.toFixed(1)}</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">Attack Speed</span>
+								<span class="statValue">${hero.actionBarSpeed.toFixed(1)}%</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">Armor</span>
+								<span class="statValue">${Math.floor(hero.armor)} <span style="color: #6a9aaa;">(${(hero.physicalDamageReduction * 100).toFixed(1)}%)</span></span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">Resistance</span>
+								<span class="statValue">${Math.floor(hero.resist)} <span style="color: #6a9aaa;">(${(hero.magicDamageReduction * 100).toFixed(1)}%)</span></span>
+							</div>
+						</div>
+					</div>
+				`;
+				document.getElementById('popupStats').innerHTML = statsHtml;
+                
                 // Show ability icons with tooltips
                 const abilityIconsHtml = `
                     <div style="display: flex; gap: 8px; margin-top: 10px;">
@@ -2084,54 +2088,54 @@ showHeroInfoPopup(hero) {
                 popup.style.display = 'block';
             }
 
-showEnemyInfoPopup(enemy) {
-    const popup = document.getElementById('heroInfoPopup');
-    document.getElementById('popupHeroName').textContent = `Lv.${enemy.level} ${enemy.name}`;
-    
-    // Show enemy stats in double column format with more spacing
-    const stats = enemy.baseStats;
-    const statsHtml = `
-        <div style="display: flex; gap: 60px;">
-            <div style="flex: 1;">
-                <div class="statRow">
-                    <span class="statLabel">HP</span>
-                    <span class="statValue">${enemy.hp}</span>
-                </div>
-                <div class="statRow">
-                    <span class="statLabel">STR</span>
-                    <span class="statValue">${stats.str}</span>
-                </div>
-                <div class="statRow">
-                    <span class="statLabel">AGI</span>
-                    <span class="statValue">${stats.agi}</span>
-                </div>
-                <div class="statRow">
-                    <span class="statLabel">INT</span>
-                    <span class="statValue">${stats.int}</span>
-                </div>
-            </div>
-            <div style="flex: 1;">
-                <div class="statRow">
-                    <span class="statLabel">HP Regen</span>
-                    <span class="statValue">${(stats.str * 0.05).toFixed(1)}</span>
-                </div>
-                <div class="statRow">
-                    <span class="statLabel">Att Spd</span>
-                    <span class="statValue">${(100 + 100 * (stats.agi / (stats.agi + 1000))).toFixed(1)}%</span>
-                </div>
-                <div class="statRow">
-                    <span class="statLabel">Armor</span>
-                    <span class="statValue">${Math.floor(enemy.armor)} <span style="color: #6a9aaa;">(${(enemy.physicalDamageReduction * 100).toFixed(1)}%)</span></span>
-                </div>
-                <div class="statRow">
-                    <span class="statLabel">Resist</span>
-                    <span class="statValue">${Math.floor(enemy.resist)} <span style="color: #6a9aaa;">(${(enemy.magicDamageReduction * 100).toFixed(1)}%)</span></span>
-                </div>
-            </div>
-        </div>
-    `;
-    document.getElementById('popupStats').innerHTML = statsHtml;
-	
+			showEnemyInfoPopup(enemy) {
+				const popup = document.getElementById('heroInfoPopup');
+				document.getElementById('popupHeroName').textContent = `Lv.${enemy.level} ${enemy.name}`;
+				
+				// Show enemy stats in double column format
+				const stats = enemy.baseStats;
+				const statsHtml = `
+					<div style="display: flex; gap: 40px;">
+						<div style="flex: 1;">
+							<div class="statRow">
+								<span class="statLabel">HP</span>
+								<span class="statValue">${enemy.hp}</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">STR</span>
+								<span class="statValue">${stats.str}</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">AGI</span>
+								<span class="statValue">${stats.agi}</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">INT</span>
+								<span class="statValue">${stats.int}</span>
+							</div>
+						</div>
+						<div style="flex: 1;">
+							<div class="statRow">
+								<span class="statLabel">HP Regen</span>
+								<span class="statValue">${(stats.str * 0.05).toFixed(1)}</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">Attack Speed</span>
+								<span class="statValue">${(100 + 100 * (stats.agi / (stats.agi + 1000))).toFixed(1)}%</span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">Armor</span>
+								<span class="statValue">${Math.floor(enemy.armor)} <span style="color: #6a9aaa;">(${(enemy.physicalDamageReduction * 100).toFixed(1)}%)</span></span>
+							</div>
+							<div class="statRow">
+								<span class="statLabel">Resistance</span>
+								<span class="statValue">${Math.floor(enemy.resist)} <span style="color: #6a9aaa;">(${(enemy.magicDamageReduction * 100).toFixed(1)}%)</span></span>
+							</div>
+						</div>
+					</div>
+				`;
+				document.getElementById('popupStats').innerHTML = statsHtml;
+                
                 // Show ability icons with tooltips
                 const enemyAbilitiesHtml = `
                     <div style="display: flex; gap: 8px; margin-top: 10px;">
