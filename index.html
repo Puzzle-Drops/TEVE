@@ -1279,7 +1279,7 @@ init() {
 						</div>
 						<div style="font-size: 32px; color: #4dd0e1; margin-top: 40px;">Level ${hero.level}</div>
 						</div>
-						<div class="expBar" style="position: relative; height: 32px; background: #222; border: 1px solid #444;">
+						<div class="expBar" style="position: relative; height: 40px; border: 1px solid #2a6a8a;">
  						 <div class="expFill" style="width: ${Math.max(0, Math.min((hero.exp / hero.expToNext) * 100, 100))}%; height: 100%; background: #4dd0e1;"></div>
 						  <div class="expText" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; color: #6a9aaa;">
 						    ${hero.exp} / ${hero.expToNext} (${((hero.exp / hero.expToNext) * 100).toFixed(1)}%)
