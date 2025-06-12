@@ -1308,6 +1308,23 @@ class Battle {
 
         
 
+        // Clean up health bar event listeners
+        for (let i = 1; i <= 5; i++) {
+            ['party', 'enemy'].forEach(type => {
+                const element = document.getElementById(`${type}${i}`);
+                if (element) {
+                    const healthBar = element.querySelector('.healthBar');
+                    if (healthBar && healthBar._unitInfoHandler) {
+                        healthBar.removeEventListener('click', healthBar._unitInfoHandler);
+                        delete healthBar._unitInfoHandler;
+                    }
+                }
+            });
+        }
+        
+        // Close any open popup
+        this.game.closeHeroInfo();
+
         if (victory) {
 
             // TODO: Handle loot, experience, etc.
@@ -1569,36 +1586,46 @@ showPlayerAbilities(unit) {
                 
 
                 if (healthText) {
+
                     healthText.textContent = `${Math.floor(unit.currentHp)}/${unit.maxHp}`;
+
                 }
+
                 
-                // Add long press handler for unit info on health bar
+                // Add click handler for unit info on health bar
                 const healthBarElement = element.querySelector('.healthBar');
                 if (healthBarElement && unit.isAlive) {
-                    let pressTimer;
-                    
                     healthBarElement.style.cursor = 'pointer';
                     
-                    healthBarElement.addEventListener('mousedown', (e) => {
-                        if (e.button === 0 && !e.ctrlKey && !e.shiftKey) { // Left click only, no modifiers
-                            pressTimer = setTimeout(() => {
-                                if (unit.isEnemy) {
-                                    this.game.showEnemyInfoPopup(unit.source);
-                                } else {
-                                    this.game.showHeroInfoPopup(unit.source);
-                                }
-                            }, 500);
-                        }
-                    });
+                    // Remove any existing click handler
+                    const oldHandler = healthBarElement._unitInfoHandler;
+                    if (oldHandler) {
+                        healthBarElement.removeEventListener('click', oldHandler);
+                    }
                     
-                    healthBarElement.addEventListener('mouseup', () => clearTimeout(pressTimer));
-                    healthBarElement.addEventListener('mouseleave', () => clearTimeout(pressTimer));
+                    // Create new handler
+                    const newHandler = (e) => {
+                        e.stopPropagation();
+                        // Close any existing popup first
+                        this.game.closeHeroInfo();
+                        
+                        // Small delay to ensure clean transition
+                        setTimeout(() => {
+                            if (unit.isEnemy) {
+                                this.game.showEnemyInfoPopup(unit.source);
+                            } else {
+                                this.game.showHeroInfoPopup(unit.source);
+                            }
+                        }, 10);
+                    };
+                    
+                    // Store reference to handler so we can remove it later
+                    healthBarElement._unitInfoHandler = newHandler;
+                    healthBarElement.addEventListener('click', newHandler);
                     
                     // Prevent text selection on health bar
                     healthBarElement.addEventListener('selectstart', (e) => e.preventDefault());
                 }
-
-                
 
                 // Update unit appearance with sprites
 
@@ -1610,7 +1637,14 @@ if (unitDiv) {
         // Hide health bar and action bar when dead
         const healthBar = element.querySelector('.healthBar');
         const actionBar = element.querySelector('.actionBar');
-        if (healthBar) healthBar.style.display = 'none';
+        if (healthBar) {
+            healthBar.style.display = 'none';
+            // Clean up event listener
+            if (healthBar._unitInfoHandler) {
+                healthBar.removeEventListener('click', healthBar._unitInfoHandler);
+                delete healthBar._unitInfoHandler;
+            }
+        }
         if (actionBar) actionBar.style.display = 'none';
     } else {
         unitDiv.style.opacity = '';
