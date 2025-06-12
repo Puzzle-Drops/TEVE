@@ -137,16 +137,16 @@ body {
 }
 
 .unitShadow {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 12px;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 50%;
-  filter: blur(3px);
-  z-index: 0;
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    filter: blur(3px);
+    z-index: 0;
 }
 
 .healthBar {
@@ -234,6 +234,19 @@ body {
     overflow-y: auto;
     font-size: 16px;
     box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+.unitShadow {
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    filter: blur(3px);
+    z-index: 0;
 }
 
 .abilityPanel {
@@ -338,7 +351,6 @@ body {
     display: flex;
     background: rgba(10, 15, 26, 0.9);
     border-bottom: 1px solid #2a6a8a;
-    font-size: 32px;
 }
 
 .tabButton {
@@ -348,6 +360,7 @@ body {
     border-right: 1px solid #2a6a8a;
     cursor: pointer;
     color: #6a9aaa;
+    font-size: 24px;
     transition: all 0.3s;
 }
 
@@ -368,15 +381,44 @@ body {
     flex: 1;
 }
 
+#abilityTooltip {
+    position: fixed;
+    background: rgba(10, 15, 26, 0.95);
+    border: 2px solid #2a6a8a;
+    padding: 16px;
+    border-radius: 4px;
+    z-index: 1002;
+    max-width: 400px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+    pointer-events: none;
+}
+
+.abilityPanel {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0px;
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+}
+
 .statLine {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: 20px;
     margin: 10px 0;
     font-size: 24px;
 }
 
 .statName {
     color: #4dd0e1;
+    min-width: 120px;
 }
 
 .statValue {
@@ -424,7 +466,7 @@ body {
 }
 
 .heroList {
-    height: 120px;
+    height: 160px;
     display: flex;
     gap: 10px;
     overflow-x: auto;
@@ -438,8 +480,8 @@ body {
 }
 
 .heroThumb {
-    width: 100px;
-    height: 100px;
+    width: 140px;
+    height: 140px;
     background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
     border: 2px solid #2a6a8a;
     cursor: pointer;
@@ -448,7 +490,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 5px;
+    padding: 10px 7px;
     transition: all 0.2s;
     box-shadow: 0 0 15px rgba(42, 106, 138, 0.3);
     position: relative;
@@ -467,29 +509,29 @@ body {
 }
 
 .heroThumb img {
-    width: 60px;
-    height: 60px;
+    width: 100px;
+    height: 100px;
     image-rendering: pixelated;
 }
 
 .thumbClass {
-    font-size: 12px;
+    font-size: 14px;
     color: #b0e0f0;
     margin-top: 2px;
     line-height: 1;
 }
 
 .thumbName {
-    font-size: 11px;
+    font-size: 13px;
     color: #6a9aaa;
     line-height: 1;
 }
 
 .thumbLevel {
     position: absolute;
-    bottom: 0px;
-    right: 2px;
-    font-size: 12px;
+    bottom: 2px;
+    right: 4px;
+    font-size: 16px;
     font-weight: bold;
     color: #fff;
     text-shadow: 
@@ -500,9 +542,9 @@ body {
 
 .thumbStars {
     position: absolute;
-    bottom: 0px;
-    left: 2px;
-    font-size: 12px;
+    bottom: 2px;
+    left: 4px;
+    font-size: 16px; 
     font-weight: bold;
     letter-spacing: -5px;
     text-shadow: 
@@ -510,7 +552,6 @@ body {
         1px 1px 2px rgba(0, 0, 0, 1),
         -1px -1px 2px rgba(0, 0, 0, 1);
 }
-
 .thumbStars.awakened {
     color: #d896ff;
 }
@@ -521,11 +562,10 @@ body {
 
 .promoteArrowThumb {
     position: absolute;
-    top: 0px;
-    left: 2px;
-    font-size: 12px;
+    top: 2px;
+    left: 4px;
+    font-size: 16px;
     font-weight: bold;
-    color: #ffd700;
     text-shadow: 
         0 0 4px rgba(0, 0, 0, 0.9),
         1px 1px 2px rgba(0, 0, 0, 1),
@@ -1192,16 +1232,16 @@ body {
     opacity: 0.5;
 }
 
-/* Back button */
 .backButton {
     position: absolute;
     top: 20px;
     left: 20px;
-    padding: 10px 20px;
+    padding: 12px 24px;
     background: linear-gradient(135deg, #0a2e4a 0%, #0f3f5f 100%);
     border: 1px solid #2a6a8a;
     cursor: pointer;
     color: #b0e0f0;
+    font-size: 24px;
     transition: all 0.3s;
     box-shadow: 0 0 15px rgba(42, 106, 138, 0.3);
 }
