@@ -664,7 +664,7 @@
                         position: { x: 75, y: 30 },
                         requirement: 'Items Class 4 required',
                         dungeons: [
-                            { name: 'Tristam', boss: 'Infernal', subtitle: 'Impossible 1', level: 300 },
+                            { name: 'Tristam?', boss: '???', subtitle: 'Impossible 1', level: 300 },
                             { name: 'City of Illusions', boss: 'Mirage', subtitle: 'Impossible 2', level: 325 },
                             { name: 'Dragon Fortress', boss: 'Ancient Hydra', subtitle: 'Impossible 3', level: 350 }
                         ]
@@ -2118,12 +2118,11 @@ hideStatTooltip() {
                 // Show ability icons with tooltips
                 const abilityIconsHtml = `
                     <div style="display: flex; gap: 8px; margin-top: 10px;">
-                        ${hero.abilities.map(ability => {
-                            const tooltipHtml = this.formatAbilityTooltip(ability, ability.level).replace(/'/g, '&apos;').replace(/"/g, '&quot;');
+                        ${hero.abilities.map((ability, index) => {
                             return `
                                 <div class="abilityIconSmall" 
-                                     onmouseover="game.showAbilityTooltipFromHTML(event, '${tooltipHtml}')"
-                                     onmouseout="game.hideAbilityTooltip()">
+                                     data-ability-index="${index}"
+                                     data-hero-type="hero">
                                     <img src="https://puzzle-drops.github.io/TEVE/img/spells/${ability.id}.png" 
                                          style="width: 40px; height: 40px;" 
                                          alt="${ability.name}" 
@@ -2134,6 +2133,19 @@ hideStatTooltip() {
                     </div>
                 `;
                 document.getElementById('popupAbilities').innerHTML = abilityIconsHtml;
+                
+                // Add event listeners for tooltips
+                const abilityIcons = document.querySelectorAll('#popupAbilities .abilityIconSmall');
+                abilityIcons.forEach((icon, index) => {
+                    icon.addEventListener('mouseenter', (e) => {
+                        const ability = hero.abilities[index];
+                        const tooltipHtml = this.formatAbilityTooltip(ability, ability.level);
+                        this.showAbilityTooltipFromHTML(e, tooltipHtml);
+                    });
+                    icon.addEventListener('mouseleave', () => {
+                        this.hideAbilityTooltip();
+                    });
+                });
                 
                 // Show gear
                 const gearHtml = `
@@ -2219,11 +2231,10 @@ hideStatTooltip() {
                 const enemyAbilitiesHtml = `
                     <div style="display: flex; gap: 8px; margin-top: 10px;">
                         ${enemy.abilities.map((ability, index) => {
-                            const tooltipHtml = this.formatAbilityTooltip(ability, 1).replace(/'/g, '&apos;').replace(/"/g, '&quot;');
                             return `
                                 <div class="abilityIconSmall" 
-                                     onmouseover="game.showAbilityTooltipFromHTML(event, '${tooltipHtml}')"
-                                     onmouseout="game.hideAbilityTooltip()">
+                                     data-ability-index="${index}"
+                                     data-enemy-type="enemy">
                                     <img src="https://puzzle-drops.github.io/TEVE/img/spells/${ability.id}.png" 
                                          style="width: 40px; height: 40px;" 
                                          alt="${ability.name}" 
@@ -2234,6 +2245,19 @@ hideStatTooltip() {
                     </div>
                 `;
                 document.getElementById('popupAbilities').innerHTML = enemyAbilitiesHtml;
+                
+                // Add event listeners for tooltips
+                const abilityIcons = document.querySelectorAll('#popupAbilities .abilityIconSmall');
+                abilityIcons.forEach((icon, index) => {
+                    icon.addEventListener('mouseenter', (e) => {
+                        const ability = enemy.abilities[index];
+                        const tooltipHtml = this.formatAbilityTooltip(ability, 1);
+                        this.showAbilityTooltipFromHTML(e, tooltipHtml);
+                    });
+                    icon.addEventListener('mouseleave', () => {
+                        this.hideAbilityTooltip();
+                    });
+                });
                 
                 // No gear for enemies
                 document.getElementById('popupGear').innerHTML = `<p style="color: #6a9aaa; text-align: center; margin-top: 20px;">No gear equipped</p>`;
@@ -2282,13 +2306,13 @@ hideStatTooltip() {
                 
                 // Add damage type tag if applicable
                 if (damageType) {
-                    effectTags += `<span class="abilityEffectTag ${damageType}">[${damageType.charAt(0).toUpperCase() + damageType.slice(1)}]</span>`;
+                    effectTags += `<span class="abilityEffectTag ${damageType}">${damageType.charAt(0).toUpperCase() + damageType.slice(1)}</span>`;
                 }
                 
                 // Add other effect tags
                 effects.forEach(effect => {
                     if (effect !== 'physical' && effect !== 'holy' && effect !== damageType) {
-                        effectTags += `<span class="abilityEffectTag ${effect}">[${effect.charAt(0).toUpperCase() + effect.slice(1)}]</span>`;
+                        effectTags += `<span class="abilityEffectTag ${effect}">${effect.charAt(0).toUpperCase() + effect.slice(1)}</span>`;
                     }
                 });
                 
