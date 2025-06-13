@@ -1,5 +1,12 @@
 {
   "classes": {
+    "tester": {
+      "name": "Tester",
+      "tier": 0,
+      "modifiers": { "str": 10000.0, "agi": 10000.0, "int": 10000.0 },
+      "spells": ["win", "lose"],
+      "promotesTo": ["acolyte", "archer", "druid", "initiate", "swordsman", "templar", "thief", "witch_hunter"]
+    },
     "villager": {
       "name": "Villager",
       "tier": 0,
