@@ -807,7 +807,7 @@
 "lose": {
   "id": "lose",
   "name": "Lose",
-  "description": "Defeat your own team, reduce HP to 1, stun and slow self",
+  "description": "Lose intentionally",
   "cooldown": 0,
   "effects": ["damage", "pure", "aoe", "debuff", "stun", "slow"],
   "scaling": {
