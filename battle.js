@@ -1614,7 +1614,7 @@ if (levelIndicator) {
     // For heroes, show level and stars based on tier
     if (!unit.isEnemy) {
         const hero = unit.source;
-        let stars = '';
+        let stars = '★';
         let starClass = '';
         if (hero.classTier > 0) {
             const starCount = hero.awakened ? 5 : hero.classTier;
