@@ -1615,30 +1615,43 @@ if (levelIndicator) {
     if (!unit.isEnemy) {
         const hero = unit.source;
         let stars = '';
+        let starClass = '';
         if (hero.classTier > 0) {
             const starCount = hero.awakened ? 5 : hero.classTier;
             stars = '★'.repeat(starCount);
+            starClass = hero.awakened ? 'awakened' : '';
         }
-        levelIndicator.innerHTML = `
-            <div class="levelNumber">${unit.source.level}</div>
-            ${stars ? `<div class="levelStars ${hero.awakened ? 'awakened' : ''}">${stars}</div>` : ''}
-        `;
+        
+        let html = '<div class="levelNumber">' + unit.source.level + '</div>';
+        if (stars) {
+            html += '<div class="levelStars ' + starClass + '">' + stars + '</div>';
+        }
+        levelIndicator.innerHTML = html;
     } else {
         // For enemies, show level and stars based on their star rating
         const enemy = unit.source;
         let stars = '';
+        let starClass = 'normal';
         if (enemy.stars > 0) {
             stars = '★'.repeat(enemy.stars);
         }
-        let starClass = 'normal';
         if (enemy.stars === 6) starClass = 'purple';
         else if (enemy.stars >= 7) starClass = 'red';
         
-        levelIndicator.innerHTML = `
-            <div class="levelNumber">${unit.source.level}</div>
-            ${stars ? `<div class="levelStars ${starClass}">${stars}</div>` : ''}
-        `;
+        let html = '<div class="levelNumber">' + unit.source.level + '</div>';
+        if (stars) {
+            html += '<div class="levelStars ' + starClass + '">' + stars + '</div>';
+        }
+        levelIndicator.innerHTML = html;
     }
+    
+    // Hide when dead
+    if (!unit.isAlive) {
+        levelIndicator.style.display = 'none';
+    } else {
+        levelIndicator.style.display = '';
+    }
+}
 
                 
                 // Add click handler for unit info on health bar
