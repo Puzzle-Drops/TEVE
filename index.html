@@ -613,118 +613,35 @@
                 this.expandedDungeon = null;
                 this.currentPreviewWave = 0;
                 
-                this.dungeonTiers = {
-                    'Easy': {
-                        tier: 0,
-                        color: 'easy',
-                        position: { x: 25, y: 40 },
-                        requirement: 'Items no requirements',
-                        dungeons: [
-                            { name: 'Satyrs', boss: 'Satyr Instigator', subtitle: 'Easy 1', level: 0 },
-                            { name: 'Icy Highland', boss: 'Frostfang', subtitle: 'Easy 2', level: 25 },
-                            { name: 'Forgotten Crypt', boss: 'Stitch', subtitle: 'Easy 3', level: 50 }
-                        ]
-                    },
-                    'Hard': {
-                        tier: 1,
-                        color: 'hard',
-                        position: { x: 45, y: 25 },
-                        requirement: 'Items Class 1 required',
-                        dungeons: [
-                            { name: 'Gold Mine', boss: 'Goblin King', subtitle: 'Hard 1', level: 75 },
-                            { name: 'Centaur Mountain', boss: 'Centaur Bloodhorn', subtitle: 'Hard 2', level: 100 },
-                            { name: 'Puzzle Sanctuary', boss: 'Lich Queen', subtitle: 'Hard 3', level: 125 }
-                        ]
-                    },
-                    'Nightmare': {
-                        tier: 2,
-                        color: 'nightmare',
-                        position: { x: 65, y: 45 },
-                        requirement: 'Items Class 2 required',
-                        dungeons: [
-                            { name: 'Naga Ruins', boss: 'Naga Ranger', subtitle: 'Nightmare 1', level: 150 },
-                            { name: 'Forgotten Sewers', boss: 'Devourer', subtitle: 'Nightmare 2', level: 175 },
-                            { name: 'Blighted Vale', boss: 'Rotwood Horror', subtitle: 'Nightmare 3', level: 200 }
-                        ]
-                    },
-                    'Hell': {
-                        tier: 3,
-                        color: 'hell',
-                        position: { x: 35, y: 60 },
-                        requirement: 'Items Class 3 required',
-                        dungeons: [
-                            { name: 'Oblivion', boss: 'Hades', subtitle: 'Hell 1', level: 225 },
-                            { name: 'Abyssal Labyrinth', boss: 'Mindreaver', subtitle: 'Hell 2', level: 250 },
-                            { name: 'Scorching Crater', boss: 'Flame Revenant', subtitle: 'Hell 3', level: 275 }
-                        ]
-                    },
-                    'Impossible': {
-                        tier: 4,
-                        color: 'impossible',
-                        position: { x: 75, y: 30 },
-                        requirement: 'Items Class 4 required',
-                        dungeons: [
-                            { name: 'Tristam?', boss: '???', subtitle: 'Impossible 1', level: 300 },
-                            { name: 'City of Illusions', boss: 'Mirage', subtitle: 'Impossible 2', level: 325 },
-                            { name: 'Dragon Fortress', boss: 'Ancient Hydra', subtitle: 'Impossible 3', level: 350 }
-                        ]
-                    },
-                    'Mythical': {
-                        tier: 5,
-                        color: 'mythical',
-                        position: { x: 20, y: 25 },
-                        requirement: 'Items Class 4 and level 500 required',
-                        dungeons: [
-                            { name: 'Marine Fortress', boss: 'Pugs', subtitle: 'Mythical 1', level: 375 },
-                            { name: 'Astral Nexus', boss: 'Starweaver', subtitle: 'Mythical 2', level: 400 },
-                            { name: 'Temple of Time', boss: 'Chronarch', subtitle: 'Mythical 3', level: 425 }
-                        ]
-                    },
-                    'Divine': {
-                        tier: 6,
-                        color: 'divine',
-                        position: { x: 55, y: 55 },
-                        requirement: 'Items Class 4 and level 500 required',
-                        dungeons: [
-                            { name: 'Celestial Garden', boss: 'Elysian Watcher', subtitle: 'Divine 1', level: 450 },
-                            { name: 'Throne of Storms', boss: 'Sovereign', subtitle: 'Divine 2', level: 475 },
-                            { name: 'Heart of the World', boss: 'Worldshaper', subtitle: 'Divine 3', level: 500 }
-                        ]
-                    },
-                    'Ascended': {
-                        tier: 7,
-                        color: 'ascended',
-                        position: { x: 40, y: 35 },
-                        requirement: 'Items Class 4 and level 500 required',
-                        dungeons: [
-                            { name: 'Starlight Citadel', boss: 'Cosmic Archon', subtitle: 'Ascended 1', level: 500 },
-                            { name: 'Origin Core', boss: 'Primeval Entity', subtitle: 'Ascended 2', level: 500 },
-                            { name: 'Final Aetherium', boss: 'Eternal Singularity', subtitle: 'Ascended 3', level: 500 }
-                        ]
-                    },
-                    'Transcendent': {
-                        tier: 8,
-                        color: 'transcendent',
-                        position: { x: 50, y: 70 },
-                        requirement: 'Items Class 4 and level 500 required',
-                        dungeons: [
-                            { name: 'Rite of Passage', boss: 'All Bosses', subtitle: 'All dungeons in a row', level: 500 }
-                        ]
-                    }
-                };
+                // Load dungeon tiers from JSON data
+                this.dungeonTiers = {};
+                if (dungeonData && dungeonData.tiers) {
+                    // Build dungeonTiers from the loaded data
+                    Object.keys(dungeonData.tiers).forEach(tierName => {
+                        const tierData = dungeonData.tiers[tierName];
+                        this.dungeonTiers[tierName] = {
+                            ...tierData,
+                            dungeons: []
+                        };
+                    });
+                    
+                    // Now populate dungeons for each tier
+                    Object.keys(dungeonData.dungeons).forEach(dungeonId => {
+                        const dungeon = dungeonData.dungeons[dungeonId];
+                        if (this.dungeonTiers[dungeon.tier]) {
+                            this.dungeonTiers[dungeon.tier].dungeons.push({
+                                id: dungeonId,
+                                name: dungeon.name,
+                                boss: dungeon.boss,
+                                subtitle: dungeon.subtitle,
+                                level: dungeon.level
+                            });
+                        }
+                    });
+                }
                 
-                // Define the class families for stashes
-                this.classFamilies = [
-                    { name: 'Acolyte', icon: '✚', classes: ['Acolyte', 'Cleric', 'Priest', 'Hierophant', 'Matriarch', 'Prophetess'] },
-                    { name: 'Archer', icon: '🏹', classes: ['Archer', 'Ranger', 'Marksman', 'Sniper', 'Tracker', 'Monster Hunter'] },
-                    { name: 'Druid', icon: '🌿', classes: ['Druid', 'Arch Druid', 'Shapeshifter', 'Runemaster', 'Shaman', 'Summoner'] },
-                    { name: 'Initiate', icon: '✨', classes: ['Initiate', 'Mage', 'Wizard', 'White Wizard', 'Sage', 'Arch Sage'] },
-                    { name: 'Swordsman', icon: '⚔️', classes: ['Swordsman', 'Knight', 'Imperial Knight', 'Champion', 'Crusader', 'Avenger'] },
-                    { name: 'Templar', icon: '🛡️', classes: ['Templar', 'Arch Templar', 'Dark Templar', 'Dark Arch Templar', 'High Templar', 'Grand Templar'] },
-                    { name: 'Thief', icon: '🗡️', classes: ['Thief', 'Rogue', 'Assassin', 'Phantom Assassin', 'Stalker', 'Master Stalker'] },
-                    { name: 'Witch Hunter', icon: '🔥', classes: ['Witch Hunter', 'Slayer', 'Inquisitor', 'Grand Inquisitor', 'Witcher', 'Professional Witcher'] }
-                ];
-                
+                // Load class families from JSON data
+                this.classFamilies = unitData?.classFamilies || [];                
                 this.init();
             }
 
@@ -889,7 +806,7 @@ init() {
                 this.showDungeonList(tierName);
             }
 
-            showDungeonList(tierName) {
+showDungeonList(tierName) {
                 const panel = document.getElementById('dungeonListPanel');
                 const tierData = this.dungeonTiers[tierName];
                 
@@ -918,69 +835,20 @@ init() {
                     const dungeonItem = document.createElement('div');
                     dungeonItem.className = 'dungeonItem';
                     dungeonItem.innerHTML = `
-                        <div class="dungeonHeader">
-                            <div>
-                                <div class="dungeonName">${dungeon.name}</div>
-                            </div>
-                        </div>
-                        <div class="dungeonDetails" id="details-${tierName}-${index}">
-                            <div class="dungeonDetailRow">
-                                <span class="dungeonDetailLabel">Level:</span>
-                                <span class="dungeonDetailValue">${dungeon.level}</span>
-                            </div>
-                            <div class="dungeonDetailRow">
-                                <span class="dungeonDetailLabel">Boss:</span>
-                                <span class="dungeonDetailValue">${dungeon.boss}</span>
-                            </div>
-                            <div class="dungeonDetailRow">
-                                <span class="dungeonDetailLabel">Items:</span>
-                                <span class="dungeonDetailValue">${tierData.requirement.replace('Items ', '')}</span>
-                            </div>
-                            <button class="enterDungeonButton" onclick="game.enterDungeon('${tierName}', ${index})">
-                                Start
-                            </button>
+                        <div class="dungeonHeader" style="width: 100%; cursor: pointer;">
+                            <div class="dungeonName" style="flex: 1;">${dungeon.name}</div>
+                            <div class="dungeonLevel" style="min-width: 100px; text-align: right;">Level ${dungeon.level}</div>
                         </div>
                     `;
                     
-                    dungeonItem.onclick = (e) => {
-                        if (!e.target.classList.contains('enterDungeonButton')) {
-                            this.toggleDungeonDetails(tierName, index);
-                        }
-                    };
+                    dungeonItem.onclick = () => this.enterDungeon(tierName, index);
                     
                     dungeonList.appendChild(dungeonItem);
                 });
                 
                 panel.classList.add('show');
             }
-
-            toggleDungeonDetails(tierName, index) {
-                const detailsId = `details-${tierName}-${index}`;
-                const details = document.getElementById(detailsId);
-                const allDetails = document.querySelectorAll('.dungeonDetails');
-                const allItems = document.querySelectorAll('.dungeonItem');
-                
-                // Close all other details
-                allDetails.forEach(d => {
-                    if (d.id !== detailsId) {
-                        d.classList.remove('show');
-                    }
-                });
-                
-                // Remove expanded class from all items
-                allItems.forEach(item => {
-                    if (!item.contains(details)) {
-                        item.classList.remove('expanded');
-                    }
-                });
-                
-                // Toggle current details
-                details.classList.toggle('show');
-                details.parentElement.classList.toggle('expanded');
-                
-                this.expandedDungeon = details.classList.contains('show') ? index : null;
-            }
-
+		
             closeDungeonPanel() {
                 document.getElementById('dungeonListPanel').classList.remove('show');
                 this.selectedTier = null;
@@ -989,14 +857,14 @@ init() {
                     orb.classList.remove('selected');
                 });
             }
-
+		
 enterDungeon(tierName, dungeonIndex) {
     const dungeon = this.dungeonTiers[tierName].dungeons[dungeonIndex];
     this.currentDungeon = dungeon;
     
-    // Generate dungeon ID from name
-    const dungeonId = dungeon.name.toLowerCase().replace(/ /g, '_').replace('?', '');
-    
+    // Get dungeon ID from the dungeon object
+    const dungeonId = dungeon.id || dungeon.name.toLowerCase().replace(/ /g, '_').replace('?', '');
+	
     // Load waves from dungeon data
     if (dungeonData && dungeonData.dungeons[dungeonId]) {
         const dungeonConfig = dungeonData.dungeons[dungeonId];
