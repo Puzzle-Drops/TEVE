@@ -1599,10 +1599,46 @@ showPlayerAbilities(unit) {
                 
 
                 if (healthText) {
-
                     healthText.textContent = `${Math.floor(unit.currentHp)}/${unit.maxHp}`;
-
                 }
+
+// Update or create level indicator
+let levelIndicator = element.querySelector('.levelIndicator');
+if (!levelIndicator && unit.isAlive) {
+    levelIndicator = document.createElement('div');
+    levelIndicator.className = 'levelIndicator';
+    element.appendChild(levelIndicator);
+}
+
+if (levelIndicator) {
+    // For heroes, show level and stars based on tier
+    if (!unit.isEnemy) {
+        const hero = unit.source;
+        let stars = '';
+        if (hero.classTier > 0) {
+            const starCount = hero.awakened ? 5 : hero.classTier;
+            stars = '★'.repeat(starCount);
+        }
+        levelIndicator.innerHTML = `
+            <div class="levelNumber">${unit.source.level}</div>
+            ${stars ? `<div class="levelStars ${hero.awakened ? 'awakened' : ''}">${stars}</div>` : ''}
+        `;
+    } else {
+        // For enemies, show level and stars based on their star rating
+        const enemy = unit.source;
+        let stars = '';
+        if (enemy.stars > 0) {
+            stars = '★'.repeat(enemy.stars);
+        }
+        let starClass = 'normal';
+        if (enemy.stars === 6) starClass = 'purple';
+        else if (enemy.stars >= 7) starClass = 'red';
+        
+        levelIndicator.innerHTML = `
+            <div class="levelNumber">${unit.source.level}</div>
+            ${stars ? `<div class="levelStars ${starClass}">${stars}</div>` : ''}
+        `;
+    }
 
                 
                 // Add click handler for unit info on health bar
@@ -1646,6 +1682,7 @@ if (unitDiv) {
     if (!unit.isAlive) {
         unitDiv.style.opacity = '0';
         unitDiv.style.filter = 'grayscale(100%)';
+        levelIndicator.style.display = 'none';
         
         // Hide health bar and action bar when dead
         const healthBar = element.querySelector('.healthBar');
@@ -1662,6 +1699,7 @@ if (unitDiv) {
     } else {
         unitDiv.style.opacity = '';
         unitDiv.style.filter = '';
+        levelIndicator.style.display = '';
         
         // Show health bar and action bar when alive
         const healthBar = element.querySelector('.healthBar');
