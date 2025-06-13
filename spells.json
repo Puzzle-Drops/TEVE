@@ -24,6 +24,21 @@
     "target": "self",
     "logicKey": "furyLogic"
   },
+    "punchkill": {
+    "id": "punchkill",
+    "name": "Punchkill",
+    "description": "Basic attack dealing 500000 + (.5 × all stats) damage",
+    "cooldown": 0,
+    "effects": ["damage", "physical"],
+    "scaling": {
+      "base": 500000,
+      "str": 0.5,
+      "agi": 0.5,
+      "int": 0.5
+    },
+    "target": "enemy",
+    "logicKey": "punchLogic"
+  },
   "natures_touch": {
     "id": "natures_touch",
     "name": "Nature's Touch",
@@ -758,6 +773,20 @@
       "type": "hpPercentMaxFloor",
       "percent": 0.05,
       "floor": 5
+    }
+  },
+  "slashkill": {
+    "id": "slashkill",
+    "name": "Slashkill",
+    "description": "Deals 200% of target's max HP or 500000 damage, whichever is lower.",
+    "cooldown": 0,
+    "effects": ["damage", "physical"],
+    "target": "enemy",
+    "logicKey": "slashLogic",
+    "scaling": {
+      "type": "hpPercentMinCap",
+      "percent": 200,
+      "cap": 500000
     }
   },
   "frost_breath": {
