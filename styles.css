@@ -2038,7 +2038,7 @@ body {
 
 /* Emergency fallback - if nothing else works, use viewport units */
 /* Uncomment this if the above doesn't work */
-/*
+
 @media (max-width: 1024px) {
     .scaling-wrapper {
         display: none !important;
@@ -2075,4 +2075,4 @@ body {
         max-width: 100% !important;
     }
 }
-*/
+
