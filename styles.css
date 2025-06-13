@@ -228,7 +228,7 @@ body {
 }
 
 .levelNumber {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     color: #4dd0e1;
     text-shadow: 0 0 10px rgba(77, 208, 225, 0.5);
@@ -237,7 +237,7 @@ body {
 }
 
 .levelIndicator .levelStars {
-    font-size: 8px;
+    font-size: 12px;
     font-weight: bold;
     letter-spacing: -2px;
     text-shadow: 
