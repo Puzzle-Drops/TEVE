@@ -2282,61 +2282,57 @@ showEnemyInfoPopup(enemy) {
                 this.showDungeons();
             }
 
-            formatAbilityTooltip(ability, level) {
-                const spell = spellManager ? spellManager.getSpell(ability.id) : null;
-                if (!spell) return `<h3>${ability.name} (Level ${level})</h3><p>${ability.description}</p>`;
-                
-                // Build effect tags
-                let effectTags = '';
-                const effects = spell.effects || [];
-                
-                // Determine damage type (physical, magical, or pure)
-                let damageType = '';
-                if (effects.includes('damage')) {
-                    if (effects.includes('physical')) {
-                        damageType = 'physical';
-                    } else if (effects.includes('holy')) {
-                        damageType = 'pure';
-                    } else {
-                        // Default to magical for most damage types
-                        damageType = 'magical';
-                    }
+formatAbilityTooltip(ability, level) {
+    const spell = spellManager ? spellManager.getSpell(ability.id) : null;
+    if (!spell) return `<h3>${ability.name} (Level ${level})</h3><p>${ability.description}</p>`;
+    
+    // Build effect tags in specific order
+    let effectTags = '';
+    const effects = spell.effects || [];
+    
+    // Define the order of effects
+    const effectOrder = ['damage', 'physical', 'magical', 'pure', 'heal', 'buff', 'speed', 'debuff', 'aoe', 
+                        'dot', 'stun', 'immunity', 'crit', 'execute', 'summon', 'transform', 'shield', 
+                        'defense', 'aura', 'resurrect', 'cleanse', 'poison', 'mark', 'accuracy', 
+                        'fire', 'frost', 'holy', 'shadow', 'arcane', 'void', 'psionic', 'manaburn', 
+                        'spellpower', 'manaregen', 'cdr', 'control', 'ultimate', 'multihit', 
+                        'dispel', 'random', 'mutation', 'teleport', 'stealth', 'evasion', 'survival', 
+                        'movement', 'reflect', 'blind', 'mental'];
+    
+    // Add effect tags in the specified order
+    effectOrder.forEach(effectType => {
+        if (effects.includes(effectType)) {
+            // Special handling for damage type tags
+            if (effectType === 'physical' || effectType === 'magical' || effectType === 'pure') {
+                // Skip if damage tag will be shown separately
+                if (!effects.includes('damage')) {
+                    effectTags += `<span class="abilityEffectTag ${effectType}">${effectType.charAt(0).toUpperCase() + effectType.slice(1)}</span>`;
                 }
-                
-                // Add damage type tag if applicable
-                if (damageType) {
-                    effectTags += `<span class="abilityEffectTag ${damageType}">${damageType.charAt(0).toUpperCase() + damageType.slice(1)}</span>`;
-                }
-                
-                // Add other effect tags
-                effects.forEach(effect => {
-                    // Skip damage type tags (physical, holy) as we already handled them
-                    if (effect === 'physical' || effect === 'holy') return;
-                    
-                    // Add all other effect tags including 'damage'
-                    effectTags += `<span class="abilityEffectTag ${effect}">${effect.charAt(0).toUpperCase() + effect.slice(1)}</span>`;
-                });
-                
-                // Format cooldown
-                let cooldownText = 'Cooldown: ';
-                if (ability.aura || effects.includes('aura')) {
-                    cooldownText += 'Passive';
-                } else if (ability.cooldown === 0) {
-                    cooldownText += 'none';
-                } else if (ability.cooldown === -1 || ability.ultimate) {
-                    cooldownText += `${ability.currentCooldown || ability.cooldown} turns`;
-                } else {
-                    cooldownText += `${ability.cooldown} turns`;
-                }
-                
-                return `
-                    <div style="font-size: 24px; color: #4dd0e1; margin-bottom: 8px;">${ability.name} (Level ${level})</div>
-                    <div style="margin-bottom: 8px;">${effectTags}</div>
-                    <div style="font-size: 18px; color: #6a9aaa; margin-bottom: 8px;">${cooldownText}</div>
-                    <div style="font-size: 18px; color: #b0e0f0;">${ability.description}</div>
-                `;
+            } else {
+                effectTags += `<span class="abilityEffectTag ${effectType}">${effectType.charAt(0).toUpperCase() + effectType.slice(1)}</span>`;
             }
-
+        }
+    });
+    
+    // Format cooldown
+    let cooldownText = 'Cooldown: ';
+    if (ability.aura || effects.includes('aura')) {
+        cooldownText += 'Passive';
+    } else if (ability.cooldown === 0) {
+        cooldownText += 'none';
+    } else if (ability.cooldown === -1 || ability.ultimate) {
+        cooldownText += `${ability.currentCooldown || ability.cooldown} turns`;
+    } else {
+        cooldownText += `${ability.cooldown} turns`;
+    }
+    
+    return `
+        <div style="font-size: 24px; color: #4dd0e1; margin-bottom: 8px;">${ability.name} (Level ${level})</div>
+        <div style="margin-bottom: 8px;">${effectTags}</div>
+        <div style="font-size: 18px; color: #6a9aaa; margin-bottom: 8px;">${cooldownText}</div>
+        <div style="font-size: 18px; color: #b0e0f0;">${ability.description}</div>
+    `;
+}
             showAbilityTooltip(event, name, level, cooldown, description) {
                 // This old method is still called by battle.js showPlayerAbilities
                 // We'll convert it to use the new format
