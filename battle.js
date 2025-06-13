@@ -1601,36 +1601,39 @@ if (levelIndicator) {
                 if (levelIndicator && unit.isAlive) {
                     levelIndicator.style.cursor = 'pointer';
                     
-                    // Remove any existing click handler
-                    const oldHandler = levelIndicator._unitInfoHandler;
-                    if (oldHandler) {
-                        levelIndicator.removeEventListener('click', oldHandler);
-                    }
-                    
-                    // Create new handler
-                    const newHandler = (e) => {
-                        e.stopPropagation();
-                        // Close any existing popup first
-                        this.game.closeHeroInfo();
+                    // Only update handler if it doesn't exist or unit has changed
+                    if (!levelIndicator._unitInfoHandler || levelIndicator._unitInfoHandlerUnit !== unit) {
+                        // Remove any existing click handler
+                        if (levelIndicator._unitInfoHandler) {
+                            levelIndicator.removeEventListener('click', levelIndicator._unitInfoHandler);
+                        }
                         
-                        // Small delay to ensure clean transition
-                        setTimeout(() => {
-                            if (unit.isEnemy) {
-                                this.game.showEnemyInfoPopup(unit.source);
+                        // Create new handler
+                        const newHandler = (e) => {
+                            e.stopPropagation();
+                            // Store the unit data at click time
+                            const clickedUnit = unit;
+                            
+                            // Close any existing popup first
+                            this.game.closeHeroInfo();
+                            
+                            // Show popup immediately without delay
+                            if (clickedUnit.isEnemy) {
+                                this.game.showEnemyInfoPopup(clickedUnit.source);
                             } else {
-                                this.game.showHeroInfoPopup(unit.source);
+                                this.game.showHeroInfoPopup(clickedUnit.source);
                             }
-                        }, 10);
-                    };
-                    
-                    // Store reference to handler so we can remove it later
-                    levelIndicator._unitInfoHandler = newHandler;
-                    levelIndicator.addEventListener('click', newHandler);
-                    
-                    // Prevent text selection on level indicator
-                    levelIndicator.addEventListener('selectstart', (e) => e.preventDefault());
+                        };
+                        
+                        // Store reference to handler and unit so we can remove it later
+                        levelIndicator._unitInfoHandler = newHandler;
+                        levelIndicator._unitInfoHandlerUnit = unit;
+                        levelIndicator.addEventListener('click', newHandler);
+                        
+                        // Prevent text selection on level indicator
+                        levelIndicator.addEventListener('selectstart', (e) => e.preventDefault());
+                    }
                 }
-
                 // Update unit appearance with sprites
 
 if (unitDiv) {
