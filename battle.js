@@ -1285,41 +1285,23 @@ showSpellAnimation(caster, spellName, effects) {
 
     
 
-    calculateWaveExp() {
-
-        // Base exp per enemy level
-
-        const baseExpPerLevel = 10;
-
-        let totalExp = 0;
-
-        
-
-        // Get the current wave configuration from dungeonWaves
-
-        const currentWaveEnemies = this.game.currentBattle.enemyWaves[this.currentWave];
-
-        
-
-        // Calculate exp based on enemy levels
-
-        currentWaveEnemies.forEach(enemy => {
-
-            if (enemy) {
-
-                totalExp += enemy.level * baseExpPerLevel;
-
-            }
-
-        });
-
-        
-
-        return totalExp;
-
-    }
-
+calculateWaveExp() {
+    // Base exp per enemy level
+    const baseExpPerLevel = 10;
+    let totalExp = 0;
     
+    // Get the current wave configuration from this battle's dungeonWaves
+    const currentWaveEnemies = this.dungeonWaves[this.currentWave];
+    
+    // Calculate exp based on enemy levels
+    currentWaveEnemies.forEach(enemy => {
+        if (enemy) {
+            totalExp += enemy.level * baseExpPerLevel;
+        }
+    });
+    
+    return totalExp;
+}
 
     endBattle(victory) {
 
