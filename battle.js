@@ -888,112 +888,65 @@ class Battle {
 
     
 
-    showSpellAnimation(caster, spellName, effects) {
-
+showSpellAnimation(caster, spellName, effects) {
         const elementId = caster.isEnemy ? `enemy${caster.position + 1}` : `party${caster.position + 1}`;
-
         const unitSlot = document.getElementById(elementId);
-
         
-
         if (unitSlot) {
-
-            // Determine animation type based on spell effects
-
-            let animationClass = 'casting-damage'; // default
-
-            
-
-            if (effects.includes('speed') || effects.includes('buff')) {
-
-                animationClass = 'casting-speed';
-
-            } else if (effects.includes('heal')) {
-
-                animationClass = 'casting-heal';
-
-            } else if (effects.includes('holy')) {
-
-                animationClass = 'casting-holy';
-
-            } else if (effects.includes('shadow') || effects.includes('debuff')) {
-
-                animationClass = 'casting-shadow';
-
-            } else if (effects.includes('shield') || effects.includes('defense')) {
-
-                animationClass = 'casting-shield';
-
-            } else if (effects.includes('summon') || effects.includes('transform')) {
-
-                animationClass = 'casting-summon';
-
+            // Clear any existing spell text first
+            const existingSpellText = unitSlot.querySelector('.spellText');
+            if (existingSpellText) {
+                existingSpellText.remove();
             }
-
             
-
+            // Determine animation type based on spell effects
+            let animationClass = 'casting-damage'; // default
+            
+            if (effects.includes('speed') || effects.includes('buff')) {
+                animationClass = 'casting-speed';
+            } else if (effects.includes('heal')) {
+                animationClass = 'casting-heal';
+            } else if (effects.includes('holy')) {
+                animationClass = 'casting-holy';
+            } else if (effects.includes('shadow') || effects.includes('debuff')) {
+                animationClass = 'casting-shadow';
+            } else if (effects.includes('shield') || effects.includes('defense')) {
+                animationClass = 'casting-shield';
+            } else if (effects.includes('summon') || effects.includes('transform')) {
+                animationClass = 'casting-summon';
+            }
+            
             // Add animation to unit
-
             unitSlot.classList.add(animationClass);
-
             setTimeout(() => unitSlot.classList.remove(animationClass), 800);
-
             
-
             // Create spell text
-
             const spellText = document.createElement('div');
-
             spellText.className = 'spellText';
-
             spellText.textContent = spellName;
-
             
-
             // Add appropriate color class based on spell type
-
             if (effects.includes('damage')) spellText.classList.add('damage');
-
             else if (effects.includes('heal')) spellText.classList.add('heal');
-
             else if (effects.includes('buff')) spellText.classList.add('buff');
-
             else if (effects.includes('debuff')) spellText.classList.add('debuff');
-
             else if (effects.includes('holy')) spellText.classList.add('holy');
-
             else if (effects.includes('shadow')) spellText.classList.add('shadow');
-
             else if (effects.includes('fire')) spellText.classList.add('fire');
-
             else if (effects.includes('frost')) spellText.classList.add('frost');
-
             else if (effects.includes('arcane')) spellText.classList.add('arcane');
-
             else spellText.classList.add('damage'); // default
-
             
-
             unitSlot.appendChild(spellText);
-
             
-
             // Remove spell text after animation
-
             setTimeout(() => {
-
                 if (spellText.parentNode) {
-
                     spellText.remove();
-
                 }
-
             }, 3000);
-
         }
-
     }
-
     
 
 	endTurn() {
