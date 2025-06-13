@@ -599,7 +599,7 @@ slashkillLogic: function(battle, caster, target, spell) {
     battle.dealDamage(caster, target, damage, 'physical');
     battle.log(`${caster.name} kills ${target.name} for ${Math.round(damage)} damage!`);
 },
-    ,
+
 // Tester Spells
 winLogic: function(battle, caster, targets) {
     // Deal massive damage to all enemies
@@ -637,7 +637,7 @@ loseLogic: function(battle, caster, targets) {
     battle.applyDebuff(caster, 'slow', 5, { actionBarSpeed: 0.5 });
     
     battle.log(`${caster.name} uses Lose! Self-destruction initiated!`);
-}
+},
 
 
     frostBreathLogic: function(battle, caster, targets) {
@@ -692,25 +692,6 @@ class SpellManager {
             console.log('Spells loaded:', Object.keys(this.spells).length);
         } catch (error) {
             console.error('Failed to load spells:', error);
-            // Fallback spell data
-            this.spells = {
-                punch: {
-                    name: "Punch",
-                    description: "Basic attack dealing 5 + STR + AGI + INT damage",
-                    cooldown: 0,
-                    effects: ["damage"],
-                    target: "enemy",
-                    logicKey: "punchLogic"
-                },
-                fury: {
-                    name: "Fury",
-                    description: "Doubles action bar gain for 5 turns",
-                    cooldown: 5,
-                    effects: ["buff", "speed"],
-                    target: "self",
-                    logicKey: "furyLogic"
-                }
-            };
         }
     }
 
