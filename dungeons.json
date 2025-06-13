@@ -1,4 +1,60 @@
 {
+  "tiers": {
+    "Easy": {
+      "tier": 0,
+      "color": "easy",
+      "position": { "x": 25, "y": 40 },
+      "requirement": "Items no requirements"
+    },
+    "Hard": {
+      "tier": 1,
+      "color": "hard", 
+      "position": { "x": 45, "y": 25 },
+      "requirement": "Items Class 1 required"
+    },
+    "Nightmare": {
+      "tier": 2,
+      "color": "nightmare",
+      "position": { "x": 65, "y": 45 },
+      "requirement": "Items Class 2 required"
+    },
+    "Hell": {
+      "tier": 3,
+      "color": "hell",
+      "position": { "x": 35, "y": 60 },
+      "requirement": "Items Class 3 required"
+    },
+    "Impossible": {
+      "tier": 4,
+      "color": "impossible",
+      "position": { "x": 75, "y": 30 },
+      "requirement": "Items Class 4 required"
+    },
+    "Mythical": {
+      "tier": 5,
+      "color": "mythical",
+      "position": { "x": 20, "y": 25 },
+      "requirement": "Items Class 4 and level 500 required"
+    },
+    "Divine": {
+      "tier": 6,
+      "color": "divine",
+      "position": { "x": 55, "y": 55 },
+      "requirement": "Items Class 4 and level 500 required"
+    },
+    "Ascended": {
+      "tier": 7,
+      "color": "ascended",
+      "position": { "x": 40, "y": 35 },
+      "requirement": "Items Class 4 and level 500 required"
+    },
+    "Transcendent": {
+      "tier": 8,
+      "color": "transcendent",
+      "position": { "x": 50, "y": 70 },
+      "requirement": "Items Class 4 and level 500 required"
+    }
+  },
   "dungeons": {
     "satyrs": {
       "id": "satyrs",
