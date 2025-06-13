@@ -2302,15 +2302,7 @@ formatAbilityTooltip(ability, level) {
     // Add effect tags in the specified order
     effectOrder.forEach(effectType => {
         if (effects.includes(effectType)) {
-            // Special handling for damage type tags
-            if (effectType === 'physical' || effectType === 'magical' || effectType === 'pure') {
-                // Skip if damage tag will be shown separately
-                if (!effects.includes('damage')) {
-                    effectTags += `<span class="abilityEffectTag ${effectType}">${effectType.charAt(0).toUpperCase() + effectType.slice(1)}</span>`;
-                }
-            } else {
-                effectTags += `<span class="abilityEffectTag ${effectType}">${effectType.charAt(0).toUpperCase() + effectType.slice(1)}</span>`;
-            }
+            effectTags += `<span class="abilityEffectTag ${effectType}">${effectType.charAt(0).toUpperCase() + effectType.slice(1)}</span>`;
         }
     });
     
@@ -2333,7 +2325,8 @@ formatAbilityTooltip(ability, level) {
         <div style="font-size: 18px; color: #b0e0f0;">${ability.description}</div>
     `;
 }
-            showAbilityTooltip(event, name, level, cooldown, description) {
+		
+		showAbilityTooltip(event, name, level, cooldown, description) {
                 // This old method is still called by battle.js showPlayerAbilities
                 // We'll convert it to use the new format
                 const ability = {
