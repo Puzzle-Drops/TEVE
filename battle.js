@@ -1615,7 +1615,7 @@ if (levelIndicator) {
     if (!unit.isEnemy) {
         const hero = unit.source;
         let stars = '★';
-        let starClass = '';
+        let starClass = '★';
         if (hero.classTier > 0) {
             const starCount = hero.awakened ? 5 : hero.classTier;
             stars = '★'.repeat(starCount);
