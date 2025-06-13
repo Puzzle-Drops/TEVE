@@ -37,7 +37,7 @@
       "int": 0.5
     },
     "target": "enemy",
-    "logicKey": "punchLogic"
+    "logicKey": "punchkillLogic"
   },
   "natures_touch": {
     "id": "natures_touch",
@@ -782,7 +782,7 @@
     "cooldown": 0,
     "effects": ["damage", "physical"],
     "target": "enemy",
-    "logicKey": "slashLogic",
+    "logicKey": "slashkillLogic",
     "scaling": {
       "type": "hpPercentMinCap",
       "percent": 200,
