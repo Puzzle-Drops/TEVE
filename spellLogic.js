@@ -12,6 +12,12 @@ const spellLogic = {
         battle.log(`${caster.name} enters a fury, increasing attack speed for 3 turns!`);
     },
 
+    punchkillLogic: function(battle, caster, target) {
+        const damage = 500000 + (.5*caster.stats.str) + (.5*caster.stats.agi) + (.5*caster.stats.int);
+        battle.dealDamage(caster, target, damage, 'physical');
+        battle.log(`${caster.name} kills ${target.name} for ${damage} damage!`);
+    },
+
     // Druid Spells
     naturesTouchLogic: function(battle, caster, target) {
         const healAmount = Math.floor(target.maxHp * 0.2 + caster.stats.int);
@@ -586,6 +592,12 @@ biteLogic: function(battle, caster, target, spell) {
     const damage = Math.max(target.maxHp * percent, floor);
     battle.dealDamage(caster, target, damage, 'physical');
     battle.log(`${caster.name} bites ${target.name} for ${Math.round(damage)} damage!`);
+},
+slashkillLogic: function(battle, caster, target, spell) {
+    const { percent, cap } = spell.scaling;
+    const damage = Math.min(target.maxHp * percent, cap);
+    battle.dealDamage(caster, target, damage, 'physical');
+    battle.log(`${caster.name} kills ${target.name} for ${Math.round(damage)} damage!`);
 },
 
 
