@@ -1839,8 +1839,7 @@ hideStatTooltip() {
                         slot.innerHTML = `
                             <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
                                 <div style="position: relative; width: 60px; height: 60px;">
-                                    <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${enemy.enemyId}_front.gif" 
-                                         style="width: 60px; height: 60px; image-rendering: pixelated;" 
+                                    <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${enemy.enemyId}_front.gif"
                                          alt="${enemy.name}" 
                                          onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'10\\'>${enemy.name}</text></svg>'">
                                     ${stars ? `<div class="enemyStars ${starClass}">${stars}</div>` : ''}
@@ -1980,7 +1979,7 @@ hideStatTooltip() {
                         slot.innerHTML = `
                             <div style="display: flex; flex-direction: column; align-items: center; gap: 5px;">
                                 <div style="position: relative; width: 60px; height: 60px;">
-                                    <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" style="width: 60px; height: 60px;" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${displayClassName}</text></svg>'">
+                                    <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${displayClassName}</text></svg>'">
                                     ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
                                     <div class="thumbLevel">${hero.level}</div>
                                 </div>
