@@ -1448,82 +1448,72 @@ showPlayerAbilities(unit) {
 
     
 
-    selectTarget(caster, abilityIndex, targetType) {
+selectTarget(caster, abilityIndex, targetType) {
+    // Store targeting state
+    this.targetingState = {
+        caster: caster,
+        abilityIndex: abilityIndex,
+        targetType: targetType
+    };
 
-        // Store targeting state
-        this.targetingState = {
-            caster: caster,
-            abilityIndex: abilityIndex,
-            targetType: targetType
-        };
-
-        // Highlight valid targets
-
-        const validTargets = targetType === 'enemy' ? 
-
-            this.enemies.filter(e => e && e.isAlive) : 
-
-            this.party.filter(p => p && p.isAlive);
-
-        
-
-        // Add click handlers to valid targets
-
-        validTargets.forEach(target => {
-
-            const element = document.getElementById(target.isEnemy ? `enemy${target.position + 1}` : `party${target.position + 1}`);
-
-            if (element) {
-
-                element.style.cursor = 'pointer';
-
-                element.style.filter = 'brightness(1.2)';
-
-                
-
-                const clickHandler = () => {
-
-                    // Remove all handlers and highlighting
-
-                    this.clearTargeting();
-
-                    
-
-                    // Execute ability
-
-                    this.executeAbility(caster, abilityIndex, target);
-
-                    this.endTurn();
-
-                };
-
-                
-
-                element.addEventListener('click', clickHandler);
-
-            }
-
-        });
-
-    }
+    // Highlight valid targets
+    const validTargets = targetType === 'enemy' ? 
+        this.enemies.filter(e => e && e.isAlive) : 
+        this.party.filter(p => p && p.isAlive);
     
-    clearTargeting() {
-        // Clear targeting state
-        this.targetingState = null;
-        
-        // Remove all targeting highlights and handlers
-        this.allUnits.forEach(unit => {
-            const element = document.getElementById(unit.isEnemy ? `enemy${unit.position + 1}` : `party${unit.position + 1}`);
-            if (element) {
-                element.style.cursor = '';
-                element.style.filter = '';
-                // Clone to remove event listeners
-                const newElement = element.cloneNode(true);
-                element.parentNode.replaceChild(newElement, element);
+    // Add click handlers to valid targets
+    validTargets.forEach(target => {
+        const element = document.getElementById(target.isEnemy ? `enemy${target.position + 1}` : `party${target.position + 1}`);
+        if (element) {
+            element.style.cursor = 'pointer';
+            element.style.filter = 'brightness(1.2)';
+            
+            // Add target arrow
+            let targetArrow = element.querySelector('.targetArrow');
+            if (!targetArrow) {
+                targetArrow = document.createElement('div');
+                targetArrow.className = 'targetArrow';
+                targetArrow.innerHTML = '▼';
+                element.appendChild(targetArrow);
             }
-        });
-    }
-
+            
+            const clickHandler = () => {
+                // Remove all handlers and highlighting
+                this.clearTargeting();
+                
+                // Execute ability
+                this.executeAbility(caster, abilityIndex, target);
+                this.endTurn();
+            };
+            
+            element.addEventListener('click', clickHandler);
+        }
+    });
+}
+	
+clearTargeting() {
+    // Clear targeting state
+    this.targetingState = null;
+    
+    // Remove all targeting highlights and handlers
+    this.allUnits.forEach(unit => {
+        const element = document.getElementById(unit.isEnemy ? `enemy${unit.position + 1}` : `party${unit.position + 1}`);
+        if (element) {
+            element.style.cursor = '';
+            element.style.filter = '';
+            
+            // Remove target arrow
+            const targetArrow = element.querySelector('.targetArrow');
+            if (targetArrow) {
+                targetArrow.remove();
+            }
+            
+            // Clone to remove event listeners
+            const newElement = element.cloneNode(true);
+            element.parentNode.replaceChild(newElement, element);
+        }
+    });
+}
     
 
     toggleAutoMode(enabled) {
@@ -1617,8 +1607,8 @@ if (levelIndicator) {
         let stars = '★';
         let starClass = '★';
         if (hero.classTier > 0) {
-            const starCount = hero.awakened ? 5 : hero.classTier;
-            stars = '★'.repeat(starCount+1);
+            const starCount = hero.awakened ? 6 : hero.classTier+1;
+            stars = '★'.repeat(starCount);
             starClass = hero.awakened ? 'awakened' : '';
         }
         
@@ -1820,11 +1810,25 @@ if (unitDiv) {
 
                     element.style.boxShadow = '0 0 20px rgba(77, 208, 225, 0.5)';
 
+                    // Add active turn circle
+                    let activeCircle = element.querySelector('.activeCircle');
+                    if (!activeCircle && unit.isAlive) {
+                        activeCircle = document.createElement('div');
+                        activeCircle.className = 'activeCircle';
+                        element.appendChild(activeCircle);
+                    }
+
                 } else {
 
                     element.style.border = '';
 
                     element.style.boxShadow = '';
+
+                    // Remove active circle
+                    const activeCircle = element.querySelector('.activeCircle');
+                    if (activeCircle) {
+                        activeCircle.remove();
+                    }
 
                 }
 
