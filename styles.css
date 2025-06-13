@@ -124,6 +124,212 @@ body {
     text-shadow: 0 0 10px rgba(77, 208, 225, 0.5);
 }
 
+/* Battle Results Popup */
+.battleResultsPopup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #0a1929 0%, #0a0f1a 100%);
+    border: 3px solid #2a6a8a;
+    padding: 30px;
+    z-index: 1003;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+    min-width: 700px;
+    max-width: 900px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.resultsHeader {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #2a6a8a;
+}
+
+.resultsTitle {
+    font-size: 36px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
+}
+
+.resultsTitle.victory {
+    color: #00ff88;
+}
+
+.resultsTitle.defeat {
+    color: #ff4444;
+}
+
+.dungeonInfo {
+    font-size: 20px;
+    color: #6a9aaa;
+}
+
+.rewardsSection {
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(10, 25, 41, 0.8);
+    border: 1px solid #2a6a8a;
+}
+
+.rewardLine {
+    font-size: 20px;
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rewardLabel {
+    color: #6a9aaa;
+}
+
+.rewardValue {
+    color: #b0e0f0;
+    font-weight: bold;
+}
+
+.rewardValue.positive {
+    color: #00ff88;
+}
+
+.rewardValue.negative {
+    color: #ff4444;
+}
+
+.heroResultsSection {
+    margin-top: 30px;
+}
+
+.heroResultsTitle {
+    font-size: 24px;
+    color: #4dd0e1;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.heroResultsGrid {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.heroResult {
+    background: rgba(10, 25, 41, 0.8);
+    border: 2px solid #2a6a8a;
+    padding: 15px;
+    width: 160px;
+    text-align: center;
+    position: relative;
+}
+
+.heroResult.dead {
+    opacity: 0.6;
+    border-color: #8a2a2a;
+}
+
+.heroResultThumb {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 10px;
+    position: relative;
+}
+
+.heroResultThumb img {
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+}
+
+.heroResultName {
+    font-size: 14px;
+    color: #b0e0f0;
+    margin-bottom: 5px;
+}
+
+.heroResultClass {
+    font-size: 12px;
+    color: #6a9aaa;
+    margin-bottom: 10px;
+}
+
+.expGainBar {
+    width: 100%;
+    height: 20px;
+    background: rgba(10, 25, 41, 0.8);
+    border: 1px solid #2a6a8a;
+    margin-bottom: 5px;
+    position: relative;
+}
+
+.expGainFill {
+    height: 100%;
+    background: linear-gradient(90deg, #4dd0e1 0%, #2a9aaa 100%);
+    transition: width 1s ease-out;
+}
+
+.expGainText {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    line-height: 20px;
+    font-size: 11px;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+.itemSlot {
+    width: 40px;
+    height: 40px;
+    background: rgba(10, 25, 41, 0.8);
+    border: 1px solid #2a6a8a;
+    margin: 5px auto;
+}
+
+.closeResultsBtn {
+    display: block;
+    margin: 30px auto 0;
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #4dd0e1 0%, #2a9aaa 100%);
+    border: none;
+    color: #0a1929;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(77, 208, 225, 0.5);
+    transition: all 0.3s;
+}
+
+.closeResultsBtn:hover {
+    background: linear-gradient(135deg, #6de0f1 0%, #4dd0e1 100%);
+    box-shadow: 0 0 30px rgba(109, 224, 241, 0.7);
+}
+
+/* Gold display in hero screen */
+.goldDisplay {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.goldIcon {
+    font-size: 28px;
+}
+
+.goldAmount {
+    font-weight: bold;
+}
+
 .unit {
     width: 100%;
     border-radius: 50%;
