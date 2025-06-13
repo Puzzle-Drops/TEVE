@@ -2,287 +2,276 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TEVE - Twilight's Forever</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Rotation prompt for mobile -->
-    <div class="rotate-prompt">
-        <div class="phone-icon">📱</div>
-        <p>Please rotate your device</p>
-    </div>
+    <div id="gameContainer">
+        <!-- Main Menu -->
+        <div id="mainMenu">
+            <div class="gameTitle">TEVE</div>
+            <div class="menuButtons">
+                <button class="menuButton" onclick="game.showHeroes()">Heroes</button>
+                <button class="menuButton" onclick="game.showDungeons()">Dungeons</button>
+                <button class="menuButton" onclick="game.showStash()">Stash</button>
+            </div>
+        </div>
 
-    <!-- Scaling wrapper -->
-    <div class="scaling-wrapper">
-        <div class="game-scaled" id="gameScaled">
-            <div id="gameContainer">
-                <!-- Main Menu -->
-                <div id="mainMenu">
-                    <div class="gameTitle">TEVE</div>
-                    <div class="menuButtons">
-                        <button class="menuButton" onclick="game.showHeroes()">Heroes</button>
-                        <button class="menuButton" onclick="game.showDungeons()">Dungeons</button>
-                        <button class="menuButton" onclick="game.showStash()">Stash</button>
+        <!-- Battle Scene -->
+        <div id="battleScene">
+            <div class="battleField">
+                <!-- Party Units -->
+                <div class="unitSlot party1" id="party1">
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">100/100</div>
                     </div>
+	            <div class="unit">P1</div>
+                    <div class="unitShadow"></div>
+                </div>
+                <div class="unitSlot party2" id="party2">
+                    <div class="unit">P2</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">100/100</div>
+                    </div>
+                    <div class="unitShadow"></div>
+                </div>
+                <div class="unitSlot party3" id="party3">
+                    <div class="unit">P3</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">100/100</div>
+                    </div>
+                    <div class="unitShadow"></div>
+                </div>
+                <div class="unitSlot party4" id="party4">
+                    <div class="unit">P4</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">100/100</div>
+                    </div>
+                    <div class="unitShadow"></div>
+                </div>
+                <div class="unitSlot party5" id="party5">
+                    <div class="unit">P5</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">100/100</div>
+                    </div>
+                    <div class="unitShadow"></div>
                 </div>
 
-                <!-- Battle Scene -->
-                <div id="battleScene">
-                    <div class="battleField">
-                        <!-- Party Units -->
-                        <div class="unitSlot party1" id="party1">
-                            <div class="healthBar">
-                                <div class="healthFill" style="width: 100%"></div>
-                                <div class="healthText">100/100</div>
-                            </div>
-                            <div class="unit">P1</div>
-                            <div class="unitShadow"></div>
-                        </div>
-                        <div class="unitSlot party2" id="party2">
-                            <div class="unit">P2</div>
-                            <div class="healthBar">
-                                <div class="healthFill" style="width: 100%"></div>
-                                <div class="healthText">100/100</div>
-                            </div>
-                            <div class="unitShadow"></div>
-                        </div>
-                        <div class="unitSlot party3" id="party3">
-                            <div class="unit">P3</div>
-                            <div class="healthBar">
-                                <div class="healthFill" style="width: 100%"></div>
-                                <div class="healthText">100/100</div>
-                            </div>
-                            <div class="unitShadow"></div>
-                        </div>
-                        <div class="unitSlot party4" id="party4">
-                            <div class="unit">P4</div>
-                            <div class="healthBar">
-                                <div class="healthFill" style="width: 100%"></div>
-                                <div class="healthText">100/100</div>
-                            </div>
-                            <div class="unitShadow"></div>
-                        </div>
-                        <div class="unitSlot party5" id="party5">
-                            <div class="unit">P5</div>
-                            <div class="healthBar">
-                                <div class="healthFill" style="width: 100%"></div>
-                                <div class="healthText">100/100</div>
-                            </div>
-                            <div class="unitShadow"></div>
-                        </div>
-
-                        <!-- Enemy Units -->
-                        <div class="unitSlot enemy1" id="enemy1">
-                            <div class="unit">E1</div>
-                            <div class="healthBar">
-                                <div class="healthFill" style="width: 100%"></div>
-                                <div class="healthText">67/67</div>
-                            </div>
-                            <div class="unitShadow"></div>
-                        </div>
-                        <div class="unitSlot enemy2" id="enemy2" style="display: none;">
-                            <div class="unit">E2</div>
-                            <div class="healthBar">
-                                <div class="healthFill" style="width: 100%"></div>
-                                <div class="healthText">50/50</div>
-                            </div>
-                            <div class="unitShadow"></div>
-                        </div>
-                        <div class="unitSlot enemy3" id="enemy3" style="display: none;">
-                            <div class="unit">E3</div>
-                            <div class="healthBar">
-                                <div class="healthFill" style="width: 100%"></div>
-                                <div class="healthText">50/50</div>
-                            </div>
-                            <div class="unitShadow"></div>
-                        </div>
-                        <div class="unitSlot enemy4" id="enemy4" style="display: none;">
-                            <div class="unit">E4</div>
-                            <div class="healthBar">
-                                <div class="healthFill" style="width: 100%"></div>
-                                <div class="healthText">50/50</div>
-                            </div>
-                            <div class="unitShadow"></div>
-                        </div>
-                        <div class="unitSlot enemy5" id="enemy5" style="display: none;">
-                            <div class="unit">E5</div>
-                            <div class="healthBar">
-                                <div class="healthFill" style="width: 100%"></div>
-                                <div class="healthText">50/50</div>
-                            </div>
-                            <div class="unitShadow"></div>
-                        </div>
+                <!-- Enemy Units -->
+                <div class="unitSlot enemy1" id="enemy1">
+                    <div class="unit">E1</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">67/67</div>
                     </div>
-
-                    <div class="battleUI">
-                        <div class="battleLog" id="battleLog">
-                            Battle started!<br>
-                        </div>
-                        <div class="autoToggleContainer">
-                            <label style="color: #b0e0f0;">
-                                <input type="checkbox" id="autoModeToggle" onchange="game.currentBattle && game.currentBattle.toggleAutoMode(this.checked)">
-                                Auto
-                            </label>
-                        </div>
-                        <div class="abilityPanel" id="abilityPanel">
-                        </div>
-                    </div>
-                    <button class="exitBattleButton" onclick="game.exitBattle()">Exit Battle</button>
+                    <div class="unitShadow"></div>
                 </div>
-
-                <!-- Heroes Screen -->
-                <div id="heroesScreen">
-                    <div class="heroPanel">
-                        <div class="heroPortrait" id="heroPortrait">
-                            <img src="" alt="Hero" style="display: none;">
-                        </div>
-                        <div class="heroStats">
-                            <div class="heroTabs">
-                                <button class="tabButton active" onclick="game.showHeroTab('info')">Info</button>
-                                <button class="tabButton" onclick="game.showHeroTab('skills')">Skills</button>
-                                <button class="tabButton" onclick="game.showHeroTab('promote')">Promote</button>
-                                <button class="tabButton" onclick="game.showHeroTab('gear')">Gear</button>
-                                <button class="tabButton" onclick="game.showHeroTab('log')">Log</button>
-                            </div>
-                            <div class="tabContent" id="heroContent">
-                                <!-- Content will be dynamically generated -->
-                            </div>
-                        </div>
+                <div class="unitSlot enemy2" id="enemy2" style="display: none;">
+                    <div class="unit">E2</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">50/50</div>
                     </div>
-                    <div class="heroList" id="heroList">
-                        <!-- Hero thumbnails will be dynamically generated -->
-                    </div>
-                    <button class="backButton" onclick="game.showMainMenu()">Back</button>
+                    <div class="unitShadow"></div>
                 </div>
-
-                <!-- Dungeons Screen -->
-                <div id="dungeonsScreen">
-                    <div class="worldMap" id="worldMap">
-                        <!-- Map orbs will be dynamically generated -->
+                <div class="unitSlot enemy3" id="enemy3" style="display: none;">
+                    <div class="unit">E3</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">50/50</div>
                     </div>
-                    <div class="dungeonListPanel" id="dungeonListPanel">
-                        <h2 class="dungeonTierTitle" id="dungeonTierTitle">Select a Region</h2>
-                        <div id="dungeonList">
-                            <!-- Dungeon list will be dynamically generated -->
-                        </div>
-                    </div>
-                    <button class="backButton" onclick="game.showMainMenu()">Back</button>
+                    <div class="unitShadow"></div>
                 </div>
-
-                <!-- Stash Screen -->
-                <div id="stashScreen">
-                    <h1 class="stashTitle">Stash</h1>
-                    <div class="stashGrid" id="stashList">
-                        <!-- Stash grid will be dynamically generated -->
+                <div class="unitSlot enemy4" id="enemy4" style="display: none;">
+                    <div class="unit">E4</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">50/50</div>
                     </div>
-                    <button class="backButton" onclick="game.showMainMenu()">Back</button>
+                    <div class="unitShadow"></div>
                 </div>
-
-                <!-- Party Select Screen -->
-                <div id="partySelectScreen">
-                    <div class="partySelectContainer">
-                        <div class="partySelectHeader">
-                            <div class="dungeonTitle" id="dungeonName">Satyrs</div>
-                        </div>
-                        <div class="battlePreview">
-                            <div style="display: flex; flex-direction: column; align-items: center;">
-                                <div class="partyLabel">
-                                    <span class="partyLabelText">My Party</span>
-                                </div>
-                                <div class="partyFormation" id="partyFormation">
-                                    <div class="partySlot" data-slot="0">
-                                        <div class="slotPlaceholder">⬡</div>
-                                    </div>
-                                    <div class="partySlot" data-slot="1">
-                                        <div class="slotPlaceholder">⬡</div>
-                                    </div>
-                                    <div class="partySlot" data-slot="2">
-                                        <div class="slotPlaceholder">⬡</div>
-                                    </div>
-                                    <div class="partySlot" data-slot="3">
-                                        <div class="slotPlaceholder">⬡</div>
-                                    </div>
-                                    <div class="partySlot" data-slot="4">
-                                        <div class="slotPlaceholder">⬡</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="vsText">VS</div>
-                            
-                            <div style="display: flex; flex-direction: column; align-items: center;">
-                                <div id="waveNavigation" class="waveNavigation">
-                                    <button class="waveArrow" onclick="game.navigateWave('prev')">←</button>
-                                    <span class="waveText">Wave 1/1</span>
-                                    <button class="waveArrow" onclick="game.navigateWave('next')">→</button>
-                                </div>
-                                <div class="enemyFormation" id="enemyFormation">
-                                    <div class="enemySlot" data-slot="0">
-                                        <div class="slotPlaceholder">⬡</div>
-                                    </div>
-                                    <div class="enemySlot" data-slot="1">
-                                        <div class="slotPlaceholder">⬡</div>
-                                    </div>
-                                    <div class="enemySlot" data-slot="2">
-                                        <div class="slotPlaceholder">⬡</div>
-                                    </div>
-                                    <div class="enemySlot" data-slot="3">
-                                        <div class="slotPlaceholder">⬡</div>
-                                    </div>
-                                    <div class="enemySlot" data-slot="4">
-                                        <div class="slotPlaceholder">⬡</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="heroSelectArea">
-                            <div class="heroSelectList" id="heroSelectList">
-                                <!-- Hero thumbnails will be generated here -->
-                            </div>
-                            <div class="actionButtons">
-                                <button class="startBattleBtn" id="startBattleBtn" disabled onclick="game.startBattle()">
-                                    ⚔️ Start
-                                </button>
-                                <button class="cancelBtn" onclick="game.closeDungeonSelect()">
-                                    Cancel
-                                </button>
-                            </div>
-                        </div>
+                <div class="unitSlot enemy5" id="enemy5" style="display: none;">
+                    <div class="unit">E5</div>
+                    <div class="healthBar">
+                        <div class="healthFill" style="width: 100%"></div>
+                        <div class="healthText">50/50</div>
                     </div>
-                </div>
-
-                <!-- Hero Info Popup -->
-                <div id="heroInfoPopup" class="heroInfoPopup">
-                    <div class="heroInfoHeader">
-                        <div class="heroInfoTitle" id="popupHeroName">Hero Name</div>
-                        <button class="closeInfoBtn" onclick="game.closeHeroInfo()">×</button>
-                    </div>
-                    <div class="heroInfoContent">
-                        <div class="heroInfoStats">
-                            <div id="popupStats"></div>
-                            <div class="abilityList">
-                                <div id="popupAbilities"></div>
-                            </div>
-                        </div>
-                        <div class="heroInfoGear">
-                            <div id="popupGear"></div>
-                        </div>
-                    </div>
+                    <div class="unitShadow"></div>
                 </div>
             </div>
 
-            <!-- Confirmation Modal -->
-            <div id="confirmModal" class="confirmModal">
-                <div class="confirmContent">
-                    <div class="confirmText" id="confirmText"></div>
-                    <div class="confirmCost" id="confirmCost"></div>
-                    <div class="confirmButtons">
-                        <button class="confirmBtn confirmYes" onclick="game.confirmPromotion()">Yes</button>
-                        <button class="confirmBtn confirmNo" onclick="game.cancelPromotion()">No</button>
+            <div class="battleUI">
+                <div class="battleLog" id="battleLog">
+                    Battle started!<br>
+                </div>
+                <div class="autoToggleContainer">
+                    <label style="color: #b0e0f0;">
+                        <input type="checkbox" id="autoModeToggle" onchange="game.currentBattle && game.currentBattle.toggleAutoMode(this.checked)">
+                        Auto
+                    </label>
+                </div>
+                <div class="abilityPanel" id="abilityPanel">
+                </div>
+            </div>
+            <button class="exitBattleButton" onclick="game.exitBattle()">Exit Battle</button>
+        </div>
+
+        <!-- Heroes Screen -->
+        <div id="heroesScreen">
+            <div class="heroPanel">
+                <div class="heroPortrait" id="heroPortrait">
+                    <img src="" alt="Hero" style="display: none;">
+                </div>
+                <div class="heroStats">
+                    <div class="heroTabs">
+                        <button class="tabButton active" onclick="game.showHeroTab('info')">Info</button>
+                        <button class="tabButton" onclick="game.showHeroTab('skills')">Skills</button>
+                        <button class="tabButton" onclick="game.showHeroTab('promote')">Promote</button>
+                        <button class="tabButton" onclick="game.showHeroTab('gear')">Gear</button>
+                        <button class="tabButton" onclick="game.showHeroTab('log')">Log</button>
+                    </div>
+                    <div class="tabContent" id="heroContent">
+                        <!-- Content will be dynamically generated -->
                     </div>
                 </div>
+            </div>
+            <div class="heroList" id="heroList">
+                <!-- Hero thumbnails will be dynamically generated -->
+            </div>
+            <button class="backButton" onclick="game.showMainMenu()">Back</button>
+        </div>
+
+        <!-- Dungeons Screen -->
+        <div id="dungeonsScreen">
+            <div class="worldMap" id="worldMap">
+                <!-- Map orbs will be dynamically generated -->
+            </div>
+            <div class="dungeonListPanel" id="dungeonListPanel">
+                <h2 class="dungeonTierTitle" id="dungeonTierTitle">Select a Region</h2>
+                <div id="dungeonList">
+                    <!-- Dungeon list will be dynamically generated -->
+                </div>
+            </div>
+            <button class="backButton" onclick="game.showMainMenu()">Back</button>
+        </div>
+
+        <!-- Stash Screen -->
+        <div id="stashScreen">
+            <h1 class="stashTitle">Stash</h1>
+            <div class="stashGrid" id="stashList">
+                <!-- Stash grid will be dynamically generated -->
+            </div>
+            <button class="backButton" onclick="game.showMainMenu()">Back</button>
+        </div>
+
+        <!-- Party Select Screen -->
+        <div id="partySelectScreen">
+            <div class="partySelectContainer">
+                <div class="partySelectHeader">
+                    <div class="dungeonTitle" id="dungeonName">Satyrs</div>
+                </div>
+                <div class="battlePreview">
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <div class="partyLabel">
+            <span class="partyLabelText">My Party</span>
+        </div>
+        <div class="partyFormation" id="partyFormation">
+            <div class="partySlot" data-slot="0">
+                <div class="slotPlaceholder">⬡</div>
+            </div>
+            <div class="partySlot" data-slot="1">
+                <div class="slotPlaceholder">⬡</div>
+            </div>
+            <div class="partySlot" data-slot="2">
+                <div class="slotPlaceholder">⬡</div>
+            </div>
+            <div class="partySlot" data-slot="3">
+                <div class="slotPlaceholder">⬡</div>
+            </div>
+            <div class="partySlot" data-slot="4">
+                <div class="slotPlaceholder">⬡</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vsText">VS</div>
+    
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <div id="waveNavigation" class="waveNavigation">
+            <button class="waveArrow" onclick="game.navigateWave('prev')">←</button>
+            <span class="waveText">Wave 1/1</span>
+            <button class="waveArrow" onclick="game.navigateWave('next')">→</button>
+        </div>
+        <div class="enemyFormation" id="enemyFormation">
+            <div class="enemySlot" data-slot="0">
+                <div class="slotPlaceholder">⬡</div>
+            </div>
+            <div class="enemySlot" data-slot="1">
+                <div class="slotPlaceholder">⬡</div>
+            </div>
+            <div class="enemySlot" data-slot="2">
+                <div class="slotPlaceholder">⬡</div>
+            </div>
+            <div class="enemySlot" data-slot="3">
+                <div class="slotPlaceholder">⬡</div>
+            </div>
+            <div class="enemySlot" data-slot="4">
+                <div class="slotPlaceholder">⬡</div>
+            </div>
+        </div>
+    </div>
+</div>
+                
+                <div class="heroSelectArea">
+                    <div class="heroSelectList" id="heroSelectList">
+                        <!-- Hero thumbnails will be generated here -->
+                    </div>
+                    <div class="actionButtons">
+                        <button class="startBattleBtn" id="startBattleBtn" disabled onclick="game.startBattle()">
+                            ⚔️ Start
+                        </button>
+                        <button class="cancelBtn" onclick="game.closeDungeonSelect()">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hero Info Popup -->
+        <div id="heroInfoPopup" class="heroInfoPopup">
+            <div class="heroInfoHeader">
+                <div class="heroInfoTitle" id="popupHeroName">Hero Name</div>
+                <button class="closeInfoBtn" onclick="game.closeHeroInfo()">×</button>
+            </div>
+            <div class="heroInfoContent">
+                <div class="heroInfoStats">
+                    <div id="popupStats"></div>
+                    <div class="abilityList">
+                        <div id="popupAbilities"></div>
+                    </div>
+                </div>
+                <div class="heroInfoGear">
+                    <div id="popupGear"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="confirmModal">
+        <div class="confirmContent">
+            <div class="confirmText" id="confirmText"></div>
+            <div class="confirmCost" id="confirmCost"></div>
+            <div class="confirmButtons">
+                <button class="confirmBtn confirmYes" onclick="game.confirmPromotion()">Yes</button>
+                <button class="confirmBtn confirmNo" onclick="game.cancelPromotion()">No</button>
             </div>
         </div>
     </div>
@@ -293,7 +282,7 @@
         // Global managers
         let spellManager;
         let unitData;
-        let dungeonData;
+	let dungeonData;
         
         // Initialize data loading
         async function loadGameData() {
@@ -309,7 +298,7 @@
                 console.error('Failed to load unit data:', error);
             }
 
-            // Load dungeon data
+	    // Load dungeon data
             try {
                 const response = await fetch('dungeons.json');
                 dungeonData = await response.json();
@@ -389,28 +378,28 @@
                 const agi = this.totalStats.agi;
                 return 100 + 100 * (agi / (agi + 1000));
             }
-            
-            get armor() {
-                const stats = this.totalStats;
-                const gearArmor = this.gearStats.armor || 0;
-                return (0.25 * stats.str) + (0.05 * stats.agi) + gearArmor;
-            }
+			
+			get armor() {
+				const stats = this.totalStats;
+				const gearArmor = this.gearStats.armor || 0;
+				return (0.25 * stats.str) + (0.05 * stats.agi) + gearArmor;
+			}
 
-            get resist() {
-                const stats = this.totalStats;
-                const gearResist = this.gearStats.resist || 0;
-                return (0.25 * stats.int) + gearResist;
-            }
+			get resist() {
+				const stats = this.totalStats;
+				const gearResist = this.gearStats.resist || 0;
+				return (0.25 * stats.int) + gearResist;
+			}
 
-            get physicalDamageReduction() {
-                const totalArmor = this.armor;
-                return (0.9 * totalArmor) / (totalArmor + 500);
-            }
+			get physicalDamageReduction() {
+				const totalArmor = this.armor;
+				return (0.9 * totalArmor) / (totalArmor + 500);
+			}
 
-            get magicDamageReduction() {
-                const totalResist = this.resist;
-                return (0.3 * totalResist) / (totalResist + 1000);
-            }
+			get magicDamageReduction() {
+				const totalResist = this.resist;
+				return (0.3 * totalResist) / (totalResist + 1000);
+			}
 
 
             getClassAbilities() {
@@ -567,26 +556,26 @@
             get hp() {
                 return this.baseStats.str * 25;
             }
-            
-            get armor() {
-                const stats = this.baseStats;
-                return (0.25 * stats.str) + (0.05 * stats.agi);
-            }
+			
+			get armor() {
+				const stats = this.baseStats;
+				return (0.25 * stats.str) + (0.05 * stats.agi);
+			}
 
-            get resist() {
-                const stats = this.baseStats;
-                return (0.25 * stats.int);
-            }
+			get resist() {
+				const stats = this.baseStats;
+				return (0.25 * stats.int);
+			}
 
-            get physicalDamageReduction() {
-                const totalArmor = this.armor;
-                return (0.9 * totalArmor) / (totalArmor + 500);
-            }
+			get physicalDamageReduction() {
+				const totalArmor = this.armor;
+				return (0.9 * totalArmor) / (totalArmor + 500);
+			}
 
-            get magicDamageReduction() {
-                const totalResist = this.resist;
-                return (0.3 * totalResist) / (totalResist + 1000);
-            }
+			get magicDamageReduction() {
+				const totalResist = this.resist;
+				return (0.3 * totalResist) / (totalResist + 1000);
+			}
 
             getAbilities(spellIds) {
                 if (!spellIds || !spellManager) return [];
@@ -739,95 +728,97 @@
                 this.init();
             }
 
-            init() {
-                // Create 8 starting villagers
-                this.heroes = [];
-                for (let i = 0; i < 16; i++) {
-                    this.heroes.push(new Hero());
-                }
-                
-                // Hero 0: Druid (Level 185)
-                this.heroes[0].level = 50;
-                this.heroes[0].promote('druid');
-                this.heroes[0].level = 185;
-                this.heroes[0].exp = 900;
-                
-                // Hero 1: Arch Druid (Level 275)
-                this.heroes[1].level = 50;
-                this.heroes[1].promote('druid');
-                this.heroes[1].level = 100;
-                this.heroes[1].promote('arch_druid');
-                this.heroes[1].level = 275;
-                this.heroes[1].exp = 500;
-                
-                // Hero 2: Shapeshifter (Level 380)
-                this.heroes[2].level = 50;
-                this.heroes[2].promote('druid');
-                this.heroes[2].level = 100;
-                this.heroes[2].promote('arch_druid');
-                this.heroes[2].level = 200;
-                this.heroes[2].promote('shapeshifter');
-                this.heroes[2].level = 380;
-                this.heroes[2].exp = 700;
-                
-                // Hero 3: Runemaster (Level 500 - max level)
-                this.heroes[3].level = 50;
-                this.heroes[3].promote('druid');
-                this.heroes[3].level = 100;
-                this.heroes[3].promote('arch_druid');
-                this.heroes[3].level = 200;
-                this.heroes[3].promote('shapeshifter');
-                this.heroes[3].level = 300;
-                this.heroes[3].promote('runemaster');
-                this.heroes[3].level = 500;
-                this.heroes[3].exp = 0; // Max level, no exp needed
-                
-                // Hero 4: Shaman (Level 315)
-                this.heroes[4].level = 50;
-                this.heroes[4].promote('druid');
-                this.heroes[4].level = 100;
-                this.heroes[4].promote('arch_druid');
-                this.heroes[4].level = 200;
-                this.heroes[4].promote('shaman');
-                this.heroes[4].level = 315;
-                this.heroes[4].exp = 900;
-                
-                // Hero 5: Summoner (Level 500)
-                this.heroes[5].level = 50;
-                this.heroes[5].promote('druid');
-                this.heroes[5].level = 100;
-                this.heroes[5].promote('arch_druid');
-                this.heroes[5].level = 200;
-                this.heroes[5].promote('shaman');
-                this.heroes[5].level = 300;
-                this.heroes[5].promote('summoner');
-                this.heroes[5].level = 500;
-                this.heroes[5].exp = 0; // Max level, no exp needed
-                
-                // Hero 6: Villager (Level 50 with 300 exp)
-                this.heroes[6].level = 50;
-                this.heroes[6].exp = 300;
-                
-                // Hero 7: Villager (Level 50 with 500 exp)
-                this.heroes[7].level = 50;
-                this.heroes[7].exp = 500;
+init() {
+    // Create 8 starting villagers
+    this.heroes = [];
+    for (let i = 0; i < 16; i++) {
+        this.heroes.push(new Hero());
+    }
+    
+    // Hero 0: Druid (Level 185)
+    this.heroes[0].level = 50;
+    this.heroes[0].promote('druid');
+    this.heroes[0].level = 185;
+    this.heroes[0].exp = 900;
+    
+    // Hero 1: Arch Druid (Level 275)
+    this.heroes[1].level = 50;
+    this.heroes[1].promote('druid');
+    this.heroes[1].level = 100;
+    this.heroes[1].promote('arch_druid');
+    this.heroes[1].level = 275;
+    this.heroes[1].exp = 500;
+    
+    // Hero 2: Shapeshifter (Level 380)
+    this.heroes[2].level = 50;
+    this.heroes[2].promote('druid');
+    this.heroes[2].level = 100;
+    this.heroes[2].promote('arch_druid');
+    this.heroes[2].level = 200;
+    this.heroes[2].promote('shapeshifter');
+    this.heroes[2].level = 380;
+    this.heroes[2].exp = 700;
+    
+    // Hero 3: Runemaster (Level 500 - max level)
+    this.heroes[3].level = 50;
+    this.heroes[3].promote('druid');
+    this.heroes[3].level = 100;
+    this.heroes[3].promote('arch_druid');
+    this.heroes[3].level = 200;
+    this.heroes[3].promote('shapeshifter');
+    this.heroes[3].level = 300;
+    this.heroes[3].promote('runemaster');
+    this.heroes[3].level = 500;
+    this.heroes[3].exp = 0; // Max level, no exp needed
+    
+    // Hero 4: Shaman (Level 315)
+    this.heroes[4].level = 50;
+    this.heroes[4].promote('druid');
+    this.heroes[4].level = 100;
+    this.heroes[4].promote('arch_druid');
+    this.heroes[4].level = 200;
+    this.heroes[4].promote('shaman');
+    this.heroes[4].level = 315;
+    this.heroes[4].exp = 900;
+    
+    // Hero 5: Summoner (Level 500)
+    this.heroes[5].level = 50;
+    this.heroes[5].promote('druid');
+    this.heroes[5].level = 100;
+    this.heroes[5].promote('arch_druid');
+    this.heroes[5].level = 200;
+    this.heroes[5].promote('shaman');
+    this.heroes[5].level = 300;
+    this.heroes[5].promote('summoner');
+    this.heroes[5].level = 500;
+    this.heroes[5].exp = 0; // Max level, no exp needed
+    
+    // Hero 6: Villager (Level 50 with 300 exp)
+    this.heroes[6].level = 50;
+    this.heroes[6].exp = 300;
+    
+    // Hero 7: Villager (Level 50 with 500 exp)
+    this.heroes[7].level = 50;
+    this.heroes[7].exp = 500;
 
-                // Hero 8: Villager (Level 50 with 500 exp)
-                this.heroes[8].level = 50;
-                this.heroes[8].exp = 500;
+    // Hero 8: Villager (Level 50 with 500 exp)
+    this.heroes[8].level = 50;
+    this.heroes[8].exp = 500;
 
-                // Hero 9: Villager (Level 10 with 500 exp)
-                this.heroes[9].level = 10;
-                this.heroes[9].exp = 500;
+    // Hero 9: Villager (Level 10 with 500 exp)
+    this.heroes[9].level = 10;
+    this.heroes[9].exp = 500;
 
-                // Hero 10: Villager (Level 10 with 500 exp)
-                this.heroes[10].level = 10;
-                this.heroes[10].exp = 500;
+    // Hero 10: Villager (Level 10 with 500 exp)
+    this.heroes[10].level = 10;
+    this.heroes[10].exp = 500;
 
-                // Hero 11: Villager (Level 10 with 500 exp)
-                this.heroes[11].level = 10;
-                this.heroes[11].exp = 500;
-            }
+    // Hero 11: Villager (Level 10 with 500 exp)
+    this.heroes[11].level = 10;
+    this.heroes[11].exp = 500;
+
+	
+}
 
             showMainMenu() {
                 this.hideAllScreens();
@@ -999,52 +990,52 @@
                 });
             }
 
-            enterDungeon(tierName, dungeonIndex) {
-                const dungeon = this.dungeonTiers[tierName].dungeons[dungeonIndex];
-                this.currentDungeon = dungeon;
-                
-                // Generate dungeon ID from name
-                const dungeonId = dungeon.name.toLowerCase().replace(/ /g, '_').replace('?', '');
-                
-                // Load waves from dungeon data
-                if (dungeonData && dungeonData.dungeons[dungeonId]) {
-                    const dungeonConfig = dungeonData.dungeons[dungeonId];
-                    
-                    // Create enemy waves from configuration
-                    this.dungeonWaves = dungeonConfig.waves.map(wave => {
-                        return wave.enemies.map(enemyConfig => {
-                            return new Enemy(enemyConfig.id, enemyConfig.level);
-                        });
-                    });
-                    
-                    // Handle special gauntlet dungeon
-                    if (dungeonConfig.special === 'gauntlet') {
-                        // TODO: Implement gauntlet mode (all dungeons in sequence)
-                        this.dungeonWaves = [[new Enemy('cosmic_archon', 500)]]; // Placeholder
-                    }
-                } else {
-                    // Return to main menu if dungeon data is missing
-                    console.warn(`No dungeon data found for: ${dungeonId}`);
-                    alert(`Dungeon "${dungeon.name}" is not yet implemented.`);
-                    this.showMainMenu();
-                    return;
-                }
-                
-                // Reset preview to first wave
-                this.currentPreviewWave = 0;
-                
-                // Set current enemy for display purposes (first enemy of last wave)
-                this.currentEnemy = this.dungeonWaves[this.dungeonWaves.length - 1][0];
-                
-                // Get the last wave for enemy display
-                this.lastWaveEnemies = this.dungeonWaves[this.dungeonWaves.length - 1];
-                
-                // Reset party selection
-                this.selectedParty = [null, null, null, null, null];
-                
-                // Show party select screen
-                this.showPartySelect();
-            }
+enterDungeon(tierName, dungeonIndex) {
+    const dungeon = this.dungeonTiers[tierName].dungeons[dungeonIndex];
+    this.currentDungeon = dungeon;
+    
+    // Generate dungeon ID from name
+    const dungeonId = dungeon.name.toLowerCase().replace(/ /g, '_').replace('?', '');
+    
+    // Load waves from dungeon data
+    if (dungeonData && dungeonData.dungeons[dungeonId]) {
+        const dungeonConfig = dungeonData.dungeons[dungeonId];
+        
+        // Create enemy waves from configuration
+        this.dungeonWaves = dungeonConfig.waves.map(wave => {
+            return wave.enemies.map(enemyConfig => {
+                return new Enemy(enemyConfig.id, enemyConfig.level);
+            });
+        });
+        
+        // Handle special gauntlet dungeon
+        if (dungeonConfig.special === 'gauntlet') {
+            // TODO: Implement gauntlet mode (all dungeons in sequence)
+            this.dungeonWaves = [[new Enemy('cosmic_archon', 500)]]; // Placeholder
+        }
+    } else {
+        // Return to main menu if dungeon data is missing
+        console.warn(`No dungeon data found for: ${dungeonId}`);
+        alert(`Dungeon "${dungeon.name}" is not yet implemented.`);
+        this.showMainMenu();
+        return;
+    }
+    
+    // Reset preview to first wave
+    this.currentPreviewWave = 0;
+    
+    // Set current enemy for display purposes (first enemy of last wave)
+    this.currentEnemy = this.dungeonWaves[this.dungeonWaves.length - 1][0];
+    
+    // Get the last wave for enemy display
+    this.lastWaveEnemies = this.dungeonWaves[this.dungeonWaves.length - 1];
+    
+    // Reset party selection
+    this.selectedParty = [null, null, null, null, null];
+    
+    // Show party select screen
+    this.showPartySelect();
+}
 
             navigateWave(direction) {
                 if (!this.dungeonWaves || this.dungeonWaves.length === 0) return;
@@ -1261,23 +1252,23 @@
                     
                     // Use class ID for image files
                     const classId = hero.className.toLowerCase().replace(/ /g, '_');
-                    const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+					const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
 
                     thumb.innerHTML = `
-                        <div style="position: relative; width: 100px; height: 100px;">
-                            <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" 
-                                 onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${displayClassName}</text></svg>'">
-                                 
-                            ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
+    <div style="position: relative; width: 100px; height: 100px;">
+        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" 
+             onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${displayClassName}</text></svg>'">
+             
+        ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
 
-                            <div class="thumbLevel">${hero.level}</div>
+        <div class="thumbLevel">${hero.level}</div>
 
-                            ${canPromote ? `<div class="promoteArrowThumb ${isAwakenable ? 'awaken' : 'normal'}">^</div>` : ''}
-                        </div>
+        ${canPromote ? `<div class="promoteArrowThumb ${isAwakenable ? 'awaken' : 'normal'}">^</div>` : ''}
+    </div>
 
-                        <div class="thumbClass">${displayClassName}</div>
-                        <div class="thumbName">${hero.name}</div>
-                    `;
+    <div class="thumbClass">${displayClassName}</div>
+    <div class="thumbName">${hero.name}</div>
+`;
 
                     
                     thumb.onclick = () => this.selectHero(this.heroes.indexOf(hero));
@@ -1292,7 +1283,7 @@
                 // Update portrait
                 const portrait = document.getElementById('heroPortrait');
                 const classId = hero.className.toLowerCase().replace(/ /g, '_');
-                const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+				const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
                 portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${displayClassName}</text></svg>'">`;
                 
                 // Update hero list selection
@@ -1331,155 +1322,154 @@
                 }
             }
 
-            showInfoTab(hero, content) {
-                const stats = hero.totalStats;
-                const baseStats = hero.baseStats;
-                let stars = '★';
-                
-                // Generate stars based on class tier and awakened status
-                if (hero.classTier > 0) {
-                    const starCount = hero.awakened ? 5 : hero.classTier;
-                    for (let i = 0; i < starCount; i++) {
-                        stars += '★';
-                    }
-                }
-                
-                const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                
-                // Calculate derived stats
-                const armor = hero.armor;
-                const resist = hero.resist;
-                const physicalDR = hero.physicalDamageReduction;
-                const magicalDR = hero.magicDamageReduction;
-                
-                content.innerHTML = `
-                    <div style="margin-bottom: 20px;">
-                        ${stars ? `<div style="font-size: 48px; font-weight: bold; ${hero.awakened ? 'color: #d896ff;' : 'color: #ffd700;'} text-shadow: 0 0 12px ${hero.awakened ? 'rgba(216, 150, 255, 0.9)' : 'rgba(255, 215, 0, 0.9)'}, 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${stars}</div>` : ''}
-                        <div class="heroName">${displayClassName}</div>
-                        <div style="font-size: 32px; color: #6a9aaa; cursor: pointer;" onclick="game.editHeroName()">
-                            <span id="heroNameText">${hero.name}</span>
-                        </div>
-                        <div style="font-size: 32px; color: #4dd0e1; margin-top: 40px;">Level ${hero.level}</div>
-                        </div>
-                        <div class="expBar" style="position: relative; height: 40px; border: 1px solid #2a6a8a;">
-                          <div class="expFill" style="width: ${Math.max(0, Math.min((hero.exp / hero.expToNext) * 100, 100))}%; height: 100%; background: #4dd0e1;"></div>
-                          <div class="expText" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; color: #6a9aaa;">
-                            ${hero.exp} / ${hero.expToNext} (${((hero.exp / hero.expToNext) * 100).toFixed(1)}%)
-                          </div>
-                        </div>
-                    
-                    <div style="margin-top: 40px; display: flex; gap: 60px;">
-                        <div style="flex: 1;">
-                            <div class="statLine" onmouseover="game.showStatTooltip(event, 'Health Points')" onmouseout="game.hideStatTooltip()">
-                                <span class="statName">HP</span>
-                                <span class="statValue">${hero.hp}</span>
-                            </div>
-                            <div class="statLine" onmouseover="game.showStatTooltip(event, 'Strength')" onmouseout="game.hideStatTooltip()">
-                                <span class="statName">STR</span>
-                                <span class="statValue">${baseStats.str} ${hero.gearStats.str > 0 ? `<span class="statBonus">+${hero.gearStats.str}</span>` : ''}</span>
-                            </div>
-                            <div class="statLine" onmouseover="game.showStatTooltip(event, 'Agility')" onmouseout="game.hideStatTooltip()">
-                                <span class="statName">AGI</span>
-                                <span class="statValue">${baseStats.agi} ${hero.gearStats.agi > 0 ? `<span class="statBonus">+${hero.gearStats.agi}</span>` : ''}</span>
-                            </div>
-                            <div class="statLine" onmouseover="game.showStatTooltip(event, 'Intelligence')" onmouseout="game.hideStatTooltip()">
-                                <span class="statName">INT</span>
-                                <span class="statValue">${baseStats.int} ${hero.gearStats.int > 0 ? `<span class="statBonus">+${hero.gearStats.int}</span>` : ''}</span>
-                            </div>
-                        </div>
-                        
-                        <div style="flex: 1;">
-                            <div class="statLine" onmouseover="game.showStatTooltip(event, 'HP Regeneration')" onmouseout="game.hideStatTooltip()">
-                                <span class="statName">Regen</span>
-                                <span class="statValue">${hero.hpRegen.toFixed(1)}</span>
-                            </div>
-                            <div class="statLine" onmouseover="game.showStatTooltip(event, 'Attack Speed')" onmouseout="game.hideStatTooltip()">
-                                <span class="statName">Atk Spd</span>
-                                <span class="statValue">${hero.actionBarSpeed.toFixed(1)}%</span>
-                            </div>
-                            <div class="statLine" onmouseover="game.showStatTooltip(event, 'Armor')" onmouseout="game.hideStatTooltip()">
-                                <span class="statName">Armor</span>
-                                <span class="statValue">${Math.floor(armor)} <span style="color: #6a9aaa;">(${(physicalDR * 100).toFixed(1)}%)</span></span>
-                            </div>
-                            <div class="statLine" onmouseover="game.showStatTooltip(event, 'Resistance')" onmouseout="game.hideStatTooltip()">
-                                <span class="statName">Resist</span>
-                                <span class="statValue">${Math.floor(resist)} <span style="color: #6a9aaa;">(${(magicalDR * 100).toFixed(1)}%)</span></span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-            
-            showStatTooltip(event, statName) {
-                // Define tooltip content mapshowStatTooltip(event, statName) {
-                const tooltipData = {
-                    "Strength": "Increases Max HP, HP Regeneration, and Armor.<br>Boosts Strength-based abilities.",
-                    "Agility": "Increases Attack Speed and slightly boosts Armor.<br>Boosts Agility-based abilities.",
-                    "Intelligence": "Increases Resistance (magic defense).<br>Boosts Intelligence-based abilities.",
+			showInfoTab(hero, content) {
+				const stats = hero.totalStats;
+				const baseStats = hero.baseStats;
+				let stars = '★';
+				
+				// Generate stars based on class tier and awakened status
+				if (hero.classTier > 0) {
+					const starCount = hero.awakened ? 5 : hero.classTier;
+					for (let i = 0; i < starCount; i++) {
+						stars += '★';
+					}
+				}
+				
+				const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+				
+				// Calculate derived stats
+				const armor = hero.armor;
+				const resist = hero.resist;
+				const physicalDR = hero.physicalDamageReduction;
+				const magicalDR = hero.magicDamageReduction;
+				
+				content.innerHTML = `
+					<div style="margin-bottom: 20px;">
+						${stars ? `<div style="font-size: 48px; font-weight: bold; ${hero.awakened ? 'color: #d896ff;' : 'color: #ffd700;'} text-shadow: 0 0 12px ${hero.awakened ? 'rgba(216, 150, 255, 0.9)' : 'rgba(255, 215, 0, 0.9)'}, 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${stars}</div>` : ''}
+						<div class="heroName">${displayClassName}</div>
+						<div style="font-size: 32px; color: #6a9aaa; cursor: pointer;" onclick="game.editHeroName()">
+							<span id="heroNameText">${hero.name}</span>
+						</div>
+						<div style="font-size: 32px; color: #4dd0e1; margin-top: 40px;">Level ${hero.level}</div>
+						</div>
+						<div class="expBar" style="position: relative; height: 40px; border: 1px solid #2a6a8a;">
+ 						 <div class="expFill" style="width: ${Math.max(0, Math.min((hero.exp / hero.expToNext) * 100, 100))}%; height: 100%; background: #4dd0e1;"></div>
+						  <div class="expText" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; color: #6a9aaa;">
+						    ${hero.exp} / ${hero.expToNext} (${((hero.exp / hero.expToNext) * 100).toFixed(1)}%)
+						  </div>
+						</div>
+					
+					<div style="margin-top: 40px; display: flex; gap: 60px;">
+						<div style="flex: 1;">
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Health Points')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">HP</span>
+								<span class="statValue">${hero.hp}</span>
+							</div>
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Strength')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">STR</span>
+								<span class="statValue">${baseStats.str} ${hero.gearStats.str > 0 ? `<span class="statBonus">+${hero.gearStats.str}</span>` : ''}</span>
+							</div>
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Agility')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">AGI</span>
+								<span class="statValue">${baseStats.agi} ${hero.gearStats.agi > 0 ? `<span class="statBonus">+${hero.gearStats.agi}</span>` : ''}</span>
+							</div>
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Intelligence')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">INT</span>
+								<span class="statValue">${baseStats.int} ${hero.gearStats.int > 0 ? `<span class="statBonus">+${hero.gearStats.int}</span>` : ''}</span>
+							</div>
+						</div>
+						
+						<div style="flex: 1;">
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'HP Regeneration')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">Regen</span>
+								<span class="statValue">${hero.hpRegen.toFixed(1)}</span>
+							</div>
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Attack Speed')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">Atk Spd</span>
+								<span class="statValue">${hero.actionBarSpeed.toFixed(1)}%</span>
+							</div>
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Armor')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">Armor</span>
+								<span class="statValue">${Math.floor(armor)} <span style="color: #6a9aaa;">(${(physicalDR * 100).toFixed(1)}%)</span></span>
+							</div>
+							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Resistance')" onmouseout="game.hideStatTooltip()">
+								<span class="statName">Resist</span>
+								<span class="statValue">${Math.floor(resist)} <span style="color: #6a9aaa;">(${(magicalDR * 100).toFixed(1)}%)</span></span>
+							</div>
+						</div>
+					</div>
+				`;
+			}
+			
+showStatTooltip(event, statName) {
+	// Define tooltip content mapshowStatTooltip(event, statName) {
+	const tooltipData = {
+		"Strength": "Increases Max HP, HP Regeneration, and Armor.<br>Boosts Strength-based abilities.",
+		"Agility": "Increases Attack Speed and slightly boosts Armor.<br>Boosts Agility-based abilities.",
+		"Intelligence": "Increases Resistance (magic defense).<br>Boosts Intelligence-based abilities.",
 
-                    "Health Points": "Scales with STR.<br><code>25 × STR</code>",
-                    "HP Regeneration": "Scales with STR. Regain HP after your turn.<br><code>0.05 × STR</code>",
-                    "Attack Speed": "Increases how fast you attack. Scales with Agility.<br><code>100 + 100 × (AGI / (AGI + 1000))</code>",
+		"Health Points": "Scales with STR.<br><code>25 × STR</code>",
+		"HP Regeneration": "Scales with STR. Regain HP after your turn.<br><code>0.05 × STR</code>",
+		"Attack Speed": "Increases how fast you attack. Scales with Agility.<br><code>100 + 100 × (AGI / (AGI + 1000))</code>",
 
-                    "Armor": `Reduces incoming physical damage.<br><code>(0.25 × STR) + (0.05 × AGI)</code><br><br>
+		"Armor": `Reduces incoming physical damage.<br><code>(0.25 × STR) + (0.05 × AGI)</code><br><br>
 Physical Damage Reduction: Percentage of physical damage blocked.<br><code>(0.9 × Armor) / (Armor + 500)</code>`,
 
-                    "Resistance": `Reduces magical damage taken.<br><code>0.25 × INT</code><br><br>
+		"Resistance": `Reduces magical damage taken.<br><code>0.25 × INT</code><br><br>
 Magical Damage Reduction: Percentage of magical damage blocked.<br><code>(0.3 × Resist) / (Resist + 1000)</code>`
-                };
+	};
 
 
-                // Create or get stat tooltip element
-                let tooltip = document.getElementById('statTooltip');
-                if (!tooltip) {
-                    tooltip = document.createElement('div');
-                    tooltip.id = 'statTooltip';
-                    tooltip.style.cssText = `
-                        position: fixed;
-                        background: rgba(10, 15, 26, 0.95);
-                        border: 2px solid #2a6a8a;
-                        padding: 10px;
-                        border-radius: 4px;
-                        z-index: 1002;
-                        box-shadow: 0 0 20px rgba(0,0,0,0.8);
-                        pointer-events: none;
-                        font-size: 14px;
-                        color: #b0e0f0;
-                        max-width: 500px;
-                    `;
-                    document.body.appendChild(tooltip);
-                }
+	// Create or get stat tooltip element
+	let tooltip = document.getElementById('statTooltip');
+	if (!tooltip) {
+		tooltip = document.createElement('div');
+		tooltip.id = 'statTooltip';
+		tooltip.style.cssText = `
+			position: fixed;
+			background: rgba(10, 15, 26, 0.95);
+			border: 2px solid #2a6a8a;
+			padding: 10px;
+			border-radius: 4px;
+			z-index: 1002;
+			box-shadow: 0 0 20px rgba(0,0,0,0.8);
+			pointer-events: none;
+			font-size: 14px;
+			color: #b0e0f0;
+			max-width: 500px;
+		`;
+		document.body.appendChild(tooltip);
+	}
 
-                // Set tooltip content
-                tooltip.innerHTML = tooltipData[statName] || "No tooltip available.";
-                tooltip.style.display = 'block';
+	// Set tooltip content
+	tooltip.innerHTML = tooltipData[statName] || "No tooltip available.";
+	tooltip.style.display = 'block';
 
-                // Position near bottom of hovered element
-                const rect = event.target.getBoundingClientRect();
-                const tooltipRect = tooltip.getBoundingClientRect();
+	// Position near bottom of hovered element
+	const rect = event.target.getBoundingClientRect();
+	const tooltipRect = tooltip.getBoundingClientRect();
 
-                let left = rect.left;
-                let top = rect.bottom + 5;
+	let left = rect.left;
+	let top = rect.bottom + 5;
 
-                // Adjust if tooltip would overflow the screen
-                if (left + tooltipRect.width > window.innerWidth) {
-                    left = window.innerWidth - tooltipRect.width - 10;
-                }
-                if (top + tooltipRect.height > window.innerHeight) {
-                    top = rect.top - tooltipRect.height - 5;
-                }
+	// Adjust if tooltip would overflow the screen
+	if (left + tooltipRect.width > window.innerWidth) {
+		left = window.innerWidth - tooltipRect.width - 10;
+	}
+	if (top + tooltipRect.height > window.innerHeight) {
+		top = rect.top - tooltipRect.height - 5;
+	}
 
-                tooltip.style.left = `${left}px`;
-                tooltip.style.top = `${top}px`;
-            }
+	tooltip.style.left = `${left}px`;
+	tooltip.style.top = `${top}px`;
+}
 
-            hideStatTooltip() {
-                const tooltip = document.getElementById('statTooltip');
-                if (tooltip) {
-                    tooltip.style.display = 'none';
-                }
-            }
-            
+hideStatTooltip() {
+	const tooltip = document.getElementById('statTooltip');
+	if (tooltip) {
+		tooltip.style.display = 'none';
+	}
+}
             showSkillsTab(hero, content) {
                 content.innerHTML = `
                     <div class="skillsContainer">
@@ -1571,8 +1561,8 @@ Magical Damage Reduction: Percentage of magical damage blocked.<br><code>(0.3 ×
                                     return `
                                         <div class="classCard">
                                             <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${promoId}_front.gif" alt="${promo}" onerror="this.style.display='none'">
-                                            <div class="classStars" style="font-size: 24px; font-weight: bold; color: #ffd700; text-shadow: 0 0 12px rgba(255, 215, 0, 0.9), 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${promoStars}</div>
-                                            <h2>${promoClass.name}</h2>
+											<div class="classStars" style="font-size: 24px; font-weight: bold; color: #ffd700; text-shadow: 0 0 12px rgba(255, 215, 0, 0.9), 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${promoStars}</div>
+											<h2>${promoClass.name}</h2>
                                             <button class="promoteButton" onclick="game.showPromotionConfirm('${promo}')">
                                                 Promote<br>
                                                 <span style="font-size: 14px;">💰 -${1000 * Math.pow(10, hero.classTier)}</span>
@@ -1669,7 +1659,7 @@ Magical Damage Reduction: Percentage of magical damage blocked.<br><code>(0.3 ×
                         // Update portrait remains the same
                         const portrait = document.getElementById('heroPortrait');
                         const classId = hero.className.toLowerCase().replace(/ /g, '_');
-                        const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+						const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
                         portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${displayClassName}</text></svg>'">`;
                         
                         this.showHeroTab('info');
@@ -1683,7 +1673,7 @@ Magical Damage Reduction: Percentage of magical damage blocked.<br><code>(0.3 ×
                         // Update portrait immediately after promotion
                         const portrait = document.getElementById('heroPortrait');
                         const classId = hero.className.toLowerCase().replace(/ /g, '_');
-                        const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+						const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
                         portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${displayClassName}</text></svg>'">`;
                         
                         this.showHeroTab('info');
@@ -1911,20 +1901,20 @@ Magical Damage Reduction: Percentage of magical damage blocked.<br><code>(0.3 ×
                 }
                 
                 const classId = hero.className.toLowerCase().replace(/ /g, '_');
-                const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+				const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
                 thumb.innerHTML = `
-                    <div style="position: relative; width: 100px; height: 100px;">
-                        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" 
-                             onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${displayClassName}</text></svg>'">
-                             
-                        ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
+    <div style="position: relative; width: 100px; height: 100px;">
+        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" 
+             onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${displayClassName}</text></svg>'">
+             
+        ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
 
-                        <div class="thumbLevel">${hero.level}</div>
-                    </div>
+        <div class="thumbLevel">${hero.level}</div>
+    </div>
 
-                    <div class="thumbClass">${displayClassName}</div>
-                    <div class="thumbName">${hero.name}</div>
-                `;
+    <div class="thumbClass">${displayClassName}</div>
+    <div class="thumbName">${hero.name}</div>
+`;
                 
                 wrapper.appendChild(thumb);
                 
@@ -1941,7 +1931,7 @@ Magical Damage Reduction: Percentage of magical damage blocked.<br><code>(0.3 ×
                 
                 return wrapper;
             }
-        
+		
             toggleHeroSelection(heroIndex) {
                 // Check if hero is already selected
                 const currentIndex = this.selectedParty.indexOf(heroIndex);
@@ -1975,7 +1965,7 @@ Magical Damage Reduction: Percentage of magical damage blocked.<br><code>(0.3 ×
                     if (heroIndex !== null) {
                         const hero = this.heroes[heroIndex];
                         const classId = hero.className.toLowerCase().replace(/ /g, '_');
-                        
+						
                         // Generate stars
                         let stars = '★';
                         if (hero.classTier > 0) {
@@ -1985,7 +1975,7 @@ Magical Damage Reduction: Percentage of magical damage blocked.<br><code>(0.3 ×
                             }
                         }
                         
-                        const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+						const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
                         slot.innerHTML = `
                             <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
                                 <div style="position: relative; width: 60px; height: 60px;">
@@ -2075,55 +2065,55 @@ Magical Damage Reduction: Percentage of magical damage blocked.<br><code>(0.3 ×
                 });
             }
 
-            showHeroInfoPopup(hero) {
-                const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                const popup = document.getElementById('heroInfoPopup');
-                document.getElementById('popupHeroName').textContent = `Lv.${hero.level} ${displayClassName} | ${hero.name}`;
+showHeroInfoPopup(hero) {
+    const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+    const popup = document.getElementById('heroInfoPopup');
+    document.getElementById('popupHeroName').textContent = `Lv.${hero.level} ${displayClassName} | ${hero.name}`;
+    
+    // Show stats in double column format
+    const stats = hero.totalStats;
+    const statsHtml = `
+        <div style="display: flex; gap: 40px;">
+            <div style="flex: 1;">
+                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Health Points')" onmouseout="game.hideStatTooltip()">
+                    <span class="statLabel">HP</span>
+                    <span class="statValue">${hero.hp}</span>
+                </div>
+                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Strength')" onmouseout="game.hideStatTooltip()">
+                    <span class="statLabel">STR</span>
+                    <span class="statValue">${stats.str}</span>
+                </div>
+                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Agility')" onmouseout="game.hideStatTooltip()">
+                    <span class="statLabel">AGI</span>
+                    <span class="statValue">${stats.agi}</span>
+                </div>
+                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Intelligence')" onmouseout="game.hideStatTooltip()">
+                    <span class="statLabel">INT</span>
+                    <span class="statValue">${stats.int}</span>
+                </div>
+            </div>
+            <div style="flex: 1;">
+                <div class="statRow" onmouseover="game.showStatTooltip(event, 'HP Regeneration')" onmouseout="game.hideStatTooltip()">
+                    <span class="statLabel">Regen</span>
+                    <span class="statValue">${hero.hpRegen.toFixed(1)}</span>
+                </div>
+                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Attack Speed')" onmouseout="game.hideStatTooltip()">
+                    <span class="statLabel">Atk Spd</span>
+                    <span class="statValue">${hero.actionBarSpeed.toFixed(1)}%</span>
+                </div>
+                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Armor')" onmouseout="game.hideStatTooltip()">
+                    <span class="statLabel">Armor</span>
+                    <span class="statValue">${Math.floor(hero.armor)} <span style="color: #6a9aaa;">(${(hero.physicalDamageReduction * 100).toFixed(1)}%)</span></span>
+                </div>
+                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Resistance')" onmouseout="game.hideStatTooltip()">
+                    <span class="statLabel">Resist</span>
+                    <span class="statValue">${Math.floor(hero.resist)} <span style="color: #6a9aaa;">(${(hero.magicDamageReduction * 100).toFixed(1)}%)</span></span>
+                </div>
+            </div>
+        </div>
+    `;
+    document.getElementById('popupStats').innerHTML = statsHtml;
                 
-                // Show stats in double column format
-                const stats = hero.totalStats;
-                const statsHtml = `
-                    <div style="display: flex; gap: 40px;">
-                        <div style="flex: 1;">
-                            <div class="statRow" onmouseover="game.showStatTooltip(event, 'Health Points')" onmouseout="game.hideStatTooltip()">
-                                <span class="statLabel">HP</span>
-                                <span class="statValue">${hero.hp}</span>
-                            </div>
-                            <div class="statRow" onmouseover="game.showStatTooltip(event, 'Strength')" onmouseout="game.hideStatTooltip()">
-                                <span class="statLabel">STR</span>
-                                <span class="statValue">${stats.str}</span>
-                            </div>
-                            <div class="statRow" onmouseover="game.showStatTooltip(event, 'Agility')" onmouseout="game.hideStatTooltip()">
-                                <span class="statLabel">AGI</span>
-                                <span class="statValue">${stats.agi}</span>
-                            </div>
-                            <div class="statRow" onmouseover="game.showStatTooltip(event, 'Intelligence')" onmouseout="game.hideStatTooltip()">
-                                <span class="statLabel">INT</span>
-                                <span class="statValue">${stats.int}</span>
-                            </div>
-                        </div>
-                        <div style="flex: 1;">
-                            <div class="statRow" onmouseover="game.showStatTooltip(event, 'HP Regeneration')" onmouseout="game.hideStatTooltip()">
-                                <span class="statLabel">Regen</span>
-                                <span class="statValue">${hero.hpRegen.toFixed(1)}</span>
-                            </div>
-                            <div class="statRow" onmouseover="game.showStatTooltip(event, 'Attack Speed')" onmouseout="game.hideStatTooltip()">
-                                <span class="statLabel">Atk Spd</span>
-                                <span class="statValue">${hero.actionBarSpeed.toFixed(1)}%</span>
-                            </div>
-                            <div class="statRow" onmouseover="game.showStatTooltip(event, 'Armor')" onmouseout="game.hideStatTooltip()">
-                                <span class="statLabel">Armor</span>
-                                <span class="statValue">${Math.floor(hero.armor)} <span style="color: #6a9aaa;">(${(hero.physicalDamageReduction * 100).toFixed(1)}%)</span></span>
-                            </div>
-                            <div class="statRow" onmouseover="game.showStatTooltip(event, 'Resistance')" onmouseout="game.hideStatTooltip()">
-                                <span class="statLabel">Resist</span>
-                                <span class="statValue">${Math.floor(hero.resist)} <span style="color: #6a9aaa;">(${(hero.magicDamageReduction * 100).toFixed(1)}%)</span></span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                document.getElementById('popupStats').innerHTML = statsHtml;
-                                
                 // Show ability icons with tooltips
                 const abilityIconsHtml = `
                     <div style="display: flex; gap: 8px; margin-top: 10px;">
@@ -2188,54 +2178,54 @@ Magical Damage Reduction: Percentage of magical damage blocked.<br><code>(0.3 ×
                 popup.style.display = 'block';
             }
 
-            showEnemyInfoPopup(enemy) {
-                const popup = document.getElementById('heroInfoPopup');
-                document.getElementById('popupHeroName').textContent = `Lv.${enemy.level} ${enemy.name}`;
+showEnemyInfoPopup(enemy) {
+    const popup = document.getElementById('heroInfoPopup');
+    document.getElementById('popupHeroName').textContent = `Lv.${enemy.level} ${enemy.name}`;
+    
+    // Show enemy stats in double column format
+    const stats = enemy.baseStats;
+    const statsHtml = `
+        <div style="display: flex; gap: 40px;">
+            <div style="flex: 1;">
+                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Health Points')" onmouseout="game.hideStatTooltip()">
+                    <span class="statLabel">HP</span>
+                    <span class="statValue">${enemy.hp}</span>
+                </div>
+                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Strength')" onmouseout="game.hideStatTooltip()">
+                    <span class="statLabel">STR</span>
+                    <span class="statValue">${stats.str}</span>
+                </div>
+                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Agility')" onmouseout="game.hideStatTooltip()">
+                    <span class="statLabel">AGI</span>
+                    <span class="statValue">${stats.agi}</span>
+                </div>
+                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Intelligence')" onmouseout="game.hideStatTooltip()">
+                    <span class="statLabel">INT</span>
+                    <span class="statValue">${stats.int}</span>
+                </div>
+            </div>
+            <div style="flex: 1;">
+                <div class="statRow" onmouseover="game.showStatTooltip(event, 'HP Regeneration')" onmouseout="game.hideStatTooltip()">
+                    <span class="statLabel">Regen</span>
+                    <span class="statValue">${(stats.str * 0.05).toFixed(1)}</span>
+                </div>
+                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Attack Speed')" onmouseout="game.hideStatTooltip()">
+                    <span class="statLabel">Atk Spd</span>
+                    <span class="statValue">${(100 + 100 * (stats.agi / (stats.agi + 1000))).toFixed(1)}%</span>
+                </div>
+                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Armor')" onmouseout="game.hideStatTooltip()">
+                    <span class="statLabel">Armor</span>
+                    <span class="statValue">${Math.floor(enemy.armor)} <span style="color: #6a9aaa;">(${(enemy.physicalDamageReduction * 100).toFixed(1)}%)</span></span>
+                </div>
+                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Resistance')" onmouseout="game.hideStatTooltip()">
+                    <span class="statLabel">Resist</span>
+                    <span class="statValue">${Math.floor(enemy.resist)} <span style="color: #6a9aaa;">(${(enemy.magicDamageReduction * 100).toFixed(1)}%)</span></span>
+                </div>
+            </div>
+        </div>
+    `;
+    document.getElementById('popupStats').innerHTML = statsHtml;
                 
-                // Show enemy stats in double column format
-                const stats = enemy.baseStats;
-                const statsHtml = `
-                    <div style="display: flex; gap: 40px;">
-                        <div style="flex: 1;">
-                            <div class="statRow" onmouseover="game.showStatTooltip(event, 'Health Points')" onmouseout="game.hideStatTooltip()">
-                                <span class="statLabel">HP</span>
-                                <span class="statValue">${enemy.hp}</span>
-                            </div>
-                            <div class="statRow" onmouseover="game.showStatTooltip(event, 'Strength')" onmouseout="game.hideStatTooltip()">
-                                <span class="statLabel">STR</span>
-                                <span class="statValue">${stats.str}</span>
-                            </div>
-                            <div class="statRow" onmouseover="game.showStatTooltip(event, 'Agility')" onmouseout="game.hideStatTooltip()">
-                                <span class="statLabel">AGI</span>
-                                <span class="statValue">${stats.agi}</span>
-                            </div>
-                            <div class="statRow" onmouseover="game.showStatTooltip(event, 'Intelligence')" onmouseout="game.hideStatTooltip()">
-                                <span class="statLabel">INT</span>
-                                <span class="statValue">${stats.int}</span>
-                            </div>
-                        </div>
-                        <div style="flex: 1;">
-                            <div class="statRow" onmouseover="game.showStatTooltip(event, 'HP Regeneration')" onmouseout="game.hideStatTooltip()">
-                                <span class="statLabel">Regen</span>
-                                <span class="statValue">${(stats.str * 0.05).toFixed(1)}</span>
-                            </div>
-                            <div class="statRow" onmouseover="game.showStatTooltip(event, 'Attack Speed')" onmouseout="game.hideStatTooltip()">
-                                <span class="statLabel">Atk Spd</span>
-                                <span class="statValue">${(100 + 100 * (stats.agi / (stats.agi + 1000))).toFixed(1)}%</span>
-                            </div>
-                            <div class="statRow" onmouseover="game.showStatTooltip(event, 'Armor')" onmouseout="game.hideStatTooltip()">
-                                <span class="statLabel">Armor</span>
-                                <span class="statValue">${Math.floor(enemy.armor)} <span style="color: #6a9aaa;">(${(enemy.physicalDamageReduction * 100).toFixed(1)}%)</span></span>
-                            </div>
-                            <div class="statRow" onmouseover="game.showStatTooltip(event, 'Resistance')" onmouseout="game.hideStatTooltip()">
-                                <span class="statLabel">Resist</span>
-                                <span class="statValue">${Math.floor(enemy.resist)} <span style="color: #6a9aaa;">(${(enemy.magicDamageReduction * 100).toFixed(1)}%)</span></span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                document.getElementById('popupStats').innerHTML = statsHtml;
-                                
                 // Show ability icons with tooltips
                 const enemyAbilitiesHtml = `
                     <div style="display: flex; gap: 8px; margin-top: 10px;">
@@ -2460,48 +2450,6 @@ Magical Damage Reduction: Percentage of magical damage blocked.<br><code>(0.3 ×
                 }
             });
         });
-
-// Replace the scaling function with this simpler version
-function scaleGame() {
-    const isMobile = window.innerWidth <= 1024;
-    const baseWidth = isMobile ? 1920 : 2560;
-    const baseHeight = isMobile ? 1080 : 1440;
-    
-    const gameScaled = document.getElementById('gameScaled');
-    const gameContainer = document.getElementById('gameContainer');
-    
-    if (isMobile) {
-        // Simple mobile approach
-        gameScaled.style.cssText = 'width: 100vw; height: 100vh; transform: none; position: relative;';
-        gameContainer.style.cssText = `width: ${baseWidth}px; height: ${baseHeight}px;`;
-        
-        const scale = Math.min(
-            window.innerWidth / baseWidth,
-            window.innerHeight / baseHeight
-        );
-        
-        gameContainer.style.transform = `scale(${scale})`;
-        gameContainer.style.transformOrigin = 'center center';
-        gameContainer.style.position = 'absolute';
-        gameContainer.style.left = '50%';
-        gameContainer.style.top = '50%';
-        gameContainer.style.marginLeft = `-${baseWidth/2}px`;
-        gameContainer.style.marginTop = `-${baseHeight/2}px`;
-    }
-}
-
-        // Scale on load and resize
-        window.addEventListener('load', scaleGame);
-        window.addEventListener('resize', scaleGame);
-        window.addEventListener('orientationchange', scaleGame);
-
-        // Try to lock orientation
-        if (screen.orientation && screen.orientation.lock) {
-            screen.orientation.lock('landscape').catch(() => {});
-        }
-
-        // Initial scale
-        scaleGame();
     </script>
 </body>
 </html>
