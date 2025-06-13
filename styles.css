@@ -233,25 +233,26 @@ body {
     color: #4dd0e1;
     text-shadow: 0 0 10px rgba(77, 208, 225, 0.5);
     line-height: 1;
+    margin-bottom: -2px;
 }
 
 .levelIndicator .levelStars {
-    position: absolute;
-    bottom: -8px;
     font-size: 8px;
     font-weight: bold;
     letter-spacing: -2px;
     text-shadow: 
         0 0 3px rgba(0, 0, 0, 0.9),
         1px 1px 1px rgba(0, 0, 0, 1);
-    white-space: nowrap;
+    line-height: 1;
+    margin-top: -2px;
 }
 
 .levelIndicator .levelStars.awakened {
     color: #d896ff;
 }
 
-.levelIndicator .levelStars.normal {
+.levelIndicator .levelStars.normal,
+.levelIndicator .levelStars {
     color: #ffd700;
 }
 
@@ -265,6 +266,21 @@ body {
 
 .unitSlot .healthBar {
     margin-left: 5px;
+}
+
+.unitSlot .actionBar {
+    position: absolute;
+    top: 22px; /* Right under the 20px health bar */
+    left: 0;
+    width: 100%;
+    height: 10px;
+    background: #0a1929;
+    border: 1px solid #2a6a8a;
+    margin: 0;
+}
+
+.actionBar {
+    margin-top: 0 !important;
 }
 
 .autoToggleContainer {
