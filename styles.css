@@ -208,6 +208,65 @@ body {
     pointer-events: auto;
 }
 
+.levelIndicator {
+    position: absolute;
+    left: -50px;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle, #1a4a6a 0%, #0a2a4a 100%);
+    border: 2px solid #2a6a8a;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        0 0 15px rgba(42, 106, 138, 0.5),
+        inset 0 0 10px rgba(0,0,0,0.5);
+    z-index: 5;
+}
+
+.levelNumber {
+    font-size: 16px;
+    font-weight: bold;
+    color: #4dd0e1;
+    text-shadow: 0 0 10px rgba(77, 208, 225, 0.5);
+    line-height: 1;
+}
+
+.levelIndicator .levelStars {
+    position: absolute;
+    bottom: -8px;
+    font-size: 8px;
+    font-weight: bold;
+    letter-spacing: -2px;
+    text-shadow: 
+        0 0 3px rgba(0, 0, 0, 0.9),
+        1px 1px 1px rgba(0, 0, 0, 1);
+    white-space: nowrap;
+}
+
+.levelIndicator .levelStars.awakened {
+    color: #d896ff;
+}
+
+.levelIndicator .levelStars.normal {
+    color: #ffd700;
+}
+
+.levelIndicator .levelStars.purple {
+    color: #d896ff;
+}
+
+.levelIndicator .levelStars.red {
+    color: #ff4444;
+}
+
+.unitSlot .healthBar {
+    margin-left: 5px;
+}
+
 .autoToggleContainer {
     position: absolute;
     bottom: 140px;
