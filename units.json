@@ -4,7 +4,7 @@
       "name": "Villager",
       "tier": 0,
       "modifiers": { "str": 1.0, "agi": 1.0, "int": 1.0 },
-      "spells": ["punchkill", "fury"],
+      "spells": ["punch", "fury"],
       "promotesTo": ["acolyte", "archer", "druid", "initiate", "swordsman", "templar", "thief", "witch_hunter"]
     },
     "acolyte": {
