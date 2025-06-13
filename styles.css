@@ -589,7 +589,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    padding: 1px;
+    padding: 2px;
     transition: all 0.2s;
     box-shadow: 0 0 15px rgba(42, 106, 138, 0.3);
     position: relative;
