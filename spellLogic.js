@@ -599,6 +599,45 @@ slashkillLogic: function(battle, caster, target, spell) {
     battle.dealDamage(caster, target, damage, 'physical');
     battle.log(`${caster.name} kills ${target.name} for ${Math.round(damage)} damage!`);
 },
+    ,
+// Tester Spells
+winLogic: function(battle, caster, targets) {
+    // Deal massive damage to all enemies
+    const enemies = battle.getEnemies(caster);
+    enemies.forEach(enemy => {
+        if (enemy.currentHp > 0) {
+            const damage = 100000000;
+            battle.dealDamage(caster, enemy, damage, 'pure');
+        }
+    });
+    
+    // Apply speed buff to self
+    battle.applyBuff(caster, 'speed', 5, { actionBarMultiplier: 2.0 });
+    
+    battle.log(`${caster.name} uses Win! Victory is assured!`);
+},
+
+loseLogic: function(battle, caster, targets) {
+    // Deal massive damage to all allies
+    const allies = battle.getParty(caster);
+    allies.forEach(ally => {
+        if (ally.currentHp > 0 && ally !== caster) {
+            const damage = 100000000;
+            battle.dealDamage(caster, ally, damage, 'pure');
+        }
+    });
+    
+    // Set own HP to 1
+    caster.currentHp = 1;
+    
+    // Apply stun for 3 turns
+    battle.applyDebuff(caster, 'stun', 3, { stunned: true });
+    
+    // Apply slow for 5 turns
+    battle.applyDebuff(caster, 'slow', 5, { actionBarSpeed: 0.5 });
+    
+    battle.log(`${caster.name} uses Lose! Self-destruction initiated!`);
+}
 
 
     frostBreathLogic: function(battle, caster, targets) {
