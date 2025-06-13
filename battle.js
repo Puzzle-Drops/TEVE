@@ -271,41 +271,78 @@ class BattleUnit {
 class Battle {
 
     constructor(game, party, enemyWaves) {
-    this.game = game;
-    this.turn = 0;
-    this.currentUnit = null;
-    this.waitingForPlayer = false;
-    this.autoMode = false;
-    this.pendingAutoMode = null; // Track pending auto mode changes
-    this.battleLog = [];
-    this.gameSpeed = 1;
-    this.running = true;
-    this.processingWaveTransition = false;
-    this.targetingState = null; // Track targeting state
+
+        this.game = game;
+
+        this.turn = 0;
+
+        this.currentUnit = null;
+
+        this.waitingForPlayer = false;
+
+        this.autoMode = false;
+
+        this.pendingAutoMode = null; // Track pending auto mode changes
+
+        this.battleLog = [];
+
+        this.gameSpeed = 1;
+
+        this.running = true;
+
+        this.processingWaveTransition = false;
+
+        this.targetingState = null; // Track targeting state
+
+        
+
+        // Add timer tracking
+
+        this.startTime = Date.now();
+
+        this.endTime = null;
+
+        
+
+        // Wave management
+
+        this.enemyWaves = enemyWaves;
+
+        this.currentWave = 0;
+
+        
+
+        // Track exp earned per wave for each hero
+
+        this.waveExpEarned = [];
+
+        
+
+        // Create battle units for party
+
+        this.party = party.map((hero, index) => hero ? new BattleUnit(hero, false, index) : null).filter(u => u);
+
+        
+
+        // Initialize with first wave of enemies
+
+        this.enemies = [];
+
+        this.loadWave(0);
+
+        
+
+        this.allUnits = [...this.party, ...this.enemies];
+
+        
+
+        // Apply initial auras
+
+        this.applyInitialAuras();
+
+    }
+
     
-    // Add timer tracking
-    this.startTime = Date.now();
-    this.endTime = null;
-    
-    // Wave management
-    this.enemyWaves = enemyWaves;
-    this.currentWave = 0;
-    
-    // Track exp earned per wave for each hero
-    this.waveExpEarned = [];
-    
-    // Create battle units for party
-    this.party = party.map((hero, index) => hero ? new BattleUnit(hero, false, index) : null).filter(u => u);
-    
-    // Initialize with first wave of enemies
-    this.enemies = [];
-    this.loadWave(0);
-    
-    this.allUnits = [...this.party, ...this.enemies];
-    
-    // Apply initial auras
-    this.applyInitialAuras();
-}    
 
     loadWave(waveIndex) {
 
@@ -1150,149 +1187,275 @@ showSpellAnimation(caster, spellName, effects) {
 
     }
 
-checkBattleEnd() {
-    const partyAlive = this.party.some(u => u && u.isAlive);
-    const enemiesAlive = this.enemies.some(u => u && u.isAlive);
     
-    if (!partyAlive) {
-        this.log("Defeat! Your party has been wiped out!");
-        this.endBattle(false);
-        return true;
-    }
-    
-    if (!enemiesAlive) {
-        // Calculate exp for this wave before transitioning
-        const waveExp = this.calculateWaveExp();
-        this.waveExpEarned.push(waveExp);
-        
-        // Award exp to alive heroes
-        this.party.forEach((unit, index) => {
-            if (unit && unit.isAlive) {
-                const hero = unit.source;
-                hero.pendingExp += waveExp;
-                this.log(`${hero.name} earned ${waveExp} exp from wave ${this.currentWave + 1}`);
-            }
-        });
-        
-        // Check if there are more waves
-        if (this.currentWave < this.enemyWaves.length - 1) {
-            // Prevent multiple wave transitions
-            if (!this.processingWaveTransition) {
-                this.processingWaveTransition = true;
-                this.log("Wave cleared!");
-                
-                // Load next wave
-                setTimeout(() => {
-                    this.loadWave(this.currentWave + 1);
-                    this.processingWaveTransition = false;
-                }, 1000);
-            }
-            return false; // Battle continues
-        } else {
-            this.log("Victory! All waves defeated!");
-            this.endBattle(true);
-            return true;
-        }
-    }
-    
-    return false;
-}    
 
+    checkBattleEnd() {
+
+        const partyAlive = this.party.some(u => u && u.isAlive);
+
+        const enemiesAlive = this.enemies.some(u => u && u.isAlive);
+
+        
+
+        if (!partyAlive) {
+
+            this.log("Defeat! Your party has been wiped out!");
+
+            this.endBattle(false);
+
+            return true;
+
+        }
+
+        
+
+        if (!enemiesAlive) {
+
+            // Calculate exp for this wave before transitioning
+
+            const waveExp = this.calculateWaveExp();
+
+            this.waveExpEarned.push(waveExp);
+
+            
+
+            // Award exp to alive heroes
+
+            this.party.forEach((unit, index) => {
+
+                if (unit && unit.isAlive) {
+
+                    const hero = unit.source;
+
+                    hero.pendingExp += waveExp;
+
+                    this.log(`${hero.name} earned ${waveExp} exp from wave ${this.currentWave + 1}`);
+
+                }
+
+            });
+
+            
+
+            // Check if there are more waves
+
+            if (this.currentWave < this.enemyWaves.length - 1) {
+
+                // Prevent multiple wave transitions
+
+                if (!this.processingWaveTransition) {
+
+                    this.processingWaveTransition = true;
+
+                    this.log("Wave cleared!");
+
+                    
+
+                    // Load next wave
+
+                    setTimeout(() => {
+
+                        this.loadWave(this.currentWave + 1);
+
+                        this.processingWaveTransition = false;
+
+                    }, 1000);
+
+                }
+
+                return false; // Battle continues
+
+            } else {
+
+                this.log("Victory! All waves defeated!");
+
+                this.endBattle(true);
+
+                return true;
+
+            }
+
+        }
+
+        
+
+        return false;
+
+    }
+
+    
 
     calculateWaveExp() {
-    // Base exp per enemy level
-    const baseExpPerLevel = 10;
-    let totalExp = 0;
-    
-    // Get the current wave configuration from dungeonWaves
-    const currentWaveEnemies = this.game.currentBattle.dungeonWaves[this.currentWave];
-    
-    // Calculate exp based on enemy levels
-    currentWaveEnemies.forEach(enemy => {
-        if (enemy) {
-            totalExp += enemy.level * baseExpPerLevel;
-        }
-    });
-    
-    return totalExp;
-}
 
- endBattle(victory) {
-    this.running = false;
-    this.endTime = Date.now();
-    
-    // Clear any active targeting
-    if (this.targetingState) {
-        this.clearTargeting();
-    }
-    // Clean up wave counter
-    const waveCounter = document.getElementById('waveCounter');
-    if (waveCounter) {
-        waveCounter.remove();
-    }
-    
-    // Clean up level indicator event listeners
-    for (let i = 1; i <= 5; i++) {
-        ['party', 'enemy'].forEach(type => {
-            const element = document.getElementById(`${type}${i}`);
-            if (element) {
-                const levelIndicator = element.querySelector('.levelIndicator');
-                if (levelIndicator && levelIndicator._unitInfoHandler) {
-                    levelIndicator.removeEventListener('click', levelIndicator._unitInfoHandler);
-                    delete levelIndicator._unitInfoHandler;
-                }
+        // Base exp per enemy level
+
+        const baseExpPerLevel = 10;
+
+        let totalExp = 0;
+
+        
+
+        // Get the current wave configuration from dungeonWaves
+
+        const currentWaveEnemies = this.game.currentBattle.enemyWaves[this.currentWave];
+
+        
+
+        // Calculate exp based on enemy levels
+
+        currentWaveEnemies.forEach(enemy => {
+
+            if (enemy) {
+
+                totalExp += enemy.level * baseExpPerLevel;
+
             }
+
         });
+
+        
+
+        return totalExp;
+
     }
+
     
-    // Close any open popup
-    this.game.closeHeroInfo();
-    
-    // Calculate battle duration
-    const duration = Math.floor((this.endTime - this.startTime) / 1000);
-    const minutes = Math.floor(duration / 60);
-    const seconds = duration % 60;
-    const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    
-    // Get dungeon data
-    const dungeonId = this.game.currentDungeon.id;
-    const dungeonData = window.dungeonData.dungeons[dungeonId];
-    const rewards = dungeonData.rewards || { gold: 0, exp: 0 };
-    
-    // Calculate gold changes
-    let goldChange = 0;
-    if (victory) {
-        goldChange = rewards.gold;
-    } else {
-        goldChange = -Math.floor(rewards.gold / 4); // Lose 1/4 gold on defeat
+
+    endBattle(victory) {
+
+        this.running = false;
+
+        this.endTime = Date.now();
+
+        
+
+        // Clear any active targeting
+
+        if (this.targetingState) {
+
+            this.clearTargeting();
+
+        }
+
+        // Clean up wave counter
+
+        const waveCounter = document.getElementById('waveCounter');
+
+        if (waveCounter) {
+
+            waveCounter.remove();
+
+        }
+
+        
+
+// Clean up level indicator event listeners
+        for (let i = 1; i <= 5; i++) {
+            ['party', 'enemy'].forEach(type => {
+                const element = document.getElementById(`${type}${i}`);
+                if (element) {
+                    const levelIndicator = element.querySelector('.levelIndicator');
+                    if (levelIndicator && levelIndicator._unitInfoHandler) {
+                        levelIndicator.removeEventListener('click', levelIndicator._unitInfoHandler);
+                        delete levelIndicator._unitInfoHandler;
+                    }
+                }
+            });
+        }
+	    
+        // Close any open popup
+        this.game.closeHeroInfo();
+
+        // Calculate battle duration
+
+        const duration = Math.floor((this.endTime - this.startTime) / 1000);
+
+        const minutes = Math.floor(duration / 60);
+
+        const seconds = duration % 60;
+
+        const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+        
+
+        // Get dungeon data
+
+        const dungeonId = this.game.currentDungeon.id;
+
+        const dungeonData = window.dungeonData.dungeons[dungeonId];
+
+        const rewards = dungeonData.rewards || { gold: 0, exp: 0 };
+
+        
+
+        // Calculate gold changes
+
+        let goldChange = 0;
+
+        if (victory) {
+
+            goldChange = rewards.gold;
+
+        } else {
+
+            goldChange = -Math.floor(rewards.gold / 4); // Lose 1/4 gold on defeat
+
+        }
+
+        
+
+        // Store battle results
+
+        this.game.pendingBattleResults = {
+
+            victory: victory,
+
+            dungeonName: this.game.currentDungeon.name,
+
+            time: timeString,
+
+            goldChange: goldChange,
+
+            dungeonBonusExp: victory ? rewards.exp : 0,
+
+            heroResults: this.party.map(unit => {
+
+                if (!unit) return null;
+
+                const hero = unit.source;
+
+                const totalExp = hero.pendingExp + (victory && unit.isAlive ? rewards.exp : 0);
+
+                return {
+
+                    hero: hero,
+
+                    expGained: totalExp,
+
+                    survived: unit.isAlive,
+
+                    items: [] // Placeholder for future loot system
+
+                };
+
+            }).filter(r => r !== null)
+
+        };
+
+        
+
+        // Show results popup
+
+        setTimeout(() => {
+
+            this.game.showBattleResults();
+
+        }, 1000);
+
     }
+
     
-    // Store battle results
-    this.game.pendingBattleResults = {
-        victory: victory,
-        dungeonName: this.game.currentDungeon.name,
-        time: timeString,
-        goldChange: goldChange,
-        dungeonBonusExp: victory ? rewards.exp : 0,
-        heroResults: this.party.map(unit => {
-            if (!unit) return null;
-            const hero = unit.source;
-            const totalExp = hero.pendingExp + (victory && unit.isAlive ? rewards.exp : 0);
-            return {
-                hero: hero,
-                expGained: totalExp,
-                survived: unit.isAlive,
-                items: [] // Placeholder for future loot system
-            };
-        }).filter(r => r !== null)
-    };
-    
-    // Show results popup
-    setTimeout(() => {
-        this.game.showBattleResults();
-    }, 1000);
-}
-	
+
     log(message) {
 
         this.battleLog.push(message);
