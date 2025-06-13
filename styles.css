@@ -966,6 +966,32 @@ body {
     position: relative;
 }
 
+/* Fix ONLY the party and enemy slot images - not thumbnails */
+.partySlot > div > div:first-child > img,
+.enemySlot > div > div:first-child > img {
+    width: 60px;
+    height: 60px;
+    image-rendering: pixelated;
+    object-fit: contain; /* This maintains aspect ratio */
+}
+
+/* Fix stars ONLY in party slots - not touching heroThumb */
+.partySlot .thumbStars {
+    bottom: -2px !important;
+    left: -2px !important;
+    font-size: 10px !important;
+    letter-spacing: -3px !important;
+}
+
+/* Fix level ONLY in party slots - not touching heroThumb */
+.partySlot .thumbLevel {
+    bottom: -2px !important;
+    right: -2px !important;
+    font-size: 10px !important;
+}
+
+/* Enemy slots already use different classes (enemyStars, enemyLevel) so they're safe */
+
 .partySlot:nth-child(1) {
     grid-column: 1;
     grid-row: 1;
