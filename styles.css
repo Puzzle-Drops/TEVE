@@ -2003,26 +2003,76 @@ body {
     animation: unitBounce 0.8s ease-in-out;
 }
 
-/* Mobile rendering fix - Alternative approach */
-/* If you still have issues, uncomment this section */
-
-@media (max-width: 768px) and (orientation: landscape) {
-    .game-scaled {
-        width: 100vw !important;
-        height: 100vh !important;
-        transform: none !important;
-        left: 0 !important;
-        top: 0 !important;
+/* Mobile-specific scaling approach */
+@media (max-width: 1024px), (pointer: coarse) {
+    .scaling-wrapper {
         display: flex;
         align-items: center;
         justify-content: center;
+        background: #000;
     }
     
+    .game-scaled {
+        /* Reset all transforms for mobile */
+        transform: none !important;
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        width: 100% !important;
+        height: 100% !important;
+        max-width: 177.78vh; /* 16:9 ratio */
+        max-height: 56.25vw; /* 16:9 ratio */
+        overflow: hidden;
+    }
+    
+    /* Scale down the gameContainer instead */
     #gameContainer {
-        width: min(100vw, calc(100vh * 1.777778));
-        height: min(100vh, calc(100vw * 0.5625));
-        transform: scale(var(--mobile-scale, 1));
-        transform-origin: center center;
+        width: 2560px;
+        height: 1440px;
+        transform-origin: top left;
+        position: absolute;
+        left: 0;
+        top: 0;
     }
 }
 
+/* Emergency fallback - if nothing else works, use viewport units */
+/* Uncomment this if the above doesn't work */
+/*
+@media (max-width: 1024px) {
+    .scaling-wrapper {
+        display: none !important;
+    }
+    
+    body::after {
+        content: '';
+        display: none;
+    }
+    
+    body > .scaling-wrapper {
+        display: block !important;
+        position: relative !important;
+        width: 100vw !important;
+        height: 100vh !important;
+    }
+    
+    .game-scaled {
+        position: relative !important;
+        transform: none !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        left: 0 !important;
+        top: 0 !important;
+    }
+    
+    #gameContainer {
+        width: 100% !important;
+        height: 100% !important;
+        font-size: 1.5vw !important;
+    }
+    
+    #gameContainer * {
+        max-width: 100% !important;
+    }
+}
+*/
