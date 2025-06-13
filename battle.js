@@ -1268,20 +1268,20 @@ showSpellAnimation(caster, spellName, effects) {
 
         
 
-        // Clean up health bar event listeners
+// Clean up level indicator event listeners
         for (let i = 1; i <= 5; i++) {
             ['party', 'enemy'].forEach(type => {
                 const element = document.getElementById(`${type}${i}`);
                 if (element) {
-                    const healthBar = element.querySelector('.healthBar');
-                    if (healthBar && healthBar._unitInfoHandler) {
-                        healthBar.removeEventListener('click', healthBar._unitInfoHandler);
-                        delete healthBar._unitInfoHandler;
+                    const levelIndicator = element.querySelector('.levelIndicator');
+                    if (levelIndicator && levelIndicator._unitInfoHandler) {
+                        levelIndicator.removeEventListener('click', levelIndicator._unitInfoHandler);
+                        delete levelIndicator._unitInfoHandler;
                     }
                 }
             });
         }
-        
+	    
         // Close any open popup
         this.game.closeHeroInfo();
 
@@ -1597,15 +1597,14 @@ if (levelIndicator) {
 }
 
                 
-                // Add click handler for unit info on health bar
-                const healthBarElement = element.querySelector('.healthBar');
-                if (healthBarElement && unit.isAlive) {
-                    healthBarElement.style.cursor = 'pointer';
+// Add click handler for unit info on level indicator
+                if (levelIndicator && unit.isAlive) {
+                    levelIndicator.style.cursor = 'pointer';
                     
                     // Remove any existing click handler
-                    const oldHandler = healthBarElement._unitInfoHandler;
+                    const oldHandler = levelIndicator._unitInfoHandler;
                     if (oldHandler) {
-                        healthBarElement.removeEventListener('click', oldHandler);
+                        levelIndicator.removeEventListener('click', oldHandler);
                     }
                     
                     // Create new handler
@@ -1625,11 +1624,11 @@ if (levelIndicator) {
                     };
                     
                     // Store reference to handler so we can remove it later
-                    healthBarElement._unitInfoHandler = newHandler;
-                    healthBarElement.addEventListener('click', newHandler);
+                    levelIndicator._unitInfoHandler = newHandler;
+                    levelIndicator.addEventListener('click', newHandler);
                     
-                    // Prevent text selection on health bar
-                    healthBarElement.addEventListener('selectstart', (e) => e.preventDefault());
+                    // Prevent text selection on level indicator
+                    levelIndicator.addEventListener('selectstart', (e) => e.preventDefault());
                 }
 
                 // Update unit appearance with sprites
@@ -1640,16 +1639,11 @@ if (unitDiv) {
         unitDiv.style.filter = 'grayscale(100%)';
         levelIndicator.style.display = 'none';
         
-        // Hide health bar and action bar when dead
+// Hide health bar and action bar when dead
         const healthBar = element.querySelector('.healthBar');
         const actionBar = element.querySelector('.actionBar');
         if (healthBar) {
             healthBar.style.display = 'none';
-            // Clean up event listener
-            if (healthBar._unitInfoHandler) {
-                healthBar.removeEventListener('click', healthBar._unitInfoHandler);
-                delete healthBar._unitInfoHandler;
-            }
         }
         if (actionBar) actionBar.style.display = 'none';
     } else {
