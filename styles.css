@@ -2005,7 +2005,7 @@ body {
 
 /* Mobile rendering fix - Alternative approach */
 /* If you still have issues, uncomment this section */
-/*
+
 @media (max-width: 768px) and (orientation: landscape) {
     .game-scaled {
         width: 100vw !important;
@@ -2025,4 +2025,4 @@ body {
         transform-origin: center center;
     }
 }
-*/
+
