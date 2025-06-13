@@ -25,8 +25,8 @@ const spellLogic = {
             if (ally.currentHp > 0) {
                 battle.dealDamage(caster, ally, damage, 'physical');
             }
-        }        
-        battle.log(`${caster.name} kills ${target.name} for ${damage} damage!`);
+        });
+        battle.log(`${caster.name} kills their entire team for ${Math.floor(damage)} damage!`);
     },
     
 
