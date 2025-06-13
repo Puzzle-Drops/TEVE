@@ -2461,15 +2461,34 @@ Magical Damage Reduction: Percentage of magical damage blocked.<br><code>(0.3 ×
             });
         });
 
-        // Scaling script
-        function scaleGame() {
-            const gameScaled = document.getElementById('gameScaled');
-            const scale = Math.min(
-                window.innerWidth / 2560,
-                window.innerHeight / 1440
-            );
-            gameScaled.style.transform = `translate(-50%, -50%) scale(${scale})`;
-        }
+// Replace the scaling function with this simpler version
+function scaleGame() {
+    const isMobile = window.innerWidth <= 1024;
+    const baseWidth = isMobile ? 1920 : 2560;
+    const baseHeight = isMobile ? 1080 : 1440;
+    
+    const gameScaled = document.getElementById('gameScaled');
+    const gameContainer = document.getElementById('gameContainer');
+    
+    if (isMobile) {
+        // Simple mobile approach
+        gameScaled.style.cssText = 'width: 100vw; height: 100vh; transform: none; position: relative;';
+        gameContainer.style.cssText = `width: ${baseWidth}px; height: ${baseHeight}px;`;
+        
+        const scale = Math.min(
+            window.innerWidth / baseWidth,
+            window.innerHeight / baseHeight
+        );
+        
+        gameContainer.style.transform = `scale(${scale})`;
+        gameContainer.style.transformOrigin = 'center center';
+        gameContainer.style.position = 'absolute';
+        gameContainer.style.left = '50%';
+        gameContainer.style.top = '50%';
+        gameContainer.style.marginLeft = `-${baseWidth/2}px`;
+        gameContainer.style.marginTop = `-${baseHeight/2}px`;
+    }
+}
 
         // Scale on load and resize
         window.addEventListener('load', scaleGame);
