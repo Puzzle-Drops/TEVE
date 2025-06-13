@@ -627,14 +627,8 @@ loseLogic: function(battle, caster, targets) {
         }
     });
     
-    // Set own HP to 1
-    caster.currentHp = 1;
-    
-    // Apply stun for 3 turns
-    battle.applyDebuff(caster, 'stun', 3, { stunned: true });
-    
-    // Apply slow for 5 turns
-    battle.applyDebuff(caster, 'slow', 5, { actionBarSpeed: 0.5 });
+    // Set own HP to 0
+    caster.currentHp = 0;
     
     battle.log(`${caster.name} uses Lose! Self-destruction initiated!`);
 },
