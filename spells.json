@@ -792,7 +792,6 @@
     "target": "self",
     "logicKey": "summonGoblinsLogic"
   },
-,
 "win": {
   "id": "win",
   "name": "Win",
