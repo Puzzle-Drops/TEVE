@@ -791,5 +791,30 @@
     "summonCount": 2,
     "target": "self",
     "logicKey": "summonGoblinsLogic"
-  }
+  },
+,
+"win": {
+  "id": "win",
+  "name": "Win",
+  "description": "Instantly defeat all enemies and gain speed",
+  "cooldown": 0,
+  "effects": ["damage", "pure", "aoe", "buff", "speed"],
+  "scaling": {
+    "base": 100000000
+  },
+  "target": "all_enemies",
+  "logicKey": "winLogic"
+},
+"lose": {
+  "id": "lose",
+  "name": "Lose",
+  "description": "Defeat your own team, reduce HP to 1, stun and slow self",
+  "cooldown": 0,
+  "effects": ["damage", "pure", "aoe", "debuff", "stun", "slow"],
+  "scaling": {
+    "base": 100000000
+  },
+  "target": "all_allies",
+  "logicKey": "loseLogic"
+}
 }
