@@ -1796,6 +1796,66 @@ body {
     border: 1px solid #4dd0e1;
 }
 
+/* Active turn circle indicator */
+.activeCircle {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 40px;
+    border: 3px solid #ffd700;
+    border-radius: 50%;
+    box-shadow: 
+        0 0 20px rgba(255, 215, 0, 0.8),
+        0 0 40px rgba(255, 215, 0, 0.5),
+        inset 0 0 20px rgba(255, 215, 0, 0.3);
+    animation: activeGlow 2s ease-in-out infinite;
+    z-index: 1;
+    pointer-events: none;
+}
+
+@keyframes activeGlow {
+    0%, 100% { 
+        opacity: 0.8;
+        transform: translateX(-50%) scale(1);
+    }
+    50% { 
+        opacity: 1;
+        transform: translateX(-50%) scale(1.1);
+    }
+}
+
+/* Target selection arrow */
+.targetArrow {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 36px;
+    color: #ffd700;
+    text-shadow: 
+        0 0 20px rgba(255, 215, 0, 0.8),
+        0 0 40px rgba(255, 215, 0, 0.5),
+        0 2px 4px rgba(0, 0, 0, 0.9);
+    animation: targetBounce 1s ease-in-out infinite;
+    z-index: 10;
+    pointer-events: none;
+}
+
+@keyframes targetBounce {
+    0%, 100% { 
+        transform: translateX(-50%) translateY(0);
+    }
+    50% { 
+        transform: translateX(-50%) translateY(-10px);
+    }
+}
+
+
+
+
+
 /* Different spell animations */
 @keyframes unitShake {
     0%, 100% { transform: translateX(0); }
