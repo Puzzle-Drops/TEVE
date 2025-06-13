@@ -1,5 +1,6 @@
 TEVE - Twilight's Forever
 
+
 -Description
 Turn based strategy game. This plays more like an idler but you can play it yourself if you'd like to. It's strongly based on the pve aspects in summoners war but will not be like mobile games with cash grabs and that kind of thing. It's going to be strictly gameplayer and hunting items and gear and building a party. The game is strongly party based. I want 5 characters on your team, going against up to 5 on the enemy side per wave. The game is progression based per character. You start as a villager and once you reach level 40 you can promote classes. The progression will be detailed below. Abilities will be straight forward and easy to follow. I want the ui to be clean and show only what you need but you can always hover for additional info. The game should be playable on mobile landscape and is meant for a 1920x1080 resolution display and screen ratio. Portrait is not allowed.
 
