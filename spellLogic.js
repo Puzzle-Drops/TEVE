@@ -17,6 +17,18 @@ const spellLogic = {
         battle.dealDamage(caster, target, damage, 'physical');
         battle.log(`${caster.name} kills ${target.name} for ${damage} damage!`);
     },
+    
+    punchkillteamLogic: function(battle, caster, targets) {
+        const damage = 500000 + (.5*caster.stats.str) + (.5*caster.stats.agi) + (.5*caster.stats.int);
+        const party = battle.getParty(caster);
+        party.forEach(ally => {
+            if (ally.currentHp > 0) {
+                battle.dealDamage(caster, ally, damage, 'physical');
+            }
+        }        
+        battle.log(`${caster.name} kills ${target.name} for ${damage} damage!`);
+    },
+    
 
     // Druid Spells
     naturesTouchLogic: function(battle, caster, target) {
