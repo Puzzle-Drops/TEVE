@@ -327,6 +327,7 @@
                 this.gearStats = { str: 0, agi: 0, int: 0 };
                 this.awakened = false;
                 this.abilities = this.getClassAbilities();
+		this.pendingExp = 0;
             }
 
             generateName() {
@@ -612,6 +613,8 @@
                 this.selectedTier = null;
                 this.expandedDungeon = null;
                 this.currentPreviewWave = 0;
+                this.gold = 10000; // Starting gold for the player
+                this.pendingBattleResults = null; // Store results until popup is closed
                 
                 // Load dungeon tiers from JSON data
                 this.dungeonTiers = {};
