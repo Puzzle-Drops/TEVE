@@ -1188,110 +1188,76 @@ showSpellAnimation(caster, spellName, effects) {
     }
 
     
-
-    checkBattleEnd() {
-
-        const partyAlive = this.party.some(u => u && u.isAlive);
-
-        const enemiesAlive = this.enemies.some(u => u && u.isAlive);
-
-        
-
-        if (!partyAlive) {
-
-            this.log("Defeat! Your party has been wiped out!");
-
-            this.endBattle(false);
-
-            return true;
-
-        }
-
-        
-
-        if (!enemiesAlive) {
-
-            // Calculate exp for this wave before transitioning
-
-            const waveExp = this.calculateWaveExp();
-
-            this.waveExpEarned.push(waveExp);
-
-            
-
-            // Award exp to alive heroes
-
-            this.party.forEach((unit, index) => {
-
-                if (unit && unit.isAlive) {
-
-                    const hero = unit.source;
-
-                    hero.pendingExp += waveExp;
-
-                    this.log(`${hero.name} earned ${waveExp} exp from wave ${this.currentWave + 1}`);
-
-                }
-
-            });
-
-            
-
-            // Check if there are more waves
-
-            if (this.currentWave < this.enemyWaves.length - 1) {
-
-                // Prevent multiple wave transitions
-
-                if (!this.processingWaveTransition) {
-
-                    this.processingWaveTransition = true;
-
-                    this.log("Wave cleared!");
-
-                    
-
-                    // Load next wave
-
-                    setTimeout(() => {
-
-                        this.loadWave(this.currentWave + 1);
-
-                        this.processingWaveTransition = false;
-
-                    }, 1000);
-
-                }
-
-                return false; // Battle continues
-
-            } else {
-
-                this.log("Victory! All waves defeated!");
-
-                this.endBattle(true);
-
-                return true;
-
-            }
-
-        }
-
-        
-
-        return false;
-
-    }
-
+checkBattleEnd() {
+    const partyAlive = this.party.some(u => u && u.isAlive);
+    const enemiesAlive = this.enemies.some(u => u && u.isAlive);
     
-
+    if (!partyAlive) {
+        this.log("Defeat! Your party has been wiped out!");
+        this.endBattle(false);
+        return true;
+    }
+    
+    if (!enemiesAlive) {
+        // Safety check for wave data
+        if (this.dungeonWaves && this.currentWave < this.dungeonWaves.length) {
+            // Calculate exp for this wave before transitioning
+            const waveExp = this.calculateWaveExp();
+            this.waveExpEarned.push(waveExp);
+            
+            // Award exp to alive heroes
+            this.party.forEach((unit, index) => {
+                if (unit && unit.isAlive) {
+                    const hero = unit.source;
+                    hero.pendingExp += waveExp;
+                    this.log(`${hero.name} earned ${waveExp} exp from wave ${this.currentWave + 1}`);
+                }
+            });
+        }
+        
+        // Check if there are more waves
+        if (this.currentWave < this.enemyWaves.length - 1) {
+            // Prevent multiple wave transitions
+            if (!this.processingWaveTransition) {
+                this.processingWaveTransition = true;
+                this.log("Wave cleared!");
+                
+                // Load next wave
+                setTimeout(() => {
+                    this.loadWave(this.currentWave + 1);
+                    this.processingWaveTransition = false;
+                }, 1000);
+            }
+            return false; // Battle continues
+        } else {
+            this.log("Victory! All waves defeated!");
+            this.endBattle(true);
+            return true;
+        }
+    }
+    
+    return false;
+}
+	
+    
 calculateWaveExp() {
     // Base exp per enemy level
     const baseExpPerLevel = 10;
     let totalExp = 0;
     
+    // Safety check - make sure we have valid wave data
+    if (!this.dungeonWaves || this.currentWave >= this.dungeonWaves.length) {
+        console.error(`Invalid wave index: ${this.currentWave} of ${this.dungeonWaves ? this.dungeonWaves.length : 0}`);
+        return 0;
+    }
+    
     // Get the current wave configuration from this battle's dungeonWaves
     const currentWaveEnemies = this.dungeonWaves[this.currentWave];
+    
+    if (!currentWaveEnemies) {
+        console.error(`No enemies found for wave ${this.currentWave}`);
+        return 0;
+    }
     
     // Calculate exp based on enemy levels
     currentWaveEnemies.forEach(enemy => {
@@ -1302,7 +1268,7 @@ calculateWaveExp() {
     
     return totalExp;
 }
-
+	
     endBattle(victory) {
 
         this.running = false;
