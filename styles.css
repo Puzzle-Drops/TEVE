@@ -1,6 +1,20 @@
 /* ============================================
    SCALING WRAPPER STYLES - 1440p Base Resolution
    ============================================ */
+/* Mobile-specific resets to prevent rendering issues */
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    position: fixed;
+    /* Prevent mobile browser UI from affecting layout */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
 .scaling-wrapper {
     width: 100vw;
     height: 100vh;
@@ -9,6 +23,17 @@
     top: 0;
     left: 0;
     background: #000;
+    /* Mobile viewport fixes */
+    -webkit-overflow-scrolling: touch;
+    touch-action: none;
+}
+
+/* Mobile-specific fixes */
+@supports (-webkit-touch-callout: none) {
+    /* iOS Safari specific fixes */
+    .scaling-wrapper {
+        height: -webkit-fill-available;
+    }
 }
 
 .game-scaled {
@@ -32,11 +57,17 @@
     -moz-osx-font-smoothing: unset;
     font-smooth: never;
     
-    /* Hardware acceleration */
+    /* Hardware acceleration with mobile fixes */
     will-change: transform;
     -webkit-transform: translateZ(0);
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
+    
+    /* Mobile rendering fixes */
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
 }
 
 /* Apply crisp rendering to all images */
@@ -1971,3 +2002,27 @@ body {
 .unitSlot.casting-transform {
     animation: unitBounce 0.8s ease-in-out;
 }
+
+/* Mobile rendering fix - Alternative approach */
+/* If you still have issues, uncomment this section */
+/*
+@media (max-width: 768px) and (orientation: landscape) {
+    .game-scaled {
+        width: 100vw !important;
+        height: 100vh !important;
+        transform: none !important;
+        left: 0 !important;
+        top: 0 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    #gameContainer {
+        width: min(100vw, calc(100vh * 1.777778));
+        height: min(100vh, calc(100vw * 0.5625));
+        transform: scale(var(--mobile-scale, 1));
+        transform-origin: center center;
+    }
+}
+*/
