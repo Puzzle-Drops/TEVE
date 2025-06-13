@@ -1377,15 +1377,10 @@ showSpellAnimation(caster, spellName, effects) {
         const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
         
-
-        // Get dungeon data
-
-        const dungeonId = this.game.currentDungeon.id;
-
-        const dungeonData = window.dungeonData.dungeons[dungeonId];
-
-        const rewards = dungeonData.rewards || { gold: 0, exp: 0 };
-
+// Get dungeon data
+const dungeonId = this.game.currentDungeon.id;
+const dungeonConfig = dungeonData.dungeons[dungeonId];
+const rewards = dungeonConfig.rewards || { gold: 0, exp: 0 };
         
 
         // Calculate gold changes
