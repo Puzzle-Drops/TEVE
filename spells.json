@@ -39,6 +39,21 @@
     "target": "enemy",
     "logicKey": "punchkillLogic"
   },
+    "punchkillteam": {
+    "id": "punchkillteam",
+    "name": "PunchkillTeam",
+    "description": "Basic attack dealing 500000 + (.5 × all stats) damage",
+    "cooldown": 0,
+    "effects": ["damage", "physical", "aoe"],
+    "scaling": {
+      "base": 500000,
+      "str": 0.5,
+      "agi": 0.5,
+      "int": 0.5
+    },
+    "target": "all_allies",
+    "logicKey": "punchkillteamLogic"
+  },
   "natures_touch": {
     "id": "natures_touch",
     "name": "Nature's Touch",
