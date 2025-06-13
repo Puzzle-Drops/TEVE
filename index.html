@@ -1170,20 +1170,20 @@ enterDungeon(tierName, dungeonIndex) {
                     // Clear ability panel
                     document.getElementById('abilityPanel').innerHTML = '';
                     
-                    // Clean up health bar event listeners
+                    // Clean up level indicator event listeners
                     for (let i = 1; i <= 5; i++) {
                         ['party', 'enemy'].forEach(type => {
                             const element = document.getElementById(`${type}${i}`);
                             if (element) {
-                                const healthBar = element.querySelector('.healthBar');
-                                if (healthBar && healthBar._unitInfoHandler) {
-                                    healthBar.removeEventListener('click', healthBar._unitInfoHandler);
-                                    delete healthBar._unitInfoHandler;
+                                const levelIndicator = element.querySelector('.levelIndicator');
+                                if (levelIndicator && levelIndicator._unitInfoHandler) {
+                                    levelIndicator.removeEventListener('click', levelIndicator._unitInfoHandler);
+                                    delete levelIndicator._unitInfoHandler;
                                 }
                             }
                         });
                     }
-                    
+			
                     // Close any open popup
                     this.closeHeroInfo();
                     
