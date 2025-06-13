@@ -1618,7 +1618,7 @@ if (levelIndicator) {
         let starClass = '★';
         if (hero.classTier > 0) {
             const starCount = hero.awakened ? 5 : hero.classTier;
-            stars = '★'.repeat(starCount);
+            stars = '★'.repeat(starCount+1);
             starClass = hero.awakened ? 'awakened' : '';
         }
         
