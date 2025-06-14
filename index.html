@@ -1093,7 +1093,7 @@ enterDungeon(tierName, dungeonIndex) {
                         const classId = hero.className.toLowerCase().replace(/ /g, '_');
                         
                         unitDiv.innerHTML = `
-                            <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_battle.png" alt="${hero.displayClassName}" 
+                            <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_portrait.png" alt="${hero.displayClassName}" 
                                  style="width: 100%; image-rendering: pixelated; object-fit: contain;"
                                  onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'font-size: 9px; text-align: center; line-height: 1.2;\\'><div>${hero.name}</div><div style=\\'color: #6a9aaa;\\'>Lv${hero.level}</div></div>'">
                         `;
@@ -1228,7 +1228,7 @@ enterDungeon(tierName, dungeonIndex) {
 
                     thumb.innerHTML = `
     <div style="position: relative; width: 100px; height: 100px;">
-        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_battle.png" alt="${hero.displayClassName}" 
+        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_portrait.png" alt="${hero.displayClassName}" 
              style="width: 100%; height: 100%; object-fit: cover; object-position: top center; image-rendering: pixelated;"
              onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${hero.displayClassName}</text></svg>'">
              
@@ -1541,7 +1541,7 @@ hideStatTooltip() {
                                     
                                     return `
                                         <div class="classCard">
-                                            <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${promoId}_${hero.gender}_battle.png" alt="${displayName}" 
+                                            <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${promoId}_${hero.gender}_portrait.png" alt="${displayName}" 
                                                  style="width: 80px; height: 80px; object-fit: cover; object-position: top center; image-rendering: pixelated;"
                                                  onerror="this.style.display='none'">
 											<div class="classStars" style="font-size: 24px; font-weight: bold; color: #ffd700; text-shadow: 0 0 12px rgba(255, 215, 0, 0.9), 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${promoStars}</div>
@@ -1642,7 +1642,7 @@ hideStatTooltip() {
                         // Update portrait remains the same
                         const portrait = document.getElementById('heroPortrait');
                         const classId = hero.className.toLowerCase().replace(/ /g, '_');
-                        portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_battle.png" alt="${hero.displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${hero.displayClassName}</text></svg>'">`;
+                        portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_portrait.png" alt="${hero.displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${hero.displayClassName}</text></svg>'">`;
                         
                         this.showHeroTab('info');
                         this.updateHeroList();
@@ -1655,7 +1655,7 @@ hideStatTooltip() {
                         // Update portrait immediately after promotion
                         const portrait = document.getElementById('heroPortrait');
                         const classId = hero.className.toLowerCase().replace(/ /g, '_');
-                        portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_battle.png" alt="${hero.displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${hero.displayClassName}</text></svg>'">`;
+                        portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_portrait.png" alt="${hero.displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${hero.displayClassName}</text></svg>'">`;
                         
                         this.showHeroTab('info');
                         this.updateHeroList();
@@ -1884,7 +1884,7 @@ hideStatTooltip() {
                 const classId = hero.className.toLowerCase().replace(/ /g, '_');
                 thumb.innerHTML = `
     <div style="position: relative; width: 100px; height: 100px;">
-        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_battle.png" alt="${hero.displayClassName}" 
+        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_portrait.png" alt="${hero.displayClassName}" 
              style="width: 100%; height: 100%; object-fit: cover; object-position: top center; image-rendering: pixelated;"
              onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${hero.displayClassName}</text></svg>'">
              
@@ -1959,7 +1959,7 @@ hideStatTooltip() {
                         slot.innerHTML = `
                             <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
                                 <div style="position: relative; width: 60px; height: 60px;">
-                                    <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_battle.png" alt="${hero.displayClassName}" 
+                                    <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_portrait.png" alt="${hero.displayClassName}" 
                                          style="width: 100%; height: 100%; object-fit: cover; object-position: top center; image-rendering: pixelated;"
                                          onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${hero.displayClassName}</text></svg>'">
                                     ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
@@ -2431,7 +2431,7 @@ showBattleResults() {
         
         heroDiv.innerHTML = `
             <div class="heroResultThumb">
-                <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_battle.png" 
+                <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_portrait.png" 
                      alt="${hero.displayClassName}"
                      style="width: 100%; height: 100%; object-fit: cover; object-position: top center; image-rendering: pixelated;"
                      onerror="this.style.display='none'">
