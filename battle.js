@@ -1187,7 +1187,6 @@ showSpellAnimation(caster, spellName, effects) {
 
     }
 
-    
 checkBattleEnd() {
     const partyAlive = this.party.some(u => u && u.isAlive);
     const enemiesAlive = this.enemies.some(u => u && u.isAlive);
@@ -1199,21 +1198,21 @@ checkBattleEnd() {
     }
     
     if (!enemiesAlive) {
-        // Safety check for wave data
-        if (this.dungeonWaves && this.currentWave < this.dungeonWaves.length) {
-            // Calculate exp for this wave before transitioning
-            const waveExp = this.calculateWaveExp();
-            this.waveExpEarned.push(waveExp);
-            
-            // Award exp to alive heroes
-            this.party.forEach((unit, index) => {
-                if (unit && unit.isAlive) {
-                    const hero = unit.source;
-                    hero.pendingExp += waveExp;
-                    this.log(`${hero.name} earned ${waveExp} exp from wave ${this.currentWave + 1}`);
-                }
-            });
-        }
+        // Calculate exp for this wave before transitioning
+        const waveExp = this.calculateWaveExp();
+        console.log(`Wave ${this.currentWave + 1} cleared, exp calculated: ${waveExp}`);
+        this.waveExpEarned.push(waveExp);
+        
+        // Award exp to alive heroes
+        this.party.forEach((unit, index) => {
+            if (unit && unit.isAlive) {
+                const hero = unit.source;
+                const prevExp = hero.pendingExp;
+                hero.pendingExp += waveExp;
+                this.log(`${hero.name} earned ${waveExp} exp from wave ${this.currentWave + 1} (total pending: ${hero.pendingExp})`);
+                console.log(`${hero.name}: ${prevExp} + ${waveExp} = ${hero.pendingExp} pending exp`);
+            }
+        });
         
         // Check if there are more waves
         if (this.currentWave < this.enemyWaves.length - 1) {
@@ -1238,34 +1237,27 @@ checkBattleEnd() {
     
     return false;
 }
-	
     
 calculateWaveExp() {
     // Base exp per enemy level
     const baseExpPerLevel = 10;
     let totalExp = 0;
     
-    // Safety check - make sure we have valid wave data
-    if (!this.dungeonWaves || this.currentWave >= this.dungeonWaves.length) {
-        console.error(`Invalid wave index: ${this.currentWave} of ${this.dungeonWaves ? this.dungeonWaves.length : 0}`);
-        return 0;
-    }
-    
     // Get the current wave configuration from this battle's dungeonWaves
     const currentWaveEnemies = this.dungeonWaves[this.currentWave];
     
-    if (!currentWaveEnemies) {
-        console.error(`No enemies found for wave ${this.currentWave}`);
-        return 0;
-    }
+    console.log(`Calculating exp for wave ${this.currentWave + 1}:`, currentWaveEnemies);
     
     // Calculate exp based on enemy levels
     currentWaveEnemies.forEach(enemy => {
         if (enemy) {
-            totalExp += enemy.level * baseExpPerLevel;
+            const expFromEnemy = enemy.level * baseExpPerLevel;
+            totalExp += expFromEnemy;
+            console.log(`Enemy ${enemy.name} (Lv${enemy.level}): ${expFromEnemy} exp`);
         }
     });
     
+    console.log(`Total wave exp: ${totalExp}`);
     return totalExp;
 }
 	
@@ -1361,27 +1353,23 @@ const rewards = dungeonConfig.rewards || { gold: 0, exp: 0 };
 
             dungeonBonusExp: victory ? rewards.exp : 0,
 
-            heroResults: this.party.map(unit => {
-
-                if (!unit) return null;
-
-                const hero = unit.source;
-
-                const totalExp = hero.pendingExp + (victory && unit.isAlive ? rewards.exp : 0);
-
-                return {
-
-                    hero: hero,
-
-                    expGained: totalExp,
-
-                    survived: unit.isAlive,
-
-                    items: [] // Placeholder for future loot system
-
-                };
-
-            }).filter(r => r !== null)
+            // In endBattle method, when creating heroResults:
+heroResults: this.party.map(unit => {
+    if (!unit) return null;
+    const hero = unit.source;
+    const waveExp = hero.pendingExp;
+    const dungeonBonus = victory && unit.isAlive ? rewards.exp : 0;
+    const totalExp = waveExp + dungeonBonus;
+    
+    console.log(`${hero.name} final exp: ${waveExp} (waves) + ${dungeonBonus} (dungeon) = ${totalExp} total`);
+    
+    return {
+        hero: hero,
+        expGained: totalExp,
+        survived: unit.isAlive,
+        items: [] // Placeholder for future loot system
+    };
+}).filter(r => r !== null)
 
         };
 
