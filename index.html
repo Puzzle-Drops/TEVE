@@ -2380,14 +2380,16 @@ showBattleResults() {
                 ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}" style="position: absolute; bottom: 0; left: 0; font-size: 12px;">${stars}</div>` : ''}
                 <div class="thumbLevel" style="position: absolute; bottom: 0; right: 0; font-size: 14px;">${hero.level}</div>
             </div>
-            <div class="heroResultName">${hero.name}</div>
-            <div class="heroResultClass">${displayClassName}</div>
+            <div class="heroResultClass">${hero.name}</div>
+            <div class="heroResultName">${displayClassName}</div>
             ${result.survived ? `
                 <div class="expGainBar">
                     <div class="expGainFill" style="width: 0%"></div>
                     <div class="expGainText">+${result.expGained} EXP</div>
                 </div>
-                ${result.leveledUp ? `<div style="color: #ffd700; font-size: 14px; margin-top: 5px; font-weight: bold; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);">Level Up! +${result.levelsGained}</div>` : ''}
+                <div class="levelUpContainer" style="height: 30px; margin-top: 20px;">
+                    ${result.leveledUp ? `<div style="color: #ffd700; font-size: 14px; font-weight: bold; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);">Level Up! +${result.levelsGained}</div>` : ''}
+                </div>
             ` : '<div style="color: #ff4444; font-size: 12px;">Did not survive</div>'}
             <div class="itemSlot"></div>
         `;
