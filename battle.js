@@ -40,14 +40,6 @@ class BattleUnit {
 
                 }
 
-                // Ultimate abilities start with random cooldown
-
-                if (ability.ultimate) {
-
-                    this.cooldowns[index] = Math.floor(Math.random() * 500) + 1;
-
-                }
-
             });
 
         }
@@ -714,117 +706,66 @@ constructor(game, party, enemyWaves) {
     
 
     executeAITurn(unit) {
-
-        // Find the strongest available ability
-
+        // Find the strongest available ability (excluding passives)
         let bestAbility = null;
-
         let bestIndex = -1;
-
         
-
         for (let i = unit.abilities.length - 1; i >= 0; i--) {
-
-            if (unit.canUseAbility(i)) {
-
-                bestAbility = unit.abilities[i];
-
-                bestIndex = i;
-
-                break;
-
-            }
-
-        }
-
-        
-
-        if (bestAbility && bestIndex >= 0) {
-
-            // Determine target based on ability
-
-            let target = null;
-
-            const spell = spellManager.getSpell(bestAbility.id);
-
+            const ability = unit.abilities[i];
+            const spell = spellManager.getSpell(ability.id);
+            // Skip passive abilities
+            if (spell && spell.target === 'passive') continue;
             
-
-            if (spell) {
-
-                switch (spell.target) {
-
-                    case 'enemy':
-
-                        const enemies = unit.isEnemy ? this.party : this.enemies;
-
-                        const aliveEnemies = enemies.filter(e => e && e.isAlive);
-
-                        if (aliveEnemies.length > 0) {
-
-                            target = aliveEnemies[Math.floor(Math.random() * aliveEnemies.length)];
-
-                        }
-
-                        break;
-
-                    case 'ally':
-
-                        const allies = unit.isEnemy ? this.enemies : this.party;
-
-                        const aliveAllies = allies.filter(a => a && a.isAlive);
-
-                        // Prioritize low HP allies for heals
-
-                        if (spell.effects.includes('heal')) {
-
-                            aliveAllies.sort((a, b) => (a.currentHp / a.maxHp) - (b.currentHp / b.maxHp));
-
-                        }
-
-                        if (aliveAllies.length > 0) {
-
-                            target = aliveAllies[0];
-
-                        }
-
-                        break;
-
-                    case 'self':
-
-                        target = unit;
-
-                        break;
-
-                    case 'all_enemies':
-
-                    case 'all_allies':
-
-                        target = 'all';
-
-                        break;
-
-                }
-
-                
-
-                if (target || spell.target === 'passive') {
-
-                    this.executeAbility(unit, bestIndex, target);
-
-                }
-
+            if (unit.canUseAbility(i)) {
+                bestAbility = ability;
+                bestIndex = i;
+                break;
             }
-
-        } else {
-
-            this.log(`${unit.name} has no abilities available!`);
-
         }
-
         
-
+        if (bestAbility && bestIndex >= 0) {
+            // Determine target based on ability
+            let target = null;
+            const spell = spellManager.getSpell(bestAbility.id);
+            
+            if (spell) {
+                switch (spell.target) {
+                    case 'enemy':
+                        const enemies = unit.isEnemy ? this.party : this.enemies;
+                        const aliveEnemies = enemies.filter(e => e && e.isAlive);
+                        if (aliveEnemies.length > 0) {
+                            target = aliveEnemies[Math.floor(Math.random() * aliveEnemies.length)];
+                        }
+                        break;
+                    case 'ally':
+                        const allies = unit.isEnemy ? this.enemies : this.party;
+                        const aliveAllies = allies.filter(a => a && a.isAlive);
+                        // Prioritize low HP allies for heals
+                        if (spell.effects.includes('heal')) {
+                            aliveAllies.sort((a, b) => (a.currentHp / a.maxHp) - (b.currentHp / b.maxHp));
+                        }
+                        if (aliveAllies.length > 0) {
+                            target = aliveAllies[0];
+                        }
+                        break;
+                    case 'self':
+                        target = unit;
+                        break;
+                    case 'all_enemies':
+                    case 'all_allies':
+                        target = 'all';
+                        break;
+                }
+                
+                if (target) {
+                    this.executeAbility(unit, bestIndex, target);
+                }
+            }
+        } else {
+            this.log(`${unit.name} has no abilities available!`);
+        }
+        
         this.endTurn();
-
     }
 
     
@@ -937,7 +878,15 @@ showSpellAnimation(caster, spellName, effects) {
 			this.currentUnit.reduceCooldowns();
 			// Apply HP regen after turn
 			if (this.currentUnit.isAlive) {
-				const regen = Math.floor(this.currentUnit.stats.str * 0.05);
+				// Base regen from STR
+				let regen = Math.floor(this.currentUnit.stats.str * 0.05);
+				
+				// Check for percentage-based regen (from Grove Keeper passive)
+				if (this.currentUnit.regenPercent) {
+					const percentRegen = Math.floor(this.currentUnit.maxHp * this.currentUnit.regenPercent);
+					regen += percentRegen;
+				}
+				
 				if (regen > 0) {
 					const actualRegen = Math.min(regen, this.currentUnit.maxHp - this.currentUnit.currentHp);
 					if (actualRegen > 0) {
@@ -1403,14 +1352,20 @@ showPlayerAbilities(unit) {
     const abilityPanel = document.getElementById('abilityPanel');
     abilityPanel.innerHTML = '';
     
-    // Count abilities
-    const abilityCount = unit.abilities.length;
+    // Count non-passive abilities
+    const activeAbilities = unit.abilities.filter(ability => {
+        const spell = spellManager.getSpell(ability.id);
+        return spell && spell.target !== 'passive';
+    });
     
-    unit.abilities.forEach((ability, index) => {
+    activeAbilities.forEach((ability, index) => {
+        // Find the original index in the full abilities array
+        const originalIndex = unit.abilities.indexOf(ability);
+        
         const abilityDiv = document.createElement('div');
         abilityDiv.className = 'ability';
         
-        if (!unit.canUseAbility(index)) {
+        if (!unit.canUseAbility(originalIndex)) {
             abilityDiv.classList.add('onCooldown');
         }
         
@@ -1419,7 +1374,7 @@ showPlayerAbilities(unit) {
         
         abilityDiv.innerHTML = `
             <img src="${iconUrl}" alt="${ability.name}" style="width: 100px; height: 100px;" onerror="this.style.display='none'">
-            ${unit.cooldowns[index] > 0 ? `<span class="cooldownText">${unit.cooldowns[index]}</span>` : ''}
+            ${unit.cooldowns[originalIndex] > 0 ? `<span class="cooldownText">${unit.cooldowns[originalIndex]}</span>` : ''}
         `;
         
         // Add tooltip on hover using the new format
@@ -1432,7 +1387,7 @@ showPlayerAbilities(unit) {
             game.hideAbilityTooltip();
         };
         
-        if (unit.canUseAbility(index)) {
+        if (unit.canUseAbility(originalIndex)) {
             abilityDiv.onclick = () => {
                 // Hide tooltip when clicked
                 game.hideAbilityTooltip();
@@ -1440,9 +1395,9 @@ showPlayerAbilities(unit) {
                 if (spell) {
                     // For targeted abilities, highlight valid targets
                     if (spell.target === 'enemy' || spell.target === 'ally') {
-                        this.selectTarget(unit, index, spell.target);
+                        this.selectTarget(unit, originalIndex, spell.target);
                     } else {
-                        this.executeAbility(unit, index, spell.target === 'self' ? unit : 'all');
+                        this.executeAbility(unit, originalIndex, spell.target === 'self' ? unit : 'all');
                         this.endTurn();
                     }
                 }
@@ -1885,4 +1840,3 @@ if (unitDiv) {
     }
 
 }
-
