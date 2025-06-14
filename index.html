@@ -340,6 +340,7 @@
         class Hero {
             constructor(className = 'villager') {
                 this.name = this.generateName();
+                this.gender = Math.random() < 0.5 ? 'male' : 'female'; // Random gender
                 this.className = className;
                 this.level = 5;
                 this.exp = 0;
@@ -371,6 +372,32 @@
                     modifiers: { str: 1, agi: 1, int: 1 },
                     spells: []
                 };
+            }
+
+            get displayClassName() {
+                // Handle gender-specific class names
+                const classId = this.className.toLowerCase().replace(/ /g, '_');
+                const classInfo = this.classData;
+                
+                // Check for gender-specific names
+                if (classId === 'priest') {
+                    return this.gender === 'female' ? 'Priestess' : 'Priest';
+                } else if (classId === 'matriarch') {
+                    return this.gender === 'male' ? 'Luminary' : 'Matriarch';
+                } else if (classId === 'prophetess') {
+                    return this.gender === 'male' ? 'Prophet' : 'Prophetess';
+                } else if (classId === 'imperial_knight') {
+                    return this.gender === 'female' ? 'Lady Knight' : 'Imperial Knight';
+                } else if (classId === 'champion') {
+                    return this.gender === 'female' ? 'Championess' : 'Champion';
+                } else if (classId === 'wizard') {
+                    return this.gender === 'female' ? 'Witch' : 'Wizard';
+                } else if (classId === 'white_wizard') {
+                    return this.gender === 'female' ? 'White Witch' : 'White Wizard';
+                }
+                
+                // Default: format class name
+                return this.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
             }
 
             get classTier() {
@@ -430,7 +457,6 @@
 				return (0.3 * totalResist) / (totalResist + 1000);
 			}
 
-
             getClassAbilities() {
                 const classInfo = this.classData;
                 const abilities = [];
@@ -443,12 +469,12 @@
                 const spellIds = classInfo.spells;
                 const spells = spellManager ? spellManager.getSpellsByIds(spellIds) : [];
                 
-                // Determine ability level based on tier and awakened status
-                const abilityLevel = (this.classTier === 4 && this.awakened) ? 5 : this.classTier || 1;
+                // Determine ability level based on tier
+                const abilityLevel = this.classTier || 1;
                 
-                // Add regular abilities
+                // Add regular abilities (first 3 are active abilities)
                 spells.forEach((spell, index) => {
-                    if (spell) {
+                    if (spell && index < 3) {
                         const ability = {
                             id: spell.id,
                             name: spell.name,
@@ -460,29 +486,26 @@
                             effects: spell.effects
                         };
                         
-                        // Mark aura abilities
-                        if (spell.effects.includes('aura')) {
-                            ability.aura = true;
-                        }
-                        
                         abilities.push(ability);
                     }
                 });
                 
-                // Add ultimate ability for awakened class 4
-                if (this.classTier === 4 && this.awakened && classInfo.ultimateSpell) {
-                    const ultimateSpell = spellManager ? spellManager.getSpell(classInfo.ultimateSpell) : null;
-                    if (ultimateSpell) {
+                // Add 4th ability (passive based on gender) for tier 4 classes
+                if (this.classTier === 4 && classInfo.passiveSpells) {
+                    const passiveSpellId = this.gender === 'male' ? classInfo.passiveSpells.male : classInfo.passiveSpells.female;
+                    const passiveSpell = spellManager ? spellManager.getSpell(passiveSpellId) : null;
+                    
+                    if (passiveSpell) {
                         abilities.push({
-                            id: ultimateSpell.id,
-                            name: ultimateSpell.name,
-                            cooldown: Math.floor(Math.random() * 500) + 1,
-                            currentCooldown: Math.floor(Math.random() * 500) + 1,
-                            level: 5,
-                            ultimate: true,
-                            description: ultimateSpell.description,
-                            icon: `${ultimateSpell.id}.png`,
-                            effects: ultimateSpell.effects
+                            id: passiveSpell.id,
+                            name: passiveSpell.name,
+                            cooldown: 0,
+                            currentCooldown: 0,
+                            level: abilityLevel,
+                            passive: true,
+                            description: passiveSpell.description,
+                            icon: `${passiveSpell.id}.png`,
+                            effects: passiveSpell.effects || []
                         });
                     }
                 }
@@ -683,6 +706,21 @@ init() {
         this.heroes.push(new Hero());
     }
     
+    // Set specific genders for heroes
+    this.heroes[0].gender = 'male';
+    this.heroes[1].gender = 'female';
+    this.heroes[2].gender = 'male';
+    this.heroes[3].gender = 'female';
+    this.heroes[4].gender = 'male';
+    this.heroes[5].gender = 'female';
+    this.heroes[6].gender = 'male';
+    this.heroes[7].gender = 'female';
+    this.heroes[8].gender = 'male';
+    this.heroes[9].gender = 'female';
+    this.heroes[10].gender = 'male';
+    this.heroes[11].gender = 'female';
+    this.heroes[12].gender = 'male'; // Tester is always male
+    
     // Hero 0: Druid (Level 185)
     this.heroes[0].level = 50;
     this.heroes[0].promote('druid');
@@ -779,6 +817,7 @@ init() {
 
     // Hero 12: Tester (Level 50 with godlike stats)
     this.heroes[12] = new Hero('tester');
+    this.heroes[12].gender = 'male'; // Tester is always male
     this.heroes[12].level = 50;
     this.heroes[12].exp = 0;
     this.heroes[12].expToNext = this.heroes[12].calculateExpToNext();
@@ -1052,10 +1091,9 @@ enterDungeon(tierName, dungeonIndex) {
                         slot.style.display = 'block';
                         const unitDiv = slot.querySelector('.unit');
                         const classId = hero.className.toLowerCase().replace(/ /g, '_');
-                        const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
                         
                         unitDiv.innerHTML = `
-                            <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_back.gif" alt="${displayClassName}" 
+                            <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_battle.png" alt="${hero.displayClassName}" 
                                  style="width: 100%; image-rendering: pixelated; object-fit: contain;"
                                  onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'font-size: 9px; text-align: center; line-height: 1.2;\\'><div>${hero.name}</div><div style=\\'color: #6a9aaa;\\'>Lv${hero.level}</div></div>'">
                         `;
@@ -1187,12 +1225,12 @@ enterDungeon(tierName, dungeonIndex) {
                     
                     // Use class ID for image files
                     const classId = hero.className.toLowerCase().replace(/ /g, '_');
-					const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
 
                     thumb.innerHTML = `
     <div style="position: relative; width: 100px; height: 100px;">
-        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" 
-             onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${displayClassName}</text></svg>'">
+        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_battle.png" alt="${hero.displayClassName}" 
+             style="width: 100%; height: 100%; object-fit: cover; object-position: top center; image-rendering: pixelated;"
+             onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${hero.displayClassName}</text></svg>'">
              
         ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
 
@@ -1201,7 +1239,7 @@ enterDungeon(tierName, dungeonIndex) {
         ${canPromote ? `<div class="promoteArrowThumb ${isAwakenable ? 'awaken' : 'normal'}">^</div>` : ''}
     </div>
 
-    <div class="thumbClass">${displayClassName}</div>
+    <div class="thumbClass">${hero.displayClassName}</div>
     <div class="thumbName">${hero.name}</div>
 `;
 
@@ -1218,8 +1256,7 @@ enterDungeon(tierName, dungeonIndex) {
                 // Update portrait
                 const portrait = document.getElementById('heroPortrait');
                 const classId = hero.className.toLowerCase().replace(/ /g, '_');
-				const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${displayClassName}</text></svg>'">`;
+                portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_battle.png" alt="${hero.displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${hero.displayClassName}</text></svg>'">`;
                 
                 // Update hero list selection
                 this.updateHeroList();
@@ -1270,8 +1307,6 @@ enterDungeon(tierName, dungeonIndex) {
 					}
 				}
 				
-				const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-				
 				// Calculate derived stats
 				const armor = hero.armor;
 				const resist = hero.resist;
@@ -1281,10 +1316,11 @@ enterDungeon(tierName, dungeonIndex) {
 				content.innerHTML = `
 					<div style="margin-bottom: 20px;">
 						${stars ? `<div style="font-size: 48px; font-weight: bold; ${hero.awakened ? 'color: #d896ff;' : 'color: #ffd700;'} text-shadow: 0 0 12px ${hero.awakened ? 'rgba(216, 150, 255, 0.9)' : 'rgba(255, 215, 0, 0.9)'}, 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${stars}</div>` : ''}
-						<div class="heroName">${displayClassName}</div>
+						<div class="heroName">${hero.displayClassName}</div>
 						<div style="font-size: 32px; color: #6a9aaa; cursor: pointer;" onclick="game.editHeroName()">
 							<span id="heroNameText">${hero.name}</span>
 						</div>
+						<div style="font-size: 24px; color: #8a7aaa; margin-top: 10px;">${hero.gender.charAt(0).toUpperCase() + hero.gender.slice(1)}</div>
 						<div style="font-size: 32px; color: #4dd0e1; margin-top: 40px;">Level ${hero.level}</div>
 						</div>
 						<div class="expBar" style="position: relative; height: 40px; border: 1px solid #2a6a8a;">
@@ -1493,11 +1529,24 @@ hideStatTooltip() {
                                     for (let i = 0; i < promoClass.tier; i++) {
                                         promoStars += '★';
                                     }
+                                    
+                                    // Get display name for the promotion based on hero's gender
+                                    let displayName = promoClass.name;
+                                    if (promoId === 'priest' && hero.gender === 'female') displayName = 'Priestess';
+                                    else if (promoId === 'matriarch' && hero.gender === 'male') displayName = 'Luminary';
+                                    else if (promoId === 'prophetess' && hero.gender === 'male') displayName = 'Prophet';
+                                    else if (promoId === 'imperial_knight' && hero.gender === 'female') displayName = 'Lady Knight';
+                                    else if (promoId === 'champion' && hero.gender === 'female') displayName = 'Championess';
+                                    else if (promoId === 'wizard' && hero.gender === 'female') displayName = 'Witch';
+                                    else if (promoId === 'white_wizard' && hero.gender === 'female') displayName = 'White Witch';
+                                    
                                     return `
                                         <div class="classCard">
-                                            <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${promoId}_front.gif" alt="${promo}" onerror="this.style.display='none'">
+                                            <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${promoId}_${hero.gender}_battle.png" alt="${displayName}" 
+                                                 style="width: 80px; height: 80px; object-fit: cover; object-position: top center; image-rendering: pixelated;"
+                                                 onerror="this.style.display='none'">
 											<div class="classStars" style="font-size: 24px; font-weight: bold; color: #ffd700; text-shadow: 0 0 12px rgba(255, 215, 0, 0.9), 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${promoStars}</div>
-											<h2>${promoClass.name}</h2>
+											<h2>${displayName}</h2>
                                             <button class="promoteButton" onclick="game.showPromotionConfirm('${promo}')">
                                                 Promote<br>
                                                 <span style="font-size: 14px;">💰 -${1000 * Math.pow(10, hero.classTier)}</span>
@@ -1594,8 +1643,7 @@ hideStatTooltip() {
                         // Update portrait remains the same
                         const portrait = document.getElementById('heroPortrait');
                         const classId = hero.className.toLowerCase().replace(/ /g, '_');
-						const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                        portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${displayClassName}</text></svg>'">`;
+                        portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_battle.png" alt="${hero.displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${hero.displayClassName}</text></svg>'">`;
                         
                         this.showHeroTab('info');
                         this.updateHeroList();
@@ -1608,8 +1656,7 @@ hideStatTooltip() {
                         // Update portrait immediately after promotion
                         const portrait = document.getElementById('heroPortrait');
                         const classId = hero.className.toLowerCase().replace(/ /g, '_');
-						const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                        portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${displayClassName}</text></svg>'">`;
+                        portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_battle.png" alt="${hero.displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${hero.displayClassName}</text></svg>'">`;
                         
                         this.showHeroTab('info');
                         this.updateHeroList();
@@ -1626,10 +1673,10 @@ hideStatTooltip() {
                 this.pendingPromotion = newClass;
                 
                 if (newClass === 'Awaken') {
-                    confirmText.textContent = `Awaken ${hero.name} the ${hero.className}?`;
+                    confirmText.textContent = `Awaken ${hero.name} the ${hero.displayClassName}?`;
                     confirmCost.innerHTML = `💰 -10000000`;
                 } else {
-                    confirmText.textContent = `Promote ${hero.name} the ${hero.className} to ${newClass}?`;
+                    confirmText.textContent = `Promote ${hero.name} the ${hero.displayClassName} to ${newClass}?`;
                     const cost = 1000 * Math.pow(10, hero.classTier);
                     confirmCost.innerHTML = `💰 -${cost}`;
                 }
@@ -1774,7 +1821,7 @@ hideStatTooltip() {
                         slot.innerHTML = `
                             <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
                                 <div style="position: relative; width: 60px; height: 60px;">
-                                    <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${enemy.enemyId}_front.gif"
+                                    <img src="https://puzzle-drops.github.io/TEVE/img/sprites/enemies/${enemy.enemyId}.png"
                                          alt="${enemy.name}" 
                                          onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'10\\'>${enemy.name}</text></svg>'">
                                     ${stars ? `<div class="enemyStars ${starClass}">${stars}</div>` : ''}
@@ -1836,18 +1883,18 @@ hideStatTooltip() {
                 }
                 
                 const classId = hero.className.toLowerCase().replace(/ /g, '_');
-				const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
                 thumb.innerHTML = `
     <div style="position: relative; width: 100px; height: 100px;">
-        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" 
-             onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${displayClassName}</text></svg>'">
+        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_battle.png" alt="${hero.displayClassName}" 
+             style="width: 100%; height: 100%; object-fit: cover; object-position: top center; image-rendering: pixelated;"
+             onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${hero.displayClassName}</text></svg>'">
              
         ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
 
         <div class="thumbLevel">${hero.level}</div>
     </div>
 
-    <div class="thumbClass">${displayClassName}</div>
+    <div class="thumbClass">${hero.displayClassName}</div>
     <div class="thumbName">${hero.name}</div>
 `;
                 
@@ -1910,15 +1957,16 @@ hideStatTooltip() {
                             }
                         }
                         
-						const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
                         slot.innerHTML = `
                             <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
                                 <div style="position: relative; width: 60px; height: 60px;">
-                                    <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${displayClassName}</text></svg>'">
+                                    <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_battle.png" alt="${hero.displayClassName}" 
+                                         style="width: 100%; height: 100%; object-fit: cover; object-position: top center; image-rendering: pixelated;"
+                                         onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${hero.displayClassName}</text></svg>'">
                                     ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
                                     <div class="thumbLevel">${hero.level}</div>
                                 </div>
-                                <div class="thumbClass">${displayClassName}</div>
+                                <div class="thumbClass">${hero.displayClassName}</div>
                                 <div class="thumbName">${hero.name}</div>
                             </div>
                         `;
@@ -2001,9 +2049,8 @@ hideStatTooltip() {
             }
 
 showHeroInfoPopup(hero) {
-    const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
     const popup = document.getElementById('heroInfoPopup');
-    document.getElementById('popupHeroName').textContent = `Lv.${hero.level} ${displayClassName} | ${hero.name}`;
+    document.getElementById('popupHeroName').textContent = `Lv.${hero.level} ${hero.displayClassName} | ${hero.name}`;
     
     // Show stats in double column format
     const stats = hero.totalStats;
@@ -2243,12 +2290,10 @@ formatAbilityTooltip(ability, level) {
     
     // Format cooldown
     let cooldownText = 'Cooldown: ';
-    if (ability.aura || effects.includes('aura')) {
+    if (ability.passive || effects.includes('passive')) {
         cooldownText += 'Passive';
     } else if (ability.cooldown === 0) {
         cooldownText += 'none';
-    } else if (ability.cooldown === -1 || ability.ultimate) {
-        cooldownText += `${ability.currentCooldown || ability.cooldown} turns`;
     } else {
         cooldownText += `${ability.cooldown} turns`;
     }
@@ -2381,21 +2426,21 @@ showBattleResults() {
         }
         
         const classId = hero.className.toLowerCase().replace(/ /g, '_');
-        const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
         
         // Calculate exp bar fill
         const expPercent = hero.expToNext > 0 ? (hero.exp / hero.expToNext * 100) : 100;
         
         heroDiv.innerHTML = `
             <div class="heroResultThumb">
-                <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" 
-                     alt="${displayClassName}"
+                <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_battle.png" 
+                     alt="${hero.displayClassName}"
+                     style="width: 100%; height: 100%; object-fit: cover; object-position: top center; image-rendering: pixelated;"
                      onerror="this.style.display='none'">
                 ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}" style="position: absolute; bottom: 0; left: 0; font-size: 12px;">${stars}</div>` : ''}
                 <div class="thumbLevel" style="position: absolute; bottom: 0; right: 0; font-size: 14px;">${hero.level}</div>
             </div>
             <div class="heroResultClass">${hero.name}</div>
-            <div class="heroResultName">${displayClassName}</div>
+            <div class="heroResultName">${hero.displayClassName}</div>
             ${result.survived ? `
                 <div class="expGainBar">
                     <div class="expGainFill" style="width: 0%"></div>
@@ -2502,7 +2547,6 @@ applyBattleResults() {
                         e.preventDefault();
                         return;
                     }
-                    
                     // Clear targeting in battle if active
                     if (game.currentBattle && game.currentBattle.targetingState) {
                         game.currentBattle.clearTargeting();
