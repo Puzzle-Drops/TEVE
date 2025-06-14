@@ -10,255 +10,125 @@
     <div id="gameContainer">
         <!-- Main Menu -->
         <div id="mainMenu">
-            <div class="gameTitle">TEVE</div>
+            <h1 class="gameTitle">TEVE</h1>
             <div class="menuButtons">
-                <button class="menuButton" onclick="game.showHeroes()">Heroes</button>
-                <button class="menuButton" onclick="game.showDungeons()">Dungeons</button>
-                <button class="menuButton" onclick="game.showStash()">Stash</button>
+                <button class="menuButton" onclick="game.showHeroesScreen()">Heroes</button>
+                <button class="menuButton" onclick="game.showDungeonsScreen()">Dungeons</button>
+                <button class="menuButton" onclick="game.showStashScreen()">Stash</button>
             </div>
-        </div>
-
-        <!-- Battle Scene -->
-        <div id="battleScene">
-            <div class="battleField">
-                <!-- Party Units -->
-                <div class="unitSlot party1" id="party1">
-                    <div class="healthBar">
-                        <div class="healthFill" style="width: 100%"></div>
-                        <div class="healthText">100/100</div>
-                    </div>
-	            <div class="unit">P1</div>
-                    <div class="unitShadow"></div>
-                </div>
-                <div class="unitSlot party2" id="party2">
-                    <div class="unit">P2</div>
-                    <div class="healthBar">
-                        <div class="healthFill" style="width: 100%"></div>
-                        <div class="healthText">100/100</div>
-                    </div>
-                    <div class="unitShadow"></div>
-                </div>
-                <div class="unitSlot party3" id="party3">
-                    <div class="unit">P3</div>
-                    <div class="healthBar">
-                        <div class="healthFill" style="width: 100%"></div>
-                        <div class="healthText">100/100</div>
-                    </div>
-                    <div class="unitShadow"></div>
-                </div>
-                <div class="unitSlot party4" id="party4">
-                    <div class="unit">P4</div>
-                    <div class="healthBar">
-                        <div class="healthFill" style="width: 100%"></div>
-                        <div class="healthText">100/100</div>
-                    </div>
-                    <div class="unitShadow"></div>
-                </div>
-                <div class="unitSlot party5" id="party5">
-                    <div class="unit">P5</div>
-                    <div class="healthBar">
-                        <div class="healthFill" style="width: 100%"></div>
-                        <div class="healthText">100/100</div>
-                    </div>
-                    <div class="unitShadow"></div>
-                </div>
-
-                <!-- Enemy Units -->
-                <div class="unitSlot enemy1" id="enemy1">
-                    <div class="unit">E1</div>
-                    <div class="healthBar">
-                        <div class="healthFill" style="width: 100%"></div>
-                        <div class="healthText">67/67</div>
-                    </div>
-                    <div class="unitShadow"></div>
-                </div>
-                <div class="unitSlot enemy2" id="enemy2" style="display: none;">
-                    <div class="unit">E2</div>
-                    <div class="healthBar">
-                        <div class="healthFill" style="width: 100%"></div>
-                        <div class="healthText">50/50</div>
-                    </div>
-                    <div class="unitShadow"></div>
-                </div>
-                <div class="unitSlot enemy3" id="enemy3" style="display: none;">
-                    <div class="unit">E3</div>
-                    <div class="healthBar">
-                        <div class="healthFill" style="width: 100%"></div>
-                        <div class="healthText">50/50</div>
-                    </div>
-                    <div class="unitShadow"></div>
-                </div>
-                <div class="unitSlot enemy4" id="enemy4" style="display: none;">
-                    <div class="unit">E4</div>
-                    <div class="healthBar">
-                        <div class="healthFill" style="width: 100%"></div>
-                        <div class="healthText">50/50</div>
-                    </div>
-                    <div class="unitShadow"></div>
-                </div>
-                <div class="unitSlot enemy5" id="enemy5" style="display: none;">
-                    <div class="unit">E5</div>
-                    <div class="healthBar">
-                        <div class="healthFill" style="width: 100%"></div>
-                        <div class="healthText">50/50</div>
-                    </div>
-                    <div class="unitShadow"></div>
-                </div>
-            </div>
-
-            <div class="battleUI">
-                <div class="battleLog" id="battleLog">
-                    Battle started!<br>
-                </div>
-                <div class="autoToggleContainer">
-                    <label style="color: #b0e0f0;">
-                        <input type="checkbox" id="autoModeToggle" onchange="game.currentBattle && game.currentBattle.toggleAutoMode(this.checked)">
-                        Auto
-                    </label>
-                </div>
-                <div class="abilityPanel" id="abilityPanel">
-                </div>
-            </div>
-            <button class="exitBattleButton" onclick="game.exitBattle()">Exit Battle</button>
         </div>
 
         <!-- Heroes Screen -->
         <div id="heroesScreen">
+            <button class="backButton" onclick="game.showMainMenu()">← Back</button>
+            <div class="goldDisplay">
+                <span class="goldIcon">💰</span>
+                <span class="goldAmount">0</span>
+            </div>
             <div class="heroPanel">
-                <div class="heroPortrait" id="heroPortrait">
-                    <img src="" alt="Hero" style="display: none;">
-                </div>
+                <div class="heroPortrait"></div>
                 <div class="heroStats">
                     <div class="heroTabs">
-                        <button class="tabButton active" onclick="game.showHeroTab('info')">Info</button>
-                        <button class="tabButton" onclick="game.showHeroTab('skills')">Skills</button>
-                        <button class="tabButton" onclick="game.showHeroTab('promote')">Promote</button>
-                        <button class="tabButton" onclick="game.showHeroTab('gear')">Gear</button>
-                        <button class="tabButton" onclick="game.showHeroTab('log')">Log</button>
+                        <button class="tabButton active" onclick="game.showTab('info')">Info</button>
+                        <button class="tabButton" onclick="game.showTab('skills')">Skills</button>
+                        <button class="tabButton" onclick="game.showTab('promote')">Promote</button>
+                        <button class="tabButton" onclick="game.showTab('gear')">Gear</button>
+                        <button class="tabButton" onclick="game.showTab('log')">Log</button>
                     </div>
-                    <div class="tabContent" id="heroContent">
-                        <!-- Content will be dynamically generated -->
-                    </div>
+                    <div class="tabContent"></div>
                 </div>
             </div>
-            <div class="heroList" id="heroList">
-                <!-- Hero thumbnails will be dynamically generated -->
-            </div>
-            <button class="backButton" onclick="game.showMainMenu()">Back</button>
+            <div class="heroList"></div>
         </div>
 
         <!-- Dungeons Screen -->
         <div id="dungeonsScreen">
-            <div class="worldMap" id="worldMap">
-                <!-- Map orbs will be dynamically generated -->
-            </div>
-            <div class="dungeonListPanel" id="dungeonListPanel">
-                <h2 class="dungeonTierTitle" id="dungeonTierTitle">Select a Region</h2>
-                <div id="dungeonList">
-                    <!-- Dungeon list will be dynamically generated -->
-                </div>
-            </div>
-            <button class="backButton" onclick="game.showMainMenu()">Back</button>
+            <button class="backButton" onclick="game.showMainMenu()">← Back</button>
+            <div class="worldMap"></div>
+            <div class="dungeonListPanel"></div>
         </div>
 
         <!-- Stash Screen -->
         <div id="stashScreen">
-            <h1 class="stashTitle">Stash</h1>
-            <div class="stashGrid" id="stashList">
-                <!-- Stash grid will be dynamically generated -->
+            <button class="backButton" onclick="game.showMainMenu()">← Back</button>
+            <h2 class="stashTitle">Stash</h2>
+            <div class="stashGrid"></div>
+        </div>
+
+        <!-- Battle Scene -->
+        <div id="battleScene">
+            <div class="battleField"></div>
+            <button class="exitBattleButton" onclick="game.exitBattle()">Exit Battle</button>
+            
+            <!-- Unit slots will be created dynamically -->
+            
+            <div class="battleUI">
+                <div class="battleLog" id="battleLog"></div>
+                <div class="abilityPanel" id="abilityPanel"></div>
             </div>
-            <button class="backButton" onclick="game.showMainMenu()">Back</button>
+            
+            <div class="autoToggleContainer">
+                <label>
+                    <input type="checkbox" id="autoToggle" onchange="game.toggleAutoMode(this.checked)">
+                    Auto Battle
+                </label>
+            </div>
         </div>
 
         <!-- Party Select Screen -->
         <div id="partySelectScreen">
+            <button class="backButton" onclick="game.cancelPartySelect()">← Back</button>
             <div class="partySelectContainer">
                 <div class="partySelectHeader">
-                    <div class="dungeonTitle" id="dungeonName">Satyrs</div>
+                    <h2 class="dungeonTitle"></h2>
+                    <div class="waveNavigation">
+                        <button class="waveArrow" onclick="game.previousWave()">◄</button>
+                        <span class="waveText">Wave: 1/1</span>
+                        <button class="waveArrow" onclick="game.nextWave()">►</button>
+                    </div>
                 </div>
                 <div class="battlePreview">
-    <div style="display: flex; flex-direction: column; align-items: center;">
-        <div class="partyLabel">
-            <span class="partyLabelText">My Party</span>
-        </div>
-        <div class="partyFormation" id="partyFormation">
-            <div class="partySlot" data-slot="0">
-                <div class="slotPlaceholder">⬡</div>
-            </div>
-            <div class="partySlot" data-slot="1">
-                <div class="slotPlaceholder">⬡</div>
-            </div>
-            <div class="partySlot" data-slot="2">
-                <div class="slotPlaceholder">⬡</div>
-            </div>
-            <div class="partySlot" data-slot="3">
-                <div class="slotPlaceholder">⬡</div>
-            </div>
-            <div class="partySlot" data-slot="4">
-                <div class="slotPlaceholder">⬡</div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="vsText">VS</div>
-    
-    <div style="display: flex; flex-direction: column; align-items: center;">
-        <div id="waveNavigation" class="waveNavigation">
-            <button class="waveArrow" onclick="game.navigateWave('prev')">←</button>
-            <span class="waveText">Wave 1/1</span>
-            <button class="waveArrow" onclick="game.navigateWave('next')">→</button>
-        </div>
-        <div class="enemyFormation" id="enemyFormation">
-            <div class="enemySlot" data-slot="0">
-                <div class="slotPlaceholder">⬡</div>
-            </div>
-            <div class="enemySlot" data-slot="1">
-                <div class="slotPlaceholder">⬡</div>
-            </div>
-            <div class="enemySlot" data-slot="2">
-                <div class="slotPlaceholder">⬡</div>
-            </div>
-            <div class="enemySlot" data-slot="3">
-                <div class="slotPlaceholder">⬡</div>
-            </div>
-            <div class="enemySlot" data-slot="4">
-                <div class="slotPlaceholder">⬡</div>
-            </div>
-        </div>
-    </div>
-</div>
-                
-                <div class="heroSelectArea">
-                    <div class="heroSelectList" id="heroSelectList">
-                        <!-- Hero thumbnails will be generated here -->
+                    <div>
+                        <div class="partyLabel">
+                            <span class="partyLabelText">Your Party</span>
+                        </div>
+                        <div class="partyFormation">
+                            <div class="partySlot" data-slot="0"><div class="slotPlaceholder">+</div></div>
+                            <div class="partySlot" data-slot="1"><div class="slotPlaceholder">+</div></div>
+                            <div class="partySlot" data-slot="2"><div class="slotPlaceholder">+</div></div>
+                            <div class="partySlot" data-slot="3"><div class="slotPlaceholder">+</div></div>
+                            <div class="partySlot" data-slot="4"><div class="slotPlaceholder">+</div></div>
+                        </div>
                     </div>
+                    <div class="vsText">VS</div>
+                    <div>
+                        <div class="enemyFormation">
+                            <div class="enemySlot" data-slot="0"></div>
+                            <div class="enemySlot" data-slot="1"></div>
+                            <div class="enemySlot" data-slot="2"></div>
+                            <div class="enemySlot" data-slot="3"></div>
+                            <div class="enemySlot" data-slot="4"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="heroSelectArea">
+                    <div class="heroSelectList"></div>
                     <div class="actionButtons">
-                        <button class="startBattleBtn" id="startBattleBtn" disabled onclick="game.startBattle()">
-                            ⚔️ Start
-                        </button>
-                        <button class="cancelBtn" onclick="game.closeDungeonSelect()">
-                            Cancel
-                        </button>
+                        <button class="startBattleBtn" onclick="game.startBattleWithParty()">Start Battle</button>
+                        <button class="cancelBtn" onclick="game.cancelPartySelect()">Cancel</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Hero Info Popup -->
-        <div id="heroInfoPopup" class="heroInfoPopup">
-            <div class="heroInfoHeader">
-                <div class="heroInfoTitle" id="popupHeroName">Hero Name</div>
-                <button class="closeInfoBtn" onclick="game.closeHeroInfo()">×</button>
-            </div>
-            <div class="heroInfoContent">
-                <div class="heroInfoStats">
-                    <div id="popupStats"></div>
-                    <div class="abilityList">
-                        <div id="popupAbilities"></div>
-                    </div>
-                </div>
-                <div class="heroInfoGear">
-                    <div id="popupGear"></div>
+        <!-- Confirmation Modal -->
+        <div id="confirmModal" class="confirmModal">
+            <div class="confirmContent">
+                <p class="confirmText"></p>
+                <p class="confirmCost">💰 <span></span></p>
+                <div class="confirmButtons">
+                    <button class="confirmBtn confirmYes">Yes</button>
+                    <button class="confirmBtn confirmNo">No</button>
                 </div>
             </div>
         </div>
@@ -266,84 +136,85 @@
         <!-- Battle Results Popup -->
         <div id="battleResultsPopup" class="battleResultsPopup">
             <div class="resultsHeader">
-                <div class="resultsTitle" id="resultsTitle">Victory!</div>
-                <div class="dungeonInfo" id="dungeonInfo">Defeated Satyrs in 02:45</div>
+                <h2 class="resultsTitle">Victory!</h2>
+                <div class="dungeonInfo"></div>
             </div>
-            
             <div class="rewardsSection">
                 <div class="rewardLine">
-                    <span class="rewardLabel">Gold Reward:</span>
-                    <span class="rewardValue" id="goldReward">+1000</span>
+                    <span class="rewardLabel">Time:</span>
+                    <span class="rewardValue" id="battleTime">00:00</span>
                 </div>
                 <div class="rewardLine">
-                    <span class="rewardLabel">Dungeon Bonus EXP:</span>
-                    <span class="rewardValue" id="bonusExp">+500</span>
+                    <span class="rewardLabel">Gold:</span>
+                    <span class="rewardValue" id="goldChange">+0</span>
                 </div>
             </div>
-            
             <div class="heroResultsSection">
-                <div class="heroResultsTitle">Heroes</div>
-                <div class="heroResultsGrid" id="heroResultsGrid">
-                    <!-- Hero results will be generated here -->
-                </div>
+                <h3 class="heroResultsTitle">Heroes</h3>
+                <div class="heroResultsGrid"></div>
             </div>
-            
             <button class="closeResultsBtn" onclick="game.closeBattleResults()">Continue</button>
         </div>
-    </div>
 
-    <!-- Confirmation Modal -->
-    <div id="confirmModal" class="confirmModal">
-        <div class="confirmContent">
-            <div class="confirmText" id="confirmText"></div>
-            <div class="confirmCost" id="confirmCost"></div>
-            <div class="confirmButtons">
-                <button class="confirmBtn confirmYes" onclick="game.confirmPromotion()">Yes</button>
-                <button class="confirmBtn confirmNo" onclick="game.cancelPromotion()">No</button>
+        <!-- Hero Info Popup -->
+        <div id="heroInfoPopup" class="heroInfoPopup">
+            <div class="heroInfoHeader">
+                <h3 class="heroInfoTitle">Hero Info</h3>
+                <button class="closeInfoBtn" onclick="game.closeHeroInfo()">×</button>
+            </div>
+            <div class="heroInfoContent">
+                <div class="heroInfoStats"></div>
+                <div class="heroInfoGear"></div>
             </div>
         </div>
+
+        <!-- Ability Tooltip -->
+        <div id="abilityTooltip" style="display: none;"></div>
     </div>
 
-    <script src="spellLogic.js"></script>
-    <script src="battle.js"></script>
     <script>
-        // Global managers
-        let spellManager;
-        let unitData;
-	let dungeonData;
-        
-        // Initialize data loading
-        async function loadGameData() {
-            spellManager = new SpellManager();
-            await spellManager.loadSpells();
-            
-            // Load unit data
-            try {
-                const response = await fetch('units.json');
-                unitData = await response.json();
-                console.log('Unit data loaded');
-            } catch (error) {
-                console.error('Failed to load unit data:', error);
-            }
+        // Game data
+        let classData = null;
+        let enemyData = null;
+        let dungeonData = null;
+        let spellManager = null;
+        let game = null;
 
-	    // Load dungeon data
+        // Load game data
+        async function loadGameData() {
             try {
-                const response = await fetch('dungeons.json');
-                dungeonData = await response.json();
-                console.log('Dungeon data loaded');
+                // Load units data
+                const unitsResponse = await fetch('units.json');
+                const unitsData = await unitsResponse.json();
+                classData = unitsData;
+                enemyData = unitsData.enemies;
+
+                // Load dungeon data
+                const dungeonResponse = await fetch('dungeons.json');
+                dungeonData = await dungeonResponse.json();
+
+                // Load spell data
+                spellManager = new SpellManager();
+                await spellManager.loadSpells();
+
+                // Initialize game
+                game = new Game();
+                game.init();
             } catch (error) {
-                console.error('Failed to load dungeon data:', error);
+                console.error('Failed to load game data:', error);
             }
         }
 
-        // Hero Class
+        // Hero class with gender system
         class Hero {
-            constructor(className = 'villager') {
-                this.name = this.generateName();
-                this.className = className;
-                this.level = 5;
+            constructor(name, classKey, level = 1) {
+                this.name = name;
+                this.classKey = classKey;
+                this.level = level;
                 this.exp = 0;
-                this.expToNext = this.calculateExpToNext();
+                this.currentClass = classData.classes[classKey];
+                this.classTier = this.currentClass.tier;
+                this.awakened = false;
                 this.gear = {
                     head: null,
                     chest: null,
@@ -352,302 +223,175 @@
                     offhand: null,
                     trinket: null
                 };
-                this.gearStats = { str: 0, agi: 0, int: 0 };
-                this.awakened = false;
-                this.abilities = this.getClassAbilities();
                 this.pendingExp = 0;
-            }
-
-            generateName() {
-                const names = ['Aelar', 'Brin', 'Cara', 'Dain', 'Eira', 'Finn', 'Gwen', 'Hal'];
-                return names[Math.floor(Math.random() * names.length)];
-            }
-
-            get classData() {
-                const classId = this.className.toLowerCase().replace(/ /g, '_');
-                return unitData?.classes[classId] || {
-                    name: this.className,
-                    tier: 0,
-                    modifiers: { str: 1, agi: 1, int: 1 },
-                    spells: []
-                };
-            }
-
-            get classTier() {
-                return this.classData.tier;
-            }
-
-            get baseStats() {
-                const mods = this.classData.modifiers;
-                return {
-                    str: Math.floor(this.level * mods.str),
-                    agi: Math.floor(this.level * mods.agi),
-                    int: Math.floor(this.level * mods.int)
-                };
+                
+                // Assign random gender on creation
+                this.gender = Math.random() < 0.5 ? 'male' : 'female';
             }
 
             get totalStats() {
-                const base = this.baseStats;
-                return {
-                    str: base.str + this.gearStats.str,
-                    agi: base.agi + this.gearStats.agi,
-                    int: base.int + this.gearStats.int
+                const baseStats = {
+                    str: Math.floor(this.level * this.currentClass.modifiers.str),
+                    agi: Math.floor(this.level * this.currentClass.modifiers.agi),
+                    int: Math.floor(this.level * this.currentClass.modifiers.int)
                 };
+
+                // Add gear stats
+                const gearStats = this.gearStats;
+                baseStats.str += gearStats.str || 0;
+                baseStats.agi += gearStats.agi || 0;
+                baseStats.int += gearStats.int || 0;
+
+                return baseStats;
+            }
+
+            get gearStats() {
+                const stats = { str: 0, agi: 0, int: 0, armor: 0, resist: 0 };
+                
+                Object.values(this.gear).forEach(item => {
+                    if (item) {
+                        stats.str += item.stats.str || 0;
+                        stats.agi += item.stats.agi || 0;
+                        stats.int += item.stats.int || 0;
+                        stats.armor += item.stats.armor || 0;
+                        stats.resist += item.stats.resist || 0;
+                    }
+                });
+
+                return stats;
             }
 
             get hp() {
                 return this.totalStats.str * 25;
             }
 
-            get hpRegen() {
-                return this.totalStats.str * 0.05;
-            }
-
-            get actionBarSpeed() {
-                const agi = this.totalStats.agi;
-                return 100 + 100 * (agi / (agi + 1000));
-            }
-			
-			get armor() {
-				const stats = this.totalStats;
-				const gearArmor = this.gearStats.armor || 0;
-				return (0.25 * stats.str) + (0.05 * stats.agi) + gearArmor;
-			}
-
-			get resist() {
-				const stats = this.totalStats;
-				const gearResist = this.gearStats.resist || 0;
-				return (0.25 * stats.int) + gearResist;
-			}
-
-			get physicalDamageReduction() {
-				const totalArmor = this.armor;
-				return (0.9 * totalArmor) / (totalArmor + 500);
-			}
-
-			get magicDamageReduction() {
-				const totalResist = this.resist;
-				return (0.3 * totalResist) / (totalResist + 1000);
-			}
-
-
-            getClassAbilities() {
-                const classInfo = this.classData;
+            get abilities() {
                 const abilities = [];
+                const spells = this.currentClass.spells || [];
                 
-                if (!classInfo.spells || classInfo.spells.length === 0) {
-                    return abilities;
-                }
-                
-                // Get spell data from manager
-                const spellIds = classInfo.spells;
-                const spells = spellManager ? spellManager.getSpellsByIds(spellIds) : [];
-                
-                // Determine ability level based on tier and awakened status
-                const abilityLevel = (this.classTier === 4 && this.awakened) ? 5 : this.classTier || 1;
-                
-                // Add regular abilities
-                spells.forEach((spell, index) => {
+                // Add regular spells (1-3)
+                spells.forEach((spellId, index) => {
+                    const spell = spellManager.getSpell(spellId);
                     if (spell) {
-                        const ability = {
-                            id: spell.id,
+                        abilities.push({
+                            id: spellId,
                             name: spell.name,
-                            cooldown: spell.cooldown,
-                            currentCooldown: 0,
-                            level: abilityLevel,
-                            description: spell.description,
-                            icon: `${spell.id}.png`,
-                            effects: spell.effects
-                        };
-                        
-                        // Mark aura abilities
-                        if (spell.effects.includes('aura')) {
-                            ability.aura = true;
+                            level: Math.min(index + 1, this.classTier + 1),
+                            cooldown: spell.cooldown || 0,
+                            passive: spell.target === 'passive'
+                        });
+                    }
+                });
+                
+                // Add gender-based passive ability for tier 4
+                if (this.classTier === 4) {
+                    const genderPassive = this.currentClass[`${this.gender}Passive`];
+                    if (genderPassive) {
+                        const spell = spellManager.getSpell(genderPassive);
+                        if (spell) {
+                            abilities.push({
+                                id: genderPassive,
+                                name: spell.name,
+                                level: this.awakened ? 5 : 4,
+                                cooldown: 0,
+                                passive: true,
+                                aura: true
+                            });
                         }
-                        
-                        abilities.push(ability);
-                    }
-                });
-                
-                // Add ultimate ability for awakened class 4
-                if (this.classTier === 4 && this.awakened && classInfo.ultimateSpell) {
-                    const ultimateSpell = spellManager ? spellManager.getSpell(classInfo.ultimateSpell) : null;
-                    if (ultimateSpell) {
-                        abilities.push({
-                            id: ultimateSpell.id,
-                            name: ultimateSpell.name,
-                            cooldown: Math.floor(Math.random() * 500) + 1,
-                            currentCooldown: Math.floor(Math.random() * 500) + 1,
-                            level: 5,
-                            ultimate: true,
-                            description: ultimateSpell.description,
-                            icon: `${ultimateSpell.id}.png`,
-                            effects: ultimateSpell.effects
-                        });
                     }
                 }
                 
                 return abilities;
             }
 
-            calculateExpToNext() {
-                // Scaling should be a mix of linear and parabolic
-                // Getting to level 450 is the same exp as getting to level 500
-                if (this.level >= 500) return 0;
-                
-                const baseExp = 1000;
-                const linearComponent = this.level * 100;
-                const parabolicComponent = Math.pow(this.level, 1.8) * 10;
-                
-                return Math.floor(baseExp + linearComponent + parabolicComponent);
+            get expToNext() {
+                return Math.floor(100 * Math.pow(1.5, this.level - 1));
             }
 
-            canPromote() {
-                const promoteLevels = { 0: 50, 1: 100, 2: 200, 3: 300, 4: 400 };
-                return this.level >= (promoteLevels[this.classTier] || 999);
+            addExp(amount) {
+                this.exp += amount;
+                let leveledUp = false;
+
+                while (this.exp >= this.expToNext && this.level < 500) {
+                    this.exp -= this.expToNext;
+                    this.level++;
+                    leveledUp = true;
+                }
+
+                if (this.level >= 500) {
+                    this.exp = 0;
+                }
+
+                return leveledUp;
             }
 
-            getPromotionOptions() {
-                const classInfo = this.classData;
-                
-                // Special case for Awakening at Class 4 Level 400
-                if (this.classTier === 4 && this.level >= 400 && !this.awakened) {
-                    return ['Awaken'];
-                }
-                
-                return classInfo.promotesTo || [];
-            }
-
-            promote(newClass) {
-                // Special case for Awakening
-                if (newClass === 'Awaken' && this.classTier === 4 && this.level >= 400) {
-                    this.awakened = true;
-                    // Don't reset level for awakening
-                    this.abilities = this.getClassAbilities();
-                    return true;
-                }
-                
-                if (!this.canPromote() || !this.getPromotionOptions().includes(newClass)) {
-                    return false;
-                }
-                
-                this.className = newClass;
-                this.level = 10 * this.classTier;
+            promote(newClassKey) {
+                this.classKey = newClassKey;
+                this.currentClass = classData.classes[newClassKey];
+                this.classTier = this.currentClass.tier;
+                this.level = 1;
                 this.exp = 0;
-                this.expToNext = this.calculateExpToNext();
-                this.abilities = this.getClassAbilities();
-                return true;
-            }
-        }
-
-        // Enemy Class
-        class Enemy {
-            constructor(enemyId, level, stars = 1) {
-                this.enemyId = enemyId;
-                this.level = level;
-                this.stars = this.calculateStars(level);
-                
-                // Load enemy data from unitData
-                const enemyData = unitData?.enemies[enemyId];
-                if (enemyData) {
-                    this.name = enemyData.name;
-                    this.isBoss = enemyData.boss;
-                    this.modifiers = enemyData.modifiers;
-                    this.abilities = this.getAbilities(enemyData.spells);
-                } else {
-                    // Fallback values
-                    this.name = enemyId;
-                    this.isBoss = false;
-                    this.modifiers = { str: 1.0, agi: 1.0, int: 1.0 };
-                    this.abilities = [];
-                }
             }
 
-            calculateStars(level) {
-                if (level < 50) return 1;
-                if (level < 100) return 2;
-                if (level < 200) return 3;
-                if (level < 300) return 4;
-                if (level < 400) return 5;
-                if (level < 500) return 6;
-                if (level < 800) return 7;
-                return 8;
+            // Update sprite paths to include gender
+            get portraitPath() {
+                const className = this.currentClass.name.toLowerCase().replace(' ', '_');
+                return `https://puzzle-drops.github.io/TEVE/img/sprites/${className}_${this.gender}_portrait.png`;
+            }
+            
+            get battleSpritePath() {
+                const className = this.currentClass.name.toLowerCase().replace(' ', '_');
+                return `https://puzzle-drops.github.io/TEVE/img/sprites/${className}_${this.gender}_battle.png`;
             }
 
-            get baseStats() {
-                return {
-                    str: Math.floor(this.level * this.modifiers.str),
-                    agi: Math.floor(this.level * this.modifiers.agi),
-                    int: Math.floor(this.level * this.modifiers.int)
+            // Add method for gender-aware display name
+            getDisplayClassName() {
+                // Check if this class has gender-specific names
+                const genderVariants = {
+                    'Priest': { male: 'Priest', female: 'Priestess' },
+                    'Prophet': { male: 'Prophet', female: 'Prophetess' },
+                    'Hierophant': { male: 'Hierophant', female: 'High Priestess' },
+                    'Wizard': { male: 'Wizard', female: 'Witch' },
+                    'White Wizard': { male: 'White Wizard', female: 'White Witch' },
+                    'Arch Sage': { male: 'Arch Sage', female: 'Arch Sorceress' }
                 };
-            }
-
-            get hp() {
-                return this.baseStats.str * 25;
-            }
-			
-			get armor() {
-				const stats = this.baseStats;
-				return (0.25 * stats.str) + (0.05 * stats.agi);
-			}
-
-			get resist() {
-				const stats = this.baseStats;
-				return (0.25 * stats.int);
-			}
-
-			get physicalDamageReduction() {
-				const totalArmor = this.armor;
-				return (0.9 * totalArmor) / (totalArmor + 500);
-			}
-
-			get magicDamageReduction() {
-				const totalResist = this.resist;
-				return (0.3 * totalResist) / (totalResist + 1000);
-			}
-
-            getAbilities(spellIds) {
-                if (!spellIds || !spellManager) return [];
                 
-                const abilities = [];
-                const spells = spellManager.getSpellsByIds(spellIds);
+                if (genderVariants[this.currentClass.name]) {
+                    return genderVariants[this.currentClass.name][this.gender];
+                }
                 
-                spells.forEach((spell, index) => {
-                    if (spell) {
-                        abilities.push({
-                            id: spell.id,
-                            name: spell.name,
-                            description: spell.description,
-                            cooldown: spell.cooldown,
-                            currentCooldown: 0,
-                            icon: `${spell.id}.png`,
-                            effects: spell.effects
-                        });
-                    }
-                });
-                
-                return abilities;
+                return this.currentClass.name;
             }
         }
 
-        // Game Core
+        // Game Core Class
         class Game {
             constructor() {
-                this.currentScreen = 'mainMenu';
                 this.heroes = [];
-                this.currentBattle = null;
-                this.selectedHero = 0;
+                this.selectedHero = null;
+                this.selectedParty = [];
                 this.currentTab = 'info';
-                this.selectedTier = null;
-                this.expandedDungeon = null;
+                this.gold = 10000;
+                this.currentBattle = null;
+                this.currentScreen = 'mainMenu';
+                this.currentDungeon = null;
                 this.currentPreviewWave = 0;
-                this.gold = 10000; // Starting gold for the player
-                this.pendingBattleResults = null; // Store results until popup is closed
-                
-                // Load dungeon tiers from JSON data
+                this.dungeonWaves = [];
+                this.selectedTier = null;
                 this.dungeonTiers = {};
+                this.pendingBattleResults = null;
+            }
+
+            init() {
+                // Create starting heroes
+                this.heroes = [
+                    new Hero('Aelar', 'villager'),
+                    new Hero('Brin', 'villager'),
+                    new Hero('Cara', 'villager')
+                ];
+
+                // Load dungeon tiers
                 if (dungeonData && dungeonData.tiers) {
-                    // Build dungeonTiers from the loaded data
                     Object.keys(dungeonData.tiers).forEach(tierName => {
                         const tierData = dungeonData.tiers[tierName];
                         this.dungeonTiers[tierName] = {
@@ -656,7 +400,6 @@
                         };
                     });
                     
-                    // Now populate dungeons for each tier
                     Object.keys(dungeonData.dungeons).forEach(dungeonId => {
                         const dungeon = dungeonData.dungeons[dungeonId];
                         if (this.dungeonTiers[dungeon.tier]) {
@@ -670,575 +413,138 @@
                         }
                     });
                 }
-                
-                // Load class families from JSON data
-                this.classFamilies = unitData?.classFamilies || [];                
-                this.init();
             }
-
-init() {
-    // Create 8 starting villagers
-    this.heroes = [];
-    for (let i = 0; i < 16; i++) {
-        this.heroes.push(new Hero());
-    }
-    
-    // Hero 0: Druid (Level 185)
-    this.heroes[0].level = 50;
-    this.heroes[0].promote('druid');
-    this.heroes[0].level = 185;
-    this.heroes[0].exp = 900;
-    this.heroes[0].expToNext = this.heroes[0].calculateExpToNext();
-    
-    // Hero 1: Arch Druid (Level 275)
-    this.heroes[1].level = 50;
-    this.heroes[1].promote('druid');
-    this.heroes[1].level = 100;
-    this.heroes[1].promote('arch_druid');
-    this.heroes[1].level = 275;
-    this.heroes[1].exp = 500;
-    this.heroes[1].expToNext = this.heroes[1].calculateExpToNext();
-    
-    // Hero 2: Shapeshifter (Level 380)
-    this.heroes[2].level = 50;
-    this.heroes[2].promote('druid');
-    this.heroes[2].level = 100;
-    this.heroes[2].promote('arch_druid');
-    this.heroes[2].level = 200;
-    this.heroes[2].promote('shapeshifter');
-    this.heroes[2].level = 380;
-    this.heroes[2].exp = 700;
-    this.heroes[2].expToNext = this.heroes[2].calculateExpToNext();
-    
-    // Hero 3: Runemaster (Level 500 - max level)
-    this.heroes[3].level = 50;
-    this.heroes[3].promote('druid');
-    this.heroes[3].level = 100;
-    this.heroes[3].promote('arch_druid');
-    this.heroes[3].level = 200;
-    this.heroes[3].promote('shapeshifter');
-    this.heroes[3].level = 300;
-    this.heroes[3].promote('runemaster');
-    this.heroes[3].level = 500;
-    this.heroes[3].exp = 0; // Max level, no exp needed
-    this.heroes[3].expToNext = this.heroes[3].calculateExpToNext();
-    
-    // Hero 4: Shaman (Level 315)
-    this.heroes[4].level = 50;
-    this.heroes[4].promote('druid');
-    this.heroes[4].level = 100;
-    this.heroes[4].promote('arch_druid');
-    this.heroes[4].level = 200;
-    this.heroes[4].promote('shaman');
-    this.heroes[4].level = 315;
-    this.heroes[4].exp = 900;
-    this.heroes[4].expToNext = this.heroes[4].calculateExpToNext();
-    
-    // Hero 5: Summoner (Level 500)
-    this.heroes[5].level = 50;
-    this.heroes[5].promote('druid');
-    this.heroes[5].level = 100;
-    this.heroes[5].promote('arch_druid');
-    this.heroes[5].level = 200;
-    this.heroes[5].promote('shaman');
-    this.heroes[5].level = 300;
-    this.heroes[5].promote('summoner');
-    this.heroes[5].level = 500;
-    this.heroes[5].exp = 0; // Max level, no exp needed
-    this.heroes[5].expToNext = this.heroes[5].calculateExpToNext();
-    
-    // Hero 6: Villager (Level 50 with 300 exp)
-    this.heroes[6].level = 50;
-    this.heroes[6].exp = 300;
-    this.heroes[6].expToNext = this.heroes[6].calculateExpToNext();
-    
-    // Hero 7: Villager (Level 50 with 500 exp)
-    this.heroes[7].level = 50;
-    this.heroes[7].exp = 500;
-    this.heroes[7].expToNext = this.heroes[7].calculateExpToNext();
-
-    // Hero 8: Villager (Level 50 with 500 exp)
-    this.heroes[8].level = 50;
-    this.heroes[8].exp = 500;
-    this.heroes[8].expToNext = this.heroes[8].calculateExpToNext();
-
-    // Hero 9: Villager (Level 10 with 500 exp)
-    this.heroes[9].level = 10;
-    this.heroes[9].exp = 500;
-    this.heroes[9].expToNext = this.heroes[9].calculateExpToNext();
-
-    // Hero 10: Villager (Level 10 with 500 exp)
-    this.heroes[10].level = 10;
-    this.heroes[10].exp = 500;
-    this.heroes[10].expToNext = this.heroes[10].calculateExpToNext();
-
-    // Hero 11: Villager (Level 10 with 500 exp)
-    this.heroes[11].level = 10;
-    this.heroes[11].exp = 500;
-    this.heroes[11].expToNext = this.heroes[11].calculateExpToNext();
-
-    // Hero 12: Tester (Level 50 with godlike stats)
-    this.heroes[12] = new Hero('tester');
-    this.heroes[12].level = 50;
-    this.heroes[12].exp = 0;
-    this.heroes[12].expToNext = this.heroes[12].calculateExpToNext();
-}
 
             showMainMenu() {
                 this.hideAllScreens();
-                this.closeHeroInfo(); // Close any open popups
                 this.currentScreen = 'mainMenu';
                 document.getElementById('mainMenu').style.display = 'flex';
             }
 
-            showHeroes() {
+            showHeroesScreen() {
                 this.hideAllScreens();
-                this.closeHeroInfo(); // Close any open popups
                 this.currentScreen = 'heroesScreen';
                 document.getElementById('heroesScreen').style.display = 'block';
-                
-                // Add gold display
-                const heroStats = document.querySelector('.heroStats');
-                let goldDisplay = heroStats.querySelector('.goldDisplay');
-                if (!goldDisplay) {
-                    goldDisplay = document.createElement('div');
-                    goldDisplay.className = 'goldDisplay';
-                    heroStats.appendChild(goldDisplay);
-                }
-                goldDisplay.innerHTML = `
-                    <span class="goldIcon">💰</span>
-                    <span class="goldAmount">${this.gold.toLocaleString()}</span>
-                `;
-                
                 this.updateHeroList();
+                this.updateGoldDisplay();
                 
-                // Get the sorted heroes and select the first one
-                const sortedHeroes = [...this.heroes].sort((a, b) => {
-                    if (a.awakened !== b.awakened) return b.awakened ? 1 : -1;
-                    if (a.classTier !== b.classTier) return b.classTier - a.classTier;
-                    return b.level - a.level;
-                });
+                if (this.heroes.length > 0 && this.selectedHero === null) {
+                    this.selectedHero = 0;
+                }
                 
-                if (sortedHeroes.length > 0) {
-                    this.selectHero(this.heroes.indexOf(sortedHeroes[0]));
+                if (this.selectedHero !== null) {
+                    this.selectHero(this.selectedHero);
                 }
             }
 
-            showDungeons() {
+            showDungeonsScreen() {
                 this.hideAllScreens();
-                this.closeHeroInfo(); // Close any open popups
                 this.currentScreen = 'dungeonsScreen';
                 document.getElementById('dungeonsScreen').style.display = 'block';
                 this.renderWorldMap();
-                this.closeDungeonPanel();
             }
 
-            renderWorldMap() {
-                const worldMap = document.getElementById('worldMap');
-                worldMap.innerHTML = '';
-                
-                Object.entries(this.dungeonTiers).forEach(([tierName, tierData]) => {
-                    const orb = document.createElement('div');
-                    orb.className = `mapOrb ${tierData.color}`;
-                    orb.style.left = `${tierData.position.x}%`;
-                    orb.style.top = `${tierData.position.y}%`;
-                    orb.textContent = tierData.tier;
-                    orb.onclick = () => this.selectDungeonTier(tierName);
-                    
-                    worldMap.appendChild(orb);
-                });
-            }
-
-            selectDungeonTier(tierName) {
-                // Check if clicking the same tier that's already selected
-                if (this.selectedTier === tierName && document.getElementById('dungeonListPanel').classList.contains('show')) {
-                    this.closeDungeonPanel();
-                    return;
-                }
-                
-                // Update selected orb
-                document.querySelectorAll('.mapOrb').forEach(orb => {
-                    orb.classList.remove('selected');
-                });
-                event.target.classList.add('selected');
-                
-                this.selectedTier = tierName;
-                this.expandedDungeon = null;
-                this.showDungeonList(tierName);
-            }
-
-showDungeonList(tierName) {
-                const panel = document.getElementById('dungeonListPanel');
-                const tierData = this.dungeonTiers[tierName];
-                
-                // Calculate level range for the tier
-                const levels = tierData.dungeons.map(d => d.level);
-                const minLevel = Math.min(...levels);
-                const maxLevel = Math.max(...levels);
-                
-                // Special handling for tiers where all dungeons are level 500
-                let levelText;
-                if (minLevel === maxLevel) {
-                    levelText = `Level ${minLevel}`;
-                } else {
-                    levelText = `Level ${minLevel}-${maxLevel}`;
-                }
-                
-                document.getElementById('dungeonTierTitle').innerHTML = `
-                    <div>${tierName}</div>
-                    <div style="font-size: 16px; color: #6a9aaa; margin-top: 5px;">${levelText}</div>
-                `;
-                
-                const dungeonList = document.getElementById('dungeonList');
-                dungeonList.innerHTML = '';
-                
-                tierData.dungeons.forEach((dungeon, index) => {
-                    const dungeonItem = document.createElement('div');
-                    dungeonItem.className = 'dungeonItem';
-                    dungeonItem.innerHTML = `
-                        <div class="dungeonHeader" style="width: 100%; cursor: pointer;">
-                            <div class="dungeonName" style="flex: 1;">${dungeon.name}</div>
-                            <div class="dungeonLevel" style="min-width: 100px; text-align: right;">Level ${dungeon.level}</div>
-                        </div>
-                    `;
-                    
-                    dungeonItem.onclick = () => this.enterDungeon(tierName, index);
-                    
-                    dungeonList.appendChild(dungeonItem);
-                });
-                
-                panel.classList.add('show');
-            }
-		
-            closeDungeonPanel() {
-                document.getElementById('dungeonListPanel').classList.remove('show');
-                this.selectedTier = null;
-                this.expandedDungeon = null;
-                document.querySelectorAll('.mapOrb').forEach(orb => {
-                    orb.classList.remove('selected');
-                });
-            }
-		
-enterDungeon(tierName, dungeonIndex) {
-    const dungeon = this.dungeonTiers[tierName].dungeons[dungeonIndex];
-    this.currentDungeon = dungeon;
-    
-    // Get dungeon ID from the dungeon object
-    const dungeonId = dungeon.id || dungeon.name.toLowerCase().replace(/ /g, '_').replace('?', '');
-	
-    // Load waves from dungeon data
-    if (dungeonData && dungeonData.dungeons[dungeonId]) {
-        const dungeonConfig = dungeonData.dungeons[dungeonId];
-        
-        // Create enemy waves from configuration
-        this.dungeonWaves = dungeonConfig.waves.map(wave => {
-            return wave.enemies.map(enemyConfig => {
-                return new Enemy(enemyConfig.id, enemyConfig.level);
-            });
-        });
-        
-        // Handle special gauntlet dungeon
-        if (dungeonConfig.special === 'gauntlet') {
-            // TODO: Implement gauntlet mode (all dungeons in sequence)
-            this.dungeonWaves = [[new Enemy('cosmic_archon', 500)]]; // Placeholder
-        }
-    } else {
-        // Return to main menu if dungeon data is missing
-        console.warn(`No dungeon data found for: ${dungeonId}`);
-        alert(`Dungeon "${dungeon.name}" is not yet implemented.`);
-        this.showMainMenu();
-        return;
-    }
-    
-    // Reset preview to first wave
-    this.currentPreviewWave = 0;
-    
-    // Set current enemy for display purposes (first enemy of last wave)
-    this.currentEnemy = this.dungeonWaves[this.dungeonWaves.length - 1][0];
-    
-    // Get the last wave for enemy display
-    this.lastWaveEnemies = this.dungeonWaves[this.dungeonWaves.length - 1];
-    
-    // Reset party selection
-    this.selectedParty = [null, null, null, null, null];
-    
-    // Show party select screen
-    this.showPartySelect();
-}
-
-            navigateWave(direction) {
-                if (!this.dungeonWaves || this.dungeonWaves.length === 0) return;
-                
-                if (direction === 'prev') {
-                    this.currentPreviewWave--;
-                    if (this.currentPreviewWave < 0) {
-                        this.currentPreviewWave = this.dungeonWaves.length - 1;
-                    }
-                } else {
-                    this.currentPreviewWave++;
-                    if (this.currentPreviewWave >= this.dungeonWaves.length) {
-                        this.currentPreviewWave = 0;
-                    }
-                }
-                
-                this.updateEnemyFormation();
-            }
-
-            showStash() {
+            showStashScreen() {
                 this.hideAllScreens();
-                this.closeHeroInfo(); // Close any open popups
                 this.currentScreen = 'stashScreen';
                 document.getElementById('stashScreen').style.display = 'block';
-                this.renderStashList();
-            }
-
-            renderStashList() {
-                const stashList = document.getElementById('stashList');
-                stashList.innerHTML = '';
-                
-                this.classFamilies.forEach((family, index) => {
-                    const stashItem = document.createElement('div');
-                    stashItem.className = 'stashItem';
-                    stashItem.innerHTML = `
-                        <div class="stashIcon">${family.icon}</div>
-                        <div class="stashName">${family.name}</div>
-                    `;
-                    
-                    stashItem.onclick = () => this.openStash(family);
-                    stashList.appendChild(stashItem);
-                });
-            }
-
-            openStash(family) {
-                console.log(`Opening ${family.name} stash`);
-                // TODO: Implement individual stash view
-            }
-
-            showBattle() {
-                this.hideAllScreens();
-                this.closeHeroInfo(); // Close any open popups
-                this.currentScreen = 'battleScene';
-                document.getElementById('battleScene').style.display = 'block';
-                
-                // Set battlefield background based on current dungeon
-                const battleField = document.querySelector('.battleField');
-                if (battleField && this.currentDungeon) {
-                    const dungeonName = this.currentDungeon.name.toLowerCase().replace(/ /g, '_');
-                    battleField.style.backgroundImage = `url('https://puzzle-drops.github.io/TEVE/img/fields/${dungeonName}.png')`;
-                }
-                
-                // Reset auto mode toggle
-                document.getElementById('autoModeToggle').checked = false;
-                
-                // Update UI with actual units
-                this.updateBattleUI();
-            }
-
-            updateBattleUI() {
-                // Hide all unit slots first
-                for (let i = 1; i <= 5; i++) {
-                    document.getElementById(`party${i}`).style.display = 'none';
-                    document.getElementById(`enemy${i}`).style.display = 'none';
-                }
-                
-                // Show party units
-                const partyUnits = this.selectedParty.map(heroIndex => 
-                    heroIndex !== null ? this.heroes[heroIndex] : null
-                ).filter(hero => hero !== null);
-                
-                partyUnits.forEach((hero, index) => {
-                    const slot = document.getElementById(`party${index + 1}`);
-                    if (slot) {
-                        slot.style.display = 'block';
-                        const unitDiv = slot.querySelector('.unit');
-                        const classId = hero.className.toLowerCase().replace(/ /g, '_');
-                        const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                        
-                        unitDiv.innerHTML = `
-                            <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_back.gif" alt="${displayClassName}" 
-                                 style="width: 100%; image-rendering: pixelated; object-fit: contain;"
-                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'font-size: 9px; text-align: center; line-height: 1.2;\\'><div>${hero.name}</div><div style=\\'color: #6a9aaa;\\'>Lv${hero.level}</div></div>'">
-                        `;
-                    }
-                });
-                
-                // Don't show enemies here - they'll be shown when battle starts
-            }
-
-            startBattle() {
-                // Create party array from selected heroes
-                const party = this.selectedParty.map(heroIndex => 
-                    heroIndex !== null ? this.heroes[heroIndex] : null
-                ).filter(hero => hero !== null);
-                
-                // Show battle screen
-                this.showBattle();
-                
-                // Create and start battle with waves
-                this.currentBattle = new Battle(this, party, this.dungeonWaves);
-                this.currentBattle.start();
-            }
-
-            exitBattle() {
-                if (this.currentBattle) {
-                    // Clear any active targeting
-                    if (this.currentBattle.targetingState) {
-                        this.currentBattle.clearTargeting();
-                    }
-                    
-                    // Stop the battle and clean up
-                    this.currentBattle.running = false;
-                    
-                    // Reset pending exp for all heroes in the party since battle was abandoned
-                    this.currentBattle.party.forEach(unit => {
-                        if (unit && unit.source) {
-                            unit.source.pendingExp = 0;
-                        }
-                    });
-                    
-                    // Clean up any lingering UI elements
-                    const waveCounter = document.getElementById('waveCounter');
-                    if (waveCounter) {
-                        waveCounter.remove();
-                    }
-                    
-                    // Clear ability panel
-                    document.getElementById('abilityPanel').innerHTML = '';
-                    
-                    // Clean up level indicator event listeners
-                    for (let i = 1; i <= 5; i++) {
-                        ['party', 'enemy'].forEach(type => {
-                            const element = document.getElementById(`${type}${i}`);
-                            if (element) {
-                                const levelIndicator = element.querySelector('.levelIndicator');
-                                if (levelIndicator && levelIndicator._unitInfoHandler) {
-                                    levelIndicator.removeEventListener('click', levelIndicator._unitInfoHandler);
-                                    delete levelIndicator._unitInfoHandler;
-                                }
-                            }
-                        });
-                    }
-        
-                    // Close any open popup
-                    this.closeHeroInfo();
-                    
-                    // Reset party's action bars for next battle
-                    this.selectedParty.forEach(heroIndex => {
-                        if (heroIndex !== null) {
-                            const hero = this.heroes[heroIndex];
-                            // Reset cooldowns if needed
-                        }
-                    });
-                    
-                    // Only reset battle instance, not dungeon data
-                    this.currentBattle = null;
-                }
-                
-                // Return to party select screen instead of main menu
-                if (this.currentDungeon) {
-                    this.showPartySelect();
-                } else {
-                    this.showMainMenu();
-                }
+                this.renderStashGrid();
             }
 
             hideAllScreens() {
                 document.getElementById('mainMenu').style.display = 'none';
-                document.getElementById('battleScene').style.display = 'none';
                 document.getElementById('heroesScreen').style.display = 'none';
                 document.getElementById('dungeonsScreen').style.display = 'none';
                 document.getElementById('stashScreen').style.display = 'none';
+                document.getElementById('battleScene').style.display = 'none';
                 document.getElementById('partySelectScreen').style.display = 'none';
             }
 
+            updateGoldDisplay() {
+                const goldAmount = document.querySelector('.goldAmount');
+                if (goldAmount) {
+                    goldAmount.textContent = this.gold.toLocaleString();
+                }
+            }
+
             updateHeroList() {
-                const heroList = document.getElementById('heroList');
+                const heroList = document.querySelector('.heroList');
                 heroList.innerHTML = '';
-                
-                // Sort heroes by awakened status, then tier, then level
+
+                // Sort heroes by tier and level
                 const sortedHeroes = [...this.heroes].sort((a, b) => {
-                    // Awakened heroes first
-                    if (a.awakened !== b.awakened) return b.awakened ? 1 : -1;
-                    // Then by tier
                     if (a.classTier !== b.classTier) return b.classTier - a.classTier;
-                    // Finally by level
                     return b.level - a.level;
                 });
-                
+
                 sortedHeroes.forEach((hero, index) => {
-                    const thumb = document.createElement('div');
-                    thumb.className = 'heroThumb';
-                    if (this.heroes.indexOf(hero) === this.selectedHero) {
-                        thumb.classList.add('selected');
-                    }
-                    
-                    // Generate stars
-                    let stars = '★';
-                    if (hero.classTier > 0) {
-                        const starCount = hero.awakened ? 5 : hero.classTier;
-                        for (let i = 0; i < starCount; i++) {
-                            stars += '★';
-                        }
-                    }
-                    
-                    // Check if hero can promote (but not if already awakened)
-                    const canPromote = hero.canPromote() && !hero.awakened;
-                    const isAwakenable = hero.classTier === 4 && hero.level >= 400 && !hero.awakened;
-                    
-                    // Use class ID for image files
-                    const classId = hero.className.toLowerCase().replace(/ /g, '_');
-					const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-
-                    thumb.innerHTML = `
-    <div style="position: relative; width: 100px; height: 100px;">
-        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" 
-             onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${displayClassName}</text></svg>'">
-             
-        ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
-
-        <div class="thumbLevel">${hero.level}</div>
-
-        ${canPromote ? `<div class="promoteArrowThumb ${isAwakenable ? 'awaken' : 'normal'}">^</div>` : ''}
-    </div>
-
-    <div class="thumbClass">${displayClassName}</div>
-    <div class="thumbName">${hero.name}</div>
-`;
-
-                    
-                    thumb.onclick = () => this.selectHero(this.heroes.indexOf(hero));
-                    heroList.appendChild(thumb);
+                    const heroIndex = this.heroes.indexOf(hero);
+                    const heroThumb = this.createHeroThumb(hero, heroIndex);
+                    heroList.appendChild(heroThumb);
                 });
+            }
+
+            createHeroThumb(hero, index) {
+                const thumb = document.createElement('div');
+                thumb.className = 'heroThumb';
+                if (index === this.selectedHero) {
+                    thumb.classList.add('selected');
+                }
+
+                const portrait = document.createElement('img');
+                portrait.src = hero.portraitPath;
+                portrait.alt = hero.name;
+                portrait.onerror = function() { this.style.display = 'none'; };
+
+                const info = document.createElement('div');
+                info.className = 'heroThumbInfo';
+                info.innerHTML = `
+                    <div class="heroThumbName">${hero.name}</div>
+                    <div class="heroThumbClass">${hero.getDisplayClassName()}</div>
+                    <div class="heroThumbLevel">Lv ${hero.level}</div>
+                `;
+
+                thumb.appendChild(portrait);
+                thumb.appendChild(info);
+                thumb.onclick = () => this.selectHero(index);
+
+                return thumb;
             }
 
             selectHero(index) {
                 this.selectedHero = index;
-                const hero = this.heroes[index];
-                
-                // Update portrait
-                const portrait = document.getElementById('heroPortrait');
-                const classId = hero.className.toLowerCase().replace(/ /g, '_');
-				const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${displayClassName}</text></svg>'">`;
-                
-                // Update hero list selection
                 this.updateHeroList();
-                
-                // Refresh current tab
-                this.showHeroTab(this.currentTab);
+                this.showHeroDetails();
             }
 
-            showHeroTab(tab) {
-                this.currentTab = tab;
+            showHeroDetails() {
                 const hero = this.heroes[this.selectedHero];
-                const content = document.getElementById('heroContent');
+                if (!hero) return;
+
+                // Update portrait
+                const portrait = document.querySelector('.heroPortrait');
+                portrait.innerHTML = `<img src="${hero.battleSpritePath}" alt="${hero.name}">`;
+
+                // Show current tab
+                this.showTab(this.currentTab);
+            }
+
+            showTab(tabName) {
+                this.currentTab = tabName;
                 
                 // Update tab buttons
                 document.querySelectorAll('.tabButton').forEach(btn => {
-                    btn.classList.toggle('active', btn.textContent.toLowerCase() === tab);
+                    btn.classList.remove('active');
+                    if (btn.textContent.toLowerCase() === tabName) {
+                        btn.classList.add('active');
+                    }
                 });
-                
-                switch(tab) {
+
+                // Update content
+                const content = document.querySelector('.tabContent');
+                const hero = this.heroes[this.selectedHero];
+
+                switch(tabName) {
                     case 'info':
                         this.showInfoTab(hero, content);
                         break;
@@ -1257,456 +563,181 @@ enterDungeon(tierName, dungeonIndex) {
                 }
             }
 
-			showInfoTab(hero, content) {
-				const stats = hero.totalStats;
-				const baseStats = hero.baseStats;
-				let stars = '★';
-				
-				// Generate stars based on class tier and awakened status
-				if (hero.classTier > 0) {
-					const starCount = hero.awakened ? 5 : hero.classTier;
-					for (let i = 0; i < starCount; i++) {
-						stars += '★';
-					}
-				}
-				
-				const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-				
-				// Calculate derived stats
-				const armor = hero.armor;
-				const resist = hero.resist;
-				const physicalDR = hero.physicalDamageReduction;
-				const magicalDR = hero.magicDamageReduction;
-				
-				content.innerHTML = `
-					<div style="margin-bottom: 20px;">
-						${stars ? `<div style="font-size: 48px; font-weight: bold; ${hero.awakened ? 'color: #d896ff;' : 'color: #ffd700;'} text-shadow: 0 0 12px ${hero.awakened ? 'rgba(216, 150, 255, 0.9)' : 'rgba(255, 215, 0, 0.9)'}, 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${stars}</div>` : ''}
-						<div class="heroName">${displayClassName}</div>
-						<div style="font-size: 32px; color: #6a9aaa; cursor: pointer;" onclick="game.editHeroName()">
-							<span id="heroNameText">${hero.name}</span>
-						</div>
-						<div style="font-size: 32px; color: #4dd0e1; margin-top: 40px;">Level ${hero.level}</div>
-						</div>
-						<div class="expBar" style="position: relative; height: 40px; border: 1px solid #2a6a8a;">
- 						 <div class="expFill" style="width: ${Math.max(0, Math.min((hero.exp / hero.expToNext) * 100, 100))}%; height: 100%; background: #4dd0e1;"></div>
-						  <div class="expText" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; color: #6a9aaa;">
-						    ${hero.exp} / ${hero.expToNext} (${((hero.exp / hero.expToNext) * 100).toFixed(1)}%)
-						  </div>
-						</div>
-					
-					<div style="margin-top: 40px; display: flex; gap: 60px;">
-						<div style="flex: 1;">
-							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Health Points')" onmouseout="game.hideStatTooltip()">
-								<span class="statName">HP</span>
-								<span class="statValue">${hero.hp}</span>
-							</div>
-							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Strength')" onmouseout="game.hideStatTooltip()">
-								<span class="statName">STR</span>
-								<span class="statValue">${baseStats.str} ${hero.gearStats.str > 0 ? `<span class="statBonus">+${hero.gearStats.str}</span>` : ''}</span>
-							</div>
-							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Agility')" onmouseout="game.hideStatTooltip()">
-								<span class="statName">AGI</span>
-								<span class="statValue">${baseStats.agi} ${hero.gearStats.agi > 0 ? `<span class="statBonus">+${hero.gearStats.agi}</span>` : ''}</span>
-							</div>
-							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Intelligence')" onmouseout="game.hideStatTooltip()">
-								<span class="statName">INT</span>
-								<span class="statValue">${baseStats.int} ${hero.gearStats.int > 0 ? `<span class="statBonus">+${hero.gearStats.int}</span>` : ''}</span>
-							</div>
-						</div>
-						
-						<div style="flex: 1;">
-							<div class="statLine" onmouseover="game.showStatTooltip(event, 'HP Regeneration')" onmouseout="game.hideStatTooltip()">
-								<span class="statName">Regen</span>
-								<span class="statValue">${hero.hpRegen.toFixed(1)}</span>
-							</div>
-							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Attack Speed')" onmouseout="game.hideStatTooltip()">
-								<span class="statName">Atk Spd</span>
-								<span class="statValue">${hero.actionBarSpeed.toFixed(1)}%</span>
-							</div>
-							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Armor')" onmouseout="game.hideStatTooltip()">
-								<span class="statName">Armor</span>
-								<span class="statValue">${Math.floor(armor)} <span style="color: #6a9aaa;">(${(physicalDR * 100).toFixed(1)}%)</span></span>
-							</div>
-							<div class="statLine" onmouseover="game.showStatTooltip(event, 'Resistance')" onmouseout="game.hideStatTooltip()">
-								<span class="statName">Resist</span>
-								<span class="statValue">${Math.floor(resist)} <span style="color: #6a9aaa;">(${(magicalDR * 100).toFixed(1)}%)</span></span>
-							</div>
-						</div>
-					</div>
-				`;
-			}
-			
-showStatTooltip(event, statName) {
-	// Define tooltip content
-	const tooltipData = {
-		"Strength": "Increases Max HP, HP Regeneration, and Armor.<br>Boosts Strength-based abilities.",
-		"Agility": "Increases Attack Speed and slightly boosts Armor.<br>Boosts Agility-based abilities.",
-		"Intelligence": "Increases Resistance (magic defense).<br>Boosts Intelligence-based abilities.",
+            showInfoTab(hero, content) {
+                const stats = hero.totalStats;
+                const gearStats = hero.gearStats;
+                
+                let stars = '';
+                if (hero.classTier > 0) {
+                    for (let i = 0; i < hero.classTier; i++) {
+                        stars += '★';
+                    }
+                }
 
-		"Health Points": "Scales with STR.<br><code>25 × STR</code>",
-		"HP Regeneration": "Scales with STR. Regain HP after your turn.<br><code>0.05 × STR</code>",
-		"Attack Speed": "Increases how fast you attack. Scales with Agility.<br><code>100 + 100 × (AGI / (AGI + 1000))</code>",
-
-		"Armor": `Reduces incoming physical damage.<br><code>(0.25 × STR) + (0.05 × AGI)</code><br><br>
-Physical Damage Reduction: Percentage of physical damage blocked.<br><code>(0.9 × Armor) / (Armor + 500)</code>`,
-
-		"Resistance": `Reduces magical damage taken.<br><code>0.25 × INT</code><br><br>
-Magical Damage Reduction: Percentage of magical damage blocked.<br><code>(0.3 × Resist) / (Resist + 1000)</code>`
-	};
-
-
-	// Create or get stat tooltip element
-	let tooltip = document.getElementById('statTooltip');
-	if (!tooltip) {
-		tooltip = document.createElement('div');
-		tooltip.id = 'statTooltip';
-		tooltip.style.cssText = `
-			position: fixed;
-			background: rgba(10, 15, 26, 0.95);
-			border: 2px solid #2a6a8a;
-			padding: 10px;
-			border-radius: 4px;
-			z-index: 1002;
-			box-shadow: 0 0 20px rgba(0,0,0,0.8);
-			pointer-events: none;
-			font-size: 14px;
-			color: #b0e0f0;
-			max-width: 500px;
-		`;
-		document.body.appendChild(tooltip);
-	}
-
-	// Set tooltip content
-	tooltip.innerHTML = tooltipData[statName] || "No tooltip available.";
-	tooltip.style.display = 'block';
-
-	// Position near bottom of hovered element
-	const rect = event.target.getBoundingClientRect();
-	const tooltipRect = tooltip.getBoundingClientRect();
-
-	let left = rect.left;
-	let top = rect.bottom + 5;
-
-	// Adjust if tooltip would overflow the screen
-	if (left + tooltipRect.width > window.innerWidth) {
-		left = window.innerWidth - tooltipRect.width - 10;
-	}
-	if (top + tooltipRect.height > window.innerHeight) {
-		top = rect.top - tooltipRect.height - 5;
-	}
-
-	tooltip.style.left = `${left}px`;
-	tooltip.style.top = `${top}px`;
-}
-
-hideStatTooltip() {
-	const tooltip = document.getElementById('statTooltip');
-	if (tooltip) {
-		tooltip.style.display = 'none';
-	}
-}
-            showSkillsTab(hero, content) {
                 content.innerHTML = `
-                    <div class="skillsContainer">
-                        ${hero.abilities.map((ability, index) => `
-                            <div class="skillBox" onclick="game.selectSkill(${index})">
-                                <img src="https://puzzle-drops.github.io/TEVE/img/spells/${ability.id}.png" alt="${ability.name}" onerror="this.style.display='none'">
+                    <h2>${hero.getDisplayClassName()}</h2>
+                    <h3>${hero.name}</h3>
+                    ${stars ? `<div class="heroStars">${stars}</div>` : ''}
+                    
+                    <div class="heroLevel">Level ${hero.level}</div>
+                    <div class="expBar">
+                        <div class="expFill" style="width: ${(hero.exp / hero.expToNext) * 100}%"></div>
+                        <div class="expText">${hero.exp} / ${hero.expToNext}</div>
+                    </div>
+                    
+                    <div class="statsGrid">
+                        <div class="statLine">
+                            <span class="statName">HP</span>
+                            <span class="statValue">${hero.hp}</span>
+                        </div>
+                        <div class="statLine">
+                            <span class="statName">STR</span>
+                            <span class="statValue">${stats.str} ${gearStats.str > 0 ? `<span class="bonus">+${gearStats.str}</span>` : ''}</span>
+                        </div>
+                        <div class="statLine">
+                            <span class="statName">AGI</span>
+                            <span class="statValue">${stats.agi} ${gearStats.agi > 0 ? `<span class="bonus">+${gearStats.agi}</span>` : ''}</span>
+                        </div>
+                        <div class="statLine">
+                            <span class="statName">INT</span>
+                            <span class="statValue">${stats.int} ${gearStats.int > 0 ? `<span class="bonus">+${gearStats.int}</span>` : ''}</span>
+                        </div>
+                        <div class="statLine">
+                            <span class="statName">Gender</span>
+                            <span class="statValue">${hero.gender.charAt(0).toUpperCase() + hero.gender.slice(1)}</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            showSkillsTab(hero, content) {
+                const abilities = hero.abilities;
+                
+                content.innerHTML = `
+                    <h3>Abilities</h3>
+                    <div class="abilitiesGrid">
+                        ${abilities.map((ability, index) => `
+                            <div class="abilityBox" onmouseover="game.showAbilityTooltip(event, ${index})">
+                                <img src="https://puzzle-drops.github.io/TEVE/img/spells/${ability.id}.png" alt="${ability.name}">
+                                <div class="abilityName">${ability.name}</div>
+                                ${ability.passive ? '<div class="passiveTag">Passive</div>' : ''}
                             </div>
                         `).join('')}
                     </div>
-                    <div class="skillDescription" id="skillDescription">
-                        Click on a skill to see its description
-                    </div>
                 `;
-                
-                // Automatically select the first skill
-                if (hero.abilities.length > 0) {
-                    this.selectSkill(0);
-                }
             }
 
             showPromoteTab(hero, content) {
-                const canPromote = hero.canPromote();
-                const promotions = hero.getPromotionOptions();
-                
-                // Special case for Awakening
-                if (promotions.includes('Awaken')) {
-                    content.innerHTML = `
-                        <div class="promoteContent">
-                            <div class="classCard">
-                                <h2>Awaken</h2>
-                                <div style="font-size: 24px; font-weight: bold; color: #d896ff; text-shadow: 0 0 12px rgba(216, 150, 255, 0.9), 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">★★★★★★</div>
-                                <button class="promoteButton" style="background: linear-gradient(135deg, #d896ff 0%, #a855f7 100%); box-shadow: 0 0 20px rgba(216, 150, 255, 0.5); color: #0a1929;" onclick="game.showPromotionConfirm('Awaken')" 
-                                    onmouseover="this.style.background='linear-gradient(135deg, #e6b0ff 0%, #d896ff 100%)'; this.style.boxShadow='0 0 30px rgba(230, 176, 255, 0.7)'"
-                                    onmouseout="this.style.background='linear-gradient(135deg, #d896ff 0%, #a855f7 100%)'; this.style.boxShadow='0 0 20px rgba(216, 150, 255, 0.5)'">
-                                    Awaken<br>
-                                    <span style="font-size: 14px;">💰 -10000000</span>
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                // Generate stars for current class
-                let currentStars = '★';
-                if (hero.awakened) {
-                    currentStars = '<span style="color: #d896ff;">★★★★★★</span>';
-                } else {
-                    for (let i = 0; i < hero.classTier; i++) {
-                        currentStars += '★';
-                    }
-                }
-                
-                // Check if class 4 but not high enough level
-                if (hero.classTier === 4 && !hero.awakened) {
-                    content.innerHTML = `
-                        <div class="promoteContent">
-                            <p style="margin-top: 20px; font-size: 18px; color: #6a9aaa;">Reach level 400 to awaken</p>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                // Already awakened
-                if (hero.awakened) {
-                    content.innerHTML = `
-                        <div class="promoteContent">
-                            <h2>No promotions available</h2>
-                            <p>Hero has been awakened!</p>
-                        </div>
-                    `;
-                    return;
-                }
-                
-                const classId = hero.className.toLowerCase().replace(/ /g, '_');
-                content.innerHTML = `
-                    <div class="promoteContent">
-                        ${canPromote ? `
-                            <div class="promoteOptions">
-                                ${promotions.map(promo => {
-                                    const promoId = promo.toLowerCase().replace(/ /g, '_');
-                                    const promoClass = unitData?.classes[promoId];
-                                    if (!promoClass) return '';
-                                    
-                                    let promoStars = '★';
-                                    for (let i = 0; i < promoClass.tier; i++) {
-                                        promoStars += '★';
-                                    }
-                                    return `
-                                        <div class="classCard">
-                                            <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${promoId}_front.gif" alt="${promo}" onerror="this.style.display='none'">
-											<div class="classStars" style="font-size: 24px; font-weight: bold; color: #ffd700; text-shadow: 0 0 12px rgba(255, 215, 0, 0.9), 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 3px rgba(255, 255, 255, 0.6); letter-spacing: 2px;">${promoStars}</div>
-											<h2>${promoClass.name}</h2>
-                                            <button class="promoteButton" onclick="game.showPromotionConfirm('${promo}')">
-                                                Promote<br>
-                                                <span style="font-size: 14px;">💰 -${1000 * Math.pow(10, hero.classTier)}</span>
-                                            </button>
-                                        </div>
-                                    `;
-                                }).join('')}
-                            </div>
-                        ` : `
-                            <p>Reach level ${[50, 100, 200, 300, 400][hero.classTier]} to ${hero.classTier === 4 ? 'awaken' : 'promote'}</p>
-                        `}
-                    </div>
-                `;
+                // Promotion logic here
+                content.innerHTML = '<p>Promotion options coming soon...</p>';
             }
 
             showGearTab(hero, content) {
                 content.innerHTML = `
-                    <div style="display: flex; gap: 40px;">
-                        <div style="flex: 1;">
-                            <h3>Equipped Gear</h3>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;">
-                                <div class="gearSlot">
-                                    <div class="gearLabel">Trinket</div>
-                                    <div class="gearItem">${hero.gear.trinket ? hero.gear.trinket.name : 'Empty'}</div>
-                                </div>
-                                <div class="gearSlot">
-                                    <div class="gearLabel">Head</div>
-                                    <div class="gearItem">${hero.gear.head ? hero.gear.head.name : 'Empty'}</div>
-                                </div>
-                                <div class="gearSlot">
-                                    <div class="gearLabel">Weapon</div>
-                                    <div class="gearItem">${hero.gear.weapon ? hero.gear.weapon.name : 'Empty'}</div>
-                                </div>
-                                <div class="gearSlot">
-                                    <div class="gearLabel">Chest</div>
-                                    <div class="gearItem">${hero.gear.chest ? hero.gear.chest.name : 'Empty'}</div>
-                                </div>
-                                <div class="gearSlot">
-                                    <div class="gearLabel">Offhand</div>
-                                    <div class="gearItem">${hero.gear.offhand ? hero.gear.offhand.name : 'Empty'}</div>
-                                </div>
-                                <div class="gearSlot">
-                                    <div class="gearLabel">Legs</div>
-                                    <div class="gearItem">${hero.gear.legs ? hero.gear.legs.name : 'Empty'}</div>
-                                </div>
-                            </div>
+                    <h3>Equipment</h3>
+                    <div class="gearGrid">
+                        <div class="gearSlot">
+                            <div class="gearLabel">Head</div>
+                            <div class="gearItem">${hero.gear.head ? hero.gear.head.name : 'Empty'}</div>
                         </div>
-                        <div style="flex: 1;">
-                            <h3>Stash</h3>
-                            <div style="margin-top: 20px; background: rgba(10, 25, 41, 0.8); padding: 10px; min-height: 200px; border: 1px solid #2a6a8a;">
-                                <p style="text-align: center; color: #6a9aaa;">No items in stash</p>
-                            </div>
+                        <div class="gearSlot">
+                            <div class="gearLabel">Chest</div>
+                            <div class="gearItem">${hero.gear.chest ? hero.gear.chest.name : 'Empty'}</div>
+                        </div>
+                        <div class="gearSlot">
+                            <div class="gearLabel">Legs</div>
+                            <div class="gearItem">${hero.gear.legs ? hero.gear.legs.name : 'Empty'}</div>
+                        </div>
+                        <div class="gearSlot">
+                            <div class="gearLabel">Weapon</div>
+                            <div class="gearItem">${hero.gear.weapon ? hero.gear.weapon.name : 'Empty'}</div>
+                        </div>
+                        <div class="gearSlot">
+                            <div class="gearLabel">Offhand</div>
+                            <div class="gearItem">${hero.gear.offhand ? hero.gear.offhand.name : 'Empty'}</div>
+                        </div>
+                        <div class="gearSlot">
+                            <div class="gearLabel">Trinket</div>
+                            <div class="gearItem">${hero.gear.trinket ? hero.gear.trinket.name : 'Empty'}</div>
                         </div>
                     </div>
                 `;
             }
 
             showLogTab(hero, content) {
-                content.innerHTML = `
-                    <h3>Activity Log</h3>
-                    <div style="margin-top: 20px; background: #2a2a2a; padding: 20px; min-height: 300px; max-height: 400px; overflow-y: auto;">
-                        <p style="color: #888;">No recent activity</p>
+                content.innerHTML = '<p>Activity log coming soon...</p>';
+            }
+
+            renderWorldMap() {
+                const worldMap = document.querySelector('.worldMap');
+                worldMap.innerHTML = '';
+
+                Object.entries(this.dungeonTiers).forEach(([tierName, tierData]) => {
+                    const orb = document.createElement('div');
+                    orb.className = `mapOrb ${tierData.color}`;
+                    orb.style.left = `${tierData.position.x}%`;
+                    orb.style.top = `${tierData.position.y}%`;
+                    orb.textContent = tierData.tier;
+                    orb.onclick = () => this.selectDungeonTier(tierName);
+                    
+                    worldMap.appendChild(orb);
+                });
+            }
+
+            selectDungeonTier(tierName) {
+                if (this.selectedTier === tierName) {
+                    this.closeDungeonPanel();
+                    return;
+                }
+
+                this.selectedTier = tierName;
+                const panel = document.querySelector('.dungeonListPanel');
+                panel.innerHTML = `
+                    <h2>${tierName}</h2>
+                    <div class="dungeonList">
+                        ${this.dungeonTiers[tierName].dungeons.map(dungeon => `
+                            <div class="dungeonItem" onclick="game.selectDungeon('${dungeon.id}')">
+                                <h3>${dungeon.name}</h3>
+                                <p>Level ${dungeon.level}</p>
+                            </div>
+                        `).join('')}
                     </div>
                 `;
+                panel.classList.add('show');
             }
 
-            getClassFamily(className) {
-                const families = {
-                    'Druid': 'Druid',
-                    'Arch Druid': 'Druid',
-                    'Shapeshifter': 'Druid',
-                    'Runemaster': 'Druid',
-                    'Shaman': 'Druid',
-                    'Summoner': 'Druid'
+            closeDungeonPanel() {
+                const panel = document.querySelector('.dungeonListPanel');
+                panel.classList.remove('show');
+                this.selectedTier = null;
+            }
+
+            selectDungeon(dungeonId) {
+                const dungeonConfig = dungeonData.dungeons[dungeonId];
+                if (!dungeonConfig) return;
+
+                this.currentDungeon = {
+                    id: dungeonId,
+                    name: dungeonConfig.name,
+                    level: dungeonConfig.level
                 };
-                return families[className] || className;
-            }
 
-            selectSkill(index) {
-                const hero = this.heroes[this.selectedHero];
-                const skill = hero.abilities[index];
-                const desc = document.getElementById('skillDescription');
-                
-                // Format ability tooltip
-                desc.innerHTML = this.formatAbilityTooltip(skill, skill.level);
-            }
-
-            promoteHero(newClass) {
-                const hero = this.heroes[this.selectedHero];
-                
-                if (newClass === 'Awaken') {
-                    // Awakening doesn't have a gold cost in the doc
-                    if (hero.promote(newClass)) {
-                        // Update portrait remains the same
-                        const portrait = document.getElementById('heroPortrait');
-                        const classId = hero.className.toLowerCase().replace(/ /g, '_');
-						const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                        portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${displayClassName}</text></svg>'">`;
-                        
-                        this.showHeroTab('info');
-                        this.updateHeroList();
-                    }
-                } else {
-                    const cost = 1000 * Math.pow(10, hero.classTier);
-                    
-                    // TODO: Check gold and deduct cost
-                    if (hero.promote(newClass)) {
-                        // Update portrait immediately after promotion
-                        const portrait = document.getElementById('heroPortrait');
-                        const classId = hero.className.toLowerCase().replace(/ /g, '_');
-						const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                        portrait.innerHTML = `<img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 180 180\\'><rect fill=\\'%23555\\' width=\\'180\\' height=\\'180\\'/><text x=\\'90\\' y=\\'90\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'20\\'>${displayClassName}</text></svg>'">`;
-                        
-                        this.showHeroTab('info');
-                        this.updateHeroList();
-                    }
-                }
-            }
-
-            showPromotionConfirm(newClass) {
-                const hero = this.heroes[this.selectedHero];
-                const modal = document.getElementById('confirmModal');
-                const confirmText = document.getElementById('confirmText');
-                const confirmCost = document.getElementById('confirmCost');
-                
-                this.pendingPromotion = newClass;
-                
-                if (newClass === 'Awaken') {
-                    confirmText.textContent = `Awaken ${hero.name} the ${hero.className}?`;
-                    confirmCost.innerHTML = `💰 -10000000`;
-                } else {
-                    confirmText.textContent = `Promote ${hero.name} the ${hero.className} to ${newClass}?`;
-                    const cost = 1000 * Math.pow(10, hero.classTier);
-                    confirmCost.innerHTML = `💰 -${cost}`;
-                }
-                
-                modal.style.display = 'flex';
-            }
-
-            confirmPromotion() {
-                const modal = document.getElementById('confirmModal');
-                modal.style.display = 'none';
-                
-                if (this.pendingPromotion) {
-                    this.promoteHero(this.pendingPromotion);
-                    this.pendingPromotion = null;
-                }
-            }
-
-            cancelPromotion() {
-                const modal = document.getElementById('confirmModal');
-                modal.style.display = 'none';
-                this.pendingPromotion = null;
-            }
-
-            editHeroName() {
-                const hero = this.heroes[this.selectedHero];
-                const nameElement = document.getElementById('heroNameText');
-                
-                // Create an input field
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.value = hero.name;
-                input.style.cssText = 'font-size: 18px; color: #6a9aaa; background: rgba(10, 25, 41, 0.8); border: 1px solid #2a6a8a; padding: 2px 5px;';
-                
-                // Replace the span with the input
-                nameElement.parentNode.replaceChild(input, nameElement);
-                input.focus();
-                input.select();
-                
-                let saved = false;
-                
-                // Handle saving
-                const saveEdit = () => {
-                    if (saved) return;
-                    saved = true;
-                    
-                    const newName = input.value.trim();
-                    if (newName && newName !== hero.name) {
-                        hero.name = newName;
-                        this.updateHeroList();
-                    }
-                    
-                    // Recreate the span
-                    const newSpan = document.createElement('span');
-                    newSpan.id = 'heroNameText';
-                    newSpan.textContent = hero.name;
-                    
-                    if (input.parentNode) {
-                        input.parentNode.replaceChild(newSpan, input);
-                    }
-                };
-                
-                // Save on Enter or blur
-                input.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-                        saveEdit();
-                    }
+                // Create waves
+                this.dungeonWaves = dungeonConfig.waves.map(wave => {
+                    return wave.enemies.map(enemyConfig => {
+                        const enemyClass = enemyData[enemyConfig.id];
+                        return {
+                            id: enemyConfig.id,
+                            name: enemyClass.name,
+                            level: enemyConfig.level,
+                            modifiers: enemyClass.modifiers,
+                            abilities: enemyClass.spells
+                        };
+                    });
                 });
-                
-                input.addEventListener('blur', () => {
-                    setTimeout(saveEdit, 10);
-                });
-            }
 
-            useAbility(index) {
-                console.log('Using ability', index);
-                // Now handled by Battle class
+                this.currentPreviewWave = 0;
+                this.showPartySelect();
             }
 
             showPartySelect() {
@@ -1714,824 +745,270 @@ hideStatTooltip() {
                 this.currentScreen = 'partySelectScreen';
                 document.getElementById('partySelectScreen').style.display = 'block';
                 
-                // Reset party selection if entering fresh (not from battle)
-                if (!this.currentBattle) {
-                    this.selectedParty = [null, null, null, null, null];
-                }
-                
-                // Update dungeon info
-                document.getElementById('dungeonName').textContent = this.currentDungeon.name;
-                
-                // Render hero selection list
-                this.renderHeroSelectList();
-                
-                // Clear party slots
-                this.updatePartySlots();
-                
-                // Update enemy formation
-                this.updateEnemyFormation();
+                this.selectedParty = [null, null, null, null, null];
+                this.updatePartySelect();
             }
 
-            updateEnemyFormation() {
-                const enemyFormation = document.getElementById('enemyFormation');
-                const slots = enemyFormation.querySelectorAll('.enemySlot');
-                
-                // Clear all enemy slots first
-                slots.forEach(slot => {
-                    slot.innerHTML = '<div class="slotPlaceholder">⬡</div>';
-                    slot.classList.remove('filled');
+            updatePartySelect() {
+                // Update dungeon title
+                const title = document.querySelector('.dungeonTitle');
+                title.textContent = this.currentDungeon.name;
+
+                // Update wave display
+                this.updateWaveDisplay();
+
+                // Update hero list
+                this.updateHeroSelectList();
+
+                // Update party slots
+                this.updatePartySlots();
+            }
+
+            updateWaveDisplay() {
+                const waveText = document.querySelector('.waveText');
+                waveText.textContent = `Wave: ${this.currentPreviewWave + 1}/${this.dungeonWaves.length}`;
+
+                // Update enemy formation
+                const enemyFormation = document.querySelector('.enemyFormation');
+                enemyFormation.innerHTML = '';
+
+                const currentWave = this.dungeonWaves[this.currentPreviewWave];
+                currentWave.forEach((enemy, index) => {
+                    const slot = document.createElement('div');
+                    slot.className = 'enemySlot';
+                    slot.dataset.slot = index;
+                    slot.innerHTML = `
+                        <div class="enemyThumb">
+                            <div class="enemyName">${enemy.name}</div>
+                            <div class="enemyLevel">Lv ${enemy.level}</div>
+                        </div>
+                    `;
+                    enemyFormation.appendChild(slot);
                 });
-                
-                // Get the current wave enemies
-                const currentWaveEnemies = this.dungeonWaves[this.currentPreviewWave];
-                
-                // Update wave counter
-                const waveNav = document.getElementById('waveNavigation');
-                if (waveNav) {
-                    const waveText = waveNav.querySelector('.waveText');
-                    if (waveText) {
-                        waveText.textContent = `Wave ${this.currentPreviewWave + 1}/${this.dungeonWaves.length}`;
+            }
+
+            updateHeroSelectList() {
+                const list = document.querySelector('.heroSelectList');
+                list.innerHTML = '';
+
+                this.heroes.forEach((hero, index) => {
+                    const heroItem = document.createElement('div');
+                    heroItem.className = 'selectableHero';
+                    if (this.selectedParty.includes(index)) {
+                        heroItem.classList.add('inParty');
                     }
-                }
-                
-                // Populate with current wave enemies
-                currentWaveEnemies.forEach((enemy, index) => {
-                    if (index < 5) { // Ensure we don't exceed 5 slots
-                        const slot = slots[index];
-                        
-                        // Generate stars based on level
-                        let stars = '';
-                        const starCount = enemy.stars;
-                        for (let i = 0; i < starCount; i++) {
-                            stars += '★';
-                        }
-                        
-                        // Determine star color class
-                        let starClass = 'normal';
-                        if (starCount === 6) starClass = 'purple';
-                        else if (starCount >= 7) starClass = 'red';
-                        
+
+                    heroItem.innerHTML = `
+                        <img src="${hero.portraitPath}" alt="${hero.name}">
+                        <div class="heroSelectInfo">
+                            <div>${hero.name}</div>
+                            <div>${hero.getDisplayClassName()}</div>
+                            <div>Lv ${hero.level}</div>
+                        </div>
+                    `;
+
+                    heroItem.onclick = () => this.toggleHeroInParty(index);
+                    list.appendChild(heroItem);
+                });
+            }
+
+            updatePartySlots() {
+                const slots = document.querySelectorAll('.partySlot');
+                slots.forEach((slot, index) => {
+                    const heroIndex = this.selectedParty[index];
+                    if (heroIndex !== null) {
+                        const hero = this.heroes[heroIndex];
                         slot.innerHTML = `
-                            <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
-                                <div style="position: relative; width: 60px; height: 60px;">
-                                    <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${enemy.enemyId}_front.gif"
-                                         alt="${enemy.name}" 
-                                         onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'10\\'>${enemy.name}</text></svg>'">
-                                    ${stars ? `<div class="enemyStars ${starClass}">${stars}</div>` : ''}
-                                    <div class="enemyLevel">${enemy.level}</div>
-                                </div>
-                                <div class="enemyName">${enemy.name}</div>
+                            <img src="${hero.portraitPath}" alt="${hero.name}">
+                            <div class="slotHeroInfo">
+                                <div>${hero.name}</div>
+                                <div>Lv ${hero.level}</div>
                             </div>
                         `;
-                        slot.classList.add('filled');
-                        
-                        // Add click handler for enemy info
-                        slot.style.cursor = 'pointer';
-                        slot.onclick = (e) => {
-                            e.stopPropagation();
-                            this.showEnemyInfoPopup(enemy);
-                        };
+                    } else {
+                        slot.innerHTML = '<div class="slotPlaceholder">+</div>';
                     }
                 });
+
+                // Update start button
+                const startBtn = document.querySelector('.startBattleBtn');
+                startBtn.disabled = this.selectedParty.every(slot => slot === null);
             }
 
-            renderHeroSelectList() {
-                const container = document.getElementById('heroSelectList');
-                container.innerHTML = '';
+            toggleHeroInParty(heroIndex) {
+                const currentSlot = this.selectedParty.indexOf(heroIndex);
                 
-                // Sort heroes by same criteria as hero list
-                const sortedHeroes = [...this.heroes].sort((a, b) => {
-                    if (a.awakened !== b.awakened) return b.awakened ? 1 : -1;
-                    if (a.classTier !== b.classTier) return b.classTier - a.classTier;
-                    return b.level - a.level;
-                });
-                
-                sortedHeroes.forEach((hero, index) => {
-                    const heroIndex = this.heroes.indexOf(hero);
-                    const heroThumb = this.createSelectableHeroThumb(hero, heroIndex);
-                    container.appendChild(heroThumb);
-                });
-            }
-
-            createSelectableHeroThumb(hero, heroIndex) {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'selectableHero';
-                
-                // Check if hero is already selected
-                if (this.selectedParty.includes(heroIndex)) {
-                    wrapper.classList.add('selected');
-                }
-                
-                // Create the same thumb structure as hero list
-                const thumb = document.createElement('div');
-                thumb.className = 'heroThumb';
-                
-                // Generate stars
-                let stars = '★';
-                if (hero.classTier > 0) {
-                    const starCount = hero.awakened ? 5 : hero.classTier;
-                    for (let i = 0; i < starCount; i++) {
-                        stars += '★';
-                    }
-                }
-                
-                const classId = hero.className.toLowerCase().replace(/ /g, '_');
-				const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                thumb.innerHTML = `
-    <div style="position: relative; width: 100px; height: 100px;">
-        <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" 
-             onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 100 100\\'><rect fill=\\'%23666\\' width=\\'100\\' height=\\'100\\'/><text x=\\'50\\' y=\\'55\\' text-anchor=\\'middle\\' fill=\\'white\\' font-size=\\'14\\'>${displayClassName}</text></svg>'">
-             
-        ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
-
-        <div class="thumbLevel">${hero.level}</div>
-    </div>
-
-    <div class="thumbClass">${displayClassName}</div>
-    <div class="thumbName">${hero.name}</div>
-`;
-                
-                wrapper.appendChild(thumb);
-                
-                // Click to select/deselect
-                wrapper.onclick = () => this.toggleHeroSelection(heroIndex);
-                
-                // Long press for info
-                let pressTimer;
-                wrapper.addEventListener('mousedown', () => {
-                    pressTimer = setTimeout(() => this.showHeroInfoPopup(hero), 500);
-                });
-                wrapper.addEventListener('mouseup', () => clearTimeout(pressTimer));
-                wrapper.addEventListener('mouseleave', () => clearTimeout(pressTimer));
-                
-                return wrapper;
-            }
-		
-            toggleHeroSelection(heroIndex) {
-                // Check if hero is already selected
-                const currentIndex = this.selectedParty.indexOf(heroIndex);
-                
-                if (currentIndex !== -1) {
+                if (currentSlot !== -1) {
                     // Remove from party
-                    this.selectedParty[currentIndex] = null;
+                    this.selectedParty[currentSlot] = null;
                 } else {
-                    // Find first empty slot
+                    // Add to first empty slot
                     const emptySlot = this.selectedParty.indexOf(null);
                     if (emptySlot !== -1) {
                         this.selectedParty[emptySlot] = heroIndex;
                     }
                 }
-                
-                // Update UI
-                this.renderHeroSelectList();
-                this.updatePartySlots();
-                
-                // Enable/disable start button
-                const hasHeroes = this.selectedParty.some(h => h !== null);
-                document.getElementById('startBattleBtn').disabled = !hasHeroes;
+
+                this.updatePartySelect();
             }
 
-            updatePartySlots() {
-                const slots = document.querySelectorAll('.partySlot');
+            previousWave() {
+                if (this.currentPreviewWave > 0) {
+                    this.currentPreviewWave--;
+                    this.updateWaveDisplay();
+                }
+            }
+
+            nextWave() {
+                if (this.currentPreviewWave < this.dungeonWaves.length - 1) {
+                    this.currentPreviewWave++;
+                    this.updateWaveDisplay();
+                }
+            }
+
+            startBattleWithParty() {
+                const party = this.selectedParty
+                    .map(index => index !== null ? this.heroes[index] : null)
+                    .filter(hero => hero !== null);
+
+                if (party.length === 0) return;
+
+                this.showBattle();
+                this.currentBattle = new Battle(this, party, this.dungeonWaves);
+                this.currentBattle.start();
+            }
+
+            showBattle() {
+                this.hideAllScreens();
+                this.currentScreen = 'battleScene';
+                document.getElementById('battleScene').style.display = 'block';
                 
-                slots.forEach((slot, index) => {
-                    const heroIndex = this.selectedParty[index];
+                // Set battlefield background
+                const battleField = document.querySelector('.battleField');
+                if (this.currentDungeon) {
+                    battleField.style.backgroundImage = `url('https://puzzle-drops.github.io/TEVE/img/fields/${this.currentDungeon.id}.png')`;
+                }
+            }
+
+            cancelPartySelect() {
+                this.showDungeonsScreen();
+            }
+
+            exitBattle() {
+                if (this.currentBattle) {
+                    this.currentBattle.running = false;
+                    this.currentBattle = null;
+                }
+                this.showMainMenu();
+            }
+
+            toggleAutoMode(enabled) {
+                if (this.currentBattle) {
+                    this.currentBattle.toggleAutoMode(enabled);
+                }
+            }
+
+            showBattleResults() {
+                const popup = document.getElementById('battleResultsPopup');
+                const results = this.pendingBattleResults;
+                
+                // Update header
+                document.querySelector('.resultsTitle').textContent = results.victory ? 'Victory!' : 'Defeat!';
+                document.querySelector('.dungeonInfo').textContent = `${results.dungeonName} - ${results.time}`;
+                
+                // Update rewards
+                document.getElementById('battleTime').textContent = results.time;
+                document.getElementById('goldChange').textContent = results.goldChange >= 0 ? `+${results.goldChange}` : results.goldChange;
+                
+                // Update hero results
+                const heroGrid = document.querySelector('.heroResultsGrid');
+                heroGrid.innerHTML = '';
+                
+                results.heroResults.forEach(result => {
+                    const heroDiv = document.createElement('div');
+                    heroDiv.className = 'heroResult';
+                    if (!result.survived) heroDiv.classList.add('dead');
                     
-                    if (heroIndex !== null) {
-                        const hero = this.heroes[heroIndex];
-                        const classId = hero.className.toLowerCase().replace(/ /g, '_');
-						
-                        // Generate stars
-                        let stars = '★';
-                        if (hero.classTier > 0) {
-                            const starCount = hero.awakened ? 5 : hero.classTier;
-                            for (let i = 0; i < starCount; i++) {
-                                stars += '★';
-                            }
-                        }
-                        
-						const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-                        slot.innerHTML = `
-                            <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
-                                <div style="position: relative; width: 60px; height: 60px;">
-                                    <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" alt="${displayClassName}" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' viewBox=\\'0 0 60 60\\'><rect fill=\\'%23666\\' width=\\'60\\' height=\\'60\\'/><text x=\\'30\\' y=\\'35\\' text-anchor=\\'middle\\' fill=\\'white\\'>${displayClassName}</text></svg>'">
-                                    ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}">${stars}</div>` : ''}
-                                    <div class="thumbLevel">${hero.level}</div>
-                                </div>
-                                <div class="thumbClass">${displayClassName}</div>
-                                <div class="thumbName">${hero.name}</div>
-                            </div>
-                        `;
-                        slot.classList.add('filled');
-                        
-                        // Make slot draggable
-                        slot.draggable = true;
-                        slot.dataset.heroIndex = heroIndex;
-                        slot.dataset.slotIndex = index;
-                        
-                        // Add drag event handlers
-                        slot.ondragstart = (e) => {
-                            e.dataTransfer.effectAllowed = 'move';
-                            e.dataTransfer.setData('text/plain', index);
-                            slot.classList.add('dragging');
-                            this.draggedSlotIndex = index;
-                        };
-                        
-                        slot.ondragend = () => {
-                            slot.classList.remove('dragging');
-                        };
-                        
-                        // Add long press handler for hero info
-                        let pressTimer;
-                        slot.addEventListener('mousedown', (e) => {
-                            if (e.button === 0 && !e.ctrlKey && !e.shiftKey) { // Left click only, no modifiers
-                                pressTimer = setTimeout(() => this.showHeroInfoPopup(hero), 500);
-                            }
-                        });
-                        slot.addEventListener('mouseup', () => clearTimeout(pressTimer));
-                        slot.addEventListener('mouseleave', () => clearTimeout(pressTimer));
-                        
-                        // Add click handler for removal (but not if dragging)
-                        slot.onclick = (e) => {
-                            if (!slot.classList.contains('dragging')) {
-                                this.selectedParty[index] = null;
-                                this.renderHeroSelectList();
-                                this.updatePartySlots();
-                                document.getElementById('startBattleBtn').disabled = !this.selectedParty.some(h => h !== null);
-                            }
-                        };
-                    } else {
-                        slot.innerHTML = '<div class="slotPlaceholder">⬡</div>';
-                        slot.classList.remove('filled');
-                        slot.draggable = false;
-                        slot.onclick = null;
-                        slot.ondragstart = null;
-                        slot.ondragend = null;
+                    heroDiv.innerHTML = `
+                        <img src="${result.hero.portraitPath}" alt="${result.hero.name}">
+                        <div class="heroResultInfo">
+                            <div>${result.hero.name}</div>
+                            <div>${result.hero.getDisplayClassName()}</div>
+                            <div>${result.survived ? `+${result.expGained} EXP` : 'Did not survive'}</div>
+                        </div>
+                    `;
+                    
+                    heroGrid.appendChild(heroDiv);
+                });
+                
+                popup.style.display = 'block';
+            }
+
+            closeBattleResults() {
+                document.getElementById('battleResultsPopup').style.display = 'none';
+                this.applyBattleResults();
+                this.showMainMenu();
+            }
+
+            applyBattleResults() {
+                if (!this.pendingBattleResults) return;
+                
+                const results = this.pendingBattleResults;
+                
+                // Apply gold changes
+                this.gold += results.goldChange;
+                
+                // Apply exp to heroes
+                results.heroResults.forEach(result => {
+                    if (result.survived && result.expGained > 0) {
+                        result.hero.addExp(result.expGained);
                     }
-                    
-                    // Add drop zone handlers for all slots
-                    slot.ondragover = (e) => {
-                        e.preventDefault();
-                        e.dataTransfer.dropEffect = 'move';
-                        slot.classList.add('dragover');
-                    };
-                    
-                    slot.ondragleave = () => {
-                        slot.classList.remove('dragover');
-                    };
-                    
-                    slot.ondrop = (e) => {
-                        e.preventDefault();
-                        slot.classList.remove('dragover');
-                        
-                        const fromIndex = parseInt(e.dataTransfer.getData('text/plain'));
-                        const toIndex = index;
-                        
-                        if (fromIndex !== toIndex) {
-                            // Swap heroes
-                            const temp = this.selectedParty[fromIndex];
-                            this.selectedParty[fromIndex] = this.selectedParty[toIndex];
-                            this.selectedParty[toIndex] = temp;
-                            
-                            // Update display
-                            this.updatePartySlots();
-                        }
-                    };
-                });
-            }
-
-showHeroInfoPopup(hero) {
-    const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-    const popup = document.getElementById('heroInfoPopup');
-    document.getElementById('popupHeroName').textContent = `Lv.${hero.level} ${displayClassName} | ${hero.name}`;
-    
-    // Show stats in double column format
-    const stats = hero.totalStats;
-    const statsHtml = `
-        <div style="display: flex; gap: 40px;">
-            <div style="flex: 1;">
-                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Health Points')" onmouseout="game.hideStatTooltip()">
-                    <span class="statLabel">HP</span>
-                    <span class="statValue">${hero.hp}</span>
-                </div>
-                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Strength')" onmouseout="game.hideStatTooltip()">
-                    <span class="statLabel">STR</span>
-                    <span class="statValue">${stats.str}</span>
-                </div>
-                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Agility')" onmouseout="game.hideStatTooltip()">
-                    <span class="statLabel">AGI</span>
-                    <span class="statValue">${stats.agi}</span>
-                </div>
-                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Intelligence')" onmouseout="game.hideStatTooltip()">
-                    <span class="statLabel">INT</span>
-                    <span class="statValue">${stats.int}</span>
-                </div>
-            </div>
-            <div style="flex: 1;">
-                <div class="statRow" onmouseover="game.showStatTooltip(event, 'HP Regeneration')" onmouseout="game.hideStatTooltip()">
-                    <span class="statLabel">Regen</span>
-                    <span class="statValue">${hero.hpRegen.toFixed(1)}</span>
-                </div>
-                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Attack Speed')" onmouseout="game.hideStatTooltip()">
-                    <span class="statLabel">Atk Spd</span>
-                    <span class="statValue">${hero.actionBarSpeed.toFixed(1)}%</span>
-                </div>
-                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Armor')" onmouseout="game.hideStatTooltip()">
-                    <span class="statLabel">Armor</span>
-                    <span class="statValue">${Math.floor(hero.armor)} <span style="color: #6a9aaa;">(${(hero.physicalDamageReduction * 100).toFixed(1)}%)</span></span>
-                </div>
-                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Resistance')" onmouseout="game.hideStatTooltip()">
-                    <span class="statLabel">Resist</span>
-                    <span class="statValue">${Math.floor(hero.resist)} <span style="color: #6a9aaa;">(${(hero.magicDamageReduction * 100).toFixed(1)}%)</span></span>
-                </div>
-            </div>
-        </div>
-    `;
-    document.getElementById('popupStats').innerHTML = statsHtml;
-                
-                // Show ability icons with tooltips
-                const abilityIconsHtml = `
-                    <div style="display: flex; gap: 8px; margin-top: 10px;">
-                        ${hero.abilities.map((ability, index) => {
-                            return `
-                                <div class="abilityIconSmall" 
-                                     data-ability-index="${index}"
-                                     data-hero-type="hero">
-                                    <img src="https://puzzle-drops.github.io/TEVE/img/spells/${ability.id}.png" 
-                                         style="width: 40px; height: 40px;" 
-                                         alt="${ability.name}" 
-                                         onerror="this.style.display='none'">
-                                </div>
-                            `;
-                        }).join('')}
-                    </div>
-                `;
-                document.getElementById('popupAbilities').innerHTML = abilityIconsHtml;
-                
-                // Add event listeners for tooltips
-                const abilityIcons = document.querySelectorAll('#popupAbilities .abilityIconSmall');
-                abilityIcons.forEach((icon, index) => {
-                    icon.addEventListener('mouseenter', (e) => {
-                        const ability = hero.abilities[index];
-                        const tooltipHtml = this.formatAbilityTooltip(ability, ability.level);
-                        this.showAbilityTooltipFromHTML(e, tooltipHtml);
-                    });
-                    icon.addEventListener('mouseleave', () => {
-                        this.hideAbilityTooltip();
-                    });
                 });
                 
-                // Show gear
-                const gearHtml = `
-                    <div class="statRow">
-                        <span class="statLabel">Head</span>
-                        <span class="statValue">${hero.gear.head ? hero.gear.head.name : 'Empty'}</span>
-                    </div>
-                    <div class="statRow">
-                        <span class="statLabel">Chest</span>
-                        <span class="statValue">${hero.gear.chest ? hero.gear.chest.name : 'Empty'}</span>
-                    </div>
-                    <div class="statRow">
-                        <span class="statLabel">Legs</span>
-                        <span class="statValue">${hero.gear.legs ? hero.gear.legs.name : 'Empty'}</span>
-                    </div>
-                    <div class="statRow">
-                        <span class="statLabel">Weapon</span>
-                        <span class="statValue">${hero.gear.weapon ? hero.gear.weapon.name : 'Empty'}</span>
-                    </div>
-                    <div class="statRow">
-                        <span class="statLabel">Offhand</span>
-                        <span class="statValue">${hero.gear.offhand ? hero.gear.offhand.name : 'Empty'}</span>
-                    </div>
-                    <div class="statRow">
-                        <span class="statLabel">Trinket</span>
-                        <span class="statValue">${hero.gear.trinket ? hero.gear.trinket.name : 'Empty'}</span>
-                    </div>
-                `;
-                document.getElementById('popupGear').innerHTML = gearHtml;
-                
-                popup.style.display = 'block';
-            }
-
-showEnemyInfoPopup(enemy) {
-    const popup = document.getElementById('heroInfoPopup');
-    document.getElementById('popupHeroName').textContent = `Lv.${enemy.level} ${enemy.name}`;
-    
-    // Show enemy stats in double column format
-    const stats = enemy.baseStats;
-    const statsHtml = `
-        <div style="display: flex; gap: 40px;">
-            <div style="flex: 1;">
-                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Health Points')" onmouseout="game.hideStatTooltip()">
-                    <span class="statLabel">HP</span>
-                    <span class="statValue">${enemy.hp}</span>
-                </div>
-                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Strength')" onmouseout="game.hideStatTooltip()">
-                    <span class="statLabel">STR</span>
-                    <span class="statValue">${stats.str}</span>
-                </div>
-                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Agility')" onmouseout="game.hideStatTooltip()">
-                    <span class="statLabel">AGI</span>
-                    <span class="statValue">${stats.agi}</span>
-                </div>
-                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Intelligence')" onmouseout="game.hideStatTooltip()">
-                    <span class="statLabel">INT</span>
-                    <span class="statValue">${stats.int}</span>
-                </div>
-            </div>
-            <div style="flex: 1;">
-                <div class="statRow" onmouseover="game.showStatTooltip(event, 'HP Regeneration')" onmouseout="game.hideStatTooltip()">
-                    <span class="statLabel">Regen</span>
-                    <span class="statValue">${(stats.str * 0.05).toFixed(1)}</span>
-                </div>
-                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Attack Speed')" onmouseout="game.hideStatTooltip()">
-                    <span class="statLabel">Atk Spd</span>
-                    <span class="statValue">${(100 + 100 * (stats.agi / (stats.agi + 1000))).toFixed(1)}%</span>
-                </div>
-                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Armor')" onmouseout="game.hideStatTooltip()">
-                    <span class="statLabel">Armor</span>
-                    <span class="statValue">${Math.floor(enemy.armor)} <span style="color: #6a9aaa;">(${(enemy.physicalDamageReduction * 100).toFixed(1)}%)</span></span>
-                </div>
-                <div class="statRow" onmouseover="game.showStatTooltip(event, 'Resistance')" onmouseout="game.hideStatTooltip()">
-                    <span class="statLabel">Resist</span>
-                    <span class="statValue">${Math.floor(enemy.resist)} <span style="color: #6a9aaa;">(${(enemy.magicDamageReduction * 100).toFixed(1)}%)</span></span>
-                </div>
-            </div>
-        </div>
-    `;
-    document.getElementById('popupStats').innerHTML = statsHtml;
-                
-                // Show ability icons with tooltips
-                const enemyAbilitiesHtml = `
-                    <div style="display: flex; gap: 8px; margin-top: 10px;">
-                        ${enemy.abilities.map((ability, index) => {
-                            return `
-                                <div class="abilityIconSmall" 
-                                     data-ability-index="${index}"
-                                     data-enemy-type="enemy">
-                                    <img src="https://puzzle-drops.github.io/TEVE/img/spells/${ability.id}.png" 
-                                         style="width: 40px; height: 40px;" 
-                                         alt="${ability.name}" 
-                                         onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'width:40px;height:40px;background:#2a4a6a;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:20px;\\'>⚔️</div>'">
-                                </div>
-                            `;
-                        }).join('')}
-                    </div>
-                `;
-                document.getElementById('popupAbilities').innerHTML = enemyAbilitiesHtml;
-                
-                // Add event listeners for tooltips
-                const abilityIcons = document.querySelectorAll('#popupAbilities .abilityIconSmall');
-                abilityIcons.forEach((icon, index) => {
-                    icon.addEventListener('mouseenter', (e) => {
-                        const ability = enemy.abilities[index];
-                        const tooltipHtml = this.formatAbilityTooltip(ability, 1);
-                        this.showAbilityTooltipFromHTML(e, tooltipHtml);
-                    });
-                    icon.addEventListener('mouseleave', () => {
-                        this.hideAbilityTooltip();
-                    });
-                });
-                
-                // No gear for enemies
-                document.getElementById('popupGear').innerHTML = `<p style="color: #6a9aaa; text-align: center; margin-top: 20px;">No gear equipped</p>`;
-
-                popup.style.display = 'block';
+                this.pendingBattleResults = null;
             }
 
             closeHeroInfo() {
                 document.getElementById('heroInfoPopup').style.display = 'none';
-                this.hideAbilityTooltip();
             }
 
-            closeDungeonSelect() {
-                this.closeHeroInfo(); // Close any open popups
+            showAbilityTooltip(event, abilityIndex) {
+                const hero = this.heroes[this.selectedHero];
+                const ability = hero.abilities[abilityIndex];
                 
-                // Reset dungeon-related data
-                this.dungeonWaves = null;
-                this.currentDungeon = null;
-                this.currentEnemy = null;
-                this.lastWaveEnemies = null;
-                this.selectedParty = [null, null, null, null, null];
-                
-                this.showDungeons();
-            }
-
-formatAbilityTooltip(ability, level) {
-    const spell = spellManager ? spellManager.getSpell(ability.id) : null;
-    if (!spell) return `<h3>${ability.name} (Level ${level})</h3><p>${ability.description}</p>`;
-    
-    // Build effect tags in specific order
-    let effectTags = '';
-    const effects = spell.effects || [];
-    
-    // Define the order of effects
-    const effectOrder = ['damage', 'physical', 'magical', 'pure', 'heal', 'buff', 'speed', 'debuff', 'aoe', 
-                        'dot', 'stun', 'immunity', 'crit', 'execute', 'summon', 'transform', 'shield', 
-                        'defense', 'aura', 'resurrect', 'cleanse', 'poison', 'mark', 'accuracy', 
-                        'fire', 'frost', 'holy', 'shadow', 'arcane', 'void', 'psionic', 'manaburn', 
-                        'spellpower', 'manaregen', 'cdr', 'control', 'ultimate', 'multihit', 
-                        'dispel', 'random', 'mutation', 'teleport', 'stealth', 'evasion', 'survival', 
-                        'movement', 'reflect', 'blind', 'mental'];
-    
-    // Add effect tags in the specified order
-    effectOrder.forEach(effectType => {
-        if (effects.includes(effectType)) {
-            effectTags += `<span class="abilityEffectTag ${effectType}">${effectType.charAt(0).toUpperCase() + effectType.slice(1)}</span>`;
-        }
-    });
-    
-    // Format cooldown
-    let cooldownText = 'Cooldown: ';
-    if (ability.aura || effects.includes('aura')) {
-        cooldownText += 'Passive';
-    } else if (ability.cooldown === 0) {
-        cooldownText += 'none';
-    } else if (ability.cooldown === -1 || ability.ultimate) {
-        cooldownText += `${ability.currentCooldown || ability.cooldown} turns`;
-    } else {
-        cooldownText += `${ability.cooldown} turns`;
-    }
-    
-    return `
-        <div style="font-size: 24px; color: #4dd0e1; margin-bottom: 8px;">${ability.name} (Level ${level})</div>
-        <div style="margin-bottom: 8px;">${effectTags}</div>
-        <div style="font-size: 18px; color: #6a9aaa; margin-bottom: 8px;">${cooldownText}</div>
-        <div style="font-size: 18px; color: #b0e0f0;">${ability.description}</div>
-    `;
-}
-		
-		showAbilityTooltip(event, name, level, cooldown, description) {
-                // This old method is still called by battle.js showPlayerAbilities
-                // We'll convert it to use the new format
-                const ability = {
-                    name: name,
-                    description: description,
-                    cooldown: cooldown,
-                    effects: []
-                };
-                
-                const html = this.formatAbilityTooltip(ability, level);
-                this.showAbilityTooltipFromHTML(event, html);
-            }
-            
-            showAbilityTooltipFromHTML(event, html) {
-                // Create or get tooltip element
-                let tooltip = document.getElementById('abilityTooltip');
-                if (!tooltip) {
-                    tooltip = document.createElement('div');
-                    tooltip.id = 'abilityTooltip';
-                    tooltip.style.cssText = `
-                        position: fixed;
-                        background: rgba(10, 15, 26, 0.95);
-                        border: 2px solid #2a6a8a;
-                        padding: 16px;
-                        border-radius: 4px;
-                        z-index: 1002;
-                        max-width: 400px;
-                        box-shadow: 0 0 20px rgba(0,0,0,0.8);
-                        pointer-events: none;
-                    `;
-                    document.body.appendChild(tooltip);
-                }
-                
-                tooltip.innerHTML = html;
+                const tooltip = document.getElementById('abilityTooltip');
+                tooltip.innerHTML = this.formatAbilityTooltip(ability);
+                tooltip.style.display = 'block';
                 
                 // Position tooltip
                 const rect = event.target.getBoundingClientRect();
                 tooltip.style.left = rect.left + 'px';
                 tooltip.style.top = (rect.bottom + 5) + 'px';
-                tooltip.style.display = 'block';
+            }
+
+            formatAbilityTooltip(ability) {
+                const spell = spellManager.getSpell(ability.id);
+                if (!spell) return '';
                 
-                // Adjust if tooltip goes off screen
-                const tooltipRect = tooltip.getBoundingClientRect();
-                if (tooltipRect.right > window.innerWidth) {
-                    tooltip.style.left = (window.innerWidth - tooltipRect.width - 10) + 'px';
-                }
-                if (tooltipRect.bottom > window.innerHeight) {
-                    tooltip.style.top = (rect.top - tooltipRect.height - 5) + 'px';
-                }
+                return `
+                    <h3>${ability.name} (Level ${ability.level})</h3>
+                    <p>${spell.description}</p>
+                    ${ability.cooldown > 0 ? `<p>Cooldown: ${ability.cooldown} turns</p>` : ''}
+                    ${ability.passive ? '<p class="passiveTag">Passive</p>' : ''}
+                `;
             }
 
-            hideAbilityTooltip() {
-                const tooltip = document.getElementById('abilityTooltip');
-                if (tooltip) {
-                    tooltip.style.display = 'none';
-                }
-            }
-
-showBattleResults() {
-    if (!this.pendingBattleResults) return;
-    
-    const results = this.pendingBattleResults;
-    
-    // Apply exp and track level ups BEFORE showing the popup
-    const levelUps = [];
-    results.heroResults.forEach(result => {
-        if (result.survived && result.expGained > 0) {
-            const hero = result.hero;
-            const startLevel = hero.level;
-            
-            // Apply the exp
-            this.addExpToHero(hero, result.expGained);
-            
-            // Track if hero leveled up
-            if (hero.level > startLevel) {
-                result.leveledUp = true;
-                result.levelsGained = hero.level - startLevel;
-                result.newLevel = hero.level;
+            renderStashGrid() {
+                const grid = document.querySelector('.stashGrid');
+                grid.innerHTML = '<p>Stash system coming soon...</p>';
             }
         }
-    });
-    
-    const popup = document.getElementById('battleResultsPopup');
-    
-    // Update header
-    const titleElement = document.getElementById('resultsTitle');
-    titleElement.textContent = results.victory ? 'Victory!' : 'Defeat!';
-    titleElement.className = `resultsTitle ${results.victory ? 'victory' : 'defeat'}`;
-    
-    const infoElement = document.getElementById('dungeonInfo');
-    const actionText = results.victory ? 'Defeated' : 'Failed';
-    infoElement.textContent = `${actionText} ${results.dungeonName} in ${results.time}`;
-    
-    // Update rewards
-    const goldElement = document.getElementById('goldReward');
-    goldElement.textContent = results.goldChange >= 0 ? `+${results.goldChange}` : results.goldChange;
-    goldElement.className = `rewardValue ${results.goldChange >= 0 ? 'positive' : 'negative'}`;
-    
-    document.getElementById('bonusExp').textContent = `+${results.dungeonBonusExp}`;
-    
-    // Generate hero results
-    const heroGrid = document.getElementById('heroResultsGrid');
-    heroGrid.innerHTML = '';
-    
-    results.heroResults.forEach(result => {
-        const hero = result.hero;
-        const heroDiv = document.createElement('div');
-        heroDiv.className = `heroResult ${result.survived ? '' : 'dead'}`;
-        
-        // Generate stars
-        let stars = '';
-        if (hero.classTier > 0) {
-            const starCount = hero.awakened ? 6 : hero.classTier + 1;
-            stars = '★'.repeat(starCount);
-        } else {
-            stars = '★';
-        }
-        
-        const classId = hero.className.toLowerCase().replace(/ /g, '_');
-        const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-        
-        // Calculate exp bar fill
-        const expPercent = hero.expToNext > 0 ? (hero.exp / hero.expToNext * 100) : 100;
-        
-        heroDiv.innerHTML = `
-            <div class="heroResultThumb">
-                <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" 
-                     alt="${displayClassName}"
-                     onerror="this.style.display='none'">
-                ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}" style="position: absolute; bottom: 0; left: 0; font-size: 12px;">${stars}</div>` : ''}
-                <div class="thumbLevel" style="position: absolute; bottom: 0; right: 0; font-size: 14px;">${hero.level}</div>
-            </div>
-            <div class="heroResultClass">${hero.name}</div>
-            <div class="heroResultName">${displayClassName}</div>
-            ${result.survived ? `
-                <div class="expGainBar">
-                    <div class="expGainFill" style="width: 0%"></div>
-                    <div class="expGainText">+${result.expGained} EXP</div>
-                </div>
-                <div class="levelUpContainer" style="height: 30px; margin-top: 20px;">
-                    ${result.leveledUp ? `<div style="color: #ffd700; font-size: 14px; font-weight: bold; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);">Level Up! +${result.levelsGained}</div>` : ''}
-                </div>
-            ` : '<div style="color: #ff4444; font-size: 12px;">Did not survive</div>'}
-            <div class="itemSlot"></div>
-        `;
-        
-        heroGrid.appendChild(heroDiv);
-        
-        // Animate exp bar after a delay
-        if (result.survived) {
-            setTimeout(() => {
-                const fillElement = heroDiv.querySelector('.expGainFill');
-                if (fillElement) {
-                    fillElement.style.width = `${expPercent}%`;
-                }
-            }, 100);
-        }
-    });
-    
-    popup.style.display = 'block';
-}
 
-closeBattleResults() {
-    const popup = document.getElementById('battleResultsPopup');
-    popup.style.display = 'none';
-    
-    if (this.pendingBattleResults) {
-        // Apply the results (only gold now, exp was already applied)
-        this.applyBattleResults();
-        
-        // Clear pending results
-        this.pendingBattleResults = null;
-        
-        // Return to party select
-        this.showPartySelect();
-    }
-}
-
-applyBattleResults() {
-    if (!this.pendingBattleResults) return;
-    
-    const results = this.pendingBattleResults;
-    
-    // Apply gold changes
-    this.gold = Math.max(0, this.gold + results.goldChange);
-    
-    // Reset pending exp for all heroes (already applied in showBattleResults)
-    results.heroResults.forEach(result => {
-        result.hero.pendingExp = 0;
-    });
-}
-
-        addExpToHero(hero, expAmount) {
-                if (hero.level >= 500) return; // Max level
-                
-                hero.exp += expAmount;
-                
-                // Handle level ups
-                while (hero.exp >= hero.expToNext && hero.level < 500) {
-                    hero.exp -= hero.expToNext;
-                    hero.level++;
-                    hero.expToNext = hero.calculateExpToNext(); // THIS LINE WAS MISSING!
-                    
-                    // Update abilities if needed
-                    hero.abilities = hero.getClassAbilities();
-                    
-                    console.log(`${hero.name} leveled up to ${hero.level}!`);
-                }
-                
-                // Cap exp at max level
-                if (hero.level >= 500) {
-                    hero.exp = 0;
-                    hero.expToNext = 0;
-                }
-            }
-	}
-
-        // Initialize game after loading data
-        window.addEventListener('DOMContentLoaded', async () => {
-            await loadGameData();
-            window.game = new Game();
-            
-            // Add global escape key handler
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    // Close hero info popup if open
-                    const heroInfoPopup = document.getElementById('heroInfoPopup');
-                    if (heroInfoPopup && heroInfoPopup.style.display === 'block') {
-                        game.closeHeroInfo();
-                        e.preventDefault();
-                        return;
-                    }
-                    
-                    // Close confirmation modal if open
-                    const confirmModal = document.getElementById('confirmModal');
-                    if (confirmModal && confirmModal.style.display === 'flex') {
-                        game.cancelPromotion();
-                        e.preventDefault();
-                        return;
-                    }
-                    
-                    // Clear targeting in battle if active
-                    if (game.currentBattle && game.currentBattle.targetingState) {
-                        game.currentBattle.clearTargeting();
-                        e.preventDefault();
-                        return;
-                    }
-                    
-                    // Navigate between screens based on current screen
-                    switch(game.currentScreen) {
-                        case 'partySelectScreen':
-                            game.closeDungeonSelect();
-                            e.preventDefault();
-                            break;
-                        case 'dungeonsScreen':
-                            game.showMainMenu();
-                            e.preventDefault();
-                            break;
-                        case 'stashScreen':
-                            game.showMainMenu();
-                            e.preventDefault();
-                            break;
-                        case 'heroesScreen':
-                            game.showMainMenu();
-                            e.preventDefault();
-                            break;
-                    }
-                }
-            });
-        });
+        // Initialize after loading
+        window.addEventListener('load', loadGameData);
     </script>
+    <script src="game.js"></script>
+    <script src="spellLogic.js"></script>
+    <script src="battle.js"></script>
 </body>
 </html>
