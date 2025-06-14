@@ -40,14 +40,6 @@ class BattleUnit {
 
                 }
 
-                // Ultimate abilities start with random cooldown
-
-                if (ability.ultimate) {
-
-                    this.cooldowns[index] = Math.floor(Math.random() * 500) + 1;
-
-                }
-
             });
 
         }
@@ -307,8 +299,8 @@ constructor(game, party, enemyWaves) {
     
     this.allUnits = [...this.party, ...this.enemies];
     
-    // Apply initial auras
-    this.applyInitialAuras();
+    // Apply initial passives
+    this.applyInitialPassives();
 }
 
     
@@ -431,15 +423,15 @@ constructor(game, party, enemyWaves) {
 
     
 
-    applyInitialAuras() {
+    applyInitialPassives() {
 
-        // Apply aura abilities at battle start
+        // Apply passive abilities at battle start
 
         this.allUnits.forEach(unit => {
 
             unit.abilities.forEach((ability, index) => {
 
-                if (ability.aura && spellLogic[ability.logicKey]) {
+                if (ability.passive && spellLogic[ability.logicKey]) {
 
                     try {
 
@@ -447,7 +439,7 @@ constructor(game, party, enemyWaves) {
 
                     } catch (error) {
 
-                        console.error(`Error applying aura ${ability.name}:`, error);
+                        console.error(`Error applying passive ${ability.name}:`, error);
 
                     }
 
@@ -1403,14 +1395,15 @@ showPlayerAbilities(unit) {
     const abilityPanel = document.getElementById('abilityPanel');
     abilityPanel.innerHTML = '';
     
-    // Count abilities
-    const abilityCount = unit.abilities.length;
+    // Count abilities (excluding passives for display purposes)
+    const activeAbilities = unit.abilities.filter(ability => !ability.passive);
     
-    unit.abilities.forEach((ability, index) => {
+    activeAbilities.forEach((ability, index) => {
+        const actualIndex = unit.abilities.indexOf(ability);
         const abilityDiv = document.createElement('div');
         abilityDiv.className = 'ability';
         
-        if (!unit.canUseAbility(index)) {
+        if (!unit.canUseAbility(actualIndex)) {
             abilityDiv.classList.add('onCooldown');
         }
         
@@ -1419,7 +1412,7 @@ showPlayerAbilities(unit) {
         
         abilityDiv.innerHTML = `
             <img src="${iconUrl}" alt="${ability.name}" style="width: 100px; height: 100px;" onerror="this.style.display='none'">
-            ${unit.cooldowns[index] > 0 ? `<span class="cooldownText">${unit.cooldowns[index]}</span>` : ''}
+            ${unit.cooldowns[actualIndex] > 0 ? `<span class="cooldownText">${unit.cooldowns[actualIndex]}</span>` : ''}
         `;
         
         // Add tooltip on hover using the new format
@@ -1432,7 +1425,7 @@ showPlayerAbilities(unit) {
             game.hideAbilityTooltip();
         };
         
-        if (unit.canUseAbility(index)) {
+        if (unit.canUseAbility(actualIndex)) {
             abilityDiv.onclick = () => {
                 // Hide tooltip when clicked
                 game.hideAbilityTooltip();
@@ -1440,9 +1433,9 @@ showPlayerAbilities(unit) {
                 if (spell) {
                     // For targeted abilities, highlight valid targets
                     if (spell.target === 'enemy' || spell.target === 'ally') {
-                        this.selectTarget(unit, index, spell.target);
+                        this.selectTarget(unit, actualIndex, spell.target);
                     } else {
-                        this.executeAbility(unit, index, spell.target === 'self' ? unit : 'all');
+                        this.executeAbility(unit, actualIndex, spell.target === 'self' ? unit : 'all');
                         this.endTurn();
                     }
                 }
@@ -1730,7 +1723,7 @@ if (unitDiv) {
         if (healthBar) healthBar.style.display = '';
         if (actionBar) actionBar.style.display = '';
     }
-                    // Update sprite for enemies - always update to ensure correct sprite
+                    // Update sprite for units
 
                     if (unit.isEnemy && unit.isAlive) {
 
@@ -1738,7 +1731,7 @@ if (unitDiv) {
 
                         unitDiv.innerHTML = `
 
-                            <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${enemyId}_front.gif" alt="${unit.name}" 
+                            <img src="https://puzzle-drops.github.io/TEVE/img/sprites/enemies/${enemyId}.png" alt="${unit.name}" 
 
                                  style="width: 100%; image-rendering: pixelated; object-fit: contain;"
 
@@ -1746,6 +1739,15 @@ if (unitDiv) {
 
                         `;
 
+                    } else if (!unit.isEnemy && unit.isAlive) {
+                        const hero = unit.source;
+                        const classId = hero.className.toLowerCase().replace(/ /g, '_');
+                        
+                        unitDiv.innerHTML = `
+                            <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_battle.png" alt="${hero.displayClassName}" 
+                                 style="width: 100%; image-rendering: pixelated; object-fit: contain;"
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'font-size: 9px; text-align: center; line-height: 1.2;\\'><div>${hero.name}</div><div style=\\'color: #6a9aaa;\\'>Lv${hero.level}</div></div>'">
+                        `;
                     }
 
                 }
@@ -1885,4 +1887,3 @@ if (unitDiv) {
     }
 
 }
-
