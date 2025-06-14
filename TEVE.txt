@@ -188,7 +188,7 @@ Druid -> Arch Druid -> Shapeshifter -> Runemaster
 Druid -> Arch Druid -> Shaman -> Summoner
 Initiate -> Mage -> Wizard (Male) / Witch (Female) -> White Wizard (Male) / White Witch (Female)
 Initiate -> Mage -> Sage -> Arch Sage
-Swordsman -> Knight -> Imperial Knight (Male) / Lady Knight (Female) -> Champion (Male) / Lady Champion (Female)
+Swordsman -> Knight -> Imperial Knight (Male) / Lady Knight (Female) -> Champion (Male) / Championess (Female)
 Swordsman -> Knight -> Crusader -> Avenger
 Templar -> Arch Templar -> Dark Templar -> Dark Arch Templar
 Templar -> Arch Templar -> High Templar -> Grand Templar
