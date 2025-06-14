@@ -355,7 +355,7 @@
                 this.gearStats = { str: 0, agi: 0, int: 0 };
                 this.awakened = false;
                 this.abilities = this.getClassAbilities();
-                this.pendingExp = 0; // Track exp earned during battle
+                this.pendingExp = 0;
             }
 
             generateName() {
@@ -1077,9 +1077,11 @@ enterDungeon(tierName, dungeonIndex) {
                     // Stop the battle and clean up
                     this.currentBattle.running = false;
                     
-                    // Reset pending exp for all heroes since battle was abandoned
-                    this.heroes.forEach(hero => {
-                        hero.pendingExp = 0;
+                    // Reset pending exp for all heroes in the party since battle was abandoned
+                    this.currentBattle.party.forEach(unit => {
+                        if (unit && unit.source) {
+                            unit.source.pendingExp = 0;
+                        }
                     });
                     
                     // Clean up any lingering UI elements
