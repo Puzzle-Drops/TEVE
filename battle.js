@@ -1733,7 +1733,7 @@ if (unitDiv) {
 
                             <img src="https://puzzle-drops.github.io/TEVE/img/sprites/enemies/${enemyId}.png" alt="${unit.name}" 
 
-                                 style="width: 100%; image-rendering: pixelated; object-fit: contain;"
+                                 style="image-rendering: pixelated; object-fit: contain;"
 
                                  onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'font-size: 9px; text-align: center; line-height: 1.2;\\'><div>${unit.name}</div><div style=\\'color: #6a9aaa;\\'>Lv${unit.source.level}</div></div>'">
 
@@ -1745,7 +1745,7 @@ if (unitDiv) {
                         
                         unitDiv.innerHTML = `
                             <img src="https://puzzle-drops.github.io/TEVE/img/sprites/heroes/${classId}_${hero.gender}_battle.png" alt="${hero.displayClassName}" 
-                                 style="width: 100%; image-rendering: pixelated; object-fit: contain;"
+                                 style="image-rendering: pixelated; object-fit: contain;"
                                  onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'font-size: 9px; text-align: center; line-height: 1.2;\\'><div>${hero.name}</div><div style=\\'color: #6a9aaa;\\'>Lv${hero.level}</div></div>'">
                         `;
                     }
