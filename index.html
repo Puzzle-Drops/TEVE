@@ -688,6 +688,7 @@ init() {
     this.heroes[0].promote('druid');
     this.heroes[0].level = 185;
     this.heroes[0].exp = 900;
+    this.heroes[0].expToNext = this.heroes[0].calculateExpToNext();
     
     // Hero 1: Arch Druid (Level 275)
     this.heroes[1].level = 50;
@@ -696,6 +697,7 @@ init() {
     this.heroes[1].promote('arch_druid');
     this.heroes[1].level = 275;
     this.heroes[1].exp = 500;
+    this.heroes[1].expToNext = this.heroes[1].calculateExpToNext();
     
     // Hero 2: Shapeshifter (Level 380)
     this.heroes[2].level = 50;
@@ -706,6 +708,7 @@ init() {
     this.heroes[2].promote('shapeshifter');
     this.heroes[2].level = 380;
     this.heroes[2].exp = 700;
+    this.heroes[2].expToNext = this.heroes[2].calculateExpToNext();
     
     // Hero 3: Runemaster (Level 500 - max level)
     this.heroes[3].level = 50;
@@ -718,6 +721,7 @@ init() {
     this.heroes[3].promote('runemaster');
     this.heroes[3].level = 500;
     this.heroes[3].exp = 0; // Max level, no exp needed
+    this.heroes[3].expToNext = this.heroes[3].calculateExpToNext();
     
     // Hero 4: Shaman (Level 315)
     this.heroes[4].level = 50;
@@ -728,6 +732,7 @@ init() {
     this.heroes[4].promote('shaman');
     this.heroes[4].level = 315;
     this.heroes[4].exp = 900;
+    this.heroes[4].expToNext = this.heroes[4].calculateExpToNext();
     
     // Hero 5: Summoner (Level 500)
     this.heroes[5].level = 50;
@@ -740,36 +745,43 @@ init() {
     this.heroes[5].promote('summoner');
     this.heroes[5].level = 500;
     this.heroes[5].exp = 0; // Max level, no exp needed
+    this.heroes[5].expToNext = this.heroes[5].calculateExpToNext();
     
     // Hero 6: Villager (Level 50 with 300 exp)
     this.heroes[6].level = 50;
     this.heroes[6].exp = 300;
+    this.heroes[6].expToNext = this.heroes[6].calculateExpToNext();
     
     // Hero 7: Villager (Level 50 with 500 exp)
     this.heroes[7].level = 50;
     this.heroes[7].exp = 500;
+    this.heroes[7].expToNext = this.heroes[7].calculateExpToNext();
 
     // Hero 8: Villager (Level 50 with 500 exp)
     this.heroes[8].level = 50;
     this.heroes[8].exp = 500;
+    this.heroes[8].expToNext = this.heroes[8].calculateExpToNext();
 
     // Hero 9: Villager (Level 10 with 500 exp)
     this.heroes[9].level = 10;
     this.heroes[9].exp = 500;
+    this.heroes[9].expToNext = this.heroes[9].calculateExpToNext();
 
     // Hero 10: Villager (Level 10 with 500 exp)
     this.heroes[10].level = 10;
     this.heroes[10].exp = 500;
+    this.heroes[10].expToNext = this.heroes[10].calculateExpToNext();
 
     // Hero 11: Villager (Level 10 with 500 exp)
     this.heroes[11].level = 10;
     this.heroes[11].exp = 500;
+    this.heroes[11].expToNext = this.heroes[11].calculateExpToNext();
 
     // Hero 12: Tester (Level 50 with godlike stats)
     this.heroes[12] = new Hero('tester');
     this.heroes[12].level = 50;
     this.heroes[12].exp = 0;
-	
+    this.heroes[12].expToNext = this.heroes[12].calculateExpToNext();
 }
 
             showMainMenu() {
