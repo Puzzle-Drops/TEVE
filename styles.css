@@ -478,6 +478,11 @@ body {
     color: #ff4444;
 }
 
+.unitSlot img {
+        width: 256px;
+	max-height: 256px;
+}
+
 .unitSlot .healthBar {
 	left: 30px;
 	width: 80%;
