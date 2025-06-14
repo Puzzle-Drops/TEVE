@@ -267,80 +267,48 @@ class BattleUnit {
 }
 
 
-
-class Battle {
-
-    constructor(game, party, enemyWaves) {
-
-        this.game = game;
-
-        this.turn = 0;
-
-        this.currentUnit = null;
-
-        this.waitingForPlayer = false;
-
-        this.autoMode = false;
-
-        this.pendingAutoMode = null; // Track pending auto mode changes
-
-        this.battleLog = [];
-
-        this.gameSpeed = 1;
-
-        this.running = true;
-
-        this.processingWaveTransition = false;
-
-        this.targetingState = null; // Track targeting state
-
-        
-
-        // Add timer tracking
-
-        this.startTime = Date.now();
-
-        this.endTime = null;
-
-        
-
-        // Wave management
-
-        this.enemyWaves = enemyWaves;
-
-        this.currentWave = 0;
-
-        
-
-        // Track exp earned per wave for each hero
-
-        this.waveExpEarned = [];
-
-        
-
-        // Create battle units for party
-
-        this.party = party.map((hero, index) => hero ? new BattleUnit(hero, false, index) : null).filter(u => u);
-
-        
-
-        // Initialize with first wave of enemies
-
-        this.enemies = [];
-
-        this.loadWave(0);
-
-        
-
-        this.allUnits = [...this.party, ...this.enemies];
-
-        
-
-        // Apply initial auras
-
-        this.applyInitialAuras();
-
-    }
+constructor(game, party, enemyWaves) {
+    this.game = game;
+    this.turn = 0;
+    this.currentUnit = null;
+    this.waitingForPlayer = false;
+    this.autoMode = false;
+    this.pendingAutoMode = null;
+    this.battleLog = [];
+    this.gameSpeed = 1;
+    this.running = true;
+    this.processingWaveTransition = false;
+    this.targetingState = null;
+    
+    // Add timer tracking
+    this.startTime = Date.now();
+    this.endTime = null;
+    
+    // Wave management
+    this.enemyWaves = enemyWaves;
+    this.currentWave = 0;
+    
+    console.log('Battle created with enemyWaves:', enemyWaves);
+    console.log('Number of waves:', enemyWaves ? enemyWaves.length : 0);
+    
+    // Store the original wave data for exp calculation
+    this.dungeonWaves = enemyWaves;
+    
+    // Track exp earned per wave for each hero
+    this.waveExpEarned = [];
+    
+    // Create battle units for party
+    this.party = party.map((hero, index) => hero ? new BattleUnit(hero, false, index) : null).filter(u => u);
+    
+    // Initialize with first wave of enemies
+    this.enemies = [];
+    this.loadWave(0);
+    
+    this.allUnits = [...this.party, ...this.enemies];
+    
+    // Apply initial auras
+    this.applyInitialAuras();
+}
 
     
 
@@ -1243,8 +1211,27 @@ calculateWaveExp() {
     const baseExpPerLevel = 10;
     let totalExp = 0;
     
-    // Get the current wave configuration from this battle's dungeonWaves
+    console.log(`calculateWaveExp called for wave ${this.currentWave}`);
+    console.log('dungeonWaves:', this.dungeonWaves);
+    
+    // Safety check
+    if (!this.dungeonWaves || !Array.isArray(this.dungeonWaves)) {
+        console.error('dungeonWaves is not properly initialized');
+        return 0;
+    }
+    
+    if (this.currentWave >= this.dungeonWaves.length) {
+        console.error(`Invalid wave index: ${this.currentWave} >= ${this.dungeonWaves.length}`);
+        return 0;
+    }
+    
+    // Get the current wave configuration
     const currentWaveEnemies = this.dungeonWaves[this.currentWave];
+    
+    if (!currentWaveEnemies) {
+        console.error(`No enemies found for wave ${this.currentWave}`);
+        return 0;
+    }
     
     console.log(`Calculating exp for wave ${this.currentWave + 1}:`, currentWaveEnemies);
     
