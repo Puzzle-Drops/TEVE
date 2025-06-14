@@ -287,6 +287,7 @@ constructor(game, party, enemyWaves) {
     // Wave management
     this.enemyWaves = enemyWaves;
     this.currentWave = 0;
+    this.waveExpCalculated = false; // Track if exp was calculated for current wave
     
     console.log('Battle created with enemyWaves:', enemyWaves);
     console.log('Number of waves:', enemyWaves ? enemyWaves.length : 0);
@@ -323,7 +324,7 @@ constructor(game, party, enemyWaves) {
         
 
         this.currentWave = waveIndex;
-
+        this.waveExpCalculated = false; // Reset exp calculation flag for new wave
         const wave = this.enemyWaves[waveIndex];
 
         
@@ -1166,21 +1167,26 @@ checkBattleEnd() {
     }
     
     if (!enemiesAlive) {
-        // Calculate exp for this wave before transitioning
-        const waveExp = this.calculateWaveExp();
-        console.log(`Wave ${this.currentWave + 1} cleared, exp calculated: ${waveExp}`);
-        this.waveExpEarned.push(waveExp);
-        
-        // Award exp to alive heroes
-        this.party.forEach((unit, index) => {
-            if (unit && unit.isAlive) {
-                const hero = unit.source;
-                const prevExp = hero.pendingExp;
-                hero.pendingExp += waveExp;
-                this.log(`${hero.name} earned ${waveExp} exp from wave ${this.currentWave + 1} (total pending: ${hero.pendingExp})`);
-                console.log(`${hero.name}: ${prevExp} + ${waveExp} = ${hero.pendingExp} pending exp`);
-            }
-        });
+        // Only calculate exp once per wave
+        if (!this.waveExpCalculated) {
+            this.waveExpCalculated = true;
+            
+            // Calculate exp for this wave before transitioning
+            const waveExp = this.calculateWaveExp();
+            console.log(`Wave ${this.currentWave + 1} cleared, exp calculated: ${waveExp}`);
+            this.waveExpEarned.push(waveExp);
+            
+            // Award exp to alive heroes
+            this.party.forEach((unit, index) => {
+                if (unit && unit.isAlive) {
+                    const hero = unit.source;
+                    const prevExp = hero.pendingExp;
+                    hero.pendingExp += waveExp;
+                    this.log(`${hero.name} earned ${waveExp} exp from wave ${this.currentWave + 1} (total pending: ${hero.pendingExp})`);
+                    console.log(`${hero.name}: ${prevExp} + ${waveExp} = ${hero.pendingExp} pending exp`);
+                }
+            });
+        }
         
         // Check if there are more waves
         if (this.currentWave < this.enemyWaves.length - 1) {
@@ -1193,6 +1199,7 @@ checkBattleEnd() {
                 setTimeout(() => {
                     this.loadWave(this.currentWave + 1);
                     this.processingWaveTransition = false;
+                    this.waveExpCalculated = false; // Reset for next wave
                 }, 1000);
             }
             return false; // Battle continues
