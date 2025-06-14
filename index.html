@@ -1337,7 +1337,7 @@ enterDungeon(tierName, dungeonIndex) {
 			}
 			
 showStatTooltip(event, statName) {
-	// Define tooltip content mapshowStatTooltip(event, statName) {
+	// Define tooltip content 
 	const tooltipData = {
 		"Strength": "Increases Max HP, HP Regeneration, and Armor.<br>Boosts Strength-based abilities.",
 		"Agility": "Increases Attack Speed and slightly boosts Armor.<br>Boosts Agility-based abilities.",
@@ -1354,7 +1354,7 @@ Physical Damage Reduction: Percentage of physical damage blocked.<br><code>(0.9 
 Magical Damage Reduction: Percentage of magical damage blocked.<br><code>(0.3 × Resist) / (Resist + 1000)</code>`
 	};
 
-
+mapshowStatTooltip(event, statName) {
 	// Create or get stat tooltip element
 	let tooltip = document.getElementById('statTooltip');
 	if (!tooltip) {
