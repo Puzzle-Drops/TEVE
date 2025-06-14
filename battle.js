@@ -266,7 +266,7 @@ class BattleUnit {
 
 }
 
-
+class Battle {
 constructor(game, party, enemyWaves) {
     this.game = game;
     this.turn = 0;
@@ -1877,4 +1877,5 @@ if (unitDiv) {
 
     }
 
+}
 }
