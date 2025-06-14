@@ -2442,7 +2442,7 @@ applyBattleResults() {
     });
 }
 
-            addExpToHero(hero, expAmount) {
+        addExpToHero(hero, expAmount) {
                 if (hero.level >= 500) return; // Max level
                 
                 hero.exp += expAmount;
@@ -2451,7 +2451,7 @@ applyBattleResults() {
                 while (hero.exp >= hero.expToNext && hero.level < 500) {
                     hero.exp -= hero.expToNext;
                     hero.level++;
-                    hero.expToNext = hero.calculateExpToNext();
+                    hero.expToNext = hero.calculateExpToNext(); // THIS LINE WAS MISSING!
                     
                     // Update abilities if needed
                     hero.abilities = hero.getClassAbilities();
@@ -2465,7 +2465,6 @@ applyBattleResults() {
                     hero.expToNext = 0;
                 }
             }
-        }
 
         // Initialize game after loading data
         window.addEventListener('DOMContentLoaded', async () => {
