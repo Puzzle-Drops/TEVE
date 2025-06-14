@@ -1399,69 +1399,6 @@ Magical Damage Reduction: Percentage of magical damage blocked.<br><code>(0.3 ×
 	tooltip.style.top = `${top}px`;
 }
 
-
-showStatTooltip(event, statName) {
-	// Define tooltip content
-	const tooltipData = {
-		"Strength": "Increases Max HP, HP Regeneration, and Armor.<br>Boosts Strength-based abilities.",
-		"Agility": "Increases Attack Speed and slightly boosts Armor.<br>Boosts Agility-based abilities.",
-		"Intelligence": "Increases Resistance (magic defense).<br>Boosts Intelligence-based abilities.",
-
-		"Health Points": "Scales with STR.<br><code>25 × STR</code>",
-		"HP Regeneration": "Scales with STR. Regain HP after your turn.<br><code>0.05 × STR</code>",
-		"Attack Speed": "Increases how fast you attack. Scales with Agility.<br><code>100 + 100 × (AGI / (AGI + 1000))</code>",
-
-		"Armor": `Reduces incoming physical damage.<br><code>(0.25 × STR) + (0.05 × AGI)</code><br><br>
-Physical Damage Reduction: Percentage of physical damage blocked.<br><code>(0.9 × Armor) / (Armor + 500)</code>`,
-
-		"Resistance": `Reduces magical damage taken.<br><code>0.25 × INT</code><br><br>
-Magical Damage Reduction: Percentage of magical damage blocked.<br><code>(0.3 × Resist) / (Resist + 1000)</code>`
-	};
-
-	// Create or get stat tooltip element
-	let tooltip = document.getElementById('statTooltip');
-	if (!tooltip) {
-		tooltip = document.createElement('div');
-		tooltip.id = 'statTooltip';
-		tooltip.style.cssText = `
-			position: fixed;
-			background: rgba(10, 15, 26, 0.95);
-			border: 2px solid #2a6a8a;
-			padding: 10px;
-			border-radius: 4px;
-			z-index: 1002;
-			box-shadow: 0 0 20px rgba(0,0,0,0.8);
-			pointer-events: none;
-			font-size: 14px;
-			color: #b0e0f0;
-			max-width: 500px;
-		`;
-		document.body.appendChild(tooltip);
-	}
-
-	// Set tooltip content
-	tooltip.innerHTML = tooltipData[statName] || "No tooltip available.";
-	tooltip.style.display = 'block';
-
-	// Position near bottom of hovered element
-	const rect = event.target.getBoundingClientRect();
-	const tooltipRect = tooltip.getBoundingClientRect();
-
-	let left = rect.left;
-	let top = rect.bottom + 5;
-
-	// Adjust if tooltip would overflow the screen
-	if (left + tooltipRect.width > window.innerWidth) {
-		left = window.innerWidth - tooltipRect.width - 10;
-	}
-	if (top + tooltipRect.height > window.innerHeight) {
-		top = rect.top - tooltipRect.height - 5;
-	}
-
-	tooltip.style.left = `${left}px`;
-	tooltip.style.top = `${top}px`;
-}
-
 hideStatTooltip() {
 	const tooltip = document.getElementById('statTooltip');
 	if (tooltip) {
