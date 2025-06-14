@@ -355,7 +355,7 @@
                 this.gearStats = { str: 0, agi: 0, int: 0 };
                 this.awakened = false;
                 this.abilities = this.getClassAbilities();
-                this.pendingExp = 0;
+                this.pendingExp = 0; // Track exp earned during battle
             }
 
             generateName() {
@@ -765,10 +765,6 @@ init() {
     this.heroes[11].level = 10;
     this.heroes[11].exp = 500;
 
-    // Hero 12: Tester (Level 50 with godlike stats)
-    this.heroes[12] = new Hero('tester');
-    this.heroes[12].level = 50;
-    this.heroes[12].exp = 0;
 	
 }
 
@@ -1077,11 +1073,9 @@ enterDungeon(tierName, dungeonIndex) {
                     // Stop the battle and clean up
                     this.currentBattle.running = false;
                     
-                    // Reset pending exp for all heroes in the party since battle was abandoned
-                    this.currentBattle.party.forEach(unit => {
-                        if (unit && unit.source) {
-                            unit.source.pendingExp = 0;
-                        }
+                    // Reset pending exp for all heroes since battle was abandoned
+                    this.heroes.forEach(hero => {
+                        hero.pendingExp = 0;
                     });
                     
                     // Clean up any lingering UI elements
@@ -2308,141 +2302,125 @@ formatAbilityTooltip(ability, level) {
                 }
             }
 
-showBattleResults() {
-    if (!this.pendingBattleResults) return;
-    
-    const results = this.pendingBattleResults;
-    
-    // Apply exp and track level ups BEFORE showing the popup
-    const levelUps = [];
-    results.heroResults.forEach(result => {
-        if (result.survived && result.expGained > 0) {
-            const hero = result.hero;
-            const startLevel = hero.level;
-            
-            // Apply the exp
-            this.addExpToHero(hero, result.expGained);
-            
-            // Track if hero leveled up
-            if (hero.level > startLevel) {
-                result.leveledUp = true;
-                result.levelsGained = hero.level - startLevel;
-                result.newLevel = hero.level;
+            showBattleResults() {
+                if (!this.pendingBattleResults) return;
+                
+                const results = this.pendingBattleResults;
+                const popup = document.getElementById('battleResultsPopup');
+                
+                // Update header
+                const titleElement = document.getElementById('resultsTitle');
+                titleElement.textContent = results.victory ? 'Victory!' : 'Defeat!';
+                titleElement.className = `resultsTitle ${results.victory ? 'victory' : 'defeat'}`;
+                
+                const infoElement = document.getElementById('dungeonInfo');
+                const actionText = results.victory ? 'Defeated' : 'Failed';
+                infoElement.textContent = `${actionText} ${results.dungeonName} in ${results.time}`;
+                
+                // Update rewards
+                const goldElement = document.getElementById('goldReward');
+                goldElement.textContent = results.goldChange >= 0 ? `+${results.goldChange}` : results.goldChange;
+                goldElement.className = `rewardValue ${results.goldChange >= 0 ? 'positive' : 'negative'}`;
+                
+                document.getElementById('bonusExp').textContent = `+${results.dungeonBonusExp}`;
+                
+                // Generate hero results
+                const heroGrid = document.getElementById('heroResultsGrid');
+                heroGrid.innerHTML = '';
+                
+                results.heroResults.forEach(result => {
+                    const hero = result.hero;
+                    const heroDiv = document.createElement('div');
+                    heroDiv.className = `heroResult ${result.survived ? '' : 'dead'}`;
+                    
+                    // Generate stars
+                    let stars = '';
+                    if (hero.classTier > 0) {
+                        const starCount = hero.awakened ? 6 : hero.classTier + 1;
+                        stars = '★'.repeat(starCount);
+                    } else {
+                        stars = '★';
+                    }
+                    
+                    const classId = hero.className.toLowerCase().replace(/ /g, '_');
+                    const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+                    
+                    // Calculate exp bar fill
+                    const currentExp = hero.exp;
+                    const expAfter = currentExp + result.expGained;
+                    const expPercent = hero.expToNext > 0 ? ((expAfter % hero.expToNext) / hero.expToNext * 100) : 100;
+                    
+                    heroDiv.innerHTML = `
+                        <div class="heroResultThumb">
+                            <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" 
+                                 alt="${displayClassName}"
+                                 onerror="this.style.display='none'">
+                            ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}" style="position: absolute; bottom: 0; left: 0; font-size: 12px;">${stars}</div>` : ''}
+                            <div class="thumbLevel" style="position: absolute; bottom: 0; right: 0; font-size: 14px;">${hero.level}</div>
+                        </div>
+                        <div class="heroResultName">${hero.name}</div>
+                        <div class="heroResultClass">${displayClassName}</div>
+                        ${result.survived ? `
+                            <div class="expGainBar">
+                                <div class="expGainFill" style="width: 0%"></div>
+                                <div class="expGainText">+${result.expGained} EXP</div>
+                            </div>
+                        ` : '<div style="color: #ff4444; font-size: 12px;">Did not survive</div>'}
+                        <div class="itemSlot"></div>
+                    `;
+                    
+                    heroGrid.appendChild(heroDiv);
+                    
+                    // Animate exp bar after a delay
+                    if (result.survived) {
+                        setTimeout(() => {
+                            const fillElement = heroDiv.querySelector('.expGainFill');
+                            if (fillElement) {
+                                fillElement.style.width = `${expPercent}%`;
+                            }
+                        }, 100);
+                    }
+                });
+                
+                popup.style.display = 'block';
             }
-        }
-    });
-    
-    const popup = document.getElementById('battleResultsPopup');
-    
-    // Update header
-    const titleElement = document.getElementById('resultsTitle');
-    titleElement.textContent = results.victory ? 'Victory!' : 'Defeat!';
-    titleElement.className = `resultsTitle ${results.victory ? 'victory' : 'defeat'}`;
-    
-    const infoElement = document.getElementById('dungeonInfo');
-    const actionText = results.victory ? 'Defeated' : 'Failed';
-    infoElement.textContent = `${actionText} ${results.dungeonName} in ${results.time}`;
-    
-    // Update rewards
-    const goldElement = document.getElementById('goldReward');
-    goldElement.textContent = results.goldChange >= 0 ? `+${results.goldChange}` : results.goldChange;
-    goldElement.className = `rewardValue ${results.goldChange >= 0 ? 'positive' : 'negative'}`;
-    
-    document.getElementById('bonusExp').textContent = `+${results.dungeonBonusExp}`;
-    
-    // Generate hero results
-    const heroGrid = document.getElementById('heroResultsGrid');
-    heroGrid.innerHTML = '';
-    
-    results.heroResults.forEach(result => {
-        const hero = result.hero;
-        const heroDiv = document.createElement('div');
-        heroDiv.className = `heroResult ${result.survived ? '' : 'dead'}`;
-        
-        // Generate stars
-        let stars = '';
-        if (hero.classTier > 0) {
-            const starCount = hero.awakened ? 6 : hero.classTier + 1;
-            stars = '★'.repeat(starCount);
-        } else {
-            stars = '★';
-        }
-        
-        const classId = hero.className.toLowerCase().replace(/ /g, '_');
-        const displayClassName = hero.className.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
-        
-        // Calculate exp bar fill
-        const expPercent = hero.expToNext > 0 ? (hero.exp / hero.expToNext * 100) : 100;
-        
-        heroDiv.innerHTML = `
-            <div class="heroResultThumb">
-                <img src="https://puzzle-drops.github.io/TEVE/img/sprites/${classId}_front.gif" 
-                     alt="${displayClassName}"
-                     onerror="this.style.display='none'">
-                ${stars ? `<div class="thumbStars ${hero.awakened ? 'awakened' : 'normal'}" style="position: absolute; bottom: 0; left: 0; font-size: 12px;">${stars}</div>` : ''}
-                <div class="thumbLevel" style="position: absolute; bottom: 0; right: 0; font-size: 14px;">${hero.level}</div>
-            </div>
-            <div class="heroResultClass">${hero.name}</div>
-            <div class="heroResultName">${displayClassName}</div>
-            ${result.survived ? `
-                <div class="expGainBar">
-                    <div class="expGainFill" style="width: 0%"></div>
-                    <div class="expGainText">+${result.expGained} EXP</div>
-                </div>
-                <div class="levelUpContainer" style="height: 30px; margin-top: 20px;">
-                    ${result.leveledUp ? `<div style="color: #ffd700; font-size: 14px; font-weight: bold; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);">Level Up! +${result.levelsGained}</div>` : ''}
-                </div>
-            ` : '<div style="color: #ff4444; font-size: 12px;">Did not survive</div>'}
-            <div class="itemSlot"></div>
-        `;
-        
-        heroGrid.appendChild(heroDiv);
-        
-        // Animate exp bar after a delay
-        if (result.survived) {
-            setTimeout(() => {
-                const fillElement = heroDiv.querySelector('.expGainFill');
-                if (fillElement) {
-                    fillElement.style.width = `${expPercent}%`;
+
+            closeBattleResults() {
+                const popup = document.getElementById('battleResultsPopup');
+                popup.style.display = 'none';
+                
+                if (this.pendingBattleResults) {
+                    // Apply the results
+                    this.applyBattleResults();
+                    
+                    // Clear pending results
+                    this.pendingBattleResults = null;
+                    
+                    // Return to party select
+                    this.showPartySelect();
                 }
-            }, 100);
-        }
-    });
-    
-    popup.style.display = 'block';
-}
+            }
 
-closeBattleResults() {
-    const popup = document.getElementById('battleResultsPopup');
-    popup.style.display = 'none';
-    
-    if (this.pendingBattleResults) {
-        // Apply the results (only gold now, exp was already applied)
-        this.applyBattleResults();
-        
-        // Clear pending results
-        this.pendingBattleResults = null;
-        
-        // Return to party select
-        this.showPartySelect();
-    }
-}
+            applyBattleResults() {
+                if (!this.pendingBattleResults) return;
+                
+                const results = this.pendingBattleResults;
+                
+                // Apply gold changes
+                this.gold = Math.max(0, this.gold + results.goldChange);
+                
+                // Apply exp to heroes
+                results.heroResults.forEach(result => {
+                    const hero = result.hero;
+                    if (result.expGained > 0) {
+                        this.addExpToHero(hero, result.expGained);
+                    }
+                    // Reset pending exp
+                    hero.pendingExp = 0;
+                });
+            }
 
-applyBattleResults() {
-    if (!this.pendingBattleResults) return;
-    
-    const results = this.pendingBattleResults;
-    
-    // Apply gold changes
-    this.gold = Math.max(0, this.gold + results.goldChange);
-    
-    // Reset pending exp for all heroes (already applied in showBattleResults)
-    results.heroResults.forEach(result => {
-        result.hero.pendingExp = 0;
-    });
-}
-
-        addExpToHero(hero, expAmount) {
+            addExpToHero(hero, expAmount) {
                 if (hero.level >= 500) return; // Max level
                 
                 hero.exp += expAmount;
@@ -2451,7 +2429,7 @@ applyBattleResults() {
                 while (hero.exp >= hero.expToNext && hero.level < 500) {
                     hero.exp -= hero.expToNext;
                     hero.level++;
-                    hero.expToNext = hero.calculateExpToNext(); // THIS LINE WAS MISSING!
+                    hero.expToNext = hero.calculateExpToNext();
                     
                     // Update abilities if needed
                     hero.abilities = hero.getClassAbilities();
@@ -2465,6 +2443,7 @@ applyBattleResults() {
                     hero.expToNext = 0;
                 }
             }
+        }
 
         // Initialize game after loading data
         window.addEventListener('DOMContentLoaded', async () => {
