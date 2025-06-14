@@ -846,6 +846,11 @@ body {
     box-shadow: 0 0 10px rgba(0, 153, 255, 0.5);
 }
 
+.expFill.maxLevel {
+    background: linear-gradient(90deg, #d896ff 0%, #a855f7 100%);
+    box-shadow: 0 0 10px rgba(216, 150, 255, 0.5);
+}
+
 .expText {
     position: absolute;
     width: 100%;
