@@ -390,11 +390,11 @@ body {
 .party5 { left: 10%; top: 58%; }
 
 /* Enemy positions - mirrored */
-.enemy1 { left: 32%; top: 56%; }
-.enemy2 { left: 24%; top: 40%; }
-.enemy3 { left: 20%; top: 70%; }
-.enemy4 { left: 14%; top: 31%; }
-.enemy5 { left: 10%; top: 58%; }
+.enemy1 { right: 32%; top: 56%; }
+.enemy2 { right: 24%; top: 40%; }
+.enemy3 { right: 20%; top: 70%; }
+.enemy4 { right: 14%; top: 31%; }
+.enemy5 { right: 10%; top: 58%; }
 
 /* Battle UI */
 .battleUI {
