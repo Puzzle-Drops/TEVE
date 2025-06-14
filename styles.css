@@ -383,18 +383,18 @@ body {
 }
 
 /* Party positions - more horizontal spacing */
-.party1 { left: 30%; top: 46%; }
-.party2 { left: 10%; top: 36%; }
-.party3 { left: 10%; top: 56%; }
-.party4 { left: 20%; top: 26%; }
-.party5 { left: 20%; top: 66%; }
+.party1 { left: 32%; top: 56%; }
+.party2 { left: 24%; top: 40%; }
+.party3 { left: 20%; top: 70%; }
+.party4 { left: 14%; top: 31%; }
+.party5 { left: 10%; top: 58%; }
 
 /* Enemy positions - mirrored */
-.enemy1 { right: 30%; top: 46%; }
-.enemy2 { right: 10%; top: 36%; }
-.enemy3 { right: 10%; top: 56%; }
-.enemy4 { right: 20%; top: 26%; }
-.enemy5 { right: 20%; top: 66%; }
+.enemy1 { left: 32%; top: 56%; }
+.enemy2 { left: 24%; top: 40%; }
+.enemy3 { left: 20%; top: 70%; }
+.enemy4 { left: 14%; top: 31%; }
+.enemy5 { left: 10%; top: 58%; }
 
 /* Battle UI */
 .battleUI {
